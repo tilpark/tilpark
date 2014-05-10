@@ -21,7 +21,6 @@ if($this->session->userdata('login') == false)
 <link rel="stylesheet" href="<?php echo base_url('theme/css/datepicker.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('theme/js/dataTable/css/TableTools.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('theme/css/lightbox.css'); ?>">
-<link rel="stylesheet" href="<?php echo base_url('theme/css/app.css'); ?>">
 
 
 <!-- Le javascript
@@ -41,8 +40,15 @@ if($this->session->userdata('login') == false)
 
 <script src="<?php echo base_url('theme/js/lightbox-2.6.min.js'); ?>"></script>
 
+<!-- wysiwyg editor -->
+<!-- include summernote css/js-->
+<link rel="stylesheet" href="<?php echo base_url('plugins/wysiwyg/dist/summernote.css'); ?>" />
+<script src="<?php echo base_url('plugins/wysiwyg/dist/summernote.min.js'); ?>"></script>
+
 <!-- Initialize JS Plugins -->
 <script src="<?php echo base_url('theme/js/app.js'); ?>"></script>
+<link rel="stylesheet" href="<?php echo base_url('theme/css/app.css'); ?>">
+
 
 
 <script>
@@ -220,27 +226,26 @@ $(document).ready( function() {
                 <button type="button" class="btn"><i class="fa fa-gears"></i></button>
             
                 <ul class="nav navbar-nav">
-            <li class="dropdown">
-              <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-share-square-o"></i> Profilim <b class="caret"></b></a>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('user/profile'); ?>"><i class="fa fa-user"></i> Profilim</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Another action</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Something else here</a></li>
-                <li role="presentation" class="divider"></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('user/logout'); ?>"><i class="fa fa-times"></i> Çıkış</a></li>
-              </ul>
-            </li>
-          </ul>
+                  <li class="dropdown">
+                    <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-share-square-o"></i> Profilim <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('user/profile'); ?>"><i class="fa fa-user"></i> Profilim</a></li>
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('user/inbox'); ?>"><i class="fa fa-envelope"></i> Mesaj Kutusu</a></li>
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Something else here</a></li>
+                      <li role="presentation" class="divider"></li>
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('user/logout'); ?>"><i class="fa fa-times"></i> Çıkış</a></li>
+                    </ul>
+                  </li>
+                </ul>
             </div> <!-- /.btn-group navbar-right -->
             
             <div class="liner navbar-right hidden-sm hidden-xs"></div>
-            
             <div class="btn-group navbar-right infoBtn hidden-sm hidden-xs">
-                <button type="button" class="btn"><i class="fa fa-globe"></i></button>
-                <button type="button" class="btn"><i class="fa fa-envelope"></i></button>
-                <button type="button" class="btn"><i class="fa fa-tasks"></i></button>
+              <button type="button" class="btn btn_mbox btn_mbox_info"><i class="fa fa-globe"></i><div class="count_info"></div></button><div class="mbox list_info"></div>
+              <button type="button" class="btn btn_mbox btn_mbox_mess"><i class="fa fa-envelope"></i><div class="count_mess"></div></button><div class="mbox list_mess"></div>
+              <button type="button" class="btn btn_mbox btn_mbox_task"><i class="fa fa-tasks"></i><div class="count_task"></div></button><div class="mbox list_task"></div>
             </div>
-            
+
             <div class="liner navbar-right"></div>
 
         </div>
@@ -267,9 +272,9 @@ $(document).ready( function() {
                         <a href="">mustafa</a>
                     </div>
                     <div class="btn-group">
-                      <button type="button" class="btn btn-default"><i class="fa fa-globe"></i></button>
-                      <button type="button" class="btn btn-default"><i class="fa fa-envelope"></i></button>
-                      <button type="button" class="btn btn-default"><i class="fa fa-tasks"></i></button>
+                      <button type="button" class="btn btn-default"><i class="fa fa-globe"></i><div class="count_info"><?php $info = calc_message('info'); if($info > 0): ?><div class="mess_count"><?php echo $info; ?></div><?php endif; ?></div></button>
+                      <button type="button" class="btn btn-default"><i class="fa fa-envelope"></i><div class="count_mess"></div></button>
+                      <button type="button" class="btn btn-default"><i class="fa fa-tasks"></i><div class="count_task"><?php $info = calc_message('task'); if($info > 0): ?><div class="mess_count"><?php echo $info; ?></div><?php endif; ?></div></button>
                       <button type="button" class="btn btn-default"><i class="fa fa-unlock-alt"></i></button>
                       <button type="button" class="btn btn-default"><i class="fa fa-times"></i></button>
                     </div>
@@ -438,13 +443,13 @@ $(document).ready( function() {
                 
             </div> <!-- /.sidebar -->
         </div> 
-        <div class="col-md-10">
+        <div class="col-md-10 content-arena">
     
     
     
 <script>
 $(document).ready(function(e) {
-    $('.active_<?php echo $this->uri->segment(1); ?>').addClass('active');
+  $('.active_<?php echo $this->uri->segment(1); ?>').addClass('active');
 	$('.active_<?php echo $this->uri->segment(1); ?> a').click();
 });
 </script>
@@ -473,4 +478,5 @@ $(document).ready(function(e) {
         
     <?php endforeach; ?>
 <?php endif; ?>
+
 </div>

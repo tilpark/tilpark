@@ -41,7 +41,7 @@
 </div>
 
 <script>
-alert('merhaba');
+
 $('.select_account').click(function(){
 	$('#code').val($(this).attr('data-code'));
     $('#product_name').val($(this).attr('data-name'));

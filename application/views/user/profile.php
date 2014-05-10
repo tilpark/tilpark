@@ -20,10 +20,10 @@
 <ul id="myTab" class="nav nav-tabs">
     <li class="active"><a href="#profile" data-toggle="tab"><i class="fa fa-folder-o"></i> Profilim</a></li>
     <li><a href="#log" data-toggle="tab"><i class="fa fa-keyboard-o"></i> Log</a></li>
-    <li class="dropdown open">
+    <li class="dropdown">
         <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Seçenekler <b class="caret"></b></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-          <li><a href="<?php echo site_url('user/new_message'); ?>/<?php echo $user['id']; ?>">Yeni Mesaj Gönder</a></li>
+          <li><a href="<?php echo site_url('user/new_message'); ?>/<?php echo $user['id']; ?>"><i class="fa fa-envelope-o"></i> Yeni Mesaj Gönder</a></li>
           <li><a href="#dropdown2" tabindex="-1" data-toggle="tab">Yeni Görev Ata</a></li>
         </ul>
       </li>

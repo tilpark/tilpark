@@ -1,4 +1,4 @@
-<?php $users = get_user_array(); ?>
+<?php $users = get_user_list(); ?>
 
 <ol class="breadcrumb">
   <li class="active">Yönetim</li>
@@ -11,8 +11,6 @@
 
 <div class="row">
 	<div class="col-md-8">
-    
-
         <div class="row">
             <div class="col-md-3 col-xs-6">
                 <a href="<?php echo site_url('product'); ?>" class="link-dashboard-stat">

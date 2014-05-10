@@ -90,14 +90,29 @@ body {
 .fw-100 {
   font-weight: 100 !important;
 }
+.fw-200 {
+  font-weight: 200 !important;
+}
 .fw-300 {
   font-weight: 300 !important;
 }
 .fw-400 {
   font-weight: 400 !important;
 }
+.fw-500 {
+  font-weight: 500 !important;
+}
+.fw-600 {
+  font-weight: 600 !important;
+}
 .fw-700 {
   font-weight: 700 !important;
+}
+.fw-800 {
+  font-weight: 800 !important;
+}
+.fw-900 {
+  font-weight: 900 !important;
 }
 h1,
 h2,
@@ -323,11 +338,29 @@ li.dropdown a.active,
   font-weight: 300;
   height: 30px;
 }
-.navbar .infoBtn button:focus,
-.infoBtn button:hover {
+.navbar .infoBtn button.active {
   background-color: rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(0, 0, 0, 0.1);
   color: #fff;
+}
+.mess_count {
+  position: absolute;
+  z-index: 1;
+  background-color: #dc0d17;
+  color: #fff;
+  min-height: 13px;
+  padding: 1px 3px;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+  -webkit-border-radius: 2px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.7);
+  -webkit-background-clip: padding-box;
+  display: inline-block;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 12px;
+  -webkit-font-smoothing: subpixel-antialiased;
+  line-height: normal;
+  top: 18px;
+  right: 2px;
 }
 .navbar .infoBtn .btn-group button .caret {
   border-top: 4px solid #fff;
@@ -352,6 +385,59 @@ a.logo .subtext {
   margin-top: -4px;
   margin-left: 58px;
   position: absolute;
+}
+/* mbox */
+.mbox {
+  position: absolute;
+  top: 48px;
+  right: 0px;
+  min-width: 300px;
+  margin: 2px 0 0;
+  font-size: 12px;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #dbdbdb;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0px;
+  border-top: 0px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+.mbox ul {
+  padding: 0px;
+  margin: 0px;
+}
+.mbox ul li {
+  list-style-type: none;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 10px;
+}
+.mbox ul li:hover {
+  background-color: #f2f2f2;
+}
+.mbox ul li .col-md-2 {
+  padding-right: 10px !important;
+}
+.mbox ul li a {
+  color: #555555;
+}
+.mbox ul li a:hover {
+  text-decoration: none;
+}
+.mbox ul li .description {
+  font-weight: 300;
+}
+.mbox ul li.new_mess .description {
+  font-weight: 700;
+}
+.mbox ul li .information {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+/* table gösterimleri */
+table .no_read {
+  font-weight: bold;
 }
 /* sidebar */
 .sidebar {
@@ -758,6 +844,19 @@ a.logo .subtext {
 .ajax_search_box table {
   margin: 0px;
 }
+/* error_404 */
+.error_404 {
+  margin-top: 100px;
+  display: none;
+}
+.content-arena.error_404 {
+  margin-top: 100px;
+  display: block;
+}
+.error_404 .fa.icon {
+  font-size: 150px;
+  color: #a94442;
+}
 /* bootstrap helper */
 /* helper */
 .row.no-space {
@@ -766,6 +865,9 @@ a.logo .subtext {
 }
 .row.no-space [class^="col-"] {
   padding: 0px;
+}
+.label {
+  font-weight: 300;
 }
 /* nav-tabs */
 .nav-tabs {
@@ -890,6 +992,12 @@ p {
   font-size: 16px;
   text-shadow: none;
 }
+.alert h4 i {
+  position: relative;
+  font-size: 36px;
+  float: left;
+  margin-right: 10px;
+}
 .alert.alert-success {
   border-color: #B0CF96;
 }
@@ -898,6 +1006,10 @@ p {
 }
 .alert.alert-danger {
   border-color: #CEA9AB;
+}
+.alert.alert-muted {
+  border-color: #ccc;
+  background-color: #e4e4e4;
 }
 blockquote {
   font-family: 'Ubuntu', sans-serif !important;
@@ -2133,6 +2245,34 @@ table.table thead .sorting_asc_disabled {
 table.table thead .sorting_desc_disabled {
   background: url('../img/datatable/sort_desc_disabled.png') no-repeat center right;
 }
+/* this CSS is not part of the widget, it is here just as an example of the demo page styling.... Don't copy this one, roll your own. One
+ * of the key things about the widget is that it allows you to do your own styling!
+ */
+.note-editor {
+  border: 1px solid #cccccc;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+.note-editable {
+  background-color: #fff;
+  border: 0px;
+}
+.note-editor .note-toolbar {
+  background-color: #eee;
+  border-bottom: 1px solid #cccccc;
+}
+.note-editor .btn.btn-default .fa {
+  color: #000;
+  font-weight: 300;
+}
+.note-editor .note-statusbar .note-resizebar {
+  width: 100%;
+  height: 8px;
+  cursor: s-resize;
+  border-top: 1px solid #cccccc;
+}
 /*!
  *  Font Awesome 4.0.3 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
@@ -2154,6 +2294,14 @@ table.table thead .sorting_desc_disabled {
 .nav-tabs .fa {
   margin-right: 3px;
   font-size: 16px;
+}
+.nav-tabs .dropdown-menu > li > a .fa {
+  margin-left: 0px;
+  margin-right: 3px;
+  padding: 0px;
+  color: #555555;
+  font-size: 16px;
+  position: static;
 }
 /* makes the font 33% larger relative to the icon container */
 .fa-lg {

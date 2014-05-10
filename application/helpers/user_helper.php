@@ -56,6 +56,12 @@ function get_user($data)
 	{
 		$query['display_name'] = $query['name'].' '.$query['surname'];
 		$query['barcode'] = $query['id'];
+		$query['name_surname'] = $query['name'].' '.$query['surname'];
+
+		if($query['avatar'] == '')
+		{
+			$query['avatar'] = 'avatar.png';
+		}
 		return $query;
 	}
 	else{return false;}
@@ -104,7 +110,102 @@ buradaki fonksiyonlar ile mesaj gönderebilirsiniz.
 function add_message($data)
 {
 	$ci =& get_instance();
-	$ci->db->insert('messagebox', $data);
+
+	$data['type'] = 'message';
+	$data['date'] = date('Y-m-d H:i:s');
+	$data['read'] = '0';
+	$data['read_id'] = $data['receiver_user_id'];
+	$data['updated_date'] = date('Y-m-d H:i:s');
+
+
+
+	if(isset($data['messagebox_id']) and $data['messagebox_id'] > 0)
+	{
+		$ci->db->where('id', $data['messagebox_id']);
+		$ci->db->update('messagebox', array('read'=>'0', 'read_id'=>$data['receiver_user_id'], 'updated_date'=>date('Y-m-d H:i:s')));
+
+		if(isset($data['inbox_user_id']))
+		{
+			$ci->db->where('id', $data['messagebox_id']);
+			$ci->db->update('messagebox', array('inbox_user_id'=>$data['inbox_user_id']));
+
+			$data['inbox_user_id'] = 0;
+		}
+	}
+
+	$query = $ci->db->insert('messagebox', $data);
+	if($query)
+	{
+		return $ci->db->insert_id();
+	}
+	else
+	{
+		return false;
+	}
+
+}
+
+
+
+/* gelen mesajları/görevleri/bildirimleri liste halinde sunar */
+function get_messagebox($data)
+{
+	$ci =& get_instance();
+	$ci->db->where('type', $data['type']);
+	if(isset($data['outbox']))
+	{
+		$ci->db->where('sender_user_id', get_the_current_user('id'));
+		$ci->db->where('messagebox_id', '0');
+	}
+	else
+	{
+		$ci->db->where('receiver_user_id', get_the_current_user('id'));
+		$ci->db->where('messagebox_id', '0');
+		$ci->db->or_where('read_id', get_the_current_user('id'));
+		$ci->db->where('messagebox_id', '0');
+		$ci->db->or_where('inbox_user_id', get_the_current_user('id'));
+	}
+	if(isset($data['order_by'])){ $ci->db->order_by($data['order_by']); }
+	if(isset($data['limit'])){ $ci->db->limit($data['limit']); }
+
+	$query = $ci->db->get('messagebox')->result_array();
+	if($query)
+	{
+		return $query;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function get_message($data)
+{
+	$ci =& get_instance();
+	$ci->db->where('id', $data['id']);
+	$query = $ci->db->get('messagebox')->row_array();
+
+	return $query;
+}
+
+
+
+
+
+
+
+/* yeni kac tane mesaj */
+function calc_message($type='message')
+{
+	$ci =& get_instance();
+
+	$ci->db->where('type', $type);
+	$ci->db->where('messagebox_id', '0');
+	$ci->db->where('read_id', get_the_current_user('id'));
+	$ci->db->where('read', '0');
+
+	$num_rows = $ci->db->get('messagebox')->num_rows();
+	return $num_rows;
 }
 
 
@@ -251,7 +352,7 @@ function get_log_table($data, $order_by='ASC', $array=array())
             </thead>
             <tbody>
         <?php
-		$users = get_user_array();	
+		$users = get_user_list();
 		$ci->db->where($data);
 		$ci->db->order_by('id', $order_by);
 		$query = $ci->db->get('user_logs')->result_array();
@@ -275,54 +376,6 @@ function get_log_table($data, $order_by='ASC', $array=array())
 
 
 
-function get_user_list($data='')
-{
-	$ci =& get_instance();
-	
-	$ci->db->where('status', 1);
-	$query = $ci->db->get('users')->result_array();	
-	
-	?>
-    <table cellpadding="0" cellspacing="0" border="0" class="table table-hover table-bordered table-condensed dataTable_noExcel_noLength_noInformation">
-    	<thead>
-        	<tr>
-            	<th class="hide"></th>
-            	<th width="1"></th>
-                <th><?php lang('Display Name'); ?></th>
-                <th><?php lang('Role'); ?></th>
-            </tr>
-        </thead>
-        <tbody>
-    <?php
-	foreach($query as $user)
-	{
-	?>
-    	<tr>
-        	<td class="hide"></td>
-        	<td width="1">
-            	<a href="javascript:;" class="btn btn-xs btn-default btnSelected" 
-            		data-user_id='<?php echo $user['id']; ?>' 
-                	data-display_name='<?php echo $user['name'].' '.$user['surname']; ?>'>
-				<?php lang('Choose'); ?></a>
-            </td>
-            <td><?php echo $user['name']; ?> <?php echo $user['surname']; ?></td>
-            <td><?php echo get_role_name($user['role']); ?></td>
-        </tr>
-    <?php
-	}
-	?>
-    	</tbody>
-    </table>
-    
-    <script>
-        $('.btnSelected').click(function() {
-			<?php if(isset($data['user_id'])): ?>$('#<?php echo $data['user_id']; ?>').val($(this).attr('data-user_id'));<?php endif; ?>
-			<?php if(isset($data['display_name'])): ?>$('#<?php echo $data['display_name']; ?>').val($(this).attr('data-display_name'));<?php endif; ?>
-			$('.close').click();
-		});
-	</script>
-    <?php
-}
 
 
 
@@ -340,25 +393,24 @@ function calc_inbox()
 }
 
 
-function get_user_array()
+function get_user_list()
 {
+	$users = array();
 	$i=0;
 	$ci =& get_instance();
-	$query = $ci->db->get('users')->result_array();	
-	while($i < 10000)
+	$query = $ci->db->get('users')->result_array();
+	foreach($query as $user)
 	{
-		if(isset($query[$i]))
+		$users[$user['id']] = $user;
+		$users[$user['id']]['name_surname'] = $user['name'].' '.$user['surname'];
+
+		if($users[$user['id']]['avatar'] == '')
 		{
-			if($query[$i]['avatar'] == ''){$query[$i]['avatar'] = 'theme/img/avatar.png';}
-			$data[$query[$i]['id']] = $query[$i];
+			$users[$user['id']]['avatar'] = 'avatar.png';
 		}
-		else
-		{
-			return $data;
-			$i = 10000;	
-		}
-		$i++;
 	}
+	
+	return $users;
 }
 
 

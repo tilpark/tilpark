@@ -31,6 +31,9 @@ class User extends CI_Controller {
 			$data['user_id'] = $user_id;
 		}
 
+		// meta title
+		$data['meta_title'] = $data['user']['name'].' '.$data['user']['surname'];
+
 
 
 		// hesabı silme yada aktif etme
@@ -197,13 +200,164 @@ class User extends CI_Controller {
 
 
 
+	/* ========================================================================
+	 * MESSAGEBOX
 
+		@author : Mustafa TANRIVERDI
+		@E-mail : thetanriverdi@gmail.com
+
+		Buradaki fonksiyonlar mesaj kutusu ile alakalıdır. Mesaj gönderebilir, alabilirsiniz.
+	 * ===================================================================== */
 
 	public function new_message($receiver_user_id)
 	{
+		// meta title
+		$data['meta_title'] = 'Yeni Mesaj';
+
 		$data['receiver_user'] = get_user($receiver_user_id);
 
+		if(isset($_POST['new_message']) and is_log())
+		{
+			$this->form_validation->set_rules('receiver_user_id', 'Alıcı', 'required|integer');
+			$this->form_validation->set_rules('title', 'Mesaj Başlığı', 'required|min_length[3]|max_length[100]');
+			$this->form_validation->set_rules('content', 'Mesaj Konusu', 'required|min_length[3]');
+
+			if($this->form_validation->run() == FALSE)
+			{
+				$data['formError'] = validation_errors();
+			}
+			else
+			{
+				$message['sender_user_id'] = get_the_current_user('id');
+				$message['receiver_user_id'] = $this->input->post('receiver_user_id');
+				$message['title'] = $this->input->post('title');
+				$message['content'] = $this->input->post('content');
+
+				$message_id = add_message($message);
+
+				if($message_id > 0)
+				{
+					$data['messages']['send_message'] = array('class' => 'success', 'title'=>'Yeni mesaj gönderildi.');
+				}
+				else
+				{
+					$data['messages']['error_message'] = array('class' => 'danger', 'title'=>'Bilinmeyen bir hata oluştu.');
+				}
+			}
+		}
+
 		$this->template->view('user/messagebox/new', $data);
+	}
+
+
+
+	/* ========================================================================
+		messagebox
+
+		@author : Mustafa TANRIVERDI
+		@E-mail : thetanriverdi@gmail.com
+
+		Mesaj gelen kutusunu gösterir aynı zamanda mesaj kutusunun ana yönetim bölümüdür.
+	* ===================================================================== */
+	public function inbox($message_id='')
+	{
+		if($message_id == '')
+		{
+			// meta title
+			$data['meta_title'] = 'Gelen Kutusu';
+
+			$this->template->view('user/messagebox/inbox', $data);
+		}
+		else
+		{
+			$data['message'] = get_message(array('id'=>$message_id));
+			if($data['message'])
+			{
+				// meta title
+				$data['meta_title'] = $data['message']['title'];
+
+
+				if(isset($_POST['reply_message']))
+				{
+					$this->form_validation->set_rules('content', 'Mesaj', 'required|min_length[2]');
+
+					if($this->form_validation->run() == FALSE)
+					{
+						$data['formError'] = validation_errors();
+					}
+					else
+					{
+						if(get_the_current_user('id') == $data['message']['sender_user_id'])
+						{
+							$reply_message['sender_user_id'] = get_the_current_user('id');
+							$reply_message['receiver_user_id'] = $data['message']['receiver_user_id'];
+						}
+						else
+						{
+							$reply_message['sender_user_id'] = get_the_current_user('id');
+							$reply_message['receiver_user_id'] = $data['message']['sender_user_id'];
+						}
+
+						$reply_message['content'] = $this->input->post('content');
+						$reply_message['messagebox_id'] = $data['message']['id'];
+
+						// eger mesaji gönderene, mesaj alicisi tarafindan bir mesaj geliyorsa bu mesajin gelen kutusu klasorunde gorunmesi gerekiyor. (biraz karisik bir olay)
+						if($data['message']['sender_user_id'] == $reply_message['receiver_user_id'])
+						{
+							$reply_message['inbox_user_id'] = $data['message']['sender_user_id'];
+						}
+
+						if(add_message($reply_message))
+						{
+							$data['messages']['send_message'] = array('class' => 'success', 'title'=>'Yeni mesaj gönderildi.');
+						}
+						else
+						{
+							$data['messages']['error_message'] = array('class' => 'danger', 'title'=>'Bilinmeyen bir hata!', 'Mesaj gönderilemedi');
+						}
+					}
+					$data['message'] = get_message(array('id'=>$message_id));
+				}
+
+			}
+			else
+			{
+				// meta title
+				$data['meta_title'] = 'Mesaj ID Bulunamadı';
+				$data['error_404'] = 'Mesaj id bulunamadı';
+			}
+
+
+			$this->template->view('user/messagebox/inbox_view', $data);
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public function ajax_search($text='') {
+
+		$ci =& get_instance();
+
+		$this->db->where('status', '1');
+		$this->db->like('name', urldecode($text));
+		$this->db->or_like('surname', urldecode($text));
+		$this->db->or_like('email', urldecode($text));
+		$this->db->limit(7);
+		$query = $this->db->get('users')->result_array();
+		$data['users'] = $query;
+
+		$this->load->view('user/typehead_search_user', $data);
+
 	}
 
 
@@ -240,16 +394,8 @@ class User extends CI_Controller {
 	
 	
 	
-	function inbox($message_id='')
-	{
-		$data['message_id'] = $message_id;
-		$this->template->view('user/messagebox/inbox_view',$data);
-	}
 	
-	function outbox()
-	{
-		$this->template->view('user/messagebox/outbox_view');
-	}
+
 	
 	function bulk_message()
 	{

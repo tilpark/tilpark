@@ -44,7 +44,6 @@ function gsm_trim($gsm)
 	{
 		return $gsm;
 	}
-
 }
 
 
