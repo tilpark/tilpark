@@ -387,47 +387,48 @@ class User extends CI_Controller {
 		}
 		else
 		{
-			# mesaj silme islemi
-			if(isset($_GET['status']))
-			{
-				$data['message'] = get_message(array('id'=>$message_id));
-				$status = $_GET['status'];
-				
-				if($data['message']['sender_user_id'] == get_the_current_user('id'))
-				{
-					$this->db->where('id', $message_id);
-					$this->db->update('messagebox', array('delete_sender'=>$status));
-					
-					$this->db->where('messagebox_id', $message_id);
-					$this->db->where('sender_user_id', get_the_current_user('id'));
-					$this->db->update('messagebox', array('delete_sender'=>$status));
-					
-					$this->db->where('messagebox_id', $message_id);
-					$this->db->where('receiver_user_id', get_the_current_user('id'));
-					$this->db->update('messagebox', array('delete_receiver'=>$status));
-				}
-				else
-				{
-					$this->db->where('id', $message_id);
-					$this->db->update('messagebox', array('delete_receiver'=>$status));
-					
-					$this->db->where('messagebox_id', $message_id);
-					$this->db->where('sender_user_id', get_the_current_user('id'));
-					$this->db->update('messagebox', array('delete_sender'=>$status));
-					
-					$this->db->where('messagebox_id', $message_id);
-					$this->db->where('receiver_user_id', get_the_current_user('id'));
-					$this->db->update('messagebox', array('delete_sender'=>$status));
-				}
-			}
-				
-			
 			
 			$data['message'] = get_message(array('id'=>$message_id));
+			
+			// meta title
+			$data['meta_title'] = $data['message']['title'];
+				
 			if($data['message'])
 			{
-				// meta title
-				$data['meta_title'] = $data['message']['title'];
+				# mesaj silme islemi
+				if(isset($_GET['status']))
+				{
+					$status = $_GET['status'];
+					
+					if($data['message']['sender_user_id'] == get_the_current_user('id'))
+					{
+						$this->db->where('id', $message_id);
+						$this->db->update('messagebox', array('delete_sender'=>$status));
+						
+						$this->db->where('messagebox_id', $message_id);
+						$this->db->where('sender_user_id', get_the_current_user('id'));
+						$this->db->update('messagebox', array('delete_sender'=>$status));
+						
+						$this->db->where('messagebox_id', $message_id);
+						$this->db->where('receiver_user_id', get_the_current_user('id'));
+						$this->db->update('messagebox', array('delete_receiver'=>$status));
+					}
+					else
+					{
+						$this->db->where('id', $message_id);
+						$this->db->update('messagebox', array('delete_receiver'=>$status));
+						
+						$this->db->where('messagebox_id', $message_id);
+						$this->db->where('sender_user_id', get_the_current_user('id'));
+						$this->db->update('messagebox', array('delete_sender'=>$status));
+						
+						$this->db->where('messagebox_id', $message_id);
+						$this->db->where('receiver_user_id', get_the_current_user('id'));
+						$this->db->update('messagebox', array('delete_receiver'=>$status));
+					}
+				}
+				
+				
 
 
 				if(isset($_POST['reply_message']))
@@ -464,8 +465,10 @@ class User extends CI_Controller {
 							$data['messages']['error_message'] = array('class' => 'danger', 'title'=>'Bilinmeyen bir hata!', 'Mesaj gönderilemedi');
 						}
 					}
-					$data['message'] = get_message(array('id'=>$message_id));
 				}
+				
+				
+				$data['message'] = get_message(array('id'=>$message_id));
 
 			}
 			else
@@ -475,7 +478,7 @@ class User extends CI_Controller {
 				$data['error_404'] = 'Mesaj id bulunamadı';
 			}
 
-
+			
 			$this->template->view('user/messagebox/inbox_view', $data);
 		}
 	}
@@ -591,7 +594,83 @@ class User extends CI_Controller {
 		}
 		else
 		{
+			
+			# mesaj silme islemi
+			if(isset($_GET['status']))
+			{
+				$data['message'] = get_message(array('id'=>$message_id));
+				$status = $_GET['status'];
+				
+				if($data['message']['sender_user_id'] == get_the_current_user('id'))
+				{
+					$this->db->where('id', $message_id);
+					$this->db->update('messagebox', array('delete_sender'=>$status));
+					
+					$this->db->where('messagebox_id', $message_id);
+					$this->db->where('sender_user_id', get_the_current_user('id'));
+					$this->db->update('messagebox', array('delete_sender'=>$status));
+					
+					$this->db->where('messagebox_id', $message_id);
+					$this->db->where('receiver_user_id', get_the_current_user('id'));
+					$this->db->update('messagebox', array('delete_receiver'=>$status));
+				}
+				else
+				{
+					$this->db->where('id', $message_id);
+					$this->db->update('messagebox', array('delete_receiver'=>$status));
+					
+					$this->db->where('messagebox_id', $message_id);
+					$this->db->where('sender_user_id', get_the_current_user('id'));
+					$this->db->update('messagebox', array('delete_sender'=>$status));
+					
+					$this->db->where('messagebox_id', $message_id);
+					$this->db->where('receiver_user_id', get_the_current_user('id'));
+					$this->db->update('messagebox', array('delete_receiver'=>$status));
+				}
+			}
+			
 			$data['message'] = get_message(array('id'=>$message_id));
+			
+			if(isset($_GET['onoff']))
+			{
+				$onoff = $_GET['onoff'];
+				if($onoff == '0' or $onoff == '1'){}else{exit('error: 2934834');}
+				
+				$this->db->where('id', $message_id);
+				$this->db->update('messagebox', array('onoff'=>$onoff));
+				if($this->db->affected_rows() > 0)
+				{
+					if(get_the_current_user('id') == $data['message']['sender_user_id'])
+					{
+						$reply_message['sender_user_id'] = get_the_current_user('id');
+						$reply_message['receiver_user_id'] = $data['message']['receiver_user_id'];
+					}
+					else
+					{
+						$reply_message['sender_user_id'] = get_the_current_user('id');
+						$reply_message['receiver_user_id'] = $data['message']['sender_user_id'];
+					}
+					$reply_message['messagebox_id'] = $data['message']['id'];
+					$reply_message['type'] = 'task';
+					$reply_message['date_start'] 	= $data['message']['date_start'];
+					$reply_message['date_end'] 		= $data['message']['date_end'];
+					
+					if($onoff == 1)
+					{
+						$reply_message['content'] = 'Görev tarafımdan kapatıldı.';
+						add_messagebox($reply_message);
+						$data['messages']['onoff_change'] = array('class' => 'success', 'title'=>'Görev kapatıldı.');
+					}
+					else
+					{
+						$reply_message['content'] = 'Görev tarafımdan tekrar kullanıma açıldı.';
+						add_messagebox($reply_message);
+						$data['messages']['onoff_change'] = array('class' => 'success', 'title'=>'Görev tekrar aktif edildi.');
+					}
+					$data['message'] = get_message(array('id'=>$message_id));
+				}
+			}
+			
 			if($data['message'])
 			{
 				// meta title

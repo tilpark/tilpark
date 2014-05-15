@@ -197,6 +197,8 @@ function add_messagebox($data)
 	if(isset($data['messagebox_id']))
 	{
 		$message = get_message($data['messagebox_id']);
+		
+		$data['title'] = $message['title'];
 	
 		$ci->db->where('id', $data['messagebox_id']);	
 		$ci->db->update('messagebox', array('delete_sender'=>'1', 'delete_receiver'=>'1'));
@@ -241,11 +243,8 @@ function get_messagebox($data)
 		$ci->db->where('delete_receiver', '1');
 	}
 	
-	if(isset($data['top_message']))
-	{
-		$ci->db->where('messagebox_id', '0');
-	}
-	
+	if(isset($data['top_message'])){ $ci->db->where('messagebox_id', '0'); }
+	if(isset($data['onoff'])){ $ci->db->where('onoff', $data['onoff']); }
 	if(isset($data['read_id'])){ $ci->db->where('read_id', $data['read_id']); }
 	if(isset($data['order_by'])){ $ci->db->order_by($data['order_by']); }
 	if(isset($data['limit'])){ $ci->db->limit($data['limit']); }
@@ -265,10 +264,23 @@ function get_messagebox($data)
 function get_message($data)
 {
 	$ci =& get_instance();
-	$ci->db->where('id', $data['id']);
+	if(is_array($data))
+	{
+		$ci->db->where($data);
+	}
+	else
+	{
+		$ci->db->where('id', $data);
+	}
 	$query = $ci->db->get('messagebox')->row_array();
-
-	return $query;
+	if($query)
+	{
+		return $query;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 

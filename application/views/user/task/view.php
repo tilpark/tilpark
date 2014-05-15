@@ -24,7 +24,14 @@ $user[$receiver_user['id']] = $receiver_user;
         <div class="row">
             <div class="col-md-3">
             	<div class="h10"></div>
-                <h5><span class="text-muted"><i class="fa fa-warning"></i> önem seviyesi: </span> <span class="label label-danger">çok acil</span></h5>
+                <h5>
+                    <span class="text-muted"><i class="fa fa-warning"></i> önem seviyesi: </span> 
+                    <?php if($message['importance']=='3'): ?>
+                        <span class="label label-danger">acil</span>
+                    <?php else: ?>
+                        <span class="label label-default">normal</span>
+                    <?php endif; ?>
+                </h5>
             </div> <!-- /.col-md-3 -->
             <div class="col-md-3">
             	<div class="h10"></div>
@@ -35,7 +42,11 @@ $user[$receiver_user['id']] = $receiver_user;
                 <h5><span class="text-muted"><i class="fa fa-calendar"></i> bitirme tarihi: </span><?php echo substr($message['date_end'],0,10); ?></h5>
             </div> <!-- /.col-md-3 -->
             <div class="col-md-3 text-right">
-            	<a href="#" class="btn btn-default"><i class="fa fa-retweet"></i> görevi kapat</a>
+            	<?php if($message['onoff'] == '0'): ?>
+            		<a href="?onoff=1" class="btn btn-success"><i class="fa fa-retweet"></i> görevi kapat</a>
+                <?php else: ?>
+                	<a href="?onoff=0" class="btn btn-warning"><i class="fa fa-retweet"></i> görevi tekrar aç</a>
+                <?php endif; ?>
             </div> <!-- /.col-md-3 -->
         </div> <!-- /.row -->
     </div>
@@ -124,6 +135,18 @@ $user[$receiver_user['id']] = $receiver_user;
 	</div> <!-- /.relpy_message -->
 
 </div> <!-- /.messagebox -->
+
+
+<?php if($message['delete_sender'] == '0' and get_the_current_user('id') == $message['sender_user_id'] or $message['delete_receiver'] == '0' and get_the_current_user('id') == $message['receiver_user_id']): ?>
+    	<div class="text-right">
+            <a href="?status=1" class="btn btn-success"><i class="fa fa-times"></i> Tüm mesajları aktifleştir</a>
+        </div> <!-- /.text-right -->
+    <?php else: ?>
+        <div class="text-right">
+            <a href="?status=0" class="btn btn-danger"><i class="fa fa-times"></i> Tüm mesajları sil</a>
+        </div> <!-- /.text-right -->
+    <?php endif; ?>
+
 
 <div class="h40"></div>
 <div class="widget-blank"><h4>Mesajı cevapla</h4></div>
