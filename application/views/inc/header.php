@@ -4,6 +4,8 @@ if($this->session->userdata('login') == false)
 	redirect('user/login');
 	exit;
 }
+$query = get_user(get_the_current_user('id'));
+$this->session->set_userdata('user', $query);
 ?>
 <!DOCTYPE html>
 <html>
@@ -223,15 +225,17 @@ $(document).ready( function() {
           </ul>
             
             <div class="btn-group navbar-right infoBtn">
-                <button type="button" class="btn"><i class="fa fa-gears"></i></button>
+                <button type="button" class="btn hidden-xs hidden-sm"><i class="fa fa-gears"></i></button>
             
                 <ul class="nav navbar-nav">
                   <li class="dropdown">
-                    <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-share-square-o"></i> Profilim <b class="caret"></b></a>
+                    <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-share-square-o"></i> Seçenekler <b class="caret"></b></a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
                       <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('user/profile'); ?>"><i class="fa fa-user"></i> Profilim</a></li>
                       <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('user/inbox'); ?>"><i class="fa fa-envelope"></i> Mesaj Kutusu</a></li>
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Something else here</a></li>
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('user/task'); ?>"><i class="fa fa-tasks"></i> Görev Yöneticisi</a></li>
+                      <li role="presentation" class="divider"></li>
+                      <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('user/users'); ?>"><i class="fa fa-users"></i> Kullanıcı Listesi</a></li>
                       <li role="presentation" class="divider"></li>
                       <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('user/logout'); ?>"><i class="fa fa-times"></i> Çıkış</a></li>
                     </ul>
@@ -241,9 +245,9 @@ $(document).ready( function() {
             
             <div class="liner navbar-right hidden-sm hidden-xs"></div>
             <div class="btn-group navbar-right infoBtn hidden-sm hidden-xs">
-              <button type="button" class="btn btn_mbox btn_mbox_info"><i class="fa fa-globe"></i><div class="count_info"></div></button><div class="mbox list_info"></div>
-              <button type="button" class="btn btn_mbox btn_mbox_mess"><i class="fa fa-envelope"></i><div class="count_mess"></div></button><div class="mbox list_mess"></div>
-              <button type="button" class="btn btn_mbox btn_mbox_task"><i class="fa fa-tasks"></i><div class="count_task"></div></button><div class="mbox list_task"></div>
+              <button type="button" class="btn btn_mbox btn_mbox_info"><i class="fa fa-globe"></i><div class="count_info"></div></button>
+              <button type="button" class="btn btn_mbox btn_mbox_mess"><i class="fa fa-envelope"></i><div class="count_mess"></div></button>
+              <button type="button" class="btn btn_mbox btn_mbox_task"><i class="fa fa-tasks"></i><div class="count_task"></div></button>
             </div>
 
             <div class="liner navbar-right"></div>
@@ -257,8 +261,9 @@ $(document).ready( function() {
 
 
 
-
 <div class="container bg">
+<div class="mbox list_mess"></div>
+<div class="mbox list_task"></div>
 	<div class="row" style="margin-right:0px;">
     	<div class="col-md-2 hidden-xs hidden-sm" style="padding-right:0px; padding-left:0px;">
         	<div class="sidebar">
@@ -266,10 +271,10 @@ $(document).ready( function() {
                 <div class="clearfix"></div>
                 
                 <div class="profile">
-					         <a href="<?php echo site_url(); ?>" class="avatar"><img src="http://cdn.mosaicpro.biz/quickadmin/php/assets/images/avatar-large.jpg" class="avatar" /></a>
+					         <a href="<?php echo site_url(); ?>" class="avatar"><img src="<?php echo base_url('uploads/avatar/thumb_'.get_the_current_user('avatar')); ?>" class="avatar" /></a>
                     <div class="text">
                     	merhaba, <br />
-                        <a href="">mustafa</a>
+                        <a href=""><?php echo get_the_current_user('name'); ?></a>
                     </div>
                     <div class="btn-group">
                       <button type="button" class="btn btn-default"><i class="fa fa-globe"></i><div class="count_info"><?php $info = calc_message('info'); if($info > 0): ?><div class="mess_count"><?php echo $info; ?></div><?php endif; ?></div></button>

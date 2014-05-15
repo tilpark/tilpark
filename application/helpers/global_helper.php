@@ -285,12 +285,24 @@ function add_date_time($date, $number, $type)
 
 
 
-function days_left($date)
+function days_left($date, $eksi='')
 {
 	$date1 = strtotime(date('Y-m-d')); 
 	$date2 = strtotime(substr($date,0,10)); 
-	$day = ($date1-$date2)/86400 ; 
-	return str_replace('-', '', round($day)); 
+	$day = ($date1-$date2)/86400 ;
+	if($eksi == '')
+	{ 
+		return str_replace('-', '', round($day)); 
+	}
+	else if($eksi == '+')
+	{
+		$day = ($date2-$date1)/86400 ;
+		return str_replace('', '', round($day)); 
+	}
+	else
+	{
+		return str_replace('', '', round($day)); 
+	}
 }
 
 

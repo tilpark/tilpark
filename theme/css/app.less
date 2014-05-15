@@ -3,9 +3,16 @@
 
 @color-1 : #4a8bc2;
 @color-2 : #f2f2f2;
+@color-3 : #4d4d4d;
+@color-4 : #7c7c7c;
+@color-5 : #afafaf;
+@color-6 : #a94442;
 
-@font-color-2 : #555;
+@font-color-1 : #4a8bc2;
+@font-color-2 : #4d4d4d;
 @font-color-3 : #7c7c7c;
+
+@icon-color : #ccc;
 
 @color-red-1 : #a94442;
 
@@ -35,11 +42,14 @@ body {
 	background-color:#ede8e4;
 }
 .container {
-	width: 1170px;
+	
+	
 }
 .bg {
 	background-color:#f0f0f0;
 	box-shadow: 0 0 1px 0 rgba(0,0,0,.4);
+	position:relative;
+	overflow:hidden;
 }
 
 
@@ -71,6 +81,7 @@ body {
 .fs-32 { font-size:32px !important; }
 .fs-34 { font-size:34px !important; }
 .fs-36 { font-size:36px !important; }
+
 
 .fw-100 { font-weight:100 !important; }
 .fw-200 { font-weight:200 !important; }
@@ -106,7 +117,24 @@ h2, h3, h4 {
 .h40 { height:40px; }
 
 
+
+/* border radius */
+.radius-0 { border-radius: 0px !important; }
+
+
 .bg-white { background-color:#FFF !important; padding:5px 0; }
+
+.color-black { color: #000; }
+.color-white { color: #fff; }
+.color-red { color: #f00; }
+.color-orange { color: #f60; }
+
+
+.color-1 { color: @color-1; } .color-1:hover, a.color-1:hover { color: @color-1; }
+.color-2 { color: @color-2; } .color-2:hover, a.color-2:hover { color: @color-2; }
+.color-3 { color: @color-3; } .color-2:hover, a.color-3:hover { color: @color-3; }
+.color-4 { color: @color-4; } .color-4:hover, a.color-4:hover { color: @color-4; }
+.color-5 { color: @color-5; } .color-5:hover, a.color-5:hover { color: @color-5; }
 
 
 .gray { color:#ccc !important; }
@@ -347,12 +375,13 @@ a.logo .subtext {
 
 
 /* mbox */
+
 .mbox {
 	position: absolute;
-	top: 48px;
-	right: 0px;
-	min-width:300px;
-	margin: 2px 0 0;
+	z-index:3;
+	height:100%;
+	right:0px;
+	min-width:340px;
 	font-size: 12px;
 	background-color: #fff;
 	background-clip: padding-box;
@@ -360,8 +389,13 @@ a.logo .subtext {
 	border: 1px solid rgba(0, 0, 0, .15);
 	border-radius: 0px;
 	border-top: 0px;
-	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-	box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+	border-right:0px;
+	border-bottom:0px;
+	/* -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, .175); */
+}
+.mbox h3 {
+	margin:20px;
 }
 .mbox ul {
 	padding: 0px;
@@ -421,9 +455,6 @@ table .no_read { font-weight:  bold; }
 }
 .sidebar .profile a.avatar img {
 	width:40px;
-	-webkit-border-radius: 5px 5px 5px 5px;
-	-moz-border-radius: 5px 5px 5px 5px;
-	border-radius: 5px 5px 5px 5px;
 	border:1px solid #fff;
 }
 .sidebar .profile .text {
@@ -655,6 +686,10 @@ table .no_read { font-weight:  bold; }
 	-moz-border-radius: 5px 5px 5px 5px;
 	border-radius: 5px 5px 5px 5px;
 	padding: 20px;
+}
+.widget-body.white {
+	background: #fff;
+	border: 1px solid #dbdbdb;
 }
 .widget-body.list ul {
 	margin: 0;
@@ -900,8 +935,15 @@ table .no_read { font-weight:  bold; }
   padding: 0px;
 }
 
+/* label */
 .label {
-	font-weight: 300;
+	font-weight: 400;
+	padding: 2px 6px;
+	font-size: 12px;
+}
+.label-muted {
+	background-color: #ccc;
+	color:#000;
 }
 
 
@@ -920,7 +962,6 @@ table .no_read { font-weight:  bold; }
 	border: 1px solid transparent; 
 	margin:0px 0px 0 10px;
 	font-size:16px !important;
-
 	font-weight:300 !important;
 	color: #555;
 	border-color: #ccc;
@@ -929,7 +970,7 @@ table .no_read { font-weight:  bold; }
 .nav-tabs > li a:hover {
 	color: #999;	
 	border-color: #ccc;
-	border-bottom:1px solid #ccc;
+	border-bottom:0px solid #ccc;
 	background-color: #fff !important;
 }
 .nav-tabs > li a .fa {
@@ -947,11 +988,11 @@ table .no_read { font-weight:  bold; }
 
 .nav-tabs > li.active > a:hover {
 	border:1px solid #ccc;
-	border-bottom:0px solid transparent !important;
+	border-bottom:1px solid @color-2 !important;
 }
-
-.nav-tabs > li.active a:hover {
-	border-bottom:0px solid transparent !important;
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+	border-color: #ccc;
+	border-bottom:1px;
 }
 
 
@@ -972,6 +1013,53 @@ table .no_read { font-weight:  bold; }
 	background-color: transparent !important;
 	border:0px !important;
 }
+.dropdown-menu > li > a:hover {
+	color: @color-6;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ========================================================================
+ * MESSAGEBOX
+ * messagebox style
+ * ===================================================================== */
+.messagebox {
+
+}
+.messagebox .sub {
+	background-color:#fff;
+	padding:5px 5px;
+}
+.messagebox-content {
+	color:@color-3;
+	padding:10px 0;
+}
+
+.messagebox h5 .label {
+	text-shadow:none;
+	font-size:14px;
+}
+
+
+
+
+
+
 
 
 
@@ -1105,6 +1193,11 @@ blockquote {
 
 
 
+
+
+
+
+/* messagebox */
 
 
 

@@ -20,12 +20,11 @@ body {
   padding-top: 49px !important;
   background-color: #ede8e4;
 }
-.container {
-  width: 1170px;
-}
 .bg {
   background-color: #f0f0f0;
   box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
 }
 /* hazır degiskenler */
 .ff-1 {
@@ -151,9 +150,60 @@ h4 {
 .h40 {
   height: 40px;
 }
+/* border radius */
+.radius-0 {
+  border-radius: 0px !important;
+}
 .bg-white {
   background-color: #FFF !important;
   padding: 5px 0;
+}
+.color-black {
+  color: #000;
+}
+.color-white {
+  color: #fff;
+}
+.color-red {
+  color: #f00;
+}
+.color-orange {
+  color: #f60;
+}
+.color-1 {
+  color: #4a8bc2;
+}
+.color-1:hover,
+a.color-1:hover {
+  color: #4a8bc2;
+}
+.color-2 {
+  color: #f2f2f2;
+}
+.color-2:hover,
+a.color-2:hover {
+  color: #f2f2f2;
+}
+.color-3 {
+  color: #4d4d4d;
+}
+.color-2:hover,
+a.color-3:hover {
+  color: #4d4d4d;
+}
+.color-4 {
+  color: #7c7c7c;
+}
+.color-4:hover,
+a.color-4:hover {
+  color: #7c7c7c;
+}
+.color-5 {
+  color: #afafaf;
+}
+.color-5:hover,
+a.color-5:hover {
+  color: #afafaf;
 }
 .gray {
   color: #ccc !important;
@@ -389,10 +439,10 @@ a.logo .subtext {
 /* mbox */
 .mbox {
   position: absolute;
-  top: 48px;
+  z-index: 3;
+  height: 100%;
   right: 0px;
-  min-width: 300px;
-  margin: 2px 0 0;
+  min-width: 340px;
   font-size: 12px;
   background-color: #fff;
   background-clip: padding-box;
@@ -400,8 +450,14 @@ a.logo .subtext {
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 0px;
   border-top: 0px;
-  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  border-right: 0px;
+  border-bottom: 0px;
+  /* -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, .175); */
+
+}
+.mbox h3 {
+  margin: 20px;
 }
 .mbox ul {
   padding: 0px;
@@ -419,7 +475,7 @@ a.logo .subtext {
   padding-right: 10px !important;
 }
 .mbox ul li a {
-  color: #555555;
+  color: #4d4d4d;
 }
 .mbox ul li a:hover {
   text-decoration: none;
@@ -453,9 +509,6 @@ table .no_read {
 }
 .sidebar .profile a.avatar img {
   width: 40px;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  -moz-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
   border: 1px solid #fff;
 }
 .sidebar .profile .text {
@@ -670,6 +723,10 @@ table .no_read {
   border-radius: 5px 5px 5px 5px;
   padding: 20px;
 }
+.widget-body.white {
+  background: #fff;
+  border: 1px solid #dbdbdb;
+}
 .widget-body.list ul {
   margin: 0;
   padding: 0;
@@ -866,8 +923,15 @@ table .no_read {
 .row.no-space [class^="col-"] {
   padding: 0px;
 }
+/* label */
 .label {
-  font-weight: 300;
+  font-weight: 400;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+.label-muted {
+  background-color: #ccc;
+  color: #000;
 }
 /* nav-tabs */
 .nav-tabs {
@@ -891,7 +955,7 @@ table .no_read {
 .nav-tabs > li a:hover {
   color: #999;
   border-color: #ccc;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 0px solid #ccc;
   background-color: #fff !important;
 }
 .nav-tabs > li a .fa {
@@ -908,10 +972,13 @@ table .no_read {
 }
 .nav-tabs > li.active > a:hover {
   border: 1px solid #ccc;
-  border-bottom: 0px solid transparent !important;
+  border-bottom: 1px solid #f2f2f2 !important;
 }
-.nav-tabs > li.active a:hover {
-  border-bottom: 0px solid transparent !important;
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {
+  border-color: #ccc;
+  border-bottom: 1px;
 }
 .dropdown-menu > li {
   height: 34px;
@@ -929,6 +996,25 @@ table .no_read {
   font-size: 13px;
   background-color: transparent !important;
   border: 0px !important;
+}
+.dropdown-menu > li > a:hover {
+  color: #a94442;
+}
+/* ========================================================================
+ * MESSAGEBOX
+ * messagebox style
+ * ===================================================================== */
+.messagebox .sub {
+  background-color: #fff;
+  padding: 5px 5px;
+}
+.messagebox-content {
+  color: #4d4d4d;
+  padding: 10px 0;
+}
+.messagebox h5 .label {
+  text-shadow: none;
+  font-size: 14px;
 }
 /* tab-content */
 .tab-content {
@@ -1042,6 +1128,7 @@ blockquote {
   padding: 10px;
   font-size: 12px;
 }
+/* messagebox */
 /* bilinmiyor */
 .messageContent {
   min-height: 50px;
@@ -2299,7 +2386,7 @@ table.table thead .sorting_desc_disabled {
   margin-left: 0px;
   margin-right: 3px;
   padding: 0px;
-  color: #555555;
+  color: #4d4d4d;
   font-size: 16px;
   position: static;
 }

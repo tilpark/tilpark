@@ -96,6 +96,76 @@ function the_current_user($data)
 
 
 
+/**
+* get_users()
+*
+* @author	: Mustafa TANRIVERDI
+* @email	: thetanriverdi@gmail.com
+* @website  : www.tilpark.com
+*
+* Veritabanındaki bütün kullanıcıların listesini dizi halinde döndürür
+* $data=array() dizi halinde parametre alır
+*/
+function get_users($data=array())
+{
+	$ci =& get_instance();
+	if(isset($data['status'])) { $ci->db->where('status', $data['status']); }
+	if(isset($data['role'])) { $ci->db->where('role', $data['role']); }
+	if(isset($data['order_by'])) { $ci->db->order_by($data['order_by']); }
+	$query = $ci->db->get('users')->result_array();
+	$users = array();
+	
+	if($query)
+	{
+		if(isset($data['result_array'])) { return $query; }
+		else
+		{
+			foreach($query as $q)
+			{
+				$users[$q['id']] = $q;
+			}
+			return $q;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
+
+/**
+* get_users()
+*
+* @author	: Mustafa TANRIVERDI
+* @email	: thetanriverdi@gmail.com
+* @website  : www.tilpark.com
+*
+* Bu fonksiyon veritabanındaki bütün kullanıcları sorgular ve düzenli bir dizi halinde gönderir.
+*/
+function get_user_list()
+{
+	$users = array();
+	$i=0;
+	$ci =& get_instance();
+	$query = $ci->db->get('users')->result_array();
+	foreach($query as $user)
+	{
+		$users[$user['id']] = $user;
+		$users[$user['id']]['name_surname'] = $user['name'].' '.$user['surname'];
+
+		if($users[$user['id']]['avatar'] == '')
+		{
+			$users[$user['id']]['avatar'] = 'avatar.png';
+		}
+	}
+	
+	return $users;
+}
+
+
+
 
 /* ========================================================================
  * MESSAGEBOX
@@ -107,31 +177,34 @@ buradaki fonksiyonlar ile mesaj gönderebilirsiniz.
 
  * ===================================================================== */
 
-function add_message($data)
+function add_messagebox($data)
 {
 	$ci =& get_instance();
 
-	$data['type'] = 'message';
+	if(!isset($data['type'])){ $data['type'] = 'message'; }
 	$data['date'] = date('Y-m-d H:i:s');
 	$data['read'] = '0';
 	$data['read_id'] = $data['receiver_user_id'];
-	$data['updated_date'] = date('Y-m-d H:i:s');
+	$data['date_update'] = date('Y-m-d H:i:s');
 
 
-
-	if(isset($data['messagebox_id']) and $data['messagebox_id'] > 0)
+	# baslik yok ise content ile yeni baslik olustur
+	if(@strlen($data['title']) < 1)
 	{
-		$ci->db->where('id', $data['messagebox_id']);
-		$ci->db->update('messagebox', array('read'=>'0', 'read_id'=>$data['receiver_user_id'], 'updated_date'=>date('Y-m-d H:i:s')));
-
-		if(isset($data['inbox_user_id']))
-		{
-			$ci->db->where('id', $data['messagebox_id']);
-			$ci->db->update('messagebox', array('inbox_user_id'=>$data['inbox_user_id']));
-
-			$data['inbox_user_id'] = 0;
-		}
+		$data['title'] = strip_tags($data['content']);
 	}
+	
+	if(isset($data['messagebox_id']))
+	{
+		$message = get_message($data['messagebox_id']);
+	
+		$ci->db->where('id', $data['messagebox_id']);	
+		$ci->db->update('messagebox', array('delete_sender'=>'1', 'delete_receiver'=>'1'));
+		
+		$ci->db->where('messagebox_id', $data['messagebox_id']);	
+		$ci->db->update('messagebox', array('delete_sender'=>'1', 'delete_receiver'=>'1'));
+	}
+
 
 	$query = $ci->db->insert('messagebox', $data);
 	if($query)
@@ -151,22 +224,32 @@ function add_message($data)
 function get_messagebox($data)
 {
 	$ci =& get_instance();
+	
+	// eger status yok ise status 1 yap
+	if(!isset($data['status'])){ $data['status'] = '1'; }
+	
+	
 	$ci->db->where('type', $data['type']);
 	if(isset($data['outbox']))
 	{
 		$ci->db->where('sender_user_id', get_the_current_user('id'));
-		$ci->db->where('messagebox_id', '0');
+		$ci->db->where('delete_sender', '1');
 	}
 	else
 	{
 		$ci->db->where('receiver_user_id', get_the_current_user('id'));
-		$ci->db->where('messagebox_id', '0');
-		$ci->db->or_where('read_id', get_the_current_user('id'));
-		$ci->db->where('messagebox_id', '0');
-		$ci->db->or_where('inbox_user_id', get_the_current_user('id'));
+		$ci->db->where('delete_receiver', '1');
 	}
+	
+	if(isset($data['top_message']))
+	{
+		$ci->db->where('messagebox_id', '0');
+	}
+	
+	if(isset($data['read_id'])){ $ci->db->where('read_id', $data['read_id']); }
 	if(isset($data['order_by'])){ $ci->db->order_by($data['order_by']); }
 	if(isset($data['limit'])){ $ci->db->limit($data['limit']); }
+	
 
 	$query = $ci->db->get('messagebox')->result_array();
 	if($query)
@@ -199,13 +282,27 @@ function calc_message($type='message')
 {
 	$ci =& get_instance();
 
+	// eger status yok ise status 1 yap
+	if(!isset($data['status'])){ $data['status'] = '1'; }
+	
 	$ci->db->where('type', $type);
-	$ci->db->where('messagebox_id', '0');
 	$ci->db->where('read_id', get_the_current_user('id'));
 	$ci->db->where('read', '0');
+	$query = $ci->db->get('messagebox')->result_array();
 
-	$num_rows = $ci->db->get('messagebox')->num_rows();
-	return $num_rows;
+	$i = 0;
+	$is_message = array();
+	foreach($query as $q)
+	{
+		if($q['messagebox_id'] > 0){ $q['id'] = $q['messagebox_id']; }
+		if(isset($is_message[$q['id']])){}
+		else
+		{
+			$is_message[$q['id']] = true;
+			$i++;
+		}
+	}
+	return $i;
 }
 
 
@@ -393,25 +490,7 @@ function calc_inbox()
 }
 
 
-function get_user_list()
-{
-	$users = array();
-	$i=0;
-	$ci =& get_instance();
-	$query = $ci->db->get('users')->result_array();
-	foreach($query as $user)
-	{
-		$users[$user['id']] = $user;
-		$users[$user['id']]['name_surname'] = $user['name'].' '.$user['surname'];
 
-		if($users[$user['id']]['avatar'] == '')
-		{
-			$users[$user['id']]['avatar'] = 'avatar.png';
-		}
-	}
-	
-	return $users;
-}
 
 
 

@@ -17,6 +17,22 @@ class User extends CI_Controller {
 		$this->session->set_userdata('login', false);
 		redirect(site_url());
 	}
+	
+	/**
+	* users()
+	*
+	* @author	: Mustafa TANRIVERDI
+	* @email	: thetanriverdi@gmail.com
+	* @website  : www.tilpark.com
+	*
+	* Kullanıcı listesini gösterir
+	*/
+	
+	public function users()
+	{
+		$data['users'] = get_users(array('status'=>'1', 'result_array'=>true, 'order_by'=>'role ASC'));
+		$this->template->view('user/list', $data);
+	}
 
 
 
@@ -54,37 +70,126 @@ class User extends CI_Controller {
 				mkdir('./uploads/avatar');
 			}
 
-			$avatar = $_FILES['avatar'];
-			$config['upload_path'] = './uploads/avatar';
-			$config['allowed_types'] = 'gif|jpg|png|PNG|GIF|JPG|JPEG';
-			$config['max_size']	= '500';
-			$config['max_width']  = '2048';
-			$config['max_height']  = '2048';
-			$config['file_name']  = $data['user_id'];
-			$config['overwrite']  = TRUE;
 
-			$this->load->library('upload', $config);
 
-			if(!$this->upload->do_upload('avatar'))
+			// resim yukleme sinifi
+			include_once('./plugins/verot/class.upload.php');
+			
+			$handle = new upload($_FILES['avatar']); 
+			if ($handle->uploaded) 
 			{
-				$data['formError'] =$this->upload->display_errors();
-			}
-			else
-			{
-				$data['messages']['avatar_upload_success'] = array('class' => 'success', 'title'=>'Resim yüklendi.');
+				$handle->file_new_name_body 	 = get_the_current_user('id');
+				$handle->image_resize          = true;
+				$handle->image_ratio_crop      = true;
+				$handle->image_x               = 200;
+				$handle->image_y               = 200;
+				$handle->file_max_size 		 = (2048 * 1000); // 1KB
+				$handle->image_convert = 'jpg';
 				
-				$upload_avatar = $this->upload->data();
-
-				update_user($data['user_id'], array('avatar'=>$upload_avatar['file_name']));
-
-				// avatar kucultme
-				$config['source_image']	= './uploads/avatar/'.$upload_avatar['file_name'];
-				$config['width']	 = 200;
-				$config['height']	= 200;
-				$this->load->library('image_lib', $config); 
-				if (!$this->image_lib->resize())
+				$handle->process('./uploads/avatar/');
+				if($handle->processed) 
+				{ 
+					if($data['user']['avatar'] != 'avatar.png')
+					{
+						unlink('./uploads/avatar/'.$data['user']['avatar']);
+					}	
+				
+					$data['messages']['avatar_upload_success'] = array('class' => 'success', 'title'=>'Resim yüklendi.');
+					update_user($data['user_id'], array('avatar'=>$handle->file_dst_name));
+				} 
+				else 
 				{
-				    echo $this->image_lib->display_errors();
+					$data['formError'] = $handle->error;
+				}
+			}
+			
+			
+			
+			
+			$handle_thumb = new upload($_FILES['avatar']); 
+			if ($handle_thumb->uploaded) 
+			{
+				$handle_thumb->file_new_name_body 	 = 'thumb_'.$handle->file_dst_name_body;
+				$handle_thumb->image_resize          = true;
+				$handle_thumb->image_ratio_crop      = true;
+				$handle_thumb->image_x               = 50;
+				$handle_thumb->image_y               = 50;
+				$handle_thumb->file_max_size 		 = (2048 * 1000); // 1KB
+				$handle_thumb->image_convert = 'jpg';
+				
+				$handle_thumb->process('./uploads/avatar/');
+				if($handle_thumb->processed) 
+				{ 
+					if($data['user']['avatar'] != 'avatar.png')
+					{
+						unlink('./uploads/avatar/'.'thumb_'.$data['user']['avatar']);
+					}	
+				
+					$data['messages']['thumb_upload_success'] = array('class' => 'success', 'title'=>'Mini resim oluşturuldu.');
+					//update_user($data['user_id'], array('avatar'=>$handle_thumb->file_dst_name));
+				} 
+				else 
+				{
+					$data['formError'] = $handle_thumb->error;
+				}
+			}
+			
+			
+			$handle_thumb = new upload($_FILES['avatar']); 
+			if ($handle_thumb->uploaded) 
+			{
+				$handle_thumb->file_new_name_body 	 = 'thumb_height_'.$handle->file_dst_name_body;
+				$handle_thumb->image_resize          = true;
+				$handle_thumb->image_ratio_crop      = true;
+				$handle_thumb->image_x               = 50;
+				$handle_thumb->image_y               = 100;
+				$handle_thumb->file_max_size 		 = (2048 * 1000); // 1KB
+				$handle_thumb->image_convert = 'jpg';
+				
+				$handle_thumb->process('./uploads/avatar/');
+				if($handle_thumb->processed) 
+				{ 
+					if($data['user']['avatar'] != 'avatar.png')
+					{
+						unlink('./uploads/avatar/'.'thumb_height_'.$data['user']['avatar']);
+					}	
+				
+					$data['messages']['thumb_upload_success'] = array('class' => 'success', 'title'=>'Mini resim oluşturuldu.');
+					//update_user($data['user_id'], array('avatar'=>$handle_thumb->file_dst_name));
+				} 
+				else 
+				{
+					$data['formError'] = $handle_thumb->error;
+				}
+			}
+			
+			
+			
+			$handle_thumb = new upload($_FILES['avatar']); 
+			if ($handle_thumb->uploaded) 
+			{
+				$handle_thumb->file_new_name_body 	 = 'thumb_width_'.$handle->file_dst_name_body;
+				$handle_thumb->image_resize          = true;
+				$handle_thumb->image_ratio_crop      = true;
+				$handle_thumb->image_x               = 100;
+				$handle_thumb->image_y               = 50;
+				$handle_thumb->file_max_size 		 = (2048 * 1000); // 1KB
+				$handle_thumb->image_convert = 'jpg';
+				
+				$handle_thumb->process('./uploads/avatar/');
+				if($handle_thumb->processed) 
+				{ 
+					if($data['user']['avatar'] != 'avatar.png')
+					{
+						unlink('./uploads/avatar/'.'thumb_width_'.$data['user']['avatar']);
+					}	
+				
+					$data['messages']['thumb_upload_success'] = array('class' => 'success', 'title'=>'Mini resim oluşturuldu.');
+					//update_user($data['user_id'], array('avatar'=>$handle_thumb->file_dst_name));
+				} 
+				else 
+				{
+					$data['formError'] = $handle_thumb->error;
 				}
 			}
 		}
@@ -200,22 +305,32 @@ class User extends CI_Controller {
 
 
 
+/* ========================================================================
+	 MESSAGEBOX
+	 bu satırdan sonra mesaj kutusu gösterimleri ve yeni mesaj gibi çeşitli fonksiyonlar başlamaktadır
+* ====================================================================== */
+
+
 	/* ========================================================================
 	 * MESSAGEBOX
 
 		@author : Mustafa TANRIVERDI
 		@E-mail : thetanriverdi@gmail.com
+		@date   : 12 May, 2014
 
 		Buradaki fonksiyonlar mesaj kutusu ile alakalıdır. Mesaj gönderebilir, alabilirsiniz.
 	 * ===================================================================== */
 
-	public function new_message($receiver_user_id)
+	public function new_message($receiver_user_id='')
 	{
 		// meta title
 		$data['meta_title'] = 'Yeni Mesaj';
 
-		$data['receiver_user'] = get_user($receiver_user_id);
+		/* eger kullanici ID var ise profil sayfasindan gonderilmistir ve kullanici secimi otomatik yapilacaktir */
+		if($receiver_user_id==''){}
+		else{ $data['receiver_user'] = get_user($receiver_user_id);}
 
+		/* yeni mesaj gonderme islemi burada basliyor */
 		if(isset($_POST['new_message']) and is_log())
 		{
 			$this->form_validation->set_rules('receiver_user_id', 'Alıcı', 'required|integer');
@@ -233,11 +348,12 @@ class User extends CI_Controller {
 				$message['title'] = $this->input->post('title');
 				$message['content'] = $this->input->post('content');
 
-				$message_id = add_message($message);
+				$message_id = add_messagebox($message);
 
 				if($message_id > 0)
 				{
 					$data['messages']['send_message'] = array('class' => 'success', 'title'=>'Yeni mesaj gönderildi.');
+					redirect(site_url('user/inbox/'.$message_id));
 				}
 				else
 				{
@@ -256,6 +372,7 @@ class User extends CI_Controller {
 
 		@author : Mustafa TANRIVERDI
 		@E-mail : thetanriverdi@gmail.com
+		@date	: 12 May, 2014
 
 		Mesaj gelen kutusunu gösterir aynı zamanda mesaj kutusunun ana yönetim bölümüdür.
 	* ===================================================================== */
@@ -264,9 +381,213 @@ class User extends CI_Controller {
 		if($message_id == '')
 		{
 			// meta title
-			$data['meta_title'] = 'Gelen Kutusu';
+			$data['meta_title'] = 'Mesaj Kutusu';
 
 			$this->template->view('user/messagebox/inbox', $data);
+		}
+		else
+		{
+			# mesaj silme islemi
+			if(isset($_GET['status']))
+			{
+				$data['message'] = get_message(array('id'=>$message_id));
+				$status = $_GET['status'];
+				
+				if($data['message']['sender_user_id'] == get_the_current_user('id'))
+				{
+					$this->db->where('id', $message_id);
+					$this->db->update('messagebox', array('delete_sender'=>$status));
+					
+					$this->db->where('messagebox_id', $message_id);
+					$this->db->where('sender_user_id', get_the_current_user('id'));
+					$this->db->update('messagebox', array('delete_sender'=>$status));
+					
+					$this->db->where('messagebox_id', $message_id);
+					$this->db->where('receiver_user_id', get_the_current_user('id'));
+					$this->db->update('messagebox', array('delete_receiver'=>$status));
+				}
+				else
+				{
+					$this->db->where('id', $message_id);
+					$this->db->update('messagebox', array('delete_receiver'=>$status));
+					
+					$this->db->where('messagebox_id', $message_id);
+					$this->db->where('sender_user_id', get_the_current_user('id'));
+					$this->db->update('messagebox', array('delete_sender'=>$status));
+					
+					$this->db->where('messagebox_id', $message_id);
+					$this->db->where('receiver_user_id', get_the_current_user('id'));
+					$this->db->update('messagebox', array('delete_sender'=>$status));
+				}
+			}
+				
+			
+			
+			$data['message'] = get_message(array('id'=>$message_id));
+			if($data['message'])
+			{
+				// meta title
+				$data['meta_title'] = $data['message']['title'];
+
+
+				if(isset($_POST['reply_message']))
+				{
+					$this->form_validation->set_rules('content', 'Mesaj', 'required|min_length[2]');
+
+					if($this->form_validation->run() == FALSE)
+					{
+						$data['formError'] = validation_errors();
+					}
+					else
+					{
+						if(get_the_current_user('id') == $data['message']['sender_user_id'])
+						{
+							$reply_message['sender_user_id'] = get_the_current_user('id');
+							$reply_message['receiver_user_id'] = $data['message']['receiver_user_id'];
+						}
+						else
+						{
+							$reply_message['sender_user_id'] = get_the_current_user('id');
+							$reply_message['receiver_user_id'] = $data['message']['sender_user_id'];
+						}
+
+						$reply_message['content'] = $this->input->post('content');
+						$reply_message['messagebox_id'] = $data['message']['id'];
+
+						if(add_messagebox($reply_message))
+						{
+							$data['messages']['send_message'] = array('class' => 'success', 'title'=>'Yeni mesaj gönderildi.');
+							redirect(site_url('user/inbox/'.$reply_message['messagebox_id']));
+						}
+						else
+						{
+							$data['messages']['error_message'] = array('class' => 'danger', 'title'=>'Bilinmeyen bir hata!', 'Mesaj gönderilemedi');
+						}
+					}
+					$data['message'] = get_message(array('id'=>$message_id));
+				}
+
+			}
+			else
+			{
+				// meta title
+				$data['meta_title'] = 'Mesaj ID Bulunamadı';
+				$data['error_404'] = 'Mesaj id bulunamadı';
+			}
+
+
+			$this->template->view('user/messagebox/inbox_view', $data);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+/* ========================================================================
+	 GÖREV YÖNETİCİSİ
+	 bu satırdan sonra görev yönetici fonksiyonları başlamaktadır.
+* ====================================================================== */
+
+
+	 
+	/**
+	* new_task()
+	*
+	* @author	: Mustafa TANRIVERDI
+	* @email	: thetanriverdi@gmail.com
+	* @website  : www.tilpark.com
+	*
+	* Yeni görev ataması için kullanılan kontrol fonksiyonları
+	*/
+
+	public function new_task($receiver_user_id='')
+	{
+		// meta title
+		$data['meta_title'] = 'Yeni Görev';
+
+		/* eger kullanici ID var ise profil sayfasindan gonderilmistir ve kullanici secimi otomatik yapilacaktir */
+		if($receiver_user_id==''){}
+		else{ $data['receiver_user'] = get_user($receiver_user_id);}
+
+		/* yeni mesaj gonderme islemi burada basliyor */
+		if(isset($_POST['new']) and is_log())
+		{
+			$this->form_validation->set_rules('receiver_user_id', 'Alıcı', 'required|integer');
+			$this->form_validation->set_rules('title', 'Mesaj Başlığı', 'required|min_length[3]|max_length[100]');
+			$this->form_validation->set_rules('content', 'Mesaj Konusu', 'required|min_length[3]');
+			$this->form_validation->set_rules('date_start', 'Başlangıç Tarihi', 'required');
+			$this->form_validation->set_rules('date_end', 'Bitirme Tarihi', 'required');
+
+			if($this->form_validation->run() == FALSE)
+			{
+				$data['formError'] = validation_errors();
+			}
+			else
+			{
+				$message['type'] = 'task';
+				$message['sender_user_id'] = get_the_current_user('id');
+				$message['receiver_user_id'] = $this->input->post('receiver_user_id');
+				$message['title'] = $this->input->post('title');
+				$message['content'] = $this->input->post('content');
+				$message['date_start'] = $this->input->post('date_start');
+				$message['date_end'] = $this->input->post('date_end');
+				$message['importance'] = $this->input->post('importance');
+				
+
+				$message_id = add_messagebox($message);
+
+				if($message_id > 0)
+				{
+					$data['messages']['send_message'] = array('class' => 'success', 'title'=>'Yeni mesaj gönderildi.');
+					redirect(site_url('user/task/'.$message_id));
+				}
+				else
+				{
+					$data['messages']['error_message'] = array('class' => 'danger', 'title'=>'Bilinmeyen bir hata oluştu.');
+				}
+			}
+		}
+
+		$this->template->view('user/task/new', $data);
+	}
+	
+	
+	
+	
+	
+	/**
+	* task()
+	*
+	* @author	: Mustafa TANRIVERDI
+	* @email	: thetanriverdi@gmail.com
+	* @website  : www.tilpark.com
+	*
+	* Gelen/giden görevleri görüntülemek için kullanılır
+	*/
+	
+	public function task($message_id='')
+	{
+		if($message_id == '')
+		{
+			// meta title
+			$data['meta_title'] = 'Görev Yöneticisi';
+
+			$this->template->view('user/task/inbox', $data);
 		}
 		else
 		{
@@ -301,15 +622,13 @@ class User extends CI_Controller {
 						$reply_message['content'] = $this->input->post('content');
 						$reply_message['messagebox_id'] = $data['message']['id'];
 
-						// eger mesaji gönderene, mesaj alicisi tarafindan bir mesaj geliyorsa bu mesajin gelen kutusu klasorunde gorunmesi gerekiyor. (biraz karisik bir olay)
-						if($data['message']['sender_user_id'] == $reply_message['receiver_user_id'])
-						{
-							$reply_message['inbox_user_id'] = $data['message']['sender_user_id'];
-						}
-
-						if(add_message($reply_message))
+						$reply_message['type'] = 'task';
+						$reply_message['date_start'] 	= $data['message']['date_start'];
+						$reply_message['date_end'] 		= $data['message']['date_end'];
+						if(add_messagebox($reply_message))
 						{
 							$data['messages']['send_message'] = array('class' => 'success', 'title'=>'Yeni mesaj gönderildi.');
+							redirect(site_url('user/task/'.$reply_message['messagebox_id']));
 						}
 						else
 						{
@@ -328,7 +647,7 @@ class User extends CI_Controller {
 			}
 
 
-			$this->template->view('user/messagebox/inbox_view', $data);
+			$this->template->view('user/task/view', $data);
 		}
 	}
 
@@ -396,28 +715,7 @@ class User extends CI_Controller {
 	
 	
 
-	
-	function bulk_message()
-	{
-		$this->template->view('user/messagebox/bulk_view');	
-	}
-	
-	
-	function new_task()
-	{
-		$this->template->view('user/task/new_task_view');	
-	}
-	
-	function task($task_id='')
-	{
-		$data['task_id'] = $task_id;
-		$this->template->view('user/task/task_view',$data);	
-	}
-	
-	function outbound_tasks()
-	{
-		$this->template->view('user/task/outbound_task_view');	
-	}
+
 	
 	
 

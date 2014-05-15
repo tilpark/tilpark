@@ -23,10 +23,10 @@
     <li class="dropdown">
         <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Seçenekler <b class="caret"></b></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-          <li><a href="<?php echo site_url('user/new_message'); ?>/<?php echo $user['id']; ?>"><i class="fa fa-envelope-o"></i> Yeni Mesaj Gönder</a></li>
-          <li><a href="#dropdown2" tabindex="-1" data-toggle="tab">Yeni Görev Ata</a></li>
+          <li><a href="<?php echo site_url('user/new_message/'.$user['id']); ?>"><i class="fa fa-envelope-o"></i> Yeni Mesaj Gönder</a></li>
+          <li><a href="<?php echo site_url('user/new_task/'.$user['id']); ?>"><i class="fa fa-tasks"></i> Yeni Görev Ata</a></li>
         </ul>
-      </li>
+    </li>
 </ul> <!-- /.nav .nav-tabs -->
 
 <div id="myTabContent" class="tab-content">

@@ -114,181 +114,6 @@ control_page();
 
 
 
-<?php $mbox_messages = get_messagebox(array('type'=>'message', 'order_by'=>'read ASC, updated_date DESC', 'limit'=>'5')); ?>
-<div class="list_info_hide hide">
-	<ul class="list_mbox">
-	<?php foreach($mbox_messages as $message): ?>
-	<li class="<?php if($message['read'] == 0): ?>new_mess<?php endif; ?>">
-	  <a href="<?php echo site_url('user/inbox/'.$message['id']); ?>">
-	    <div class="row no-space">
-	      <div class="col-md-2">
-	        <?php if($message['read_id'] == get_the_current_user('id') and $message['inbox_user_id'] == get_the_current_user('id')): ?>
-	          <img src="<?php echo base_url('uploads/avatar/'.$users[$message['receiver_user_id']]['avatar']); ?>" class="img-responsive" />
-	        <?php else: ?>
-	          <img src="<?php echo base_url('uploads/avatar/'.$users[$message['sender_user_id']]['avatar']); ?>" class="img-responsive" />
-	        <?php endif; ?>                    
-	      </div> <!-- /.col-md-2 -->
-	      <div class="col-md-10">
-	        <div class="name"><?php echo $users[$message['sender_user_id']]['name_surname']; ?></div>
-	        <div class="description"><?php echo $message['title']; ?></div>
-	        <?php $time_late = time_late($message['updated_date']); ?>
-	        <?php if($message['read'] == '0' and $message['read_id'] == get_the_current_user('id')): ?>
-	            <span class="information label label-danger fs-11"><?php echo $time_late; ?></span>
-	        <?php else: ?>
-	            <span class="information label label-default fs-11">bugün</span>
-	        <?php endif; ?>
-	      </div> <!-- /.col-md-10 -->
-	    </div> <!-- /.row -->
-	  </a> <!-- /.opacity -->
-	</li>
-	<?php endforeach; ?>
-	</ul>
-</div> <!-- /.list_task -->
-<script>
-	$(document).ready(function(e) { 
-		$('div.list_info').html($('div.list_info_hide').html()); $('div.list_info').animate({'opacity':'0','top':'-300px'}, 0);
-		
-		$('.btn_mbox_info').click(function() {
-			if($(this).attr('data-show') == 'open')
-			{	
-				$(this).removeClass('active');
-				$(this).attr('data-show', 'close');
-				$('div.list_info').animate({'opacity':'0','top':'-300px'}, 0);
-			}
-			else
-			{
-				$('.mbox').animate({'opacity':'0','top':'-300px'}, 300);
-				$('.btn_mbox').removeClass('active');
-				$('.btn_mbox').attr('data-show', 'close');
-
-				$(this).addClass('active');
-				$(this).attr('data-show', 'open');
-				$('div.list_info').animate({'opacity':'1','top':'48px'}, 300);
-			}
-			
-		});
-	});
-</script>
-
-
-
-
-<?php $mbox_messages = get_messagebox(array('type'=>'message', 'order_by'=>'read ASC, updated_date DESC', 'limit'=>'5')); ?>
-<div class="list_mess_hide hide">
-	<ul class="list_mbox">
-	<?php foreach($mbox_messages as $message): ?>
-	<li class="<?php if($message['read'] == 0): ?>new_mess<?php endif; ?>">
-	  <a href="<?php echo site_url('user/inbox/'.$message['id']); ?>">
-	    <div class="row no-space">
-	      <div class="col-md-2">
-	        <?php if($message['read_id'] == get_the_current_user('id') and $message['inbox_user_id'] == get_the_current_user('id')): ?>
-	          <img src="<?php echo base_url('uploads/avatar/'.$users[$message['receiver_user_id']]['avatar']); ?>" class="img-responsive" />
-	        <?php else: ?>
-	          <img src="<?php echo base_url('uploads/avatar/'.$users[$message['sender_user_id']]['avatar']); ?>" class="img-responsive" />
-	        <?php endif; ?>                    
-	      </div> <!-- /.col-md-2 -->
-	      <div class="col-md-10">
-	        <div class="name"><?php echo $users[$message['sender_user_id']]['name_surname']; ?></div>
-	        <div class="description"><?php echo $message['title']; ?></div>
-	        <?php $time_late = time_late($message['updated_date']); ?>
-	        <?php if($message['read'] == '0' and $message['read_id'] == get_the_current_user('id')): ?>
-	            <span class="information label label-danger fs-11"><?php echo $time_late; ?></span>
-	        <?php else: ?>
-	            <span class="information label label-default fs-11">bugün</span>
-	        <?php endif; ?>
-	      </div> <!-- /.col-md-10 -->
-	    </div> <!-- /.row -->
-	  </a> <!-- /.opacity -->
-	</li>
-	<?php endforeach; ?>
-	</ul>
-</div> <!-- /.list_mess -->
-<script>
-	$(document).ready(function(e) { 
-		$('div.list_mess').html($('div.list_mess_hide').html()); $('div.list_mess').animate({'opacity':'0','top':'-300px'}, 0);
-		
-		$('.btn_mbox_mess').click(function() {
-			if($(this).attr('data-show') == 'open')
-			{	
-				$(this).removeClass('active');
-				$(this).attr('data-show', 'close');
-				$('div.list_mess').animate({'opacity':'0','top':'-300px'}, 0);
-			}
-			else
-			{
-				$('.mbox').animate({'opacity':'0','top':'-300px'}, 300);
-				$('.btn_mbox').removeClass('active');
-				$('.btn_mbox').attr('data-show', 'close');
-
-				$(this).addClass('active');
-				$(this).attr('data-show', 'open');
-				$('div.list_mess').animate({'opacity':'1','top':'48px'}, 300);
-			}
-		});
-	});
-</script>
-
-
-
-
-
-
-<?php $mbox_messages = get_messagebox(array('type'=>'message', 'order_by'=>'read ASC, updated_date DESC', 'limit'=>'5')); ?>
-<div class="list_task_hide hide">
-	<ul class="list_mbox">
-	<?php foreach($mbox_messages as $message): ?>
-	<li class="<?php if($message['read'] == 0): ?>new_mess<?php endif; ?>">
-	  <a href="<?php echo site_url('user/inbox/'.$message['id']); ?>">
-	    <div class="row no-space">
-	      <div class="col-md-2">
-	        <?php if($message['read_id'] == get_the_current_user('id') and $message['inbox_user_id'] == get_the_current_user('id')): ?>
-	          <img src="<?php echo base_url('uploads/avatar/'.$users[$message['receiver_user_id']]['avatar']); ?>" class="img-responsive" />
-	        <?php else: ?>
-	          <img src="<?php echo base_url('uploads/avatar/'.$users[$message['sender_user_id']]['avatar']); ?>" class="img-responsive" />
-	        <?php endif; ?>                    
-	      </div> <!-- /.col-md-2 -->
-	      <div class="col-md-10">
-	        <div class="name"><?php echo $users[$message['sender_user_id']]['name_surname']; ?></div>
-	        <div class="description"><?php echo $message['title']; ?></div>
-	        <?php $time_late = time_late($message['updated_date']); ?>
-	        <?php if($message['read'] == '0' and $message['read_id'] == get_the_current_user('id')): ?>
-	            <span class="information label label-danger fs-11"><?php echo $time_late; ?></span>
-	        <?php else: ?>
-	            <span class="information label label-default fs-11">bugün</span>
-	        <?php endif; ?>
-	      </div> <!-- /.col-md-10 -->
-	    </div> <!-- /.row -->
-	  </a> <!-- /.opacity -->
-	</li>
-	<?php endforeach; ?>
-	</ul>
-</div> <!-- /.list_task -->
-<script>
-	$(document).ready(function(e) { 
-		$('div.list_task').html($('div.list_task_hide').html()); $('div.list_task').animate({'opacity':'0','top':'-300px'}, 0);
-		
-		$('.btn_mbox_task').click(function() {
-			if($(this).attr('data-show') == 'open')
-			{	
-				$(this).removeClass('active');
-				$(this).attr('data-show', 'close');
-				$('div.list_task').animate({'opacity':'0','top':'-300px'}, 0);
-			}
-			else
-			{
-				$('.mbox').animate({'opacity':'0','top':'-300px'}, 300);
-				$('.btn_mbox').removeClass('active');
-				$('.btn_mbox').attr('data-show', 'close');
-
-				$(this).addClass('active');
-				$(this).attr('data-show', 'open');
-				$('div.list_task').animate({'opacity':'1','top':'48px'}, 300);
-			}
-			
-		});
-	});
-</script>
-
 
 
 
@@ -313,6 +138,188 @@ control_page();
 	});
 	</script>
 <?php endif; ?>
+
+
+
+
+
+<?php $mbox_messages = get_messagebox(array('type'=>'message', 'order_by'=>'read ASC, date_update DESC', 'limit'=>'1000')); ?>
+<div class="list_mess_hide hide">
+	<?php if($mbox_messages): ?>
+	<div style="padding:10px 10px 0 10px;">
+    	<?php
+		if($count_mess > 0){ $mbox_sub_text = '<span class="text-muted">Okunmamış '.$count_mess.' adet mesaj var.</span>'; }else { $mbox_sub_text = '<span class="text-muted">Tebrikler! tüm mesajları okudun.</span>'; }
+		?>
+		<?php alertbox('alert-blank', '<i class="fa fa-envelope-o text-muted"></i> <span class="text-muted">Mesaj Kutusu</span>', $mbox_sub_text, false); ?>
+    </div>
+	<ul class="list_mbox">
+	<?php $is_message = array(); ?>
+	<?php $i = 0; ?>
+	<?php foreach($mbox_messages as $message): ?>
+		<?php if($i < 10): ?>
+			<?php
+				if($message['messagebox_id'] > 0){ $message['id'] = $message['messagebox_id']; }
+				if($message['title'] == ''){ $message['title'] = mb_substr(strip_tags($message['content']),0,30,'utf-8'); }
+			?>
+			<?php if(isset($is_message[$message['id']])): ?>
+			<?php else: ?>
+				<?php $is_message[$message['id']] = true; ?>
+				<li class="<?php if($message['read'] == 0): ?>new_mess<?php endif; ?>">
+					<a href="<?php echo site_url('user/inbox/'.$message['id']); ?>">
+					    <div class="row no-space">
+					      <div class="col-md-2">
+					          <img src="<?php echo base_url('uploads/avatar/thumb_'.$users[$message['sender_user_id']]['avatar']); ?>" class="img-responsive img-thumbnail" />                  
+					      </div> <!-- /.col-md-2 -->
+					      <div class="col-md-10">
+					        <div class="name"><?php echo $users[$message['sender_user_id']]['name_surname']; ?></div>
+					        <div class="description"><?php echo mb_substr($message['title'],0,30,'utf-8'); ?><?php if(strlen($message['title']) > 30):?>...<?php endif; ?></div>
+					        <?php $time_late = time_late($message['date_update']); ?>
+					        <?php if($message['read'] == '0' and $message['read_id'] == get_the_current_user('id')): ?>
+					            <span class="information label label-danger fs-11"><?php echo $time_late; ?></span>
+					        <?php else: ?>
+					            <span class="information label label-default fs-11"><?php echo $time_late; ?></span>
+					        <?php endif; ?>
+					      </div> <!-- /.col-md-10 -->
+					    </div> <!-- /.row -->
+					</a> <!-- /.opacity -->
+				</li>
+				<?php $i++; ?>
+			<?php endif; ?>
+		<?php else: ?>
+
+		<?php endif; ?>
+	<?php endforeach; ?>
+    <?php else: ?>
+    	<div style="padding:10px;">
+    		<?php alertbox('alert-danger', '<i class="fa fa-envelope-o"></i> Gelen kutusu boş!', 'Gelen kutusunda mesaj bulunamadı.', false); ?>
+        </div>
+    <?php endif; ?>
+	</ul>
+</div> <!-- /.list_mess -->
+<script>
+	$(document).ready(function(e) { 
+		$('div.list_mess').html($('div.list_mess_hide').html()); $('div.mbox').animate({'opacity':'1', 'right':'-348px'}, 0);
+		
+		$('.btn_mbox_mess').click(function() {
+			if($(this).attr('data-show') == 'open')
+			{	
+				$(this).removeClass('active');
+				$(this).attr('data-show', 'close');
+				$('div.list_mess').animate({'opacity':'1', 'right':'-348px'}, 100);
+			}
+			else
+			{
+				$('.mbox').animate({'opacity':'1', 'right':'-348px'}, 100);
+				$('.btn_mbox').removeClass('active');
+				$('.btn_mbox').attr('data-show', 'close');
+
+				$(this).addClass('active');
+				$(this).attr('data-show', 'open');
+				$('div.list_mess').animate({'opacity':'1', 'right':'0px'}, 100);
+			}
+		});
+	});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<?php $mbox_task = get_messagebox(array('type'=>'task', 'order_by'=>'read ASC, date_update DESC', 'limit'=>'1000')); ?>
+<div class="list_task_hide hide">
+	<?php if($mbox_task): ?>
+	<div style="padding:10px 10px 0 10px;">
+    	<?php
+		if($count_task > 0){ $mbox_sub_text = '<span class="text-muted">Yeni '.$count_task.' adet görev var.</span>'; }else { $mbox_sub_text = '<span class="text-muted">Tebrikler! tüm görevleri okudun.</span>'; }
+		?>
+		<?php alertbox('alert-blank', '<i class="fa fa-tasks text-muted"></i> <span class="text-muted">Görev Kutusu</span>', $mbox_sub_text, false); ?>
+    </div>
+	<ul class="list_mbox">
+	<?php $is_message = array(); ?>
+	<?php $i = 0; ?>
+	<?php foreach($mbox_task as $message): ?>
+		<?php if($i < 10): ?>
+			<?php
+				if($message['messagebox_id'] > 0){ $message['id'] = $message['messagebox_id']; }
+				if($message['title'] == ''){ $message['title'] = mb_substr(strip_tags($message['content']),0,30,'utf-8'); }
+			?>
+			<?php if(isset($is_message[$message['id']])): ?>
+			<?php else: ?>
+				<?php $is_message[$message['id']] = true; ?>
+				<li class="<?php if($message['read'] == 0): ?>new_mess<?php endif; ?>">
+					<a href="<?php echo site_url('user/task/'.$message['id']); ?>">
+					    <div class="row no-space">
+					      <div class="col-md-2">
+					          <img src="<?php echo base_url('uploads/avatar/thumb_'.$users[$message['sender_user_id']]['avatar']); ?>" class="img-responsive img-thumbnail" />                  
+					      </div> <!-- /.col-md-2 -->
+					      <div class="col-md-10">
+					        <div class="name"><?php echo $users[$message['sender_user_id']]['name_surname']; ?></div>
+					        <div class="description"><?php echo mb_substr($message['title'],0,30,'utf-8'); ?><?php if(strlen($message['title']) > 30):?>...<?php endif; ?></div>
+					        <?php $time_late = time_late($message['date_update']); ?>
+					        <?php if($message['read'] == '0' and $message['read_id'] == get_the_current_user('id')): ?>
+					            <span class="information label label-danger fs-11"><?php echo $time_late; ?></span>
+					        <?php else: ?>
+					            <span class="information label label-default fs-11"><?php echo $time_late; ?></span>
+					        <?php endif; ?>
+					      </div> <!-- /.col-md-10 -->
+					    </div> <!-- /.row -->
+					</a> <!-- /.opacity -->
+				</li>
+				<?php $i++; ?>
+			<?php endif; ?>
+		<?php else: ?>
+
+		<?php endif; ?>
+	<?php endforeach; ?>
+	</ul>
+    <?php else: ?>
+    	<div style="padding:10px;">
+    		<?php alertbox('alert-danger', '<i class="fa fa-tasks"></i> Görev kutusu boş!', 'Gelen görev kutusunda görev bulunamadı.', false); ?>
+        </div>
+    <?php endif; ?>
+</div> <!-- /.list_mess -->
+<script>
+	$(document).ready(function(e) { 
+		$('div.list_task').html($('div.list_task_hide').html()); $('div.mbox').animate({'opacity':'1', 'right':'-348px'}, 0);
+		
+		$('.btn_mbox_task').click(function() {
+			if($(this).attr('data-show') == 'open')
+			{	
+				$(this).removeClass('active');
+				$(this).attr('data-show', 'close');
+				$('div.list_task').animate({'opacity':'1', 'right':'-348px'}, 100);
+			}
+			else
+			{
+				$('.mbox').animate({'opacity':'1', 'right':'-348px'}, 100);
+				$('.btn_mbox').removeClass('active');
+				$('.btn_mbox').attr('data-show', 'close');
+
+				$(this).addClass('active');
+				$(this).attr('data-show', 'open');
+				$('div.list_task').animate({'opacity':'1', 'right':'0px'}, 100);
+			}
+		});
+	});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
 
 <script>
 $(document).ready(function(e) {
