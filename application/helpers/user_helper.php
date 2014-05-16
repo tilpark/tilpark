@@ -176,15 +176,31 @@ function get_user_list()
 *
 * Şu anda aktif olan kullanının "süperadmin" veya "admin" olduğunu denetler. Eğer admin yetkisine sahip ise "true" döner. aksi durumda faslse döner.
 */
-function is_admin()
+function is_admin($user_id='')
 {
-	if(get_the_current_user('role') < 3)
+	if($user_id == '')
 	{
-		return true;
+		if(get_the_current_user('role') < 3)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	else
 	{
-		return false;
+		$user = get_user($user_id);
+		
+		if($user['role'] < 3)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
 
