@@ -1,27 +1,8 @@
-<ol class="breadcrumb">
-  <li><a href="<?php echo site_url(); ?>">Yönetim Paneli</a></li>
-  <li><a href="<?php echo site_url('account'); ?>">Hesap Yönetimi</a></li>
-  <li class="active">Hesap Listesi</li>
-</ol>
-
-<div class="row">
-<div class="col-md-12">
 
 
-<div class="form-group">
-    <div class="input-prepend input-group">
-        <span class="input-group-addon"><span class="fa fa-search"></span></span>
-        <input type="text" id="q" name="q" class="form-control ff-1 number input-lg" placeholder="hesap kartı arama..." value="">
-    </div>
-</div> <!-- /.form-group -->
-<script>
-$('#q').keyup(function() {
-	$.get( "lists_ajax/"+$(this).val(), function( data ) {
-		$(".account_list").html(data);
-	});
-});
-</script>
-<div class="account_list">
+
+
+
     <table class="table table-bordered table-hover table-condensed">
         <thead>
             <tr>
@@ -47,18 +28,4 @@ $('#q').keyup(function() {
         </tbody>
     </table>
     
-    <div class="text-center">
-	   <?php echo $pagination; ?>
-    </div> <!-- /.text-center -->
 
-    
-</div> <!-- /.account_list -->
-
-
-
-
-
-</div> <!-- /.col-md-12 -->
-</div> <!-- /.row -->
-
-<div class="h20"></div>

@@ -150,7 +150,7 @@ control_page();
     	<?php
 		if($count_mess > 0){ $mbox_sub_text = '<span class="text-muted">Okunmamış '.$count_mess.' adet mesaj var.</span>'; }else { $mbox_sub_text = '<span class="text-muted">Tebrikler! tüm mesajları okudun.</span>'; }
 		?>
-		<?php alertbox('alert-blank', '<i class="fa fa-envelope-o text-muted"></i> <span class="text-muted">Mesaj Kutusu</span>', $mbox_sub_text, false); ?>
+		<?php alertbox('alert-blank', '<i class="fa fa-envelope text-muted"></i> <span class="text-muted">Mesaj Kutusu</span>', $mbox_sub_text, false); ?>
     </div>
 	<ul class="list_mbox">
 	<?php $is_message = array(); ?>
@@ -321,10 +321,8 @@ control_page();
 <div class="list_noti_hide hide">
 	<?php if($mbox_task): ?>
 	<div style="padding:10px 10px 0 10px;">
-    	<?php
-		if($count_task > 0){ $mbox_sub_text = '<span class="text-muted">Yeni '.$count_task.' adet görev var.</span>'; }else { $mbox_sub_text = '<span class="text-muted">Tebrikler! tüm görevleri okudun.</span>'; }
-		?>
-		<?php alertbox('alert-blank', '<i class="fa fa-globe text-muted"></i> <span class="text-muted">Görev Kutusu</span>', $mbox_sub_text, false); ?>
+    	<?php if($count_noti > 0){ $mbox_sub_text = '<span class="text-muted">Yeni '.$count_noti.' adet bildirim var.</span>'; }else { $mbox_sub_text = '<span class="text-muted">Tebrikler! tüm bildirimleri okudun.</span>'; } ?>
+		<?php alertbox('alert-blank', '<i class="fa fa-globe text-muted"></i> <span class="text-muted">Bildirim Kutusu</span>', $mbox_sub_text, false); ?>
     </div>
 	<ul class="list_mbox">
 	<?php $is_message = array(); ?>
@@ -342,7 +340,7 @@ control_page();
 					<a href="<?php echo site_url('user/notification/'.$message['id']); ?>">
 					    <div class="row no-space">
 					      <div class="col-md-12">
-					        <div class="description"><?php echo mb_substr($message['title'],0,30,'utf-8'); ?><?php if(strlen($message['title']) > 30):?>...<?php endif; ?></div>
+					        <div class="description"><?php echo mb_substr($message['title'],0,40,'utf-8'); ?><?php if(strlen($message['title']) > 40):?>...<?php endif; ?></div>
 					        <?php $time_late = time_late($message['date_update']); ?>
 					        <?php if($message['read'] == '0' and $message['read_id'] == get_the_current_user('id')): ?>
 					            <span class="information label label-danger fs-11">yeni</span>
@@ -362,7 +360,7 @@ control_page();
 	</ul>
     <?php else: ?>
     	<div style="padding:10px;">
-    		<?php alertbox('alert-danger', '<i class="fa fa-globe"></i> Gelen bildirim bulunamadı!', 'Gelen görev kutusunda görev bulunamadı.', false); ?>
+    		<?php alertbox('alert-danger', '<i class="fa fa-globe"></i> Gelen bildirim bulunamadı!', 'Bildirim kutusunda gösterilecek bildirim bulunamadı.', false); ?>
         </div>
     <?php endif; ?>
 </div> <!-- /.list_mess -->
@@ -418,12 +416,12 @@ function rasgeleharf($kackarakter)
 	$char="abcdefghijklmnoprstuwvyzqxABCDEFGHIJKLMNOPRSTUVWYZQX1234567890"; /// İzin verilen karakterler ?
 	for ($k=1;$k<=$kackarakter;$k++)
 	{
-	$h=substr($char,mt_rand(0,strlen($char)-1),1);
-	$s.=$h;
+		$h=substr($char,mt_rand(0,strlen($char)-1),1);
+		$s.=$h;
 	}
 	return $s;
 }
-for($i=2; $i<1; $i++)
+for($i=0; $i<0; $i++)
 {
 	$data['code'] = rasgeleharf(50);
 	$data['name'] = rasgeleharf(50);
@@ -438,7 +436,7 @@ for($i=2; $i<1; $i++)
 	$this->db->insert('accounts', $data);
 }
 ?>
-<?php $birkisi = round(memory_get_usage() / 1024 ); ?>
+<?php $birkisi = round(memory_get_usage(true) / 1024 ); ?>
 
 <script>
 $('.1kisi').html('<?php echo $birkisi; ?>');

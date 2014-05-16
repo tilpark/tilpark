@@ -104,9 +104,71 @@ class Account extends CI_Controller {
 		$this->template->view('account/add', $data);
 	}
 	
-	public function lists()
+	public function lists($row=1)
 	{
-		$this->template->view('account/lists');	
+		// toplam kayit sayisini hesapla
+		$data['num_rows'] = $this->db->select('id')->get('accounts')->num_rows();
+		$overlenght = floor($data['num_rows'] / 20);
+		
+		$data['num_rows'] = $overlenght * 20;
+		
+		$this->load->library('pagination');
+		
+		
+		$config['base_url'] = site_url('account/lists/');
+		$config['total_rows'] = ($data['num_rows']);
+		$config['per_page'] = 20; 
+		$config['num_links'] = 5;
+		$config['use_page_numbers'] = TRUE;
+		$config['display_pages'] = TRUE;
+		
+		$config['full_tag_open'] = '<ul class="pagination">';
+		$config['full_tag_close'] = '</ul>';
+		
+		$config['first_link'] = 'İlk Sayfa';
+		$config['first_tag_open'] = '<li>';
+		$config['first_tag_close'] = '</li>';
+		
+		$config['last_link'] = 'Son Sayfa';
+		$config['last_tag_open'] = '<li>';
+		$config['last_tag_close'] = '</li>';
+		
+
+		$config['next_tag_open'] = '<li>';
+		$config['next_tag_close'] = '</li>';
+		
+		$config['prev_tag_open'] = '<li>';
+		$config['prev_tag_close'] = '</li>';
+		
+		$config['cur_tag_open'] = '<li class="disabled"><a href="javascript:;">';
+		$config['cur_tag_close'] = '</a></li>';
+		
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = '</li>';
+		
+		$this->pagination->initialize($config); 
+		
+		$data['pagination'] = $this->pagination->create_links();
+		if($row==1){$row = 0;}else {$row = $row * 20;}
+		
+		// gösterilecek kayitlari cekiyoruz
+			$this->db->limit(20,$row);
+			$data['accounts'] = $this->db->get('accounts')->result_array();
+			$this->template->view('account/lists',$data);	
+	}
+	
+	
+	public function lists_ajax($text)
+	{
+		$text = urldecode($text);
+		// gösterilecek kayitlari cekiyoruz
+		$this->db->like('code', $text);
+		$this->db->or_like('name', $text);
+		$this->db->or_like('name_surname', $text);
+		$this->db->limit(20);
+		$data['accounts'] = $this->db->get('accounts')->result_array();
+		echo $this->db->last_query();
+		$this->load->view('account/lists_ajax',$data);	
 	}
 	
 	

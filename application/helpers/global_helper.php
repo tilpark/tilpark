@@ -1,5 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+ini_set('memory_limit', '200M');
+
 // veritabanini tekrar yukle
 $ci =& get_instance();
 $ci->load->database();
@@ -280,6 +282,13 @@ function add_date_time($date, $number, $type)
 	{
 		return date("Y-m-d", mktime(0, 0, 0, $date[1], $date[2], $date[0]+$number));
 	}
+}
+
+
+
+function text_crop($text,$start,$end)
+{
+	return mb_substr($text,$start,$end,'utf-8');	
 }
 
 

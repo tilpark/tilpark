@@ -1,6 +1,3 @@
-<?php $accounts = get_account_list_for_array(); ?>
-
-
 <ol class="breadcrumb">
   <li><a href="<?php echo site_url(''); ?>"><?php lang('Dashboard'); ?></a></li>
   <li class="active">Form Yönetimi</li>

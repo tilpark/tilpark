@@ -755,6 +755,7 @@ class User extends CI_Controller {
 
 	public function notification($notificaiton_id='')
 	{
+		$this->db->where('type', 'noti');
 		$this->db->where('id', $notificaiton_id);
 		$query = $this->db->get('messagebox')->row_array();
 		if($query)
@@ -765,7 +766,6 @@ class User extends CI_Controller {
 			}
 			
 			redirect(site_url($query['content']));
-			
 		}
 		else
 		{
