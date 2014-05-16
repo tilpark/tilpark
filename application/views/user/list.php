@@ -26,7 +26,7 @@
             </td>
             <td><a href="<?php echo site_url('user/profile/'.$user['id']); ?>"><?php echo $user['email']; ?></a></td>
             <td><?php echo $user['name']; ?> <?php echo $user['surname']; ?></td>
-            <td><?php echo get_role_name($user['role']); ?></td>
+            <td><?php echo strtoupper(get_role_name($user['role'])); ?></td>
             <td><?php echo $user['gsm']; ?></td>
         </tr>
     <?php endforeach; ?>
