@@ -443,6 +443,9 @@ a.logo .subtext {
   height: 100%;
   right: 0px;
   min-width: 340px;
+  max-width: 340px;
+  width: 340px;
+  right: -340px;
   font-size: 12px;
   background-color: #fff;
   background-clip: padding-box;

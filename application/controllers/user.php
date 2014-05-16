@@ -736,6 +736,48 @@ class User extends CI_Controller {
 
 
 
+/* ========================================================================
+	 BİLDİRİM YÖNTETİCİSİ
+	 yeni gelen bildirimler buradan yönetilmektedir
+* ====================================================================== */
+
+
+	 
+	/**
+	* notification()
+	*
+	* @author	: Mustafa TANRIVERDI
+	* @email	: thetanriverdi@gmail.com
+	* @website  : www.tilpark.com
+	*
+	* Yeni bir bildirim okunmak istenildiği zaman buradaki kodlar çalışır :;
+	*/
+
+	public function notification($notificaiton_id='')
+	{
+		$this->db->where('id', $notificaiton_id);
+		$query = $this->db->get('messagebox')->row_array();
+		if($query)
+		{
+			if($query['read'] == 0)
+			{
+				$this->db->update('messagebox', array('read'=>'1', 'date_read'=>date('Y-m-d H:i:s')));
+			}
+			
+			redirect(site_url($query['content']));
+			
+		}
+		else
+		{
+			exit('error: id not found: 3947254');
+		}
+	}
+	
+
+
+
+
+
 
 
 

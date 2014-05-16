@@ -208,6 +208,75 @@ function is_admin($user_id='')
 
 
 /* ========================================================================
+	 BİLDİRİM YÖNTETİCİSİ
+	 yeni gelen bildirimler buradan yönetilmektedir
+* ====================================================================== */
+
+/**
+* add_notification()
+*
+* @author	: Mustafa TANRIVERDI
+* @email	: thetanriverdi@gmail.com
+* @website  : www.tilpark.com
+*
+* Yeni bildirim olusturur
+*/
+function add_notification($data)
+{
+	$ci=& get_instance();
+	$ci->db->insert('messagebox', $data);
+	return $ci->db->insert_id();
+}
+
+
+
+/**
+* notification_task()
+*
+* @author	: Mustafa TANRIVERDI
+* @email	: thetanriverdi@gmail.com
+* @website  : www.tilpark.com
+*
+* Eğer bir görev atanmış ve görev bitirme tarihi geçmiş ise bildirim oluşturur.
+*/
+function notification_task()
+{
+	$ci =& get_instance();
+	
+	$ci->db->where('status', '1');
+	$ci->db->where('type', 'task');
+	$ci->db->where('date_end <', date('Y-m-d H:i:s'));
+	$ci->db->where('messagebox_id', '0');
+	$ci->db->where('receiver_user_id', get_the_current_user('id'));
+	$ci->db->where('onoff', '0');
+	$query = $ci->db->get('messagebox')->result_array();
+	foreach($query as $q)
+	{	
+		$data['type'] = 'noti';
+		$data['receiver_user_id'] = get_the_current_user('id');
+		$data['title'] = 'Görev süresi geçti: '.$q['title'];
+		$data['content'] = 'user/task/'.$q['id'];
+		$data['read'] = '0';
+		$data['read_id'] = get_the_current_user('id');
+		
+		// bu bildirim daha onceden eklenmis mi?
+		$ci->db->where('messagebox_id', '0');
+		$ci->db->where('receiver_user_id', $data['receiver_user_id']);
+		$ci->db->where('content', $data['content']);
+		$is_notification = $ci->db->get('messagebox')->num_rows();
+		
+		if($is_notification == 0)
+		{
+			add_messagebox($data);
+		}
+	}
+}
+
+
+
+
+
+/* ========================================================================
  * MESSAGEBOX
 
 	@author : Mustafa TANRIVERDI

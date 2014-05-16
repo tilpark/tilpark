@@ -245,7 +245,7 @@ $(document).ready( function() {
             
             <div class="liner navbar-right hidden-sm hidden-xs"></div>
             <div class="btn-group navbar-right infoBtn hidden-sm hidden-xs">
-              <button type="button" class="btn btn_mbox btn_mbox_info"><i class="fa fa-globe"></i><div class="count_info"></div></button>
+              <button type="button" class="btn btn_mbox btn_mbox_noti"><i class="fa fa-globe"></i><div class="count_noti"></div></button>
               <button type="button" class="btn btn_mbox btn_mbox_mess"><i class="fa fa-envelope"></i><div class="count_mess"></div></button>
               <button type="button" class="btn btn_mbox btn_mbox_task"><i class="fa fa-tasks"></i><div class="count_task"></div></button>
             </div>
@@ -262,6 +262,7 @@ $(document).ready( function() {
 
 
 <div class="container bg">
+<div class="mbox list_noti"></div>
 <div class="mbox list_mess"></div>
 <div class="mbox list_task"></div>
 	<div class="row" style="margin-right:0px;">
@@ -485,3 +486,10 @@ $(document).ready(function(e) {
 <?php endif; ?>
 
 </div>
+
+
+
+
+<?php
+notification_task();
+?>

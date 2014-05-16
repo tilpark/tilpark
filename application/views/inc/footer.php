@@ -117,10 +117,10 @@ control_page();
 
 
 
-<?php $count_info = calc_message('info'); if($count_info > 0): ?>
+<?php $count_noti = calc_message('noti'); if($count_noti > 0): ?>
 	<script>
 	$(document).ready(function() {
-		$('.count_info').html('<div class="mess_count"><?php echo $count_info; ?></div>');
+		$('.count_noti').html('<div class="mess_count"><?php echo $count_noti; ?></div>');
 	});
 	</script>
 <?php endif; ?>
@@ -304,6 +304,88 @@ control_page();
 				$(this).addClass('active');
 				$(this).attr('data-show', 'open');
 				$('div.list_task').animate({'opacity':'1', 'right':'0px'}, 100);
+			}
+		});
+	});
+</script>
+
+
+
+
+
+
+
+
+
+<?php $mbox_task = get_messagebox(array('type'=>'noti', 'order_by'=>'read ASC, date_update DESC', 'limit'=>'1000')); ?>
+<div class="list_noti_hide hide">
+	<?php if($mbox_task): ?>
+	<div style="padding:10px 10px 0 10px;">
+    	<?php
+		if($count_task > 0){ $mbox_sub_text = '<span class="text-muted">Yeni '.$count_task.' adet görev var.</span>'; }else { $mbox_sub_text = '<span class="text-muted">Tebrikler! tüm görevleri okudun.</span>'; }
+		?>
+		<?php alertbox('alert-blank', '<i class="fa fa-globe text-muted"></i> <span class="text-muted">Görev Kutusu</span>', $mbox_sub_text, false); ?>
+    </div>
+	<ul class="list_mbox">
+	<?php $is_message = array(); ?>
+	<?php $i = 0; ?>
+	<?php foreach($mbox_task as $message): ?>
+		<?php if($i < 10): ?>
+			<?php
+				if($message['messagebox_id'] > 0){ $message['id'] = $message['messagebox_id']; }
+				if($message['title'] == ''){ $message['title'] = mb_substr(strip_tags($message['content']),0,30,'utf-8'); }
+			?>
+			<?php if(isset($is_message[$message['id']])): ?>
+			<?php else: ?>
+				<?php $is_message[$message['id']] = true; ?>
+				<li class="<?php if($message['read'] == 0): ?>new_mess<?php endif; ?>">
+					<a href="<?php echo site_url('user/notification/'.$message['id']); ?>">
+					    <div class="row no-space">
+					      <div class="col-md-12">
+					        <div class="description"><?php echo mb_substr($message['title'],0,30,'utf-8'); ?><?php if(strlen($message['title']) > 30):?>...<?php endif; ?></div>
+					        <?php $time_late = time_late($message['date_update']); ?>
+					        <?php if($message['read'] == '0' and $message['read_id'] == get_the_current_user('id')): ?>
+					            <span class="information label label-danger fs-11">yeni</span>
+					        <?php else: ?>
+					            <span class="information label label-default fs-11"><?php echo $time_late; ?></span>
+					        <?php endif; ?>
+					      </div> <!-- /.col-md-10 -->
+					    </div> <!-- /.row -->
+					</a> <!-- /.opacity -->
+				</li>
+				<?php $i++; ?>
+			<?php endif; ?>
+		<?php else: ?>
+
+		<?php endif; ?>
+	<?php endforeach; ?>
+	</ul>
+    <?php else: ?>
+    	<div style="padding:10px;">
+    		<?php alertbox('alert-danger', '<i class="fa fa-globe"></i> Gelen bildirim bulunamadı!', 'Gelen görev kutusunda görev bulunamadı.', false); ?>
+        </div>
+    <?php endif; ?>
+</div> <!-- /.list_mess -->
+<script>
+	$(document).ready(function(e) { 
+		$('div.list_noti').html($('div.list_noti_hide').html()); $('div.mbox').animate({'opacity':'1', 'right':'-348px'}, 0);
+		
+		$('.btn_mbox_noti').click(function() {
+			if($(this).attr('data-show') == 'open')
+			{	
+				$(this).removeClass('active');
+				$(this).attr('data-show', 'close');
+				$('div.list_noti').animate({'opacity':'1', 'right':'-348px'}, 100);
+			}
+			else
+			{
+				$('.mbox').animate({'opacity':'1', 'right':'-348px'}, 100);
+				$('.btn_mbox').removeClass('active');
+				$('.btn_mbox').attr('data-show', 'close');
+
+				$(this).addClass('active');
+				$(this).attr('data-show', 'open');
+				$('div.list_noti').animate({'opacity':'1', 'right':'0px'}, 100);
 			}
 		});
 	});
