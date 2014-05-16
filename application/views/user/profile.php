@@ -11,9 +11,11 @@
 
 <?php if($user['status'] == '0'): ?>
     <?php alertbox('alert-danger', 'Kullanıcı hesabı silinmiş.', 'Bu kullanıcı hesabı silinmiş.', false); ?>
-    <div class="text-right">
-        <a href="?status=1" class="btn btn-success">hesabı aktif yap</a>
-    </div>
+    <?php if(is_admin()): ?>
+        <div class="text-right">
+            <a href="?status=1" class="btn btn-success">hesabı aktif yap</a>
+        </div>
+    <?php endif; ?>
 <?php endif; ?>
 
 
@@ -23,10 +25,18 @@
     <li class="dropdown">
         <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Seçenekler <b class="caret"></b></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-          <li><a href="<?php echo site_url('user/new_message/'.$user['id']); ?>"><i class="fa fa-envelope-o"></i> Yeni Mesaj Gönder</a></li>
-          <li><a href="<?php echo site_url('user/new_task/'.$user['id']); ?>"><i class="fa fa-tasks"></i> Yeni Görev Ata</a></li>
-        </ul>
-    </li>
+			<li><a href="<?php echo site_url('user/new_message/'.$user['id']); ?>"><i class="fa fa-envelope-o"></i> Yeni Mesaj Gönder</a></li>
+            <li><a href="<?php echo site_url('user/new_task/'.$user['id']); ?>"><i class="fa fa-tasks"></i> Yeni Görev Ata</a></li>
+			<?php if(is_admin()) : ?>
+				<li role="presentation" class="divider"></li>
+                <?php if($user['status'] == '1'): ?>
+					<li><a href="<?php echo site_url('user/profile/'.$user['id'].'?status=0'); ?>"><i class="fa fa-trash-o"></i> Kullanıcıyı Sil</a></li>
+                <?php else: ?>
+                	<li><a href="<?php echo site_url('user/profile/'.$user['id'].'?status=1'); ?>"><i class="fa fa-trash-o"></i> Kullanıcı Aktif Yap</a></li>
+                <?php endif; ?>
+            <?php endif; ?>
+		</ul>
+	</li>
 </ul> <!-- /.nav .nav-tabs -->
 
 <div id="myTabContent" class="tab-content">

@@ -53,7 +53,7 @@ class User extends CI_Controller {
 
 
 		// hesabı silme yada aktif etme
-		if(isset($_GET['status']) and get_the_current_user('role') < 3)
+		if(isset($_GET['status']) and is_admin())
 		{
 			if($_GET['status'] == 1){}else if($_GET['status'] == 0){}else{exit('sen neyin pesindesin');}
 			update_user($user_id, array('status'=>$_GET['status']));
@@ -211,7 +211,6 @@ class User extends CI_Controller {
 			}
 			else
 			{
-				$update_profile['email'] = $this->input->post('email');
 				$update_profile['name'] = $this->input->post('name');
 				$update_profile['surname'] = $this->input->post('surname');
 				$update_profile['role'] = $this->input->post('role');
@@ -281,7 +280,7 @@ class User extends CI_Controller {
 						}
 					}
 				}
-				else if(get_the_current_user('role') < 3)
+				else if(is_admin())
 				{
 					if(update_user($data['user_id'], $update_profile))
 					{

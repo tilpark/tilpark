@@ -167,6 +167,30 @@ function get_user_list()
 
 
 
+/**
+* is_admin()
+*
+* @author	: Mustafa TANRIVERDI
+* @email	: thetanriverdi@gmail.com
+* @website  : www.tilpark.com
+*
+* Şu anda aktif olan kullanının "süperadmin" veya "admin" olduğunu denetler. Eğer admin yetkisine sahip ise "true" döner. aksi durumda faslse döner.
+*/
+function is_admin()
+{
+	if(get_the_current_user('role') < 3)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
+
+
 /* ========================================================================
  * MESSAGEBOX
 
@@ -500,6 +524,17 @@ function calc_inbox()
 	
 	return $query;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
