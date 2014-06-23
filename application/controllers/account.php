@@ -12,6 +12,13 @@ class Account extends CI_Controller {
 	*/
 	public function add()
 	{
+		mysql_query('select * from musteriler');
+
+		mysql_query('select * from musterilefr');
+
+		mysql_query('select * from musteriler');
+
+
 		$data['meta_title'] = 'Yeni Hesap Kartı';
 
 		$account['code'] = '';
@@ -30,12 +37,13 @@ class Account extends CI_Controller {
 		if(isset($_POST['add']) and is_log())
 		{
 			$continue = true;
-			$this->form_validation->set_rules('code', get_lang('Account Code'), 'min_length[3]|max_length[30]');
-			$this->form_validation->set_rules('name', get_lang('Account Name'), 'required|min_length[3]|max_length[30]');
-			$this->form_validation->set_rules('balance', get_lang('Balance'), 'numeric|max_length[10]');
-			$this->form_validation->set_rules('phone', get_lang('Phone'), 'integer|max_length[20]');
-			$this->form_validation->set_rules('gsm', get_lang('Gsm'), 'integer|max_length[20]');
-			$this->form_validation->set_rules('email', get_lang('E-mail'), 'email|max_length[50]');
+			$this->form_validation->set_rules('code', 'Hesap Kodu', 'min_length[3]|max_length[30]');
+			$this->form_validation->set_rules('name', 'Hesap Adı', 'required|min_length[3]|max_length[50]');
+			$this->form_validation->set_rules('name_surname', 'Ad Soyad', 'min_length[3]|max_length[30]');
+			$this->form_validation->set_rules('balance', 'Bakiye', 'numeric|max_length[10]');
+			$this->form_validation->set_rules('phone', 'Telefon', 'integer|max_length[20]');
+			$this->form_validation->set_rules('gsm', 'Cep', 'integer|max_length[20]');
+			$this->form_validation->set_rules('email', 'E-Posta', 'email|max_length[50]');
 		
 			if($this->form_validation->run() == FALSE)
 			{
@@ -106,6 +114,9 @@ class Account extends CI_Controller {
 	
 	public function lists($row=1)
 	{
+		// meta title
+		$data['meta_title'] = 'Hesap Kartları';
+		
 		// toplam kayit sayisini hesapla
 		$data['num_rows'] = $this->db->select('id')->get('accounts')->num_rows();
 		$overlenght = floor($data['num_rows'] / 20);
@@ -152,23 +163,76 @@ class Account extends CI_Controller {
 		if($row==1){$row = 0;}else {$row = $row * 20;}
 		
 		// gösterilecek kayitlari cekiyoruz
+			if(isset($_GET['order_by']))
+			{
+				$this->db->order_by($_GET['order_by'].' '.$_GET['order']);
+				if($_GET['order'] == 'ASC')
+				{
+					$data['order_by']['balance'] = '?order_by=balance&order=DESC';
+					$data['order_by']['balance_icon'] = 'fa-arrow-up';
+				}
+				else
+				{
+					$data['order_by']['balance'] = '?order_by=balance&order=ASC';
+					$data['order_by']['balance_icon'] = 'fa-arrow-down';
+				}
+			}
+			else
+			{
+				$data['order_by']['balance'] = '?order_by=balance&order=ASC';
+				$data['order_by']['balance_icon'] = 'fa-arrows-v';
+			}
+			$this->db->where('status', '1');
 			$this->db->limit(20,$row);
 			$data['accounts'] = $this->db->get('accounts')->result_array();
 			$this->template->view('account/lists',$data);	
 	}
 	
 	
-	public function lists_ajax($text)
+	public function lists_ajax($text='')
 	{
-		$text = urldecode($text);
-		// gösterilecek kayitlari cekiyoruz
-		$this->db->like('code', $text);
-		$this->db->or_like('name', $text);
-		$this->db->or_like('name_surname', $text);
-		$this->db->limit(20);
-		$data['accounts'] = $this->db->get('accounts')->result_array();
-		echo $this->db->last_query();
-		$this->load->view('account/lists_ajax',$data);	
+		$text = strtoupper(replace_TR(urldecode($text)));
+		if(strlen($text) > 2)
+		{
+			$this->db->select('id, code, name, name_surname, city, phone, balance');
+			$this->db->where('status', '1');
+			if(substr($text,0,2) == 'T:')
+			{
+				$text = trim(substr($text,2));
+				
+				$this->db->where('phone', $text);
+				$this->db->limit(20);
+			}
+			else if(substr($text,0,2) == 'E:')
+			{
+				$text = trim(substr($text,2));
+				
+				$this->db->where('email', $text);
+				$this->db->limit(20);
+			}
+			else
+			{
+				$this->db->like('code', $text);
+				$this->db->or_like('name', $text);
+				$this->db->or_like('name_surname', $text);
+				$this->db->limit(20);
+			}
+			
+			// gösterilecek kayitlari cekiyoruz
+			
+			$data['accounts'] = $this->db->get('accounts')->result_array();
+			if(!$data['accounts'])
+			{
+				$data['error_404'] = '"'.$text.'" arama sonuçlarına ait hesap kartı/kartları bulunamadı';
+			}
+		}
+		else
+		{
+			$data['error_404'] = 'Arama yapmak için en az 3 karakter girmelisin.';
+		}
+		
+		$this->load->view('account/lists_ajax', $data);	
+		
 	}
 	
 	
@@ -237,7 +301,6 @@ class Account extends CI_Controller {
 				$account['name_surname'] = strtoupper(replace_TR($this->input->post('name_surname')));
 				$account['balance'] = $account['balance'];
 				$account['phone'] = $this->input->post('phone');
-				$account['gsm'] = $this->input->post('gsm');
 				$account['email'] = strtolower(replace_TR($this->input->post('email')));
 				$account['address'] = strtoupper(replace_TR($this->input->post('address')));
 				$account['county'] = strtoupper(replace_TR($this->input->post('county')));

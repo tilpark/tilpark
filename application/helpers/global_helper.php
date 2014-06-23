@@ -51,6 +51,13 @@ function gsm_trim($gsm)
 
 
 
+function ajax_search_gif()
+{
+	echo '<div class="text-center"><img src="'.base_url('theme/img/ajax_search.gif').'" ></div>';
+}
+
+
+
 
 
 function update_option($data)

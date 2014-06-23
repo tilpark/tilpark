@@ -4,10 +4,7 @@
 </div> <!-- /.row -->
 
 
-<div class="h20"></div>
-<?php
-
-?>
+	<div class="h20"></div>
 <div>
 <div class="h20"></div>
 <small class="pull-left">{elapsed_time} <?php lang('installed in seconds.'); ?></small>
