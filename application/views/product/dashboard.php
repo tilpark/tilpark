@@ -1,7 +1,4 @@
-<ol class="breadcrumb">
-  <li><a href="<?php echo site_url(''); ?>">Yönetim Paneli</a></li>
-  <li class="active">Stok Yönetimi</li>
-</ol>
+
 
 <?php $products = get_products(); ?>
 
@@ -12,43 +9,37 @@
             <div class="row">
                 <div class="col-md-3">
                     <a href="<?php echo site_url('product/add'); ?>" class="link-dashboard-stat">
-                        <div class="dashboard-stat none">
-                        	<div class="visual">
-                                <i class="fa fa-plus fs-20 gray"></i>
-                            </div>
+                        <div class="dashboard-stat">
                             <div class="details">
-                                <div class="number fs-18">yeni</div>
+                                <div class="title">Yeni</div>
                                 <div class="desc">yeni stok kartı</div>
+                                <i class="fa fa-plus"></i>
                              </div>
                         </div> <!-- /.dashboard-stat -->
-                    </a>
+                    </a> <!-- /.link-dashboard-stat -->
                 </div> <!-- /.col-md-6 -->
                 <div class="col-md-3">
                     <a href="<?php echo site_url('product/lists'); ?>" class="link-dashboard-stat">
-                        <div class="dashboard-stat none">
-                        	<div class="visual">
-                                <i class="fa fa-bars fs-20 gray"></i>
-                            </div>
+                        <div class="dashboard-stat">
                             <div class="details">
-                                <div class="number fs-18">stok kartları</div>
+                                <div class="title">Stok Kartları</div>
                                 <div class="desc">stok kartları listesi</div>
+                                <i class="fa fa-list-alt"></i>
                              </div>
                         </div> <!-- /.dashboard-stat -->
-                     </a>
+                    </a> <!-- /.link-dashboard-stat -->
                 </div> <!-- /.col-md-3 -->
                 <?php if(get_the_current_user('role') < 3): ?>
                 <div class="col-md-3">
                     <a href="<?php echo site_url('product/options'); ?>" class="link-dashboard-stat">
-                        <div class="dashboard-stat none">
-                        	<div class="visual">
-                                <i class="fa fa-gear fs-20 gray"></i>
-                            </div>
+                        <div class="dashboard-stat">
                             <div class="details">
-                                <div class="number fs-18">seçenekler</div>
-                                <div class="desc">stok yönetimi</div>
+                                <div class="title">Seçenekler</div>
+                                <div class="desc">stok yönetimi ayarları</div>
+                                <i class="fa fa-yelp"></i>
                              </div>
                         </div> <!-- /.dashboard-stat -->
-                     </a>
+                    </a> <!-- /.link-dashboard-stat -->
                 </div> <!-- /.col-md-3 -->
                 <?php endif; ?>
             </div> <!-- /.row -->
@@ -62,7 +53,7 @@
                         	<table class="table table-hover table-condensed table-bordered fs-11">
                             	<thead>
                                 	<tr>
-                                    	<th width="80">Tarih</th>
+                                    	<th width="80">Zaman</th>
                                         <th>Stok Kodu</th>
                                     </tr>
                                 </thead>
@@ -75,7 +66,7 @@
 									?>
                                     <?php foreach($query as $log_product): ?>
                                     <tr>
-                                    	<td><?php echo hours_late($log_product['date'], array('text'=>true)); ?> saat önce</td>
+                                    	<td><?php echo time_late($log_product['date']); ?> önce</td>
                                         <td><a href="<?php echo site_url('product/view/'.$log_product['product_id']); ?>"><?php echo $products[$log_product['product_id']]['code']; ?></a></td>
                                     </tr>
                                     <?php endforeach; ?>

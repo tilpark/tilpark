@@ -19,23 +19,23 @@ if(@$error) { alertbox('alert-danger', $error);	 }
 ?>
 
 <form name="form_new_product" id="form_new_product" action="" method="POST" class="validation">
-	<h3>Yeni stok kartı</h3>
+	<h3><i class="fa fa-puzzle-piece"></i> Yeni Stok Kartı</h3>
     <div class="content">
     <div class="row">
         <div class="col-md-8">
                
             <div class="form-group">
-                <label for="code" class="control-label">Barkod Kodu</label>
+                <label for="code" class="control-label">Stok Kodu</label>
                 <div class="input-prepend input-group">
                     <span class="input-group-addon"><span class="fa fa-barcode"></span></span>
-                    <input type="text" id="code" name="code" class="form-control" minlength="3" maxlength="50" value="<?php echo $product['code']; ?>" autocomplete="off">
+                    <input type="text" id="code" name="code" class="form-control" minlength="3" maxlength="50" value="<?php echo $product['code']; ?>" autocomplete="off" placeholder="stok/barkod kodu">
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="control-label">Stok Adı</label>
                 <div class="input-prepend input-group">
                     <span class="input-group-addon"><span class="fa fa-text-width"></span></span>
-                    <input type="text" id="name" name="name" class="form-control required" minlength="3" maxlength="100" value="<?php echo $product['name']; ?>" autocomplete="off">
+                    <input type="text" id="name" name="name" class="form-control required" minlength="3" maxlength="100" value="<?php echo $product['name']; ?>" autocomplete="off" placeholder="stok/ürün veya hizmet adı">
                 </div>
             </div>
             
@@ -103,14 +103,16 @@ if(@$error) { alertbox('alert-danger', $error);	 }
 	
 </div> <!-- /.col-md-8 -->
 <div class="col-md-4">
-	<div class="widget">
-    	<div class="header">Açıklama</div>
+	<div class="widget information">
+    	<div class="header"><i class="fa fa-life-ring"></i> Açıklama</div>
         <div class="content">
-            <p>Bu bölümde yeni ürün kartı yani stok kartı oluşturabilirsin.</p>
-            <p>Buradaki panele stok adet sayısını yazabileceğin bir alan eklemedik. Çünkü ürün alışı yapman gerekiyor. Ürün alışı yapıldığında stok adet sayısı artacaktır. Buna bağlı olarak ürün satışı yapıldığında, ürün adet sayısı azalacaktır. </p>
-            <p>Ürün kartı eklerken KDV alanını boş bırakabilirsin.</p>
-            <p>Maliyet fiyatı ve satış fiyatı alanlarının doğru girilmesi durumunda Kar-Zarar raporlarında net rapor alabilirsin.</p>
-            <p>Kullanıcıların maliyet fiyatlarını görmemelerini istiyorsan, ayarlar bölümünden maliyet fiyatı gösterimini kapatabilirsin.</p>
+            <ul class="text-gray">
+                <li class="text-gray">Bu bölümde yeni ürün kartı yani stok kartı oluşturabilirsin.</li>
+                <li class="text-gray">Buradaki panele stok adet sayısını yazabileceğin bir alan eklemedik. <i>Çünkü ürün alışı yapman gerekiyor</i>. Ürün alışı yapıldığında stok adet sayısı artacaktır. Buna bağlı olarak ürün satışı yapıldığında, ürün adet sayısı azalacaktır.</li>
+                <li>KDV kutusu boş bırakılabilir.</li>
+                <li>Maliyet fiyatı ve satış fiyatı alanlarının doğru girilmesi durumunda Kar-Zarar raporlarında, doğru rapor alabileceksiniz.</li>
+                <li>Diğer kullanıcıların maliyet fiyatlarını görmemelerini istiyorsan, stok seçenekleri bölümünden maliyet fiyatı gösterimini yetkilendirebilir veya kapatabilirsin.</li>
+            </ul>
     	</div> <!-- /.content -->
     </div> <!-- /.widget -->
 </div> <!-- /.col-md-4 -->

@@ -18,6 +18,9 @@ class Product extends CI_Controller {
 	{
 		redirect(site_url('product/add'));
 	}
+
+
+
 	public function add()
 	{
 		// sayfa bilgisi
@@ -163,11 +166,12 @@ class Product extends CI_Controller {
 		}
 		// sayfa bilgisi
 		$data['meta_title'] = $product['name'];
+		$data['navigation'][0] = '<li><a href="'.site_url('product').'">Stok/Hizmet Yönetimi</a></li>';
+		$data['navigation'][1] = '<li class="active">'.$product['name'].'</li>';
 
 		$data['product'] = $product;
 		// gerçek stok miktarını hesaplıyoruz.
 		calc_product($product['id']);
-		
 		
 		
 		
@@ -225,7 +229,6 @@ class Product extends CI_Controller {
 				
 				/* 	Barkod kodu var mi? eger barkod kodu yok ise yeni barkod kodu olustur 
 					bu sayede her urun kartinin bir barkod kodu olmak zorunda 
-					eger urun karti aynı stok kodunda var ise sistem bunu dikkate almayacaktır ve aynı barkod kodunu verecektir.
 				*/
 					if($product['code'] == '')
 					{ 
@@ -241,7 +244,12 @@ class Product extends CI_Controller {
 					{
 						if(is_product_code($product['code'], $product['id']))
 						{
-							$data['haveBarcode'] = $product['code'];
+							// eger stok kodu baska bir stok kartinda var ise ekrana hata basalim
+							$other_product = get_product(array('code'=>$product['code']));
+
+							$data['messages']['have_barcode'] = array('class'=>'danger', 'title'=>'Stok Kodu Kullanımda.', 'description'=>'"'.$product['code'].'" stok kodu başka bir stok kartında bulundu. Stok kodları/barkod kodları eşssiz olmalı. Bir stok kodu başka bir stok kartında kullanılamaz. <br />'.'
+								Bulunan stok kartı: <a href="'.site_url('product/view/'.$other_product['code']).'" target="_blank">'.$other_product['name'].'</a>
+							');
 							$continue = false;
 						}
 					}
@@ -273,7 +281,14 @@ class Product extends CI_Controller {
 		
 		
 		
-		/* RESIM YUKLEME */
+
+		/**
+		 * @package RESIM YUKLEME
+		 * @version 1.3
+		 */
+		/*
+			Buradaki islemler ile resim yuklemesi yapilmaktadir.
+		*/
 		if(isset($_FILES['image']) and is_log())
 		{
 			if(!file_exists('./uploads/products')){ mkdir('./uploads/products'); }
@@ -290,7 +305,7 @@ class Product extends CI_Controller {
 	
 			if(!$this->upload->do_upload('image'))
 			{
-				$data['error_image_upload'] = $this->upload->display_errors();
+				$data['messages']['no_image_upload'] = array('class'=>'danger', 'title'=>'Resim yüklenirken bir hata oluştu', 'description'=>$this->upload->display_errors());
 			}
 			else
 			{
@@ -309,7 +324,8 @@ class Product extends CI_Controller {
 					$image_id = add_product_meta($image);
 					if($image_id)
 					{
-						$data['success_image_upload'] = true;
+						$data['messages']['image_uploaded'] = array('class'=>'success', 'title'=>'Stok görseli eklendi.');
+
 						$log['type'] = 'product';
 						$log['title']	= 'Resim Yükleme';
 						$log['description'] = 'Yeni resim yüklendi. /'.$image['key'];
@@ -325,18 +341,23 @@ class Product extends CI_Controller {
 					}
 					else
 					{
-						$data['error_image_upload'] = 'Bilinmeyen bir hata.';
+						$data['messages']['error_image_upload'] = array('class'=>'danger', 'title'=>'Bilinmeyen bir hata.');
 					}
 				}
 				else
 				{
-					$data['error_image_upload'] = 'Yüklenen dosya, resim dosyası değil.';	
+					$data['messages']['no_image_file'] = array('class'=>'danger', 'title'=>'Yüklemeye çalıştığınız dosya, bir resim dosyası değil.');
 				}
 			}
 		}
 		/* /RESIM YUKLEME */
 		
-		/* RESIM SILME */
+
+
+		/* 
+		* RESIM SILME 
+		* Buradaki fonksiyonlar ile resimleri silebiliriz
+		*/
 		if(isset($_GET['delete_product_image']))
 		{
 			$delete_image_id = $_GET['delete_product_image'];
@@ -353,7 +374,8 @@ class Product extends CI_Controller {
 					$this->db->delete('product_meta');
 					if($this->db->affected_rows() > 0)
 					{
-						$data['delete_image'] = true;	
+						$data['messages']['product_image_delete'] = array('class'=>'warning', 'title'=>'Stok görseli silindi.');
+
 						$log['type'] = 'product';
 						$log['title']	= 'Resim Silme';
 						$log['description'] = 'Resim silindi. /'.$query['key'];
@@ -368,6 +390,10 @@ class Product extends CI_Controller {
 							$this->db->limit('1');
 							$this->db->order_by('id', 'ASC');
 							$this->db->update('product_meta', array('val_text'=>'default_image'));
+							if($this->db->affected_rows() > 0)
+							{
+								$data['messages']['default_image_change'] = array('class'=>'success', 'title'=>'Varsayılan stok görseli değişti.');
+							}
 						}
 					}
 				}
@@ -376,7 +402,12 @@ class Product extends CI_Controller {
 		/* /RESIM SILME */
 		
 		
-		/* VARSAYILAN RESIM YAPMA */
+
+
+		/* 
+		* VARSAYILAN RESIM YAPMA 
+		* Varsayilan resimleri degistirmek icin kullanilir
+		*/
 		if(isset($_GET['default_image']))
 		{
 			$image_id = $_GET['default_image'];
@@ -398,7 +429,7 @@ class Product extends CI_Controller {
 				$this->db->update('product_meta', array('val_text'=>'default_image'));
 				if($this->db->affected_rows() > 0)
 				{
-					$data['success_default_image'] = true;	
+					$data['messages']['default_image_change'] = array('class'=>'success', 'title'=>'Varsayılan stok görseli değişti.');
 				}
 			}
 		}
@@ -420,7 +451,7 @@ class Product extends CI_Controller {
 		
 		
 		
-		$this->template->view('product/product', $data);
+		$this->template->view('product/view', $data);
 	}
 	
 	

@@ -25,7 +25,7 @@
 <div class="container bg">
 	<div class="h20"></div>
 	
-    <legend class="ff-1"><?php lang('Login'); ?></legend>
+    <legend class="ff-1">Giriş</legend>
 
     <div class="row">
     	<div class="col-md-8">
@@ -53,12 +53,12 @@
 				}
 				else
 				{
-					alertbox('alert-danger', get_lang('Login failed.'));	
+					alertbox('alert-danger', 'Giriş başarısız');	
 				}
 			}
 			else
 			{
-				alertbox('alert-danger', get_lang('User not found.'));	
+				alertbox('alert-danger', 'Kullanıcı hesabı bulunamadı');	
 			}
 		}
 		?>
@@ -92,16 +92,16 @@
                 <div class="col-md-6">
                        
                     <div class="form-group">
-                        <label for="email" class="control-label ff-1 fs-16"><?php lang('E-mail'); ?></label>
+                        <label for="email" class="control-label ff-1 fs-16">E-mail</label>
                         <div class="input-prepend input-group">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                            <span class="input-group-addon"><span class="fa fa-envelope"></span></span>
                             <input type="text" id="email" name="email" class="form-control input-lg ff-1 required email" placeholder="<?php lang('E-mail'); ?>" minlength="3" maxlength="50" value="<?php echo $user['mail']; ?>">
                         </div>
                     </div> <!-- /.form-group -->
                     <div class="form-group">
-                        <label for="password" class="control-label ff-1 fs-16"><?php lang('Password'); ?></label>
+                        <label for="password" class="control-label ff-1 fs-16">Şifre</label>
                         <div class="input-prepend input-group">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-sound-7-1"></span></span>
+                            <span class="input-group-addon"><span class="fa fa-key"></span></span>
                             <input type="password" id="password" name="password" class="form-control input-lg ff-1 required" placeholder="<?php lang('Password'); ?>" minlength="4" maxlength="32" value="<?php echo $user['pass']; ?>">
                         </div>
                     </div>
@@ -122,13 +122,13 @@
     </div> <!-- /.col-md-8 -->
     <div class="col-md-4">
         <span class="help-block note">
-            <h4><span class="glyphicon glyphicon-info-sign"></span> <?php lang('information'); ?></h4>
+            <h4><span class="glyphicon glyphicon-info-sign"></span> bilgilendirme</h4>
             <ul class="note">
-                <li><?php lang('You can product sales.'); ?></li>
-                <li><?php lang('You can see the amount of product.'); ?></li>
-                <li><?php lang('You can follow clients.'); ?></li>
-                <li><?php lang('If you see an instant money.'); ?></li>
-                <li><?php lang('You can follow the salaries of the staff.'); ?></li>
+                <li>Ürün/hizmet satışı veya alışı yapabilirsiniz.</li>
+                <li>Siparişleri takip edebilir ve anlık stok durumunu görebilirsiniz.</li>
+                <li>Alacaklı ve borçlu olduğunuz müşterileri takip edebilirsiniz.</li>
+                <li>Çek, senet, banka ve anlık kasa takibi yapabilirsiniz.</li>
+                <li>Personel hesabı açabilir ve giderleri takip edebilirsiniz.</li>
             </ul>
         </span>
     </div> <!-- /.col-md-4 -->

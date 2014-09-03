@@ -14,73 +14,58 @@
         <div class="row">
             <div class="col-md-3 col-xs-6">
                 <a href="<?php echo site_url('product'); ?>" class="link-dashboard-stat">
-                    <div class="dashboard-stat blue none">
-                        <div class="visual">
-                            <i class="fa fa-share-square-o"></i>
-                        </div>
+                    <div class="dashboard-stat">
                         <div class="details">
-                            <div class="number">stok</div>
-                            <div class="desc">stok yönetimi</div>
+                            <div class="title">Stok</div>
+                            <div class="desc">stok/hizmet yönetimi</div>
+                            <i class="fa fa-share-square-o"></i>
                          </div>
                     </div> <!-- /.dashboard-stat -->
-                </a>
-           </div> <!-- /.col-md-3 -->
-           
+                </a> <!-- /.link-dashboard-stat -->
+            </div> <!-- /.col-md-3 -->
             <div class="col-md-3 col-xs-6">
                 <a href="<?php echo site_url('account'); ?>" class="link-dashboard-stat">
-                    <div class="dashboard-stat blue none">
-                        <div class="visual">
-                            <i class="fa fa-users"></i>
-                        </div>
+                    <div class="dashboard-stat">
                         <div class="details">
-                            <div class="number">hesap</div>
+                            <div class="title">Hesap</div>
                             <div class="desc">hesap yönetimi</div>
+                            <i class="fa fa-users"></i>
                          </div>
                     </div> <!-- /.dashboard-stat -->
-                </a>
+                </a> <!-- /.link-dashboard-stat -->
             </div> <!-- /.col-md-3 -->  
-           
             <div class="col-md-3 col-xs-6">   
                 <a href="<?php echo site_url('form'); ?>" class="link-dashboard-stat">
-                    <div class="dashboard-stat blue none">
-                        <div class="visual">
-                            <i class="fa fa-external-link"></i>
-                        </div>
+                    <div class="dashboard-stat">
                         <div class="details">
-                            <div class="number">form</div>
+                            <div class="title">Form</div>
                             <div class="desc">ürün alışı ve satışı</div>
-                         </div>
-                    </div> <!-- /.dashboard-stat -->  
-                </a>
-            </div> <!-- /.col-md-3 -->
-            
-            <div class="col-md-3 col-xs-6"> 
-                <a href="<?php echo site_url('payment'); ?>" class="link-dashboard-stat">
-                    <div class="dashboard-stat blue none">
-                        <div class="visual">
-                            <i class="fa fa-try"></i>
-                        </div>
-                        <div class="details">
-                            <div class="number">kasa</div>
-                            <div class="desc">ödeme hareketleri ve çek takibi</div>
+                            <i class="fa fa-external-link"></i>
                          </div>
                     </div> <!-- /.dashboard-stat -->
-                </a>
+                </a> <!-- /.link-dashboard-stat -->
+            </div> <!-- /.col-md-3 -->
+            <div class="col-md-3 col-xs-6"> 
+                <a href="<?php echo site_url('payment'); ?>" class="link-dashboard-stat">
+                    <div class="dashboard-stat">
+                        <div class="details">
+                            <div class="title">Kasa</div>
+                            <div class="desc">ödeme hareketleri ve çek takibi</div>
+                            <i class="fa fa-try"></i>
+                         </div>
+                    </div> <!-- /.dashboard-stat -->
+                </a> <!-- /.link-dashboard-stat -->
              </div> <!-- /.col-md-3 -->
-             
-             
              <div class="col-md-3 col-xs-6">   
                 <a href="<?php echo site_url('plugins'); ?>" class="link-dashboard-stat">
-                <div class="dashboard-stat metro_red none">
-                    <div class="visual">
-                        <i class="fa fa-tags"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">eklenti</div>
-                        <div class="desc">eklenti listesi ve yönetimi</div>
-                     </div>
-                </div> <!-- /.dashboard-stat -->
-                </a>
+                    <div class="dashboard-stat">
+                        <div class="details">
+                            <div class="title">Eklenti</div>
+                            <div class="desc">yüklü eklentiler</div>
+                            <i class="fa fa-tags"></i>
+                         </div>
+                    </div> <!-- /.dashboard-stat -->
+                </a> <!-- /.link-dashboard-stat -->
             </div> <!-- /.col-md-3 -->
         </div> <!-- /.row -->
         

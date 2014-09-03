@@ -1,6 +1,3 @@
-<?php if(strstr($_SERVER['SERVER_NAME'], 'tilpark.com')){exit('demo hesabindan bu sayfaya erisim yoktur.');}; ?>
-<?php if(strstr($_SERVER['SERVER_NAME'], 'demo.tilteknik.com')){exit('demo hesabindan bu sayfaya erisim yoktur.');}; ?>
-
 <ol class="breadcrumb">
   <li><a href="<?php echo site_url(''); ?>">Yönetim Paneli</a></li>
   <li class="active">Kullanıcı Listesi</li>

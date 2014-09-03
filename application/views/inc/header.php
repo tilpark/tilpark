@@ -25,6 +25,7 @@ $this->session->set_userdata('user', $query);
 <link rel="stylesheet" href="<?php echo base_url('theme/css/lightbox.css'); ?>">
 
 
+
 <!-- Le javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
@@ -35,13 +36,11 @@ $this->session->set_userdata('user', $query);
 
 <script src="<?php echo base_url('theme/js/bootstrap-datepicker.js'); ?>"></script> 
 
-
 <script src="<?php echo base_url('theme/js/jquery.dataTables.js'); ?>"></script> 
 <script src="<?php echo base_url('theme/js/dataTable/js/ZeroClipboard.js'); ?>"></script> 
 <script src="<?php echo base_url('theme/js/dataTable/js/TableTools.js'); ?>"></script>
 
 <script src="<?php echo base_url('theme/js/lightbox-2.6.min.js'); ?>"></script>
-
 <!-- wysiwyg editor -->
 <!-- include summernote css/js-->
 <link rel="stylesheet" href="<?php echo base_url('plugins/wysiwyg/dist/summernote.css'); ?>" />
@@ -154,9 +153,9 @@ $(document).ready( function() {
           </button>
           
           	<a class="logo hidden-sm hidden-xs" href="<?php echo site_url(''); ?>">
-            	<span style="color:#346c9b;">[</span> <span>tilpark!</span> 
-                <span style="color:#346c9b; font-size:40px; margin-left:16px; margin-top:2px; position:absolute;">]</span>
-            	<span class="subtext">açık kaynak</span>
+            
+              <img src="<?php echo base_url('theme/img/logo/tilparkcom.png'); ?>" class="img-responsive">
+  
 			</a>
         </div>
         
@@ -464,32 +463,35 @@ $(document).ready(function(e) {
 
 
 
-<div class="notifyBox">
 
-<?php if(@$formError): ?>
-    <div class="notify notify-error">
-        <p><?php echo $formError; ?></p>
-    </div>
-<?php endif; ?>
+
+
+
+
+<ol class="breadcrumb">
+  <li><a href="<?php echo site_url(''); ?>">Yönetim Paneli</a></li>
+  <?php if(@$navigation): ?>
+    <?php foreach($navigation as $nav): ?>
+          <?php echo $nav; ?>  
+      <?php endforeach; ?>
+  <?php else: ?>
+    <li class="active">Menü Yolu Bulunamadı</li>
+  <?php endif; ?>
+</ol>
+
+
 
 <?php if(@$messages): ?>
-	<?php foreach($messages as $message): ?>
+  <?php foreach($messages as $message): ?>
         
-        <div class="notify notify-<?php echo $message['class']; ?>">
-        	<button class="btn-close"><i class="fa fa-times"></i></button>
-            <?php if(isset($message['title'])): ?><h3><?php echo $message['title']; ?></h3><?php endif; ?>
+
+
+        <div class="alert alert-block alert-<?php echo $message['class']; ?> fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <?php if(isset($message['title'])): ?><h4><?php echo $message['title']; ?></h4><?php endif; ?>
             <?php if(isset($message['description'])): ?><p><?php echo $message['description']; ?></p><?php endif; ?>
         </div>
-        
+              
         
     <?php endforeach; ?>
 <?php endif; ?>
-
-</div>
-
-
-
-
-<?php
-notification_task();
-?>

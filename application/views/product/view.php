@@ -1,13 +1,3 @@
-<ol class="breadcrumb">
-  <li> <a href="<?php echo site_url(''); ?>">Yönetim Paneli</a></li>
-  <li><a href="<?php echo site_url('product'); ?>">Stok Yönetimi</a></li>
-  <li><a href="<?php echo site_url('product/lists'); ?>">Stok Listesi</a></li>
-  <li class="active"><?php echo @$product['name']; ?></li>
-</ol>
-
-
-
-
 <?php if(@$product_card_not_found): ?>
     <?php error_page_message('HATA', '404', '<strong>dur!</strong> aradığın ürün kartı bulunamadı'); ?>
 <?php else: ?>
@@ -58,11 +48,13 @@ if(@$formError) { alertbox('alert-danger', $formError);	 }
 if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu başka bir ürün kartında bulundu.', 
 	'Başka bir ürün kartı "'.$haveBarcode.'" barkod kodunu kullanıyor. <br/> Barkod kodları eşsiz olmalı ve sadece bir ürün kartına ait olmalı.');	 }
 # resim yukleme mesajlari
-if(@$error_image_upload) { alertbox('alert-danger', 'Resim yüklenemedi.', $error_image_upload); }
 if(@$success_image_upload) { alertbox('alert-success', 'Resim yüklendi.'); }
 if(@$delete_image) { alertbox('alert-warning', 'Resim silindi.'); }
 if(@$success_default_image) { alertbox('alert-success', 'Varsayılan görsel değiştirildi.'); }
 ?>
+
+
+
 
     <form name="form_new_product" id="form_new_product" action="?" method="POST" class="validation">
         
@@ -72,24 +64,24 @@ if(@$success_default_image) { alertbox('alert-success', 'Varsayılan görsel de�
             <div class="col-md-6">
                 
                 <div class="form-group">
-                    <label for="code" class="control-label ff-1 fss-16"><?php lang('Barcode Code'); ?></label>
+                    <label for="code" class="control-label ff-1 fss-16">Stok Kodu</label>
                     <div class="input-prepend input-group">
                         <span class="input-group-addon"><span class="fa fa-barcode"></span></span>
-                        <input type="text" id="code" name="code" class="form-control  ff-1" placeholder="<?php lang('Barcode Code'); ?>" minlength="3" maxlength="32" value="<?php echo $product['code']; ?>">
+                        <input type="text" id="code" name="code" class="form-control  ff-1" placeholder="stok kodu" minlength="3" maxlength="32" value="<?php echo $product['code']; ?>">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="name" class="control-label ff-1 fss-16"><?php lang('Product Name'); ?></label>
+                    <label for="name" class="control-label ff-1 fss-16">Stok Adı</label>
                     <div class="input-prepend input-group">
                         <span class="input-group-addon"><span class="fa fa-text-width"></span></span>
-                        <input type="text" id="name" name="name" class="form-control  ff-1 required" placeholder="<?php lang('Product Name'); ?>" minlength="3" maxlength="100" value="<?php echo $product['name']; ?>">
+                        <input type="text" id="name" name="name" class="form-control  ff-1 required" placeholder="stok/ürün adı" minlength="3" maxlength="100" value="<?php echo $product['name']; ?>">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="description" class="control-label ff-1 fss-16"><?php lang('Description'); ?></label>
+                    <label for="description" class="control-label ff-1 fss-16">Stok Açıklaması</label>
                     <div class="input-prepend input-group">
                         <span class="input-group-addon"><span class="fa fa-comment"></span></span>
-                        <textarea id="description" name="description" class="form-control  ff-1" placeholder="<?php lang('Description'); ?>" style="height:91px;"><?php echo $product['description']; ?></textarea>
+                        <textarea id="description" name="description" class="form-control  ff-1" placeholder="ürün kartına ait bir açıklama" style="height:91px;"><?php echo $product['description']; ?></textarea>
                     </div>
                 </div>
         
@@ -148,7 +140,7 @@ if(@$success_default_image) { alertbox('alert-success', 'Varsayılan görsel de�
                             <label for="tax" class="control-label ff-1 fs-12">Kdv Tutarı</label>
                             <div class="input-prepend input-group">
                                 <span class="input-group-addon"><span class="fa fa-try"></span></span>
-                                <input type="text" id="tax" name="tax" class="form-control number text-right" placeholder="0.00" value="<?php echo $product['tax']; ?>" disabled="disabled">
+                                <input type="text" id="tax" name="tax" class="form-control number text-right" placeholder="0.00" value="<?php echo get_money($product['tax']); ?>" disabled="disabled">
                             </div>
                         </div> <!-- /.form-group -->
                     </div> <!-- /.col-md-6 -->
@@ -162,6 +154,7 @@ if(@$success_default_image) { alertbox('alert-success', 'Varsayılan görsel de�
                         </div> <!-- /.form-group -->
                     </div> <!-- /.col-md-6 -->
                 </div> <!-- /.row -->
+
                 
                 <?php if(item_access('product_profit_rate')): ?>
                 <div class="row">
@@ -289,8 +282,8 @@ if(@$success_default_image) { alertbox('alert-success', 'Varsayılan görsel de�
             else
             {
                 ?>
-                <img src="<?php echo base_url('theme/img/logo/product_no_image.png'); ?>" class="img-responsive" />
-                <h3 style="position:absolute; margin-top:-76px; margin-left:100px; font-weight:normal;" class="text-muted">ürün görseli bulunamadı! <br /><small>yukarıdaki menüden ürün görseli ekleyebilirsin.</small></h3>
+                <i class="fa fa-file-image-o text-muted fs-36 pull-left"></i>
+                <h3 style="font-weight:normal;" class="text-muted">ürün görseli bulunamadı! <br /><small>yukarıdaki menüden ürün görseli ekleyebilirsin.</small></h3>
                 <?php
             }
             ?>
@@ -397,14 +390,20 @@ if(@$success_default_image) { alertbox('alert-success', 'Varsayılan görsel de�
 
 
     <div class="widget">
-        <div class="header"><i class="fa fa-picture-o mr5"></i> Ürün Görseli</div>
+        <div class="header"><i class="fa fa-picture-o mr5"></i> Varsayılan Ürün Görseli</div>
         <div class="content">
             <?php $default_image = get_product_meta(array('product_id'=>$product['id'], 'group'=>'gallery', 'val_text'=>'default_image')); ?>
             <?php if($default_image): ?>
                 <img src="<?php echo base_url('uploads/products/'.$product['id'].'/'.$default_image['key']); ?>" class="img-responsive" />
             <?php else: ?>
-                <img src="<?php echo base_url('theme/img/logo/product_no_image.png'); ?>" class="img-responsive" />
-                <h3 style="position:absolute; margin-top:-76px; margin-left:100px; font-weight:normal; width:150px;" class="text-muted">ürün görseli bulunamadı!</h3>
+                <div class="row">
+                    <div class="col-md-2">
+                        <i class="fa fa-file-image-o text-muted fs-36 pull-left"></i>
+                    </div> <!-- /.ol-md-4 -->
+                    <div class="col-md-10">
+                        <h4 style="font-weight:normal;" class="text-muted">varsayılan ürün görseli bulunamadı!</h4>
+                    </div> <!-- /.col-md-8 -->
+                </div> <!-- /.row -->
             <?php endif; ?>
             
         </div> <!-- /.content -->
@@ -450,13 +449,13 @@ if(@$success_default_image) { alertbox('alert-success', 'Varsayılan görsel de�
     	<tr>
         	<th class="hide"></th>
         	<th width="60">Fiş ID</th>
-            <th width="120"><?php lang('Date'); ?></th>
+            <th width="120">Tarih></th>
             <th width="60">G/Ç</th>
-            <th><?php lang('Account Card'); ?></th>
-            <th width="60"><?php lang('Quantity'); ?></th>
+            <th>Hesap Kartı</th>
+            <th width="60">Adet</th>
             <th width="80">B.Fiyatı</th>
-            <th width="80"><?php lang('Total'); ?></th>
-            <th width="100"><?php lang('Tax'); ?></th>
+            <th width="80">Toplam</th>
+            <th width="100">Kdv</th>
             <th width="100">Giriş</th>
             <th width="100">Çıkış</th>
         </tr>

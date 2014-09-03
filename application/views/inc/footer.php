@@ -7,7 +7,7 @@
 	<div class="h20"></div>
 <div>
 <div class="h20"></div>
-<small class="pull-left">{elapsed_time} <?php lang('installed in seconds.'); ?></small>
+<small class="pull-left">{elapsed_time} saniyede yüklendi. {memory_usage} RAM kullanıldı.</small>
 <?php
 if(isset($_POST['page_access_change']) and get_the_current_user('role') <= 2)
 {
