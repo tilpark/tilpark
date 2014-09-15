@@ -1,10 +1,3 @@
-<ol class="breadcrumb">
-  <li><a href="<?php echo site_url(''); ?>"><?php lang('Dashboard'); ?></a></li>
-  <li class="active">Form Yönetimi</li>
-</ol>
-
-
-
 <div class="row">
 <div class="col-md-8">
 

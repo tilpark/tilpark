@@ -4,7 +4,7 @@
 
 
 <?php if($product['status'] == '0'): ?>
-	<?php alertbox('alert-danger', 'Stok kartı silinmiş.', 'Stok kartı silinmiş. Stok kartını tekrar aktif hale getirebilirsin.', false); ?>
+	<?php alertbox('alert-danger', 'Stok Kartı Silinmiş.', $product['name'].' stok kartı silinmiş. Stok kartını tekrar aktif hale getirebilirsin.', false); ?>
 <?php endif; ?>
 
 
@@ -13,21 +13,17 @@
     <li class="active"><a href="#product_card" data-toggle="tab"><i class="fa fa-folder-o"></i> Ürün Kartı</a></li>
     <li><a href="#invoices" data-toggle="tab"><i class="fa fa-shopping-cart"></i> Giriş-Çıkış</a></li>
     <li><a href="#history" data-toggle="tab"><i class="fa fa-keyboard-o"></i> Log</a></li>
-    <li class="dropdown">
-    	<a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-asterisk"></i> <?php lang('Options'); ?> <b class="caret"></b></a>
-    	<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-    		<li><a href="<?php echo site_url('user/new_message/?product_id='.$product['id']); ?>"><span class="glyphicon glyphicon-envelope mr9"></span><?php lang('New Message'); ?></a></li>
-            <li><a href="<?php echo site_url('user/new_task/?product_id='.$product['id']); ?>"><span class="glyphicon glyphicon-globe mr9"></span><?php lang('New Task'); ?></a></li>
-            
-            <li class="divider"></li>
-        	<li><a href="<?php echo site_url('product/print_barcode/'.$product['id']); ?>?print"><span class="glyphicon glyphicon-print mr9"></span>Barkod Yazdır</a></li>
+    <li class="dropdown pull-right">
+    	<a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-asterisk"></i> Seçenekler <b class="caret"></b></a>
+    	<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">   
+        	<li><a href="<?php echo site_url('product/print_barcode/'.$product['id']); ?>?print"><span class="fa fa-barcode mr9"></span>Barkod Yazdır</a></li>
             
             <?php if(item_access('product_edit_button')): ?>
                 <li class="divider"></li>
                 <?php if($product['status'] == '1'): ?>
-                    <li><a href="?status=<?php echo base64_encode('0'); ?>"><span class="glyphicon glyphicon-remove mr9"></span><?php lang('Delete'); ?></a></li>
+                    <li><a href="?status=<?php echo base64_encode('0'); ?>"><span class="fa fa-trash mr9"></span>Sil</a></li>
                 <?php else: ?>
-                    <li><a href="?status=<?php echo base64_encode('1'); ?>"><span class="glyphicon glyphicon-remove mr9"></span><?php lang('Activate'); ?></a></li>
+                    <li><a href="?status=<?php echo base64_encode('1'); ?>"><span class="fa fa-check-square-o mr9"></span>Aktifleştir</a></li>
                 <?php endif; ?>
             <?php endif; ?>
         </ul>

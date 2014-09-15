@@ -1,13 +1,3 @@
-<ol class="breadcrumb">
-  <li><a href="<?php echo site_url(); ?>">Yönetim Paneli</a></li>
-  <li><a href="<?php echo site_url('account'); ?>">Hesap Yönetimi</a></li>
-  <li><a href="<?php echo site_url('account/lists'); ?>">Hesap Listesi</a></li>
-  <li class="active"><?php echo @$account['code']; ?></li>
-</ol>
-
-
-
-
 <?php if(isset($account_card_not_found)): ?>
 	<div class="row">
     	<div class="col-md-3">
@@ -33,22 +23,18 @@
     <li class="hidden-xs hidden-sm"><a href="#invoices" data-toggle="tab"><i class="fa fa-shopping-cart"></i> Giriş-Çıkış</a></li>
     <li class="hidden-xs hidden-sm"><a href="#extracted" data-toggle="tab"><i class="fa fa-list"></i> Ekstre</a></li>
     <li class="hidden-xs hidden-sm"><a href="#history" data-toggle="tab"><i class="fa fa-keyboard-o"></i> Log</a></li>
-    <li class="dropdown">
+    <li class="dropdown pull-right">
 		<a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-asterisk"></i> Seçenekler <b class="caret"></b></a>
 		<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-			<li><a href="<?php echo site_url('user/new_message/?account_id='.$account['id']); ?>"><span class="glyphicon glyphicon-envelope mr9"></span><?php lang('New Message'); ?></a></li>
-            <li><a href="<?php echo site_url('user/new_task/?account_id='.$account['id']); ?>"><span class="glyphicon glyphicon-globe mr9"></span><?php lang('New Task'); ?></a></li>
-            
-            <li class="divider"></li>
-        	<li><a href="javascript:;" onclick="print_barcode();"><span class="glyphicon glyphicon-print mr9"></span><?php lang('Barcode Print'); ?></a></li>
-            <li><a href="javascript:;" onclick="address_print();"><span class="glyphicon glyphicon-print mr9"></span><?php lang('Address Print'); ?></a></li>
+        	<li><a href="javascript:;" onclick="print_barcode();"><span class="fa fa-barcode mr9"></span>Barkod Yazdır</a></li>
+            <li><a href="javascript:;" onclick="address_print();"><span class="fa fa-print mr9"></span>Adres Yazdır</a></li>
             
             <?php if(get_the_current_user('role') <= 3): ?>
                 <li class="divider"></li>
                 <?php if($account['status'] == '1'): ?>
-                    <li><a href="?status=0"><span class="glyphicon glyphicon-remove mr9"></span>Pasifleştir</a></li>
+                    <li><a href="?status=0"><i class="fa fa-trash mr9"></i>Sil</a></li>
                 <?php else: ?>
-                    <li><a href="?status=1"><span class="glyphicon glyphicon-remove mr9"></span>Aktifleştir</a></li>
+                    <li><a href="?status=1"><i class="fa fa-check-square-o"></i>Aktifleştir</a></li>
                 <?php endif; ?>
             <?php endif; ?>
       </ul>
@@ -307,7 +293,7 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$account['code'].'" Barkod kodu
             <td><?php echo substr($invoice['date'],0,10); ?></td>
             <td><?php echo get_text_form_type($invoice['type']); ?></td>
             <td><?php echo $invoice['description']; ?></td>
-            <?php if($invoice['in_out'] == 1): ?>
+            <?php if($invoice['in_out'] == 'in'): ?>
             	<td class="text-right"><?php echo get_money($invoice['grand_total']); ?></td>
                 <td></td>
             <?php else: ?>
@@ -315,7 +301,7 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$account['code'].'" Barkod kodu
                 <td class="text-right"><?php echo get_money($invoice['grand_total']); ?></td>
             <?php endif; ?>
            
-            <?php if($invoice['in_out'] == '1') { $balance = $balance + $invoice['grand_total']; } else { $balance = $balance - $invoice['grand_total'];  } ?>
+            <?php if($invoice['in_out'] == 'in') { $balance = $balance - $invoice['grand_total']; } else { $balance = $balance + $invoice['grand_total'];  } ?>
             <td class="text-right"><?php echo get_money($balance); ?></td>
         </tr>
     <?php endforeach; ?>
@@ -370,14 +356,14 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$account['code'].'" Barkod kodu
             <td title="<?php echo $item['product_name']; ?>"><?php echo substr($item['product_name'],0,35); ?></td>
             <td class="text-center fs-11"><?php echo the_quantity($item['quantity']); ?></td>
             <td class="text-right fs-11 fs-11" title="Kdv'siz satış fiyat: <?php echo $item['tax_free_cost_price']; ?> TL"><?php echo get_money($item['sale_price']); ?></td>
-            <?php if($item['in_out'] == '1'): ?>
+            <?php if($item['in_out'] == 'in'): ?>
             	<td class="text-right fs-11" title="Kdv: <?php echo $item['tax']; ?> (%<?php echo $item['tax_rate']; ?>)"><?php echo get_money($item['sub_total']); ?></td>
                 <td></td>
             <?php else: ?>
             	<td></td>
             	<td class="text-right fs-11" title="Kdv: (%<?php echo $item['tax_rate']; ?>) <?php echo $item['tax']; ?> TL"><?php echo get_money($item['sub_total']); ?></td>
             <?php endif; ?>
-            <?php if($item['in_out'] == '1') { $balance = $balance + $item['sub_total']; } else { $balance = $balance - $item['sub_total'];  } ?>
+            <?php if($item['in_out'] == 'in') { $balance = $balance - $item['sub_total']; } else { $balance = $balance + $item['sub_total'];  } ?>
             <td class="text-right fs-11"><?php echo get_money($balance); ?></td>
         </tr>
     <?php endforeach; ?>

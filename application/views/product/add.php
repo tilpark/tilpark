@@ -1,10 +1,3 @@
-<ol class="breadcrumb">
-  <li><a href="<?php echo site_url(''); ?>">Yönetim Paneli</a></li>
-  <li><a href="<?php echo site_url('product'); ?>">Stok Yönetimi</a></li>
-  <li class="active">Yeni Stok Kartı</li>
-</ol>
-
-
 <div class="row">
 <div class="col-md-8">
 

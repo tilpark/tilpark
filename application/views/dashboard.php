@@ -1,13 +1,5 @@
 <?php $users = get_user_list(); ?>
 
-<ol class="breadcrumb">
-  <li class="active">Yönetim</li>
-  
-</ol>
-
-
-
-
 
 <div class="row">
 	<div class="col-md-8">

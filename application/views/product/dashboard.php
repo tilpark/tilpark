@@ -29,19 +29,6 @@
                         </div> <!-- /.dashboard-stat -->
                     </a> <!-- /.link-dashboard-stat -->
                 </div> <!-- /.col-md-3 -->
-                <?php if(get_the_current_user('role') < 3): ?>
-                <div class="col-md-3">
-                    <a href="<?php echo site_url('product/options'); ?>" class="link-dashboard-stat">
-                        <div class="dashboard-stat">
-                            <div class="details">
-                                <div class="title">Seçenekler</div>
-                                <div class="desc">stok yönetimi ayarları</div>
-                                <i class="fa fa-yelp"></i>
-                             </div>
-                        </div> <!-- /.dashboard-stat -->
-                    </a> <!-- /.link-dashboard-stat -->
-                </div> <!-- /.col-md-3 -->
-                <?php endif; ?>
             </div> <!-- /.row -->
             
             

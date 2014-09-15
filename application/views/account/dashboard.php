@@ -1,10 +1,3 @@
-<ol class="breadcrumb">
-  <li><a href="<?php echo site_url(''); ?>">Yönetim Paneli</a></li>
-  <li class="active">Hesap Yönetimi</li>
-</ol>
-
-
-
 <div class="row">
 <div class="col-md-8">
 
@@ -25,7 +18,7 @@
                 <div class="dashboard-stat">
                     <div class="details">
                        <div class="title">HESAPLAR</div>
-                       <div class="desc">hesap kartlar listesi</div>  
+                       <div class="desc">müşteriler/tedarikçiler</div>  
                     	<i class="fa fa-list"></i>
                 	</div>
                 </div> <!-- /.dashboard-stat -->

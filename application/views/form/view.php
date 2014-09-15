@@ -40,30 +40,6 @@ if($form['type'] == 'payment')
 }
 ?>
 
-<ol class="breadcrumb">
-	<li><a href="<?php echo site_url(''); ?>"><?php lang('Dashboard'); ?></a></li>
-	<li><a href="<?php echo site_url('form'); ?>">Form Yönetimi</a></li>
-    <li><a href="<?php echo site_url('form/lists'); ?>">Form Listesi</a></li>
-	<li class="active">
-    	<?php if($form['id'] == 0): ?>
-			<?php if(isset($_GET['out'])): ?>
-                Yeni Çıkış/Satış Formu
-            <?php elseif(isset($_GET['in'])): ?>
-                Yeni Giriş/Alış Formu
-            <?php endif; ?>
-        <?php else: ?>
-        	#<?php echo $form['id']; ?>
-			<?php if($form['in_out'] == 'out'): ?>
-                Çıkış/Satış Formu
-            <?php elseif($form['in_out'] == 'in'): ?>
-                Giriş/Alış Formu
-            <?php endif; ?>
-            	| <?php echo $form['name']; ?>
-        <?php endif; ?>
-    </li>
-</ol>
-
-
 
 <?php if($form['status'] == 0): ?>
 	<?php alertbox('alert-danger', get_lang('Deleted Invoice.'), '', false); ?>
@@ -75,7 +51,7 @@ if($form['type'] == 'payment')
 <ul id="myTab" class="nav nav-tabs">
     <li class="active"><a href="#transactions" data-toggle="tab"><i class="fa fa-shopping-cart"></i> İşlemler</a></li>
     <li class=""><a href="#history" data-toggle="tab"><i class="fa fa-comments"></i> Log</a></li>
-    <li class="dropdown">
+    <li class="dropdown pull-right">
 		<a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-asterisk"></i> Seçenekler <b class="caret"></b></a>
 		<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
 			<li><a href="<?php echo site_url('user/new_message/?invoice_id='.$form['id']); ?>"><span class="glyphicon glyphicon-envelope mr9"></span><?php lang('New Message'); ?></a></li>
@@ -87,9 +63,9 @@ if($form['type'] == 'payment')
             <?php if(get_the_current_user('role') <= 3): ?>
                 <li class="divider"></li>
                 <?php if($form['status'] == '1'): ?>
-                    <li><a href="?status=0"><span class="glyphicon glyphicon-remove mr9"></span><?php lang('Delete'); ?></a></li>
+                    <li><a href="?status=0"><span class="fa fa-trash mr9"></span>Sil</a></li>
                 <?php else: ?>
-                    <li><a href="?status=1"><span class="glyphicon glyphicon-remove mr9"></span><?php lang('Activate'); ?></a></li>
+                    <li><a href="?status=1"><span class="fa fa-check-square-o mr9"></span>Aktifleştir</a></li>
                 <?php endif; ?>
             <?php endif; ?>
       </ul>

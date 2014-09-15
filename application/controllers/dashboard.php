@@ -25,7 +25,9 @@ class Dashboard extends CI_Controller {
 		}
 		else
 		{
-			$this->template->view('dashboard');
+			$data['navigation'][0] = '';
+
+			$this->template->view('dashboard', $data);
 		}
 	}
 }

@@ -4,7 +4,11 @@ class Account extends CI_Controller {
 
 	public function index()
 	{
-		$this->template->view('account/dashboard');
+		// sayfa bilgisi
+		$data['meta_title'] = 'Hesap Yönetimi';
+		$data['navigation'][0] = '<li class="active">Hesap Yönetimi</li>';
+
+		$this->template->view('account/dashboard', $data);
 	}
 	
 	/*	YENI HESAP KARTI
@@ -12,14 +16,10 @@ class Account extends CI_Controller {
 	*/
 	public function add()
 	{
-		mysql_query('select * from musteriler');
-
-		mysql_query('select * from musterilefr');
-
-		mysql_query('select * from musteriler');
-
-
+		// sayfa bilgisi
 		$data['meta_title'] = 'Yeni Hesap Kartı';
+		$data['navigation'][0] = '<li><a href="'.site_url('account').'">Hesap Yönetimi</a></li>';
+		$data['navigation'][1] = '<li class="active">Yeni Hesap Kartı</li>';
 
 		$account['code'] = '';
 		$account['name'] = '';
@@ -116,6 +116,8 @@ class Account extends CI_Controller {
 	{
 		// meta title
 		$data['meta_title'] = 'Hesap Kartları';
+		$data['navigation'][0] = '<li><a href="'.site_url('account').'">Hesap Yönetimi</a></li>';
+		$data['navigation'][1] = '<li class="active">Hesap Kartları</li>';
 		
 		// toplam kayit sayisini hesapla
 		$data['num_rows'] = $this->db->select('id')->get('accounts')->num_rows();
@@ -347,8 +349,12 @@ class Account extends CI_Controller {
 			}
 		}
 		
-		
+		// sayfa bilgisi
 		$data['meta_title'] = $account['name'];
+		$data['navigation'][0] = '<li><a href="'.site_url('account').'">Hesap Yönetimi</a></li>';
+		$data['navigation'][1] = '<li><a href="'.site_url('account/lists').'">Hesap Kartları</a></li>';
+		$data['navigation'][2] = '<li class="active">'.$account['name'].'</li>';
+
 		calc_account_balance($account['id']);
 		$data['account_id'] = $account['id'];
 		$data['account'] = get_account($account['id']);

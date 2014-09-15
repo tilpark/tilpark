@@ -6,6 +6,7 @@ class Product extends CI_Controller {
 	{
 		// sayfa bilgisi
 		$data['meta_title'] = 'Stok Yönetimi';
+		$data['navigation'][0] = '<li class="active">Stok/Hizmet Yönetimi</li>';
 
 		$this->template->view('product/dashboard', $data);
 	}
@@ -25,6 +26,8 @@ class Product extends CI_Controller {
 	{
 		// sayfa bilgisi
 		$data['meta_title'] = 'Yeni Stok Kartı';
+		$data['navigation'][0] = '<li><a href="'.site_url('product').'">Stok/Hizmet Yönetimi</a></li>';
+		$data['navigation'][1] = '<li class="active">Yeni Stok Kartı</li>';
 
 		/* sayfa ilk acildiğinde, herhangi bir post işlemi olmamış ise input değerlerinin boş gözükmesi için */
 		$product['code'] = '';
@@ -120,6 +123,8 @@ class Product extends CI_Controller {
 	{
 		// sayfa bilgisi
 		$data['meta_title'] = 'Stok Kartları';
+		$data['navigation'][0] = '<li><a href="'.site_url('product').'">Stok/Hizmet Yönetimi</a></li>';
+		$data['navigation'][1] = '<li class="active">Stok Kartları</li>';
 
 		$data['products'] = get_products();
 

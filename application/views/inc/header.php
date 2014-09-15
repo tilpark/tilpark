@@ -166,62 +166,7 @@ $(document).ready( function() {
         <div class="navbar-collapse collapse">
           	
             
-            <ul class="nav navbar-nav">
-            <li class="dropdown">
-              <a id="drop1" href="#" role="button" class="dropdown-toggle active_product" data-toggle="dropdown"><i class="fa fa-share-square-o"></i> Stok <b class="caret"></b></a>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('product'); ?>"><i class="fa fa-share-square-o"></i> Stok Yönetimi</a></li>
-                <li role="presentation" class="divider"></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('product/add'); ?>"><i class="fa fa-plus"></i> Yeni Stok Kartı</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('product/lists'); ?>"><i class="fa fa-bars"></i> Stok Kartları</a></li>
-                
-                <li role="presentation" class="divider"></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('product/options'); ?>"><i class="fa fa-gear"></i> Seçenekler</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" id="drop2" role="button" class="dropdown-toggle active_account" data-toggle="dropdown"><i class="fa fa-users"></i> Hesap <b class="caret"></b></a>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('account'); ?>"><i class="fa fa-users"></i> Hesap Yönetimi</a></li>
-                <li role="presentation" class="divider"></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('account/add'); ?>"><i class="fa fa-plus"></i> Yeni Hesap Kartı</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('account/lists'); ?>"><i class="fa fa-bars"></i> Hesap Kartları</a></li>
-                
-                <li role="presentation" class="divider"></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('account/options'); ?>"><i class="fa fa-gear"></i> Seçenekler</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" id="drop2" role="button" class="dropdown-toggle active_form" data-toggle="dropdown"><i class="fa fa-external-link"></i> Formlar <b class="caret"></b></a>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-              	<li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('form'); ?>"><i class="fa fa fa-external-link"></i> Form Yönetimi</a></li>
-              	<li role="presentation" class="divider"></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('form/view/0?out'); ?>"><i class="fa fa-shopping-cart"></i> Yeni Satış Formu</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('form/view/0?in'); ?>"><i class="fa fa-shopping-cart"></i> Yeni Alış Formu</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo site_url('form/lists'); ?>"><i class="fa fa-bars"></i> Form Listesi</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-try"></i> Kasa <b class="caret"></b></a>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Action</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Another action</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Something else here</a></li>
-                <li role="presentation" class="divider"></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Separated link</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-tags"></i> Eklentiler <b class="caret"></b></a>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Action</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Another action</a></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Something else here</a></li>
-                <li role="presentation" class="divider"></li>
-                <li role="presentation"><a role="menuitem" tabindex="-1" href="http://twitter.com/fat">Separated link</a></li>
-              </ul>
-            </li>
-          </ul>
+            
             
             <div class="btn-group navbar-right infoBtn">
                 <button type="button" class="btn hidden-xs hidden-sm"><i class="fa fa-gears"></i></button>

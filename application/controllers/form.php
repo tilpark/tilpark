@@ -4,7 +4,10 @@ class Form extends CI_Controller {
 
 	public function index()
 	{
+		// sayfa bilgisi
 		$data['meta_title'] = 'Form Yönetimi';
+		$data['navigation'][0] = '<li class="active">Formlar</a>';
+
 		$this->template->view('form/dashboard', $data);
 	}
 	
@@ -85,14 +88,18 @@ class Form extends CI_Controller {
 		
 		
 		// sayfa bilgisi
+		$data['navigation'][0] = '<li><a href="'.site_url('form').'">Form Yönetimi</a></li>';
+		$data['navigation'][1] = '<li><a href="'.site_url('form/lists').'">Form Listesi</a></li>';
+
 		if($form_id > 0)
 		{
 			$data['meta_title'] = '#'.$form_id.' '.$form['name'];
 		}
 		else
 		{
-			if(isset($_GET['out'])){ $data['meta_title'] = 'Yeni Çıkış/Satış Formu';} 
-			else if(isset($_GET['in'])){$data['meta_title'] = 'Yeni Giriş/Alış Formu';} 
+			if(isset($_GET['out'])){ $data['meta_title'] = 'Yeni Çıkış/Satış Formu'; $data['navigation'][2] = '<li class="active">Yeni Çıkış/Satış Formu</li>';} 
+			else if(isset($_GET['in'])){$data['meta_title'] = 'Yeni Giriş/Alış Formu'; $data['navigation'][2] = '<li class="active">Yeni Giriş/Alış Formu</li>';} 
+
 		}
 		
 		
@@ -224,6 +231,10 @@ class Form extends CI_Controller {
 							{
 								add_log(array('type'=>'invoice', 'form_id'=>$form['id'], 'title'=>'Form Güncelleme', 'description'=>'Hesap kartı değiştirildi.'));
 							}
+
+							//form_item tablosunu guncelle
+							$this->db->where('form_id', $form['id']);
+							$this->db->update('form_items', array('account_id'=>$update_form['account_id']));
 						}
 					}
 
