@@ -43,7 +43,7 @@
 
 <div class="tab-pane fade active in" id="transactions">
 
-<?php if(@$alert) { foreach($alert as $message){ echo $message; } } ?>
+
 
 <div class="row">
     <div class="col-md-6">	
@@ -279,143 +279,119 @@
             </div> <!-- /.widget2 -->
         </div> <!-- /.col-md-8 -->       
     </div> <!-- /.row -->
-        
-                
-
-   
+           
 </form>
 
 
 <div class="h20"></div>
 
 
-
 <h3><i class="fa fa-puzzle-piece"></i> Form Hareketleri</h3>
 
-<?php
-if(@$formError) { alertbox('alert-danger', $formError);	 }
-if(@$error) { alertbox('alert-danger', $error);	 }
-if(isset($barcode_code_unknown)){alertbox('alert-danger', 'Stok kodu bulunamadı.', '"'.$_POST['code'].'" stok koduna ait stok kartı açılmamış olabilir.');}
-if(@$success_item) { foreach($success_item as $alert ) { echo $alert; } }
-?>
 
-
-<!-- items -->
-<?php
-$this->db->where('status', 1);
-$this->db->where('form_id', $form_id);
-$items = $this->db->get('form_items')->result_array();
-?>
-
-<table class="table table-hover table-bordered table-condensed">
-	<thead>
-    	<tr class="fs-12">
-        	<th width="1"></th>
-        	<th width="150" style="font-weight:bold;">Stok Kodu</th>
-            <th style="font-weight:bold;">Stok Adı</th>
-            <th width="60" style="font-weight:bold;">Adet</th>
-            <th width="80" style="font-weight:bold;">Birim Fiyatı</th>
-            <th width="80" style="font-weight:bold;">Toplam</th>
-            <th width="80" style="font-weight:bold;">Kdv Oranı</th>
-            <th width="80" style="font-weight:bold;">Kdv Tutarı</th>
-            <th width="100" style="font-weight:bold;">Satır Toplamı</th>
-        </tr>
-    </thead>
-    <tbody>
-    <tr class="active">
-        <td width="1">
-            <button form="add_item" class="btn btn-default btn-xs"><i class="fa fa-plus fs-14 text-success"></i></button>
-            <input type="hidden" name="item" form="add_item">
-            <input type="hidden" name="log_time" value="<?php echo logTime(); ?>" form="add_item">
-        </td>
-        <td width="150">
-            <input type="text" id="code" name="code" class="fiche-text invoice_input barcodeCode required" placeholder="BARKOD KODU" maxlength="100" value="" autocomplete="off" form="add_item" width="150">
-            <div class="search_product typeHead" style="width:400px; margin-top:6px;"></div>
-        </td>
-        <td width="280"><input type="text" id="product_name" name="product_name" class="fiche-text" placeholder="" maxlength="100" value="" form="add_item" autocomplete="off"></td>
-        <td width="60"><input type="text" id="amount" name="amount" class="fiche-text" placeholder="1" maxlength="11" value="1" onkeyup="calc();" form="add_item"></td>
-        <td width="80"><input type="text" id="quantity_price" name="quantity_price" class="fiche-text" placeholder="0.00" maxlength="11" value="" onkeyup="calc();" form="add_item"></td>
-        <td width="80"><input type="text" id="total" name="total" class="fiche-text" placeholder="0.00" maxlength="11" value="" onkeyup="calc();" form="add_item" readonly></td>
-        <td width="80"><input type="text" id="tax_rate" name="tax_rate" class="fiche-text" placeholder="0" maxlength="2" value="" onkeyup="calc();" form="add_item"></td>
-        <td width="80"><input type="text" id="tax" name="tax" class="fiche-text" placeholder="0" maxlength="11" value="" onkeyup="calc();" form="add_item" readonly></td>
-        <td width="80"><input type="text" id="sub_total" name="sub_total" class="fiche-text" placeholder="0" maxlength="11" value="" onkeyup="calc_subtotal();" form="add_item"></td>
-    </tr>
-    <?php foreach($items as $item): ?>
-    	<?php
-		if($item['product_id'] > 0)
-		{
-			$product = get_product($item['product_id']);
-            calc_product($product['id']);
-		}
-		else
-		{
-			$product['id'] = '';
-			$product['code'] = $item['product_code'];	
-			$product['name'] = $item['product_name'];	
-		}
-		?>
-    	<tr>
-        	<td>
-            	<a href="<?php echo site_url('form/view/'.$form['id'].'?item_id='.$item['id'].'&delete_item=✓'); ?>" title="Sil" class="btn btn-default btn-xs"><span class="fa fa-trash-o fs-14 text-danger"></span></a>
-            </td>
-        	<td class="fs-12">
-            	<?php if($product['id'] > 0): ?>
-                	<a href="<?php echo site_url('product/view/'.$product['id']); ?>" target="_blank"><?php echo $product['code']; ?></a>
-            	<?php else: ?>
-                	<?php echo $product['name']; ?>
-                <?php endif; ?>
-            </td>
-            <td class="fs-12"><?php echo $product['name']; ?></td>
-            <td class="text-center"><?php echo get_quantity($item['quantity']); ?></td>
-            <td class="text-right"><?php echo get_money($item['tax_free_sale_price']); ?> <small>TL</small></td>
-            <td class="text-right"><?php echo get_money($item['total']); ?> <small>TL</small></td>
-            <td class="text-center">% (<?php echo $item['tax_rate']; ?>)</td>
-            <td class="text-right"><?php echo get_money($item['tax']); ?> <small>TL</small></td>
-            <td class="text-right"><?php echo get_money($item['sub_total']); ?> <small>TL</small></td>
-        </tr>	
+<?php if(@$item_alerts): ?>
+  <?php foreach($item_alerts as $alert): ?>
+        <div class="alert alert-block alert-<?php echo $alert['class']; ?> fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <?php if(isset($alert['title'])): ?><h4><?php echo $alert['title']; ?></h4><?php endif; ?>
+            <?php if(isset($alert['description'])): ?><p><?php echo $alert['description']; ?></p><?php endif; ?>
+        </div>        
     <?php endforeach; ?>
-    </tbody>
-    <tfoot>
-    	<tr>
-            <th colspan="7" class="text-right">TOPLAM :</th>
-            <th colspan="2" class="text-right no-strong text-danger fs-16"><?php echo get_money($form['total']); ?> <i class="fa fa-try"></i></th>
+<?php endif; ?>
+
+
+
+
+<form name="add_item" id="add_item" action="<?php echo site_url('form/view/'.$form['id']); ?><?php if($form['id'] == 0): ?><?php if(isset($_GET['out'])): echo '?out'; else : echo '?in'; endif; ?><?php endif;?>" method="POST" class="validation_2">
+    <table class="table table-hover table-bordered table-condensed">
+    	<thead>
+        	<tr class="fs-12">
+            	<th width="1"></th>
+            	<th width="150" style="font-weight:bold;">Stok Kodu</th>
+                <th style="font-weight:bold;">Stok Adı</th>
+                <th width="60" style="font-weight:bold;">Adet</th>
+                <th width="80" style="font-weight:bold;">Birim Fiyatı</th>
+                <th width="80" style="font-weight:bold;">Toplam</th>
+                <th width="80" style="font-weight:bold;">Kdv Oranı</th>
+                <th width="80" style="font-weight:bold;">Kdv Tutarı</th>
+                <th width="100" style="font-weight:bold;">Satır Toplamı</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr class="active">
+            <td width="1">
+                <button form="add_item" class="btn btn-default btn-xs"><i class="fa fa-plus fs-14 text-success"></i></button>
+                <input type="hidden" name="item" form="add_item">
+                <input type="hidden" name="log_time" value="<?php echo logTime(); ?>" form="add_item">
+            </td>
+            <td width="150">
+                <input type="text" id="code" name="code" class="fiche-input-text invoice_input barcodeCode" placeholder="BARKOD KODU" maxlength="100" value="" autocomplete="off" form="add_item" width="150">
+                <div class="search_product typeHead" style="width:400px; margin-top:6px;"></div>
+            </td>
+            <td width="280"><input type="text" id="product_name" name="product_name" class="fiche-input-text required" placeholder="" maxlength="100" value="" form="add_item" autocomplete="off"></td>
+            <td width="60"><input type="text" id="amount" name="amount" class="fiche-input-text" placeholder="1" maxlength="11" value="1" onkeyup="calc();" form="add_item"></td>
+            <td width="80"><input type="text" id="quantity_price" name="quantity_price" class="fiche-input-text" placeholder="0.00" maxlength="11" value="" onkeyup="calc();" form="add_item"></td>
+            <td width="80"><input type="text" id="total" name="total" class="fiche-input-text" placeholder="0.00" maxlength="11" value="" onkeyup="calc();" form="add_item" readonly></td>
+            <td width="80"><input type="text" id="tax_rate" name="tax_rate" class="fiche-input-text" placeholder="0" maxlength="2" value="" onkeyup="calc();" form="add_item"></td>
+            <td width="80"><input type="text" id="tax" name="tax" class="fiche-input-text" placeholder="0" maxlength="11" value="" onkeyup="calc();" form="add_item" readonly></td>
+            <td width="80"><input type="text" id="sub_total" name="sub_total" class="fiche-input-text" placeholder="0" maxlength="11" value="" onkeyup="calc_subtotal();" form="add_item"></td>
         </tr>
-        <tr class="no-strong">
-            <th colspan="7" class="text-right">KDV :</th>
-            <th colspan="2" class="text-right no-strong text-danger fs-16"><?php echo get_money($form['tax']); ?> <i class="fa fa-try"></i></th>
-        </tr>
-        <tr class="no-strong">
-            <th colspan="7" class="text-right">GENEL TOPLAM :</th>
-            <th colspan="2" class="text-right no-strong text-danger fs-16"><?php echo get_money($form['grand_total']); ?> <i class="fa fa-try"></i></th>
-        </tr>
-    </tfoot>
-</table>
+        <?php foreach($items as $item): ?>
+        	<?php
+    		if($item['product_id'] > 0)
+    		{
+    			$product = get_product($item['product_id']);
+    		}
+    		else
+    		{
+    			$product['id'] = '';
+    			$product['code'] = $item['product_code'];	
+    			$product['name'] = $item['product_name'];	
+    		}
+    		?>
+        	<tr>
+            	<td>
+                	<a href="<?php echo site_url('form/view/'.$form['id'].'?item_id='.$item['id'].'&delete_item=✓'); ?>" title="Sil" class="btn btn-default btn-xs"><span class="fa fa-trash-o fs-14 text-danger"></span></a>
+                </td>
+            	<td class="fs-12">
+                	<?php if($product['id'] > 0): ?>
+                    	<a href="<?php echo site_url('product/view/'.$product['id']); ?>" target="_blank"><?php echo $product['code']; ?></a>
+                	<?php else: ?>
+                    	<?php echo $product['name']; ?>
+                    <?php endif; ?>
+                </td>
+                <td class="fs-12"><?php echo $product['name']; ?></td>
+                <td class="text-center"><?php echo get_quantity($item['quantity']); ?></td>
+                <td class="text-right"><?php echo get_money($item['tax_free_sale_price']); ?> <small>TL</small></td>
+                <td class="text-right"><?php echo get_money($item['total']); ?> <small>TL</small></td>
+                <td class="text-center">% (<?php echo $item['tax_rate']; ?>)</td>
+                <td class="text-right"><?php echo get_money($item['tax']); ?> <small>TL</small></td>
+                <td class="text-right"><?php echo get_money($item['sub_total']); ?> <small>TL</small></td>
+            </tr>	
+        <?php endforeach; ?>
+        </tbody>
+        <tfoot>
+        	<tr>
+                <th colspan="7" class="text-right">TOPLAM :</th>
+                <th colspan="2" class="text-right no-strong text-danger fs-16"><?php echo get_money($form['total']); ?> <i class="fa fa-try"></i></th>
+            </tr>
+            <tr class="no-strong">
+                <th colspan="7" class="text-right">KDV :</th>
+                <th colspan="2" class="text-right no-strong text-danger fs-16"><?php echo get_money($form['tax']); ?> <i class="fa fa-try"></i></th>
+            </tr>
+            <tr class="no-strong">
+                <th colspan="7" class="text-right">GENEL TOPLAM :</th>
+                <th colspan="2" class="text-right no-strong text-danger fs-16"><?php echo get_money($form['grand_total']); ?> <i class="fa fa-try"></i></th>
+            </tr>
+        </tfoot>
+    </table>
 <!-- /items -->
 <style>
-.fiche-text {
+.fiche-input-text {
     height: 24px !important;
     padding: 0px 5px !important;
 }
 </style>
-<script>
-$(document).ready(function(e) {
-    $('#code').keyup(function() {
-        $('.typeHead').show();
-        $.get("../search_product_for_invoice/"+$(this).val()+"?<?php if($form['in_out']=='in'){echo'cost_price';} ?>", function( data ) {
-            $('.search_product').html(data);
-        });
-    });
-    $('#product_name').keyup(function() {
-        $('.typeHead').show();
-        $.get("../search_product_for_invoice/"+$(this).val()+"?<?php if($form['in_out']=='in'){echo'cost_price';} ?>", function( data ) {
-          $('.search_product').html(data);
-        });
-    });
-});
-
-
-</script>
-<form name="add_item" id="add_item" action="<?php echo site_url('form/view/'.$form['id']); ?><?php if($form['id'] == 0): ?><?php if(isset($_GET['out'])): echo '?out'; else : echo '?in'; endif; ?><?php endif;?>" method="POST" class="">
 </form>
 
 
@@ -431,72 +407,86 @@ $(document).ready(function(e) {
 </div> <!-- #history -->
 
 
-
-
-
 </div> <!-- /#myTabContent -->
 
 
 
-<style>
-.barcodeCode:focus { border:1px solid #f00 !important; }
-</style>
 
 <script>
-<?php if($form['id']): ?>
-    $('.barcodeCode').focus();
-<?php else: ?>
-    $('#name').focus();
-<?php endif; ?>
-
-function calc()
-{
-	if($('#quantity_price').val() == 'NaN'){ $('#quantity_price').val('0'); }
-	
-	var amount 		= $('#amount').val();	
-	var quantity_price = $('#quantity_price').val();	
-	var total 		= $('#total').val();
-	var tax_rate 	= $('#tax_rate').val();
-	var tax 		= $('#tax').val();
-	var sub_total 	= $('#sub_total').val();
-	
-	$('#total').val(parseFloat(amount * quantity_price).toFixed(2));
-	
-	
-	tax_rate = $('#tax_rate').val();
-	   if(tax_rate == ''){tax_rate = 0;}
-    $('#tax').val( parseFloat(parseFloat( $('#total').val() / 100 ) * tax_rate).toFixed(2));
-	
-	$('#sub_total').val(parseFloat(parseFloat($('#total').val()) + parseFloat($('#tax').val())).toFixed(2));
-	$('#sub_total').val(parseFloat($('#sub_total').val()).toFixed(2));
-}
 
 
-function calc_subtotal()
-{
-	if($('#quantity_price').val() == 'NaN'){ $('#quantity_price').val('0'); }
-	if($('#sub_total').val() == ''){ return false; }
-	
-	var amount 		= $('#amount').val();	
-	var quantity_price = $('#quantity_price').val();	
-	var total 		= $('#total').val();
-	var tax_rate 	= $('#tax_rate').val();
-	var tax 		= $('#tax').val();
-	var sub_total 	= $('#sub_total').val();
-	
-	
-	total = parseFloat(parseFloat(sub_total) / parseFloat('1.'+tax_rate)).toFixed(2);
-	tax = sub_total - total;
-
-    $('#tax').val(parseFloat(tax).toFixed(2));
-	$('#total').val(parseFloat(total).toFixed(2));
-	$('#quantity_price').val(parseFloat(parseFloat($('#total').val()) / parseFloat($('#amount').val())).toFixed(2)).toFixed(2);
-	$('#sub_total').val(parseFloat($('#sub_total').val()).toFixed(2));
-    calc();
-}
+    $('#code').keyup(function() {
+        $('.typeHead').show();
+        $.get("../search_product_for_invoice/"+$(this).val()+"?<?php if($form['in_out']=='in'){echo'cost_price';} ?>", function( data ) {
+            $('.search_product').html(data);
+        });
+    });
+    $('#product_name').keyup(function() {
+        $('.typeHead').show();
+        $.get("../search_product_for_invoice/"+$(this).val()+"?<?php if($form['in_out']=='in'){echo'cost_price';} ?>", function( data ) {
+          $('.search_product').html(data);
+        });
+    });
 
 
-<?php if(@$url_change_for_form_ID): ?> window.history.pushState("object or string", "Title", "<?php echo $form['id']; ?>"); <?php endif; ?>
+    <?php if($form['id']): ?>
+        $('.barcodeCode').focus();
+    <?php else: ?>
+        $('#name').focus();
+    <?php endif; ?>
+
+
+
+    // adet/birim fiyati degistiginde hesapla
+    function calc()
+    {
+    	if($('#quantity_price').val() == 'NaN'){ $('#quantity_price').val('0'); }
+    	
+    	var amount 		= $('#amount').val();	
+    	var quantity_price = $('#quantity_price').val();	
+    	var total 		= $('#total').val();
+    	var tax_rate 	= $('#tax_rate').val();
+    	var tax 		= $('#tax').val();
+    	var sub_total 	= $('#sub_total').val();
+    	
+    	$('#total').val(parseFloat(amount * quantity_price).toFixed(2));
+    	
+    	
+    	tax_rate = $('#tax_rate').val();
+    	   if(tax_rate == ''){tax_rate = 0;}
+        $('#tax').val( parseFloat(parseFloat( $('#total').val() / 100 ) * tax_rate).toFixed(2));
+    	
+    	$('#sub_total').val(parseFloat(parseFloat($('#total').val()) + parseFloat($('#tax').val())).toFixed(2));
+    	$('#sub_total').val(parseFloat($('#sub_total').val()).toFixed(2));
+    }
+
+
+    // satir toplami degistiginde hesapla
+    function calc_subtotal()
+    {
+    	if($('#quantity_price').val() == 'NaN'){ $('#quantity_price').val('0'); }
+    	if($('#sub_total').val() == ''){ return false; }
+    	
+    	var amount 		= $('#amount').val();	
+    	var quantity_price = $('#quantity_price').val();	
+    	var total 		= $('#total').val();
+    	var tax_rate 	= $('#tax_rate').val();
+    	var tax 		= $('#tax').val();
+    	var sub_total 	= $('#sub_total').val();
+    	
+    	
+    	total = parseFloat(parseFloat(sub_total) / parseFloat('1.'+tax_rate)).toFixed(2);
+    	tax = sub_total - total;
+
+        $('#tax').val(parseFloat(tax).toFixed(2));
+    	$('#total').val(parseFloat(total).toFixed(2));
+    	$('#quantity_price').val(parseFloat(parseFloat($('#total').val()) / parseFloat($('#amount').val())).toFixed(2)).toFixed(2);
+    	$('#sub_total').val(parseFloat($('#sub_total').val()).toFixed(2));
+        calc();
+    }
+
+    // yeni form olusmus ise URl ve tarayıcı gecmisini duzenle
+    <?php if(@$url_change_for_form_ID): ?> window.history.pushState("object or string", "Title", "<?php echo $form['id']; ?>"); <?php endif; ?>
 
 
 </script>

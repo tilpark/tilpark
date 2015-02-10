@@ -1,5 +1,11 @@
-<?php if(@$product_card_not_found): ?>
-    <?php error_page_message('HATA', '404', '<strong>dur!</strong> aradığın ürün kartı bulunamadı'); ?>
+<?php if(@!$product): ?>
+    <h3 class="line text-danger"><i class="fa fa-warning"></i> Stok Kartı Yok!</h3>
+    <ul class="sugar">
+        <li>Aradığın stok kartı bulunamadı.</li>
+        <li>Stok ID numarası yada stok barkod kodu yanlış yazılmış olabilir.</li>
+        <li class="text-warning">Sizin için silinmiş stok kartları arasında arama yaptık fakat bulamadık. "<?php echo $this->uri->segment(3); ?>" ID veya barkod koduna ait hesap kartı bulunamadı.</li>
+        <li>Daha fazla ayrıntı için <a href="http://tilpark.com" target="">Tilpark</a> web sitesini ziyaret edebilir ve Tilpark forumlarında konuyu tartışabilirsin.</li>
+    </ul>
 <?php else: ?>
 
 
@@ -16,14 +22,14 @@
     <li class="dropdown pull-right">
     	<a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-asterisk"></i> Seçenekler <b class="caret"></b></a>
     	<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">   
-        	<li><a href="<?php echo site_url('product/print_barcode/'.$product['id']); ?>?print"><i class="fa fa-barcode mr9"></i>Barkod Yazdır</a></li>
+        	<li><a href="<?php echo site_url('product/print_barcode/'.$product['id']); ?>?print"><i class="fa fa-barcode mr9"></i>Barkod yazdır</a></li>
             
             <?php if(item_access('product_edit_button')): ?>
                 <li class="divider"></li>
                 <?php if($product['status'] == '1'): ?>
-                    <li><a href="?status=<?php echo base64_encode('0'); ?>"><i class="fa fa-trash mr9"></i>Sil</a></li>
+                    <li><a href="?status=<?php echo base64_encode('0'); ?>"><i class="fa fa-trash text-danger"></i>Stok kartını sil</a></li>
                 <?php else: ?>
-                    <li><a href="?status=<?php echo base64_encode('1'); ?>"><i class="fa fa-check-square-o mr9"></i>Aktifleştir</a></li>
+                    <li><a href="?status=<?php echo base64_encode('1'); ?>"><i class="fa fa-check-square-o text-success"></i>Aktifleştir</a></li>
                 <?php endif; ?>
             <?php endif; ?>
         </ul>
@@ -505,14 +511,6 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
 <div class="tab-pane fade in" id="history">
 	<?php get_log_table(array('product_id'=>$product['id']), 'DESC'); ?>
 </div> <!-- /#history -->
-
-
-
-
-
-
-
-
 
 
 

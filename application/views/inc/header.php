@@ -425,15 +425,15 @@ $(document).ready(function(e) {
 
 
 
-<?php if(@$messages): ?>
-  <?php foreach($messages as $message): ?>
+
+<?php if(@$alerts): ?>
+  <?php foreach($alerts as $alert): ?>
         
 
-
-        <div class="alert alert-block alert-<?php echo $message['class']; ?> fade in">
+        <div class="alert alert-block alert-<?php echo $alert['class']; ?> fade in">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <?php if(isset($message['title'])): ?><h4><?php echo $message['title']; ?></h4><?php endif; ?>
-            <?php if(isset($message['description'])): ?><p><?php echo $message['description']; ?></p><?php endif; ?>
+            <?php if(isset($alert['title'])): ?><h4><?php echo $alert['title']; ?></h4><?php endif; ?>
+            <?php if(isset($alert['description'])): ?><p><?php echo $alert['description']; ?></p><?php endif; ?>
         </div>
               
         

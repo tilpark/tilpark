@@ -120,6 +120,12 @@ class Product extends CI_Controller {
 		$this->template->view('product/add', $data);
 	}
 	
+
+
+
+
+
+
 	public function lists()
 	{
 		// sayfa bilgisi
@@ -127,7 +133,7 @@ class Product extends CI_Controller {
 		$data['navigation'][0] = '<li><a href="'.site_url('product').'">Stok/Hizmet Kartları</a></li>';
 		$data['navigation'][1] = '<li class="active">Stok Listesi</li>';
 
-		$data['products'] = get_products();
+		$data['products'] = get_products(array('status'=>'1'));
 
 		$this->template->view('product/lists', $data);	
 	}
@@ -164,8 +170,13 @@ class Product extends CI_Controller {
 			}
 			else
 			{
+				$data['meta_title'] = 'Stok Kartı Bulunamadı';
+				$data['navigation'][0] = '<li><a href="'.site_url('product').'">Stok/Hizmet Kartları</a></li>';
+				$data['navigation'][1] = '<li><a href="'.site_url('product/lists').'">Stok Listesi</a></li>';
+				$data['navigation'][2] = '<li class="active">Stok Kartı Bulunamadı</li>';
+
 				$data['product_card_not_found'] = true;
-				$this->template->view('product/product', $data);
+				$this->template->view('product/view', $data);
 				return false;
 			}
 			

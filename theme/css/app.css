@@ -292,7 +292,7 @@ li.dropdown a.active,
   border-top-right-radius: 0;
   border-top-left-radius: 0;
 }
-.dropdown-menu > li > a {
+.navbar-nav > li ul.dropdown-menu > li > a {
   display: block;
   padding: 3px 20px;
   clear: both;
@@ -302,7 +302,7 @@ li.dropdown a.active,
   white-space: nowrap;
   font-size: 13px;
 }
-.dropdown-menu > li > a .fa {
+.navbar-nav > li ul.dropdown-menu > li > a .fa {
   font-size: 14px;
   left: auto;
   right: 10px;
@@ -740,24 +740,7 @@ table .no_read {
 .row.stat small span {
   margin-top: 10px;
 }
-.error-page {
-  font-size: 10em;
-  text-align: center;
-  margin-bottom: 60px;
-  margin-top: 80px;
-  color: #34495e;
-  text-shadow: #d7dadb 1px 1px, #d7dadb 2px 2px, #d7dadb 3px 3px, #d8dbdc 4px 4px;
-}
-.error-page .error-code {
-  color: #e74c3c;
-}
-.error-page small {
-  font-size: 20px;
-  display: block;
-  text-shadow: none;
-  color: #34495e;
-  margin-top: 60px;
-}
+
 .notifyBox {
   position: absolute;
   right: 20px;
@@ -860,6 +843,9 @@ table .no_read {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
+
+
 /* bootstrap helper */
 /* helper */
 .row.no-space {
@@ -879,6 +865,45 @@ table .no_read {
   background-color: #ccc;
   color: #000;
 }
+
+
+
+.text-muted {
+  color: #999 !important;
+}
+.text-primary {
+  color: #428bca !important;
+}
+a.text-primary:hover {
+  color: #3071a9 !important;
+}
+.text-success {
+  color: #3c763d !important;
+}
+a.text-success:hover {
+  color: #2b542c !important;
+}
+.text-info {
+  color: #31708f !important;
+}
+a.text-info:hover {
+  color: #245269 !important;
+}
+.text-warning {
+  color: #8a6d3b !important;
+}
+a.text-warning:hover {
+  color: #66512c !important;
+}
+.text-danger {
+  color: #a94442 !important;
+}
+a.text-danger:hover {
+  color: #843534 !important;
+}
+
+
+
 /* nav-tabs */
 .nav-tabs {
   font-family: 'Ubuntu', sans-serif !important;
@@ -892,11 +917,11 @@ table .no_read {
 .nav-tabs > li a {
   border: 1px solid transparent;
   margin: 0px 0px 0 10px;
-  font-size: 16px !important;
-  font-weight: 300 !important;
+  font-size: 16px;
+  font-weight: 300;
   color: #555;
   border-color: #ccc;
-  background: #e4e4e4 !important;
+  background: #e4e4e4;
   border-radius:0px;
 }
 .nav-tabs > li a:hover {
@@ -906,7 +931,7 @@ table .no_read {
   background-color: #fff !important;
 }
 .nav-tabs > li a .fa {
-  margin-right: 6px;
+  margin-right: 6px;æ
   font-size: 20px;
   color: #000;
 }
@@ -915,11 +940,11 @@ table .no_read {
   cursor: default;
   border: 1px solid #ccc;
   border-bottom: 1px solid transparent;
-  background-color: #f0f0f0 !important;
+  background-color: #f0f0f0;
 }
 .nav-tabs > li.active > a:hover {
   border: 1px solid #ccc;
-  border-bottom: 1px solid #f2f2f2 !important;
+  border-bottom: 1px solid #f2f2f2;
 }
 .nav .open > a,
 .nav .open > a:hover,
@@ -927,37 +952,41 @@ table .no_read {
   border-color: #ccc;
   border-bottom: 1px;
 }
-.dropdown-menu {
+
+/* tab menu icindeki acilir menu 
+    genelde sag taraftaki secenekler icin kullanilir
+*/
+.nav-tabs li.dropdown ul.dropdown-menu {
   border-radius: 1px;
 }
-.dropdown-menu > li {
+.nav-tabs li.dropdown ul.dropdown-menu > li {
 
 }
-.dropdown-menu > li > a {
+.nav-tabs li.dropdown ul.dropdown-menu > li > a {
   display: block;
-  padding: 3px 10px !important;
-  margin: 0px !important;
-  font-size: 12px !important;
+  padding: 3px 20px;
+  margin: 0px;
   clear: both;
   font-weight: normal;
   line-height: 1.428571429;
-  color: #7c7c7c;
+  color: #939494;
   white-space: nowrap;
-  background-color: transparent !important;
-  border: 0px !important;
+  font-size: 13px;
+  background-color: #fff;
+  border:0px;
 }
-.dropdown-menu > li > a > .fa{
-  font-size: 12px;
+.nav-tabs li.dropdown ul.dropdown-menu > li > a > .fa{
+  font-size: 14px;
   color: #7c7c7c;
+  position: absolute;
+  right: 0px;
+  width: 16px;
 }
-.dropdown-menu > li:hover {
-  background-color: #f2f2f2;
+.nav-tabs li.dropdown ul.dropdown-menu > li > a:hover,
+.nav-tabs li.dropdown ul.dropdown-menu > li > a:focus {
+  background-color: #f5f5f5 !important;
 }
-.dropdown-menu > li > a:hover,
-.dropdown-menu > li > a:focus {
-  background-color: #f2f2f2;
-  color: #7c7c7c;
-}
+
 
 
 

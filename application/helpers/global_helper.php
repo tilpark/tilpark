@@ -145,16 +145,6 @@ function get_options($data, $array=array())
 
 
 
-function error_page_message($title,$code,$message, $array=array())
-{
-	?>
-    <div class="error-page">
-		<?php echo $title; ?>
-        <span class="error-code"><?php echo $code; ?></span>
-		<small><?php echo $message; ?></small>
-    </div>
-    <?php
-}
 
 
 

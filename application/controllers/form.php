@@ -29,7 +29,6 @@ class Form extends CI_Controller {
 		
 		if(isset($_POST['add']) and is_log())
 		{
-			$continue = true;
 			$this->form_validation->set_rules('account_id', get_lang('Account Card'), 'required|digits');
 		
 			if($this->form_validation->run() == FALSE)
@@ -116,17 +115,7 @@ class Form extends CI_Controller {
 		{
 			$form['id'] = 0;
 			$form['account_id'] = 0;
-
-			$account['name'] = 'PERAKENDE';
-		}
-		// eger yeni olusmus ise formda yapilan son degisiklikler
-		if(@$_GET['success'] == 'formUpdate' and @$_GET['date'] == date('YmdHis'))
-		{
-			$data['success']['formUpdate'] = get_alertbox('alert-success', 'Form Bilgileri Güncellendi.');
-		}
-		if(@$_GET['success_item'] == 'add_item' and @$_GET['date'] == date('YmdHis'))
-		{
-			$data['success_item']['add_item'] = get_alertbox('alert-success', '"'.$_GET['product_code'].'" stok hareketi eklendi.');
+			$account['name'] = 'MUHTELIF MUSTERILER';
 		}
 
 		
@@ -136,43 +125,43 @@ class Form extends CI_Controller {
 		/* form bilgileri guncelle */
 		if(isset($_POST['update_form_info']) and is_log())
 		{
-			// eger form daha onceden olusmamis ise olustur
-			if($form_id == 0)
-			{
-				$form['date'] = date('Y-m-d H:i:s');
-				$form['account_id'] = $form['account_id'];
-				$form['type'] = 'invoice';
-
-				if(isset($_GET['in'])){$form['in_out'] = 'in';} else if(isset($_GET['out'])){$form['in_out'] = 'out';} else {exit('37563726 eksik bilgi');} 
-					
-				$form_id = add_form($form);
-				
-				if($form_id > 0)
-				{
-					$log['type'] = 'invoice';
-					$log['form_id'] = $form_id;
-					$log['account_id'] = $form['account_id'];
-					$log['title'] = 'Yeni Fiş';
-					if(isset($_GET['sell'])){ $log['description'] = 'Çıkış formu oluşturdu.'; } else { $log['description'] = 'Giriş formu oluşturdu.'; } 
-					add_log($log);
-				
-					$form = get_form($form_id);
-					$new_form = true;
-
-					$data['alert']['new_form'] = get_alertbox('alert-success', 'Form eklendi.', '"<strong>#'.$form['id'].'</strong>" ID numaralı form eklendi.');
-				}
-			}
-
-
-
-			$this->form_validation->set_rules('account_id', 'Hesap Kartı', 'required');
 			$this->form_validation->set_rules('date', 'Tarih', 'required');
+			$this->form_validation->set_rules('account_id', 'Hesap Kartı', 'required');
+			$this->form_validation->set_rules('gsm', 'Gsm', 'required|numeric|min_length[10]');
 			if($this->form_validation->run() == FALSE)
 			{
-				$data['alert']['validations_form_update'] = validation_errors();
+				$data['alerts']['form_validation_error_1'] = array('class'=>'danger', 'title'=>'Form Hatası', 'description'=>validation_errors());
 			}
 			else
 			{
+				// eger form daha onceden olusmamis ise olustur
+				if($form_id == 0)
+				{
+					$form['date'] = date('Y-m-d H:i:s');
+					$form['account_id'] = $form['account_id'];
+					$form['type'] = 'invoice';
+
+					if(isset($_GET['in'])){$form['in_out'] = 'in';} else if(isset($_GET['out'])){$form['in_out'] = 'out';} else {exit('37563726 eksik bilgi');} 
+						
+					$form_id = add_form($form);
+					
+					if($form_id > 0)
+					{
+						$log['type'] = 'invoice';
+						$log['form_id'] = $form_id;
+						$log['account_id'] = $form['account_id'];
+						$log['title'] = 'Yeni Fiş';
+						if(isset($_GET['sell'])){ $log['description'] = 'Çıkış formu oluşturdu.'; } else { $log['description'] = 'Giriş formu oluşturdu.'; } 
+						add_log($log);
+					
+						$form = get_form($form_id);
+						$new_form = true;
+
+						$data['alerts']['new_form'] = array('class'=>'success', 'title'=>'Form eklendi.', 'description'=>'"<strong>#'.$form['id'].'</strong>" ID numaralı form eklendi.');
+					}
+				}
+
+
 				$update_form['date'] = $this->input->post('date');
 				$update_form['account_id'] = $this->input->post('account_id');
 				$update_form['code'] = $this->input->post('code');
@@ -197,7 +186,7 @@ class Form extends CI_Controller {
 				if(!$account and $update_form['account_id'] > 0)
 				{
 					$cont = false;
-					$data['alert']['not_found_account'] = get_alert('alert-warning', 'Hesap kartı bulunamadı.');
+					$data['alerts']['not_found_account'] = array('class'=>'warning', 'title'=>'Hesap kartı bulunamadı.');
 				}
 				
 
@@ -231,12 +220,12 @@ class Form extends CI_Controller {
 						$update_form['county'] = $account['county'];
 						$update_form['city'] = $account['city'];
 						
-						$data['alert']['new_account'] = get_alertbox('alert-success', 'Yeni hesap kartı oluştu.', $account['name']. ' hesap kartı oluştu. Hesap kartına erişmek için <a href="'.site_url('account/view/'.$account['id']).'" target="_blank">tıklayınız</a>.');
+						$data['alerts']['new_account'] = array('class'=>'success', 'title'=>'Yeni hesap kartı oluştu.', 'description'=>$account['name']. ' hesap kartı oluştu. Hesap kartına erişmek için <a href="'.site_url('account/view/'.$account['id']).'" target="_blank">tıklayınız</a>.');
 					}
 					else
 					{
 						$cont = false;
-						$data['alert']['new_account'] = get_alertbox('alert-danger', 'Hesap kartı eklenmedi.');
+						$data['alerts']['new_account'] = array('class'=>'danger', 'title'=>'Hesap kartı eklenmedi.');
 					}
 				}
 
@@ -256,9 +245,12 @@ class Form extends CI_Controller {
 								add_log(array('type'=>'invoice', 'form_id'=>$form['id'], 'title'=>'Form Güncelleme', 'description'=>'Hesap kartı değiştirildi.'));
 							}
 
-							//form_item tablosunu guncelle
+							//form_items tablosunu guncelle
 							$this->db->where('form_id', $form['id']);
 							$this->db->update('form_items', array('account_id'=>$update_form['account_id']));
+
+
+							$data['alerts']['form_update'] = array('class'=>'success', 'title'=>'Form güncellendi.');
 						}
 					}	
 				}
@@ -268,36 +260,6 @@ class Form extends CI_Controller {
 		/* form hareketleri */
 		if(isset($_POST['item']) and is_log())
 		{
-			// eger form daha onceden olusmamis ise otomatik olustur
-			if($form_id == 0)
-			{
-				$form['date'] = date('Y-m-d H:i:s');
-				$form['account_id'] = $form['account_id'];
-				$form['type'] = 'invoice';
-
-				if(isset($_GET['in'])){$form['in_out'] = 'in';} else if(isset($_GET['out'])){$form['in_out'] = 'out';} else {exit('376646453 eksik bilgi.');} 
-					
-				$form_id = add_form($form);
-				
-				if($form_id > 0)
-				{
-					$log['type'] = 'invoice';
-					$log['form_id'] = $form_id;
-					$log['account_id'] = $form['account_id'];
-					$log['title'] = 'Yeni Fiş';
-					if(isset($_GET['sell']))
-					{ $log['description'] = 'Satış formu oluşturdu.'; }
-					else { $log['description'] = 'Alış formu oluşturdu.'; } 
-					add_log($log);
-				}
-
-				$form = get_form($form_id);
-				$new_form = true;
-
-				$data['alert']['new_form'] = get_alertbox('alert-success', 'Form eklendi.', '"<strong>#'.$form['id'].'</strong>" ID numaralı form eklendi.');
-			}
-
-			$continue = true;
 			$this->form_validation->set_rules('code', get_lang('Barcode Code'), 'required');
 			$this->form_validation->set_rules('amount', get_lang('Amount'), 'required|digits');
 			$this->form_validation->set_rules('quantity_price', get_lang('Quantity Price'), 'number');
@@ -305,10 +267,40 @@ class Form extends CI_Controller {
 			
 			if($this->form_validation->run() == FALSE)
 			{
-				$data['formError'] = validation_errors();
+				$data['item_alerts']['item_form_validation_errors'] = array('class'=>'danger', 'title'=>'Form Hatası', 'description'=>validation_errors()); 
 			}
 			else
 			{
+				// eger form daha onceden olusmamis ise otomatik olustur
+				if($form_id == 0)
+				{
+					$form['date'] = date('Y-m-d H:i:s');
+					$form['account_id'] = $form['account_id'];
+					$form['type'] = 'invoice';
+
+					if(isset($_GET['in'])){$form['in_out'] = 'in';} else if(isset($_GET['out'])){$form['in_out'] = 'out';} else {exit('376646453 eksik bilgi.');} 
+						
+					$form_id = add_form($form);
+					
+					if($form_id > 0)
+					{
+						$log['type'] = 'invoice';
+						$log['form_id'] = $form_id;
+						$log['account_id'] = $form['account_id'];
+						$log['title'] = 'Yeni Fiş';
+						if(isset($_GET['sell']))
+						{ $log['description'] = 'Satış formu oluşturdu.'; }
+						else { $log['description'] = 'Alış formu oluşturdu.'; } 
+						add_log($log);
+					}
+
+					$form = get_form($form_id);
+					$new_form = true;
+
+					$data['alerts']['new_form'] = array('class'=>'success', 'title'=>'Form eklendi.', 'description'=>'"<strong>#'.$form['id'].'</strong>" ID numaralı form eklendi.');
+				}
+
+
 				$item['form_id'] = $form['id'];
 				
 				$product['code'] 	= $this->input->post('code');
@@ -319,7 +311,7 @@ class Form extends CI_Controller {
 				
 				$product = get_product(array('status'=>'1', 'code'=>$product['code']));
 				
-				if(!$product) { $data['barcode_code_unknown'] = 'Stok kartı bulunamadı.'; }
+				if(!$product) { $data['item_alerts']['barcode_not_found'] = array('class'=>'danger', 'title'=>'"'.$this->input->post('code').'" stok kodu bulunamadı'); }
 				else
 				{
 					$item['product_id'] = $product['id'];
@@ -352,9 +344,11 @@ class Form extends CI_Controller {
 						if($form['in_out'] == 0){$log['title'] = 'Giriş';}else{$log['title'] = 'Çıkış';}
 						if($form['in_out'] == 0){$log['description'] = $item['quantity']. ' birim stok alışı ekledi.';}else{$log['description'] = $item['quantity']. ' birim adet stok çıkışı ekledi.';;}
 						add_log($log);
-						calc_invoice_items($form['id']);	
+
+						// calc
 						calc_product($product['id']);
-						$data['success_item']['add_item'] = get_alertbox('alert-success', '"'.$product['code'].'" stok hareketi eklendi.');
+
+						$data['item_alerts']['add_item'] = array('class'=>'success', 'title'=>$product['code'].'" stok hareketi eklendi.');
 					}
 				}
 			}
@@ -399,7 +393,7 @@ class Form extends CI_Controller {
 				$log['description']	= get_quantity($item['quantity']).' birim stok hareketi silindi.';
 				add_log($log);
 				
-				calc_invoice_items($form['id']);	
+				// calc
 				calc_product($item['product_id']);
 				
 				
@@ -408,8 +402,10 @@ class Form extends CI_Controller {
 		}
 
 		
+		// calc
 		calc_invoice_items($form['id']);
 		calc_account_balance($form['account_id']);
+
 		if($form['id'])
 		{
 			$data['form_id'] = $form['id']; 
