@@ -6,7 +6,7 @@ class Product extends CI_Controller {
 	{
 		// sayfa bilgisi
 		$data['meta_title'] = 'Stok Yönetimi';
-		$data['navigation'][0] = '<li class="active">Stok/Hizmet Yönetimi</li>';
+		$data['navigation'][0] = '<li class="active">Stok/Hizmet Kartları</li>';
 
 		$this->template->view('product/dashboard', $data);
 	}
@@ -26,7 +26,7 @@ class Product extends CI_Controller {
 	{
 		// sayfa bilgisi
 		$data['meta_title'] = 'Yeni Stok Kartı';
-		$data['navigation'][0] = '<li><a href="'.site_url('product').'">Stok/Hizmet Yönetimi</a></li>';
+		$data['navigation'][0] = '<li><a href="'.site_url('product').'">Stok/Hizmet Kartları</a></li>';
 		$data['navigation'][1] = '<li class="active">Yeni Stok Kartı</li>';
 
 		/* sayfa ilk acildiğinde, herhangi bir post işlemi olmamış ise input değerlerinin boş gözükmesi için */
@@ -114,6 +114,7 @@ class Product extends CI_Controller {
 			}
 		}
 		
+		
 		$data['product'] = $product;
 		
 		$this->template->view('product/add', $data);
@@ -123,8 +124,8 @@ class Product extends CI_Controller {
 	{
 		// sayfa bilgisi
 		$data['meta_title'] = 'Stok Kartları';
-		$data['navigation'][0] = '<li><a href="'.site_url('product').'">Stok/Hizmet Yönetimi</a></li>';
-		$data['navigation'][1] = '<li class="active">Stok Kartları</li>';
+		$data['navigation'][0] = '<li><a href="'.site_url('product').'">Stok/Hizmet Kartları</a></li>';
+		$data['navigation'][1] = '<li class="active">Stok Listesi</li>';
 
 		$data['products'] = get_products();
 
@@ -171,8 +172,9 @@ class Product extends CI_Controller {
 		}
 		// sayfa bilgisi
 		$data['meta_title'] = $product['name'];
-		$data['navigation'][0] = '<li><a href="'.site_url('product').'">Stok/Hizmet Yönetimi</a></li>';
-		$data['navigation'][1] = '<li class="active">'.$product['name'].'</li>';
+		$data['navigation'][0] = '<li><a href="'.site_url('product').'">Stok/Hizmet Kartları</a></li>';
+		$data['navigation'][1] = '<li><a href="'.site_url('product/lists').'">Stok Listesi</a></li>';
+		$data['navigation'][2] = '<li class="active">'.$product['name'].'</li>';
 
 		$data['product'] = $product;
 		// gerçek stok miktarını hesaplıyoruz.

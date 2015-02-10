@@ -38,8 +38,8 @@ class Account extends CI_Controller {
 		{
 			$continue = true;
 			$this->form_validation->set_rules('code', 'Hesap Kodu', 'min_length[3]|max_length[30]');
-			$this->form_validation->set_rules('name', 'Hesap Adı', 'required|min_length[3]|max_length[50]');
-			$this->form_validation->set_rules('name_surname', 'Ad Soyad', 'min_length[3]|max_length[30]');
+			$this->form_validation->set_rules('name', 'Hesap Adı', 'min_length[3]|max_length[50]');
+			$this->form_validation->set_rules('name_surname', 'Ad Soyad', 'required|min_length[3]|max_length[30]');
 			$this->form_validation->set_rules('balance', 'Bakiye', 'numeric|max_length[10]');
 			$this->form_validation->set_rules('phone', 'Telefon', 'integer|max_length[20]');
 			$this->form_validation->set_rules('gsm', 'Cep', 'integer|max_length[20]');
@@ -102,7 +102,7 @@ class Account extends CI_Controller {
 					}
 					else
 					{
-						alertbox('alert-danger', get_lang('Error!'));
+						alertbox('alert-danger', 'Hata');
 					}
 				}
 			}
@@ -256,8 +256,13 @@ class Account extends CI_Controller {
 			$account = get_account(array('code'=>$account_id_or_code));
 			if(!$account)
 			{
-				$data['account_card_not_found'] = true;
-				$this->template->view('account/account_view', $data);	
+				$data['account_card_not_found'] = $account_id_or_code;
+				$data['meta_title'] = 'Hesap Kartı Bulunamadı';
+				$data['navigation'][0] = '<li><a href="'.site_url('account').'">Hesap Yönetimi</a></li>';
+				$data['navigation'][1] = '<li><a href="'.site_url('account/lists').'">Hesap Kartları</a></li>';
+				$data['navigation'][2] = '<li class="active">Hesap Kartı Bulunamadı</li>';
+
+				$this->template->view('account/view', $data);	
 				return false;
 			}
 		}
@@ -285,14 +290,14 @@ class Account extends CI_Controller {
 		if(isset($_POST['update']) and is_log())
 		{
 			$continue = true;
-			$this->form_validation->set_rules('code', get_lang('Account Code'), 'min_length[3]|max_length[100]');
-			$this->form_validation->set_rules('name', get_lang('Account Name'), 'required|min_length[3]|max_length[100]');
-			$this->form_validation->set_rules('balance', get_lang('Balance'), 'numeric|max_length[10]');
-			$this->form_validation->set_rules('phone', get_lang('Phone'), 'integer|max_length[20]');
-			
-			$this->form_validation->set_rules('email', get_lang('E-mail'), 'email|max_length[50]');
+			$this->form_validation->set_rules('code', 'Hesap Kodu', 'min_length[3]|max_length[100]');
+			$this->form_validation->set_rules('name', 'Hesap Adı', 'required|min_length[3]|max_length[100]');
+			$this->form_validation->set_rules('balance', 'Bakiye', 'numeric|max_length[10]');
+			$this->form_validation->set_rules('phone', 'Telefon', 'integer|max_length[20]');
+			$this->form_validation->set_rules('gsm', 'Gsm', 'integer|max_length[20]');
+			$this->form_validation->set_rules('email', 'E-posta', 'email|max_length[50]');
 		
-			if ($this->form_validation->run() == FALSE)
+			if($this->form_validation->run() == FALSE)
 			{
 				$data['formError'] = validation_errors();
 			}
@@ -303,6 +308,7 @@ class Account extends CI_Controller {
 				$account['name_surname'] = strtoupper(replace_TR($this->input->post('name_surname')));
 				$account['balance'] = $account['balance'];
 				$account['phone'] = $this->input->post('phone');
+				$account['gsm'] = $this->input->post('gsm');
 				$account['email'] = strtolower(replace_TR($this->input->post('email')));
 				$account['address'] = strtoupper(replace_TR($this->input->post('address')));
 				$account['county'] = strtoupper(replace_TR($this->input->post('county')));
@@ -339,8 +345,8 @@ class Account extends CI_Controller {
 						$data['update_account_success'] = true;
 						$log['microtime'] = $this->input->post('log_time');
 						$log['type'] = 'account';
-						$log['title']	= get_lang('Account');
-						$log['description'] = get_lang('Account card has been updated.');
+						$log['title']	= 'Hesap';
+						$log['description'] = 'Hesap kartı güncellendi.';
 						$log['account_id'] = $account['id'];
 						add_log($log);
 					}

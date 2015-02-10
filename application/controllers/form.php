@@ -6,7 +6,7 @@ class Form extends CI_Controller {
 	{
 		// sayfa bilgisi
 		$data['meta_title'] = 'Form Yönetimi';
-		$data['navigation'][0] = '<li class="active">Formlar</a>';
+		$data['navigation'][0] = '<li class="active">Form Yönetimi</a>';
 
 		$this->template->view('form/dashboard', $data);
 	}
@@ -80,11 +80,17 @@ class Form extends CI_Controller {
 	
 	
 	
+
+
 	public function view($form_id='')
 	{
 		$new_form = false;
 		$data['form_id'] = $form_id;
 		$form = get_form($form_id);
+
+
+		// eger form tipi odeme ise yonlendir
+		if($form['type'] == 'payment'){redirect(site_url('payment/view/'.$form['id']));	}
 		
 		
 		// sayfa bilgisi
@@ -94,6 +100,8 @@ class Form extends CI_Controller {
 		if($form_id > 0)
 		{
 			$data['meta_title'] = '#'.$form_id.' '.$form['name'];
+			if($form['in_out'] == 'in'){$form_in_out_text = 'Giriş';}else if($form['in_out'] == 'out'){$form_in_out_text = 'Çıkış';}else{$form_in_out_text = 'Bilinmiyor';}
+			$data['navigation'][2] = '<li class="active">'.$form_in_out_text.' '.$form['name'].'</li>';
 		}
 		else
 		{
@@ -123,8 +131,10 @@ class Form extends CI_Controller {
 
 		
 
+
+
 		/* form bilgileri guncelle */
-		if(isset($_POST['update_form_info']))
+		if(isset($_POST['update_form_info']) and is_log())
 		{
 			// eger form daha onceden olusmamis ise olustur
 			if($form_id == 0)
@@ -143,26 +153,29 @@ class Form extends CI_Controller {
 					$log['form_id'] = $form_id;
 					$log['account_id'] = $form['account_id'];
 					$log['title'] = 'Yeni Fiş';
-					if(isset($_GET['sell']))
-					{ $log['description'] = 'Çıkış formu oluşturdu.'; }
-					else { $log['description'] = 'Giriş formu oluşturdu.'; } 
+					if(isset($_GET['sell'])){ $log['description'] = 'Çıkış formu oluşturdu.'; } else { $log['description'] = 'Giriş formu oluşturdu.'; } 
 					add_log($log);
-				}
+				
+					$form = get_form($form_id);
+					$new_form = true;
 
-				$form = get_form($form_id);
-				$new_form = true;
+					$data['alert']['new_form'] = get_alertbox('alert-success', 'Form eklendi.', '"<strong>#'.$form['id'].'</strong>" ID numaralı form eklendi.');
+				}
 			}
+
+
 
 			$this->form_validation->set_rules('account_id', 'Hesap Kartı', 'required');
 			$this->form_validation->set_rules('date', 'Tarih', 'required');
 			if($this->form_validation->run() == FALSE)
 			{
-				$data['formError'] = validation_errors();
+				$data['alert']['validations_form_update'] = validation_errors();
 			}
 			else
 			{
 				$update_form['date'] = $this->input->post('date');
 				$update_form['account_id'] = $this->input->post('account_id');
+				$update_form['code'] = $this->input->post('code');
 				$update_form['invoice_no'] = $this->input->post('invoice_no');
 				$update_form['waybill_no'] = $this->input->post('waybill_no');
 				$update_form['name'] = mb_strtoupper($this->input->post('name'),'utf-8');
@@ -175,15 +188,21 @@ class Form extends CI_Controller {
 				$update_form['city'] = mb_strtoupper($this->input->post('city'),'utf-8');
 				$update_form['description'] = mb_strtoupper($this->input->post('description'),'utf-8');
 
-				$account = get_account($update_form['account_id']);
+
+				/* hesap kartı secilmis ise $_POST['account_id'] > 0 olacaktır. 
+				asagidaki kontrolrde stok kartının var olup olmadgini kontrol ediyoruz. 
+				Eger gonderilen ID' degerinde stok karti yok ise $cont=false oluyor. */
+				$account = get_account($update_form['account_id']); 
 				$cont = true;
 				if(!$account and $update_form['account_id'] > 0)
 				{
 					$cont = false;
-					$data['formErrorAccount'] = 'Hesap kartı bulunamadı.';
+					$data['alert']['not_found_account'] = get_alert('alert-warning', 'Hesap kartı bulunamadı.');
 				}
 				
-				// eger hesap karti yok ise hesap kartini olustur
+
+				/* Yeni form olusunda $_POST['account_id'] == '0' degerinde ve $_POST['name_surname'] degiskeni bos degilse 
+				bu yeni bir hesap karti olusturmamiz gerektigi anlamina geliyor. */
 				if($update_form['account_id'] == 0 and strlen($update_form['name_surname']) > 0)
 				{
 					$new_account['name'] = $update_form['name'];
@@ -202,6 +221,7 @@ class Form extends CI_Controller {
 						$account = get_account($account_id);
 						
 						$update_form['account_id'] = $account['id'];
+						$update_form['code'] = $account['code'];
 						$update_form['name'] = $account['name'];
 						$update_form['name_surname'] = $account['name_surname'];
 						$update_form['phone'] = $account['phone'];
@@ -211,7 +231,12 @@ class Form extends CI_Controller {
 						$update_form['county'] = $account['county'];
 						$update_form['city'] = $account['city'];
 						
-						$data['success']['new_account'] = get_alertbox('alert-success', 'Yeni hesap kartı oluştu.');
+						$data['alert']['new_account'] = get_alertbox('alert-success', 'Yeni hesap kartı oluştu.', $account['name']. ' hesap kartı oluştu. Hesap kartına erişmek için <a href="'.site_url('account/view/'.$account['id']).'" target="_blank">tıklayınız</a>.');
+					}
+					else
+					{
+						$cont = false;
+						$data['alert']['new_account'] = get_alertbox('alert-danger', 'Hesap kartı eklenmedi.');
 					}
 				}
 
@@ -220,7 +245,6 @@ class Form extends CI_Controller {
 				{
 					if(update_form($form['id'], $update_form))
 					{
-						$data['success']['formUpdate'] = get_alertbox('alert-success', 'Form Bilgileri Güncellendi.');
 						if(!$new_form)
 						{
 							add_log(array('type'=>'invoice', 'form_id'=>$form['id'], 'title'=>'Form Güncelleme', 'description'=>'Form bilgileri güncellendi.'));
@@ -236,11 +260,6 @@ class Form extends CI_Controller {
 							$this->db->where('form_id', $form['id']);
 							$this->db->update('form_items', array('account_id'=>$update_form['account_id']));
 						}
-					}
-
-					if($new_form)
-					{
-						redirect(site_url('form/view/'.$form_id.'?success=formUpdate&date='.date('YmdHis')));
 					}	
 				}
 			}
@@ -274,6 +293,8 @@ class Form extends CI_Controller {
 
 				$form = get_form($form_id);
 				$new_form = true;
+
+				$data['alert']['new_form'] = get_alertbox('alert-success', 'Form eklendi.', '"<strong>#'.$form['id'].'</strong>" ID numaralı form eklendi.');
 			}
 
 			$continue = true;
@@ -337,11 +358,6 @@ class Form extends CI_Controller {
 					}
 				}
 			}
-
-			if($new_form)
-			{
-				redirect(site_url('form/view/'.$form_id.'?success_item=add_item&date='.date('YmdHis').'&product_code='.$product['code']));
-			}
 		}
 		
 
@@ -394,6 +410,52 @@ class Form extends CI_Controller {
 		
 		calc_invoice_items($form['id']);
 		calc_account_balance($form['account_id']);
+		if($form['id'])
+		{
+			$data['form_id'] = $form['id']; 
+
+			if($new_form)
+			{
+				$data['url_change_for_form_ID'] = true; // yeni form olustugundan formun URLsini ve sayfa basligini degitirmemiz gerekiyor.
+			}
+		}
+
+
+		// form bilgilerini view dosyasina gonderelim
+		$data['form'] = get_form($form['id']);
+
+		if($form['id'] == 0)
+		{
+		    $form_id = 0;
+		    $form['id'] = 0;
+		    $form['type'] = 'invoice';
+		    if(isset($_GET['in'])){ $form['in_out'] = 'in'; } else { $form['in_out'] = 'out'; }
+		    $form['status'] = '1';
+		    $form['date'] = date('Y-m-d H:i:s');
+
+		    $form['account_id'] = 0;
+		    $form['invoice_no'] = '';
+		    $form['waybill_no'] = '';
+
+		    $form['grand_total'] = 0;
+		    $form['profit'] = 0;
+		    $form['tax'] = 0;
+		    $form['total'] = 0;
+
+		    $form['code'] = '';
+			$form['name'] = '';
+		    $form['name_surname'] = '';
+		    $form['phone'] = '';
+		    $form['email'] = '';
+			$form['gsm'] = '';
+			$form['address'] = '';
+			$form['county'] = '';
+			$form['city'] = '';
+		    $form['description'] = '';
+		    $data['form'] = $form;
+		}
+		$account = get_account($form['account_id']); 
+
 		$this->template->view('form/view', $data);
 	}
 
@@ -402,7 +464,12 @@ class Form extends CI_Controller {
 	
 	public function lists()
 	{
-		$this->template->view('form/lists');
+		// sayfa bilgisi
+		$data['meta_title'] = 'Form Listesi';
+		$data['navigation'][0] = '<li><a href="'.site_url('form').'">Form Yönetimi</a></li>';
+		$data['navigation'][1] = '<li class="active">Form Listesi</li>';
+
+		$this->template->view('form/lists', $data);
 	}
 	
 	public function invoice_design()
