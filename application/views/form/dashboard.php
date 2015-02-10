@@ -55,8 +55,8 @@
             <table class="table table-hover table-bordered table-condensed fs-11">
                 <thead>
                     <tr>
-                        <th width="60"><?php lang('ID'); ?></th>
-                        <th><?php lang('Account'); ?></th>
+                        <th width="60">Form ID</th>
+                        <th>Hesap Kartı</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,7 +69,7 @@
                 </tbody>
             </table>
             <?php else: ?>
-                <?php alertbox('alert-info', get_lang('Value not found.'), '', false); ?>
+                <?php alertbox('alert-info', 'Form bulunamadı', '', false); ?>
             <?php endif; ?>
     	</div> <!-- /.content -->
     </div> <!-- /.widget -->
