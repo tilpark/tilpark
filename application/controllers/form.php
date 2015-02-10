@@ -90,7 +90,7 @@ class Form extends CI_Controller {
 
 
 		// eger form tipi odeme ise yonlendir
-		if($form['type'] == 'payment'){redirect(site_url('payment/view/'.$form['id']));	}
+		if(@$form['type'] == 'payment'){redirect(site_url('payment/view/'.$form['id']));	}
 		
 		
 		// sayfa bilgisi
