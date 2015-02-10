@@ -1,13 +1,12 @@
 <?php if(isset($account_card_not_found)): ?>
 	<div class="row">
-    	<div class="col-md-3">
-    		<img src="<?php echo base_url('theme/img/logo/256x256.png'); ?>" class="img-responsive" />
-    	</div> <!-- /.col-md-3 -->
-        <div class="col-md-9">
-        	<h3 class="line">Hesap Kartı Bulunamadı!</h3>
+        <div class="col-md-12">
+        	<h3 class="line"><i class="fa fa-warning"></i> Hesap Kartı Yok!</h3>
             <ul class="sugar">
             	<li>Aradığın hesap kartı bulunamadı.</li>
-            	<li>Hesap ID numarası yada hesap barkod kodu yanlış olabilir.</li>
+            	<li>Hesap ID numarası yada hesap barkod kodu yanlış yazılmış olabilir.</li>
+                <li class="text-warning">Sizin için silinmiş hesaplar arasında arama yaptık fakat bulamadık. "<?php echo $account_card_not_found; ?>" ID veya barkod koduna ait hesap kartı bulunamadı.</li>
+                <li>Daha fazla ayrıntı için <a href="http://tilpark.com">Tilpark</a> web sitesini ziyaret edebilir ve Tilpark forumlarında tartışabilirsiniz.</li>
             </ul>
         </div> <!-- /.col-md-9 -->
     </div> <!-- /.row -->
@@ -70,7 +69,7 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$account['code'].'" Barkod kodu
                     <label for="code" class="control-label ff-1">Hesap Kodu</label>
                     <div class="input-prepend input-group">
                         <span class="input-group-addon"><span class="fa fa-barcode"></span></span>
-                        <input type="text" id="code" name="code" class="form-control ff-1" placeholder="<?php lang('Barcode Code'); ?>" minlength="3" maxlength="100" value="<?php echo $account['code']; ?>">
+                        <input type="text" id="code" name="code" class="form-control ff-1" placeholder="Barkod Kodu" minlength="3" maxlength="100" value="<?php echo $account['code']; ?>">
                     </div>
                     
                 </div>
@@ -78,7 +77,7 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$account['code'].'" Barkod kodu
                     <label for="name" class="control-label ff-1">Hesap Adı</label>
                     <div class="input-prepend input-group">
                         <span class="input-group-addon"><span class="fa fa-text-width"></span></span>
-                        <input type="text" id="name" name="name" class="form-control ff-1 required" placeholder="<?php lang('Account Name'); ?>" minlength="3" maxlength="100" value="<?php echo $account['name']; ?>">
+                        <input type="text" id="name" name="name" class="form-control ff-1 required" placeholder="Hesap Adı" minlength="3" maxlength="100" value="<?php echo $account['name']; ?>">
                     </div>
                 </div>     
             </div> <!-- /.col-md-6 -->
@@ -87,7 +86,7 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$account['code'].'" Barkod kodu
                     <label for="name_surname" class="control-label ff-1">Ad Soyad</label>
                     <div class="input-prepend input-group">
                         <span class="input-group-addon"><span class="fa fa-text-width"></span></span>
-                        <input type="text" id="name_surname" name="name_surname" class="form-control ff-1" placeholder="<?php lang('Name Surname'); ?>" value="<?php echo $account['name_surname']; ?>" minlengt="3" maxlength="30">
+                        <input type="text" id="name_surname" name="name_surname" class="form-control ff-1" placeholder="Ad Soyad" value="<?php echo $account['name_surname']; ?>" minlengt="3" maxlength="30">
                     </div>
                 </div> <!-- /.form-group -->
                 <div class="form-group">
@@ -103,13 +102,26 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$account['code'].'" Barkod kodu
         
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">
-                    <label for="phone" class="control-label ff-1">Telefon</label>
-                    <div class="input-prepend input-group">
-                        <span class="input-group-addon"><span class="fa fa-phone"></span></span>
-                        <input type="text" id="phone" name="phone" class="form-control ff-1 digits" minlength="7" maxlength="16" value="<?php echo $account['phone']; ?>">
-                    </div>
-                </div> <!-- /.form-group -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="phone" class="control-label ff-1">Telefon</label>
+                            <div class="input-prepend input-group">
+                                <span class="input-group-addon"><span class="fa fa-phone"></span></span>
+                                <input type="text" id="phone" name="phone" class="form-control ff-1 digits" minlength="7" maxlength="16" value="<?php echo $account['phone']; ?>">
+                            </div>
+                        </div> <!-- /.form-group -->
+                    </div> <!-- /.col-md-6 -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="phone" class="control-label ff-1">Gsm</label>
+                            <div class="input-prepend input-group">
+                                <span class="input-group-addon"><span class="fa fa-mobile"></span></span>
+                                <input type="text" id="gsm" name="gsm" class="form-control ff-1 digits" minlength="10" maxlength="11" value="<?php echo $account['gsm']; ?>">
+                            </div>
+                        </div> <!-- /.form-group -->
+                    </div> <!-- /.col-md-6 -->
+                </div> <!-- /.row -->
             </div> <!-- /.col-md-6 -->
             <div class="col-md-6">
                 <div class="form-group">

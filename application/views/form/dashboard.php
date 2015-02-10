@@ -4,20 +4,22 @@
     <div class="row">
         <div class="col-md-3">
             <a href="<?php echo site_url('form/view/0?out'); ?>" class="link-dashboard-stat">
-                <div class="dashboard-stat metro_green none">
+                <div class="dashboard-stat">
                     <div class="details">
-                        <div class="number">satış formu</div>
+                        <div class="title">Satış Formu</div>
                         <div class="desc">ürün, hizmet satışı</div>
+                        <i class="fa fa-shopping-cart"></i>
                      </div>
                 </div> <!-- /.dashboard-stat -->
             </a>
         </div> <!-- /.col-md-3 -->
         <div class="col-md-3">
             <a href="<?php echo site_url('form/view/0?in'); ?>" class="link-dashboard-stat">
-                <div class="dashboard-stat metro_green none">
+                <div class="dashboard-stat">
                     <div class="details">
-                        <div class="number">alış formu</div>
+                        <div class="title">Alış Formu</div>
                         <div class="desc">ürün, hizmet alışı</div>
+                        <i class="fa fa-shopping-cart"></i>
                      </div>
                 </div> <!-- /.dashboard-stat -->
              </a>
@@ -26,8 +28,9 @@
             <a href="<?php echo site_url('form/lists'); ?>" class="link-dashboard-stat">
                 <div class="dashboard-stat yellow none">
                     <div class="details">
-                        <div class="number">formlar</div>
+                        <div class="title">Formlar</div>
                         <div class="desc">tüm formlar</div>
+                        <i class="fa fa-list-ul"></i>
                      </div>
                 </div> <!-- /.dashboard-stat -->
              </a>
@@ -49,7 +52,7 @@
             $query = $this->db->get('forms')->result_array();
             ?>
             <?php if($query) : ?>
-            <table class="table table-hover table-bordered table-condensed">
+            <table class="table table-hover table-bordered table-condensed fs-11">
                 <thead>
                     <tr>
                         <th width="60"><?php lang('ID'); ?></th>
@@ -60,7 +63,7 @@
                 <?php foreach($query as $q): ?>
                    <tr>
                         <td><a href="<?php echo site_url('form/view/'.$q['id']); ?>">#<?php echo $q['id']; ?></a></td>
-                        <td><a href="<?php echo site_url('account/get_account/'.$q['account_id']); ?>" target="_blank"><?php echo @$accounts[$q['account_id']]['name']; ?></a></td>
+                        <td><a href="<?php echo site_url('account/get_account/'.$q['account_id']); ?>" target="_blank"><?php echo @$q['name']; ?></a></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

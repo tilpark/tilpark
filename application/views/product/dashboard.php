@@ -40,7 +40,7 @@
                         	<table class="table table-hover table-condensed table-bordered fs-11">
                             	<thead>
                                 	<tr>
-                                    	<th width="80">Zaman</th>
+                                    	<th width="100">Zaman</th>
                                         <th>Stok Kodu</th>
                                     </tr>
                                 </thead>

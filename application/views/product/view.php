@@ -12,7 +12,7 @@
 <ul id="myTab" class="nav nav-tabs">
     <li class="active"><a href="#product_card" data-toggle="tab"><i class="fa fa-folder-o"></i> Ürün Kartı</a></li>
     <li><a href="#invoices" data-toggle="tab"><i class="fa fa-shopping-cart"></i> Giriş-Çıkış</a></li>
-    <li><a href="#history" data-toggle="tab"><i class="fa fa-keyboard-o"></i> Log</a></li>
+    <li><a href="#history" data-toggle="tab"><i class="fa fa-keyboard-o"></i> Geçmiş</a></li>
     <li class="dropdown pull-right">
     	<a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-asterisk"></i> Seçenekler <b class="caret"></b></a>
     	<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">   
@@ -43,10 +43,6 @@ if(@$update_product_success) { alertbox('alert-success', 'Stok Kartı Güncellen
 if(@$formError) { alertbox('alert-danger', $formError);	 }
 if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu başka bir ürün kartında bulundu.', 
 	'Başka bir ürün kartı "'.$haveBarcode.'" barkod kodunu kullanıyor. <br/> Barkod kodları eşsiz olmalı ve sadece bir ürün kartına ait olmalı.');	 }
-# resim yukleme mesajlari
-if(@$success_image_upload) { alertbox('alert-success', 'Resim yüklendi.'); }
-if(@$delete_image) { alertbox('alert-warning', 'Resim silindi.'); }
-if(@$success_default_image) { alertbox('alert-success', 'Varsayılan görsel değiştirildi.'); }
 ?>
 
 
@@ -340,7 +336,7 @@ if(@$success_default_image) { alertbox('alert-success', 'Varsayılan görsel de�
                     <div class="col-md-10">
                         <div class="value"><?php echo get_money($product['amount'] * $product['sale_price']); ?></div>
                         <div class="title">satış değeri</div>
-                        <small class="text-muted">satış değerinde stok bulunmakta, ayrıca <?php echo get_money($product['amount'] * $product['cost_price']); ?> maliyet değeri</small>
+                        <small class="text-muted">satış değerinde stok bulunmakta, ayrıca <?php if(item_access('product_cost_price')): ?><?php echo get_money($product['amount'] * $product['cost_price']); ?><?php endif; ?> maliyet değeri</small>
                     </div>
                 </div> <!-- /.row stat -->
             <?php endif; ?>

@@ -1,6 +1,33 @@
 <?php $users = get_user_list(); ?>
 
 
+<?php
+if(isset($_GET['temizle']))
+{
+    #accounts
+    $this->db->where_not_in('status', '9');
+    $this->db->delete('accounts');
+
+    #forms
+    $this->db->where_not_in('status', '9');
+    $this->db->delete('forms');
+
+    $this->db->where_not_in('status', '9');
+    $this->db->delete('form_items');
+
+    #products
+    $this->db->where_not_in('id', '0');
+    $this->db->delete('products');
+
+    $this->db->where_not_in('id', '0');
+    $this->db->delete('product_meta');
+
+    #user_logs
+    $this->db->where_not_in('id', '0');
+    $this->db->delete('user_logs');
+}
+?>
+
 <div class="row">
 	<div class="col-md-8">
         <div class="row">

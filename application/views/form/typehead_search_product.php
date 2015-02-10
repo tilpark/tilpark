@@ -1,12 +1,15 @@
 <meta charset="utf-8" />
 
+
+
 <div class="ajax_search_box">
 <?php if($products): ?>
-<table class="table table-bordered table-hover table-condensed">
+<table class="table table-bordered table-hover table-condensed ajax_product_box">
     <tbody>
+    <?php $i = 0; ?>
     <?php foreach($products as $product): ?>
     	<tr>
-        	<td class="">
+        	<td>
             	<div class="pointer select_account" style="height:40px;"
                 	data-id="<?php echo $product['id']; ?>"
                 	data-code="<?php echo $product['code']; ?>"
@@ -41,15 +44,14 @@
 </div>
 
 <script>
-
 $('.select_account').click(function(){
 	$('#code').val($(this).attr('data-code'));
     $('#product_name').val($(this).attr('data-name'));
 	$('#tax_rate').val($(this).attr('data-tax_rate'));
 	<?php if(isset($_GET['cost_price'])): ?>
-		$('#quantity_price').val($(this).attr('data-tax_free_cost_price'));
+		$('#quantity_price').val(parseFloat($(this).attr('data-tax_free_cost_price')).toFixed(2));
 	<?php else: ?>
-		$('#quantity_price').val($(this).attr('data-tax_free_sale_price'));
+		$('#quantity_price').val(parseFloat($(this).attr('data-tax_free_sale_price')).toFixed(2));
 	<?php endif; ?>
     $('#amount').focus();
 	calc();

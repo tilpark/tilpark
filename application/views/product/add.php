@@ -111,4 +111,8 @@ if(@$error) { alertbox('alert-danger', $error);	 }
 </div> <!-- /.col-md-4 -->
 </div> <!-- /.row -->
 
+<script>
+$('#name').focus();
+</script>
+
 <div class="h20"></div>

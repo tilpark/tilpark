@@ -38,15 +38,27 @@
 <script>
 $('.tr_click').click(function() {
     $('#account_id').val($(this).find('.select_account').attr('data-id'));
+    $('#account_code').val($(this).find('.select_account').attr('data-code'));
     $('#name').val($(this).find('.select_account').attr('data-name'));
-    $('#name_surname').val($(this).find('.select_account').attr('data-nameSurname'));
+    
+    if($(this).find('.select_account').attr('data-nameSurname') == '')
+    {
+        $('#name_surname').val($(this).find('.select_account').attr('data-name'));
+    }
+    else
+    {
+        $('#name_surname').val($(this).find('.select_account').attr('data-nameSurname'));
+    }
+    
     $('#phone').val($(this).find('.select_account').attr('data-gsm'));
     $('#email').val($(this).find('.select_account').attr('data-email'));
 	$('#gsm').val($(this).find('.select_account').attr('data-gsm'));
 	$('#address').val($(this).find('.select_account').attr('data-address'));
 	$('#county').val($(this).find('.select_account').attr('data-county'));
 	$('#city').val($(this).find('.select_account').attr('data-city'));
-	$('#account_name').attr('readonly', 'readonly');
+	$('#name').attr('readonly', 'readonly');
+
+    $('#btn_information_save').focus();
 });
 
 </script>

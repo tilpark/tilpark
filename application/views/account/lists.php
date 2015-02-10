@@ -5,7 +5,7 @@
 function ajax_search_table(item)
 {
 	$(item).keyup(function() {
-		$(".account_list").html('<?php ajax_search_gif(); ?>');
+		$(".account_list").html('<div class="text-center"><i class="fa fa-spinner fa-spin" style="font-size:72px;"></i></div>');
 		$.get( "lists_ajax/"+$(this).val(), function( data ) {
 			$(".account_list").html(data);
 		});

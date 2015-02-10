@@ -97,11 +97,11 @@ $(document).ready( function() {
 				},
 				{
 					"sExtends": "copy",
-					"sButtonText": "<?php lang('Copy'); ?>"
+					"sButtonText": "Kopyala"
 				},
 				{
 					"sExtends": "print",
-					"sButtonText": "<?php lang('Print'); ?>"
+					"sButtonText": "Yazdır"
 				}
 			]
         }
@@ -153,10 +153,9 @@ $(document).ready( function() {
           </button>
           
           	<a class="logo hidden-sm hidden-xs" href="<?php echo site_url(''); ?>">
-            
-              <img src="<?php echo base_url('theme/img/logo/tilparkcom.png'); ?>" class="img-responsive">
-  
-			</a>
+              <img src="<?php echo base_url('theme/img/logo/logo.png'); ?>" class="img-responsive" style="height:40px;">
+			      </a>
+
         </div>
         
         <div class="liner pull-left hidden-sm hidden-xs"></div>

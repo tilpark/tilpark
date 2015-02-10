@@ -27,14 +27,14 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$account['code'].'" Barkod kodu
                     <label for="name" class="control-label">Hesap Kartı <small class="text-muted">firma adı</small></label>
                     <div class="input-prepend input-group">
                         <span class="input-group-addon"><span class="fa fa-text-width"></span></span>
-                        <input type="text" id="name" name="name" class="form-control required" minlength="3" maxlength="50" value="<?php echo $account['name']; ?>" autocomplete="off">
+                        <input type="text" id="name" name="name" class="form-control" minlength="3" maxlength="50" value="<?php echo $account['name']; ?>" autocomplete="off">
                     </div>
                 </div>  
                 <div class="form-group">
                     <label for="name_surname" class="control-label">Ad ve Soyad</label>
                     <div class="input-prepend input-group">
                         <span class="input-group-addon"><span class="fa fa-text-width"></span></span>
-                        <input type="text" id="name_surname" name="name_surname" class="form-control" value="<?php echo $account['name_surname']; ?>" minlengt="3" maxlength="30" autocomplete="off">
+                        <input type="text" id="name_surname" name="name_surname" class="form-control required" value="<?php echo $account['name_surname']; ?>" minlengt="3" maxlength="30" autocomplete="off">
                     </div>
                 </div> <!-- /.form-group -->
             </div> <!-- /.col-md-6 -->
@@ -56,7 +56,7 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$account['code'].'" Barkod kodu
                     <label for="gsm" class="control-label">Gsm</label>
                     <div class="input-prepend input-group">
                         <span class="input-group-addon"><span class="fa fa-mobile-phone"></span></span>
-                        <input type="text" id="gsm" name="gsm" class="form-control digits" minlength="7" maxlength="11" value="<?php echo $account['gsm']; ?>">
+                        <input type="text" id="gsm" name="gsm" class="form-control digits required" minlength="7" maxlength="11" value="<?php echo $account['gsm']; ?>">
                     </div>
                 </div> <!-- /.form-group -->
             </div> <!-- /.col-md-4 -->
@@ -114,7 +114,6 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$account['code'].'" Barkod kodu
         <div class="text-right">
             <input type="hidden" name="microtime" value="<?php echo logTime(); ?>" />
             <input type="hidden" name="add" />
-            <button type="reset" class="btn btn-default"><i class="fa fa-refresh"></i> Temizle</button>
             <button type="submit" class="btn btn-default"><i class="fa fa-save"></i> Kaydet</button>
         </div> <!-- /.text-right -->
     </form>
@@ -123,15 +122,25 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$account['code'].'" Barkod kodu
 	
 </div> <!-- /.col-md-8 -->
 <div class="col-md-4">
-<div class="widget">
+<div class="widget information">
 	<div class="header">Açıklama</div>
 	<div class="content padding-5">
-        <p>Yeni hesap kartı açma alanında, müşteriler, bayiler, toptancılar, tedarikci firmalar ve imalatçıları ekleyebilirsin.</p>
-        <p>Daha sonra bu hesaplara ödeme/çek verebilir ve alabilirsin. Ürün satabilir ve satın alabilirsin.</p>
-        <p>Hesap Kodu kutusu boş bırakılır ise otomatik oluşacaktır.</p>
+        <ul class="text-gray">
+            <li class="text-gray">Yeni hesap kartı açma alanında, müşteriler, bayiler, toptancılar, tedarikci firmalar ve imalatçıları ekleyebilirsin.</li>
+            <li class="text-gray">Daha sonra hesap kartlarına, ödeme/çek verebilir ve alabilirsin. Ürün satabilir ve satın alabilirsin.</li>
+            <li>Buradaki panele devir bakiyesi diye bir alan eklemedik. <i>Çünkü devir bakiyeleri için hesap kartını oluşturduktan sonra ödeme girişi veya çıkışı yapabilrisiniz.</i></li>
+            <li>Hesap Kodu kutusu boş bırakılır ise otomatik oluşacaktır.</li>
+        </ul>
 	</div> <!-- /.content -->
 </div> <!-- /.widget -->
 </div> <!-- /.col-md-4 -->
 </div> <!-- /.row -->
+
+
+<script>
+$(document).ready(function() {
+    $('#name').focus();
+});
+</script>
 
 <div class="h20"></div>
