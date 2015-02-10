@@ -345,6 +345,7 @@ $items = $this->db->get('form_items')->result_array();
 		if($item['product_id'] > 0)
 		{
 			$product = get_product($item['product_id']);
+            calc_product($product['id']);
 		}
 		else
 		{

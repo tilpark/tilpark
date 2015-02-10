@@ -276,14 +276,14 @@ function calc_product($product_id)
 	
 	$ci->db->where('product_id', $product_id);
 	$ci->db->where('status', 1);
-	$ci->db->where('in_out', '1');
+	$ci->db->where('in_out', 'out');
 	$ci->db->select_sum('quantity');
 	$ci->db->select_sum('profit');
 	$sales = $ci->db->get('form_items')->row_array();
 	
 	$ci->db->where('product_id', $product_id);
 	$ci->db->where('status', 1);
-	$ci->db->where('in_out', '0');
+	$ci->db->where('in_out', 'in');
 	$ci->db->select_sum('quantity');
 	$buying = $ci->db->get('form_items')->row_array();
 	

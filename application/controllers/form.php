@@ -422,39 +422,44 @@ class Form extends CI_Controller {
 
 
 		// form bilgilerini view dosyasina gonderelim
-		$data['form'] = get_form($form['id']);
+			$data['form'] = get_form($form['id']);
 
-		if($form['id'] == 0)
-		{
-		    $form_id = 0;
-		    $form['id'] = 0;
-		    $form['type'] = 'invoice';
-		    if(isset($_GET['in'])){ $form['in_out'] = 'in'; } else { $form['in_out'] = 'out'; }
-		    $form['status'] = '1';
-		    $form['date'] = date('Y-m-d H:i:s');
+			if($form['id'] == 0)
+			{
+			    $form_id = 0;
+			    $form['id'] = 0;
+			    $form['type'] = 'invoice';
+			    if(isset($_GET['in'])){ $form['in_out'] = 'in'; } else { $form['in_out'] = 'out'; }
+			    $form['status'] = '1';
+			    $form['date'] = date('Y-m-d H:i:s');
 
-		    $form['account_id'] = 0;
-		    $form['invoice_no'] = '';
-		    $form['waybill_no'] = '';
+			    $form['account_id'] = 0;
+			    $form['invoice_no'] = '';
+			    $form['waybill_no'] = '';
 
-		    $form['grand_total'] = 0;
-		    $form['profit'] = 0;
-		    $form['tax'] = 0;
-		    $form['total'] = 0;
+			    $form['grand_total'] = 0;
+			    $form['profit'] = 0;
+			    $form['tax'] = 0;
+			    $form['total'] = 0;
 
-		    $form['code'] = '';
-			$form['name'] = '';
-		    $form['name_surname'] = '';
-		    $form['phone'] = '';
-		    $form['email'] = '';
-			$form['gsm'] = '';
-			$form['address'] = '';
-			$form['county'] = '';
-			$form['city'] = '';
-		    $form['description'] = '';
-		    $data['form'] = $form;
-		}
-		$account = get_account($form['account_id']); 
+			    $form['code'] = '';
+				$form['name'] = '';
+			    $form['name_surname'] = '';
+			    $form['phone'] = '';
+			    $form['email'] = '';
+				$form['gsm'] = '';
+				$form['address'] = '';
+				$form['county'] = '';
+				$form['city'] = '';
+			    $form['description'] = '';
+			    $data['form'] = $form;
+			}
+			$account = get_account($form['account_id']); 
+
+			// forma ait hareketleri degiskene aktaralim
+			$this->db->where('status', 1);
+			$this->db->where('form_id', $form_id);
+			$data['items'] = $this->db->get('form_items')->result_array();
 
 		$this->template->view('form/view', $data);
 	}

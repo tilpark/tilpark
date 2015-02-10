@@ -16,14 +16,14 @@
     <li class="dropdown pull-right">
     	<a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-asterisk"></i> Seçenekler <b class="caret"></b></a>
     	<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">   
-        	<li><a href="<?php echo site_url('product/print_barcode/'.$product['id']); ?>?print"><span class="fa fa-barcode mr9"></span>Barkod Yazdır</a></li>
+        	<li><a href="<?php echo site_url('product/print_barcode/'.$product['id']); ?>?print"><i class="fa fa-barcode mr9"></i>Barkod Yazdır</a></li>
             
             <?php if(item_access('product_edit_button')): ?>
                 <li class="divider"></li>
                 <?php if($product['status'] == '1'): ?>
-                    <li><a href="?status=<?php echo base64_encode('0'); ?>"><span class="fa fa-trash mr9"></span>Sil</a></li>
+                    <li><a href="?status=<?php echo base64_encode('0'); ?>"><i class="fa fa-trash mr9"></i>Sil</a></li>
                 <?php else: ?>
-                    <li><a href="?status=<?php echo base64_encode('1'); ?>"><span class="fa fa-check-square-o mr9"></span>Aktifleştir</a></li>
+                    <li><a href="?status=<?php echo base64_encode('1'); ?>"><i class="fa fa-check-square-o mr9"></i>Aktifleştir</a></li>
                 <?php endif; ?>
             <?php endif; ?>
         </ul>
@@ -58,21 +58,21 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
                 <div class="form-group">
                     <label for="code" class="control-label ff-1 fss-16">Stok Kodu</label>
                     <div class="input-prepend input-group">
-                        <span class="input-group-addon"><span class="fa fa-barcode"></span></span>
+                        <i class="input-group-addon"><i class="fa fa-barcode"></i></i>
                         <input type="text" id="code" name="code" class="form-control  ff-1" placeholder="stok kodu" minlength="3" maxlength="32" value="<?php echo $product['code']; ?>">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="name" class="control-label ff-1 fss-16">Stok Adı</label>
                     <div class="input-prepend input-group">
-                        <span class="input-group-addon"><span class="fa fa-text-width"></span></span>
+                        <i class="input-group-addon"><i class="fa fa-text-width"></i></i>
                         <input type="text" id="name" name="name" class="form-control  ff-1 required" placeholder="stok/ürün adı" minlength="3" maxlength="100" value="<?php echo $product['name']; ?>">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="description" class="control-label ff-1 fss-16">Stok Açıklaması</label>
                     <div class="input-prepend input-group">
-                        <span class="input-group-addon"><span class="fa fa-comment"></span></span>
+                        <i class="input-group-addon"><i class="fa fa-comment"></i></i>
                         <textarea id="description" name="description" class="form-control  ff-1" placeholder="ürün kartına ait bir açıklama" style="height:91px;"><?php echo $product['description']; ?></textarea>
                     </div>
                 </div>
@@ -198,7 +198,7 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
                     <?php if(item_access('product_edit_button')): ?>
                         <input type="hidden" name="log_time" value="<?php echo logTime(); ?>" />
                         <input type="hidden" name="update_product" />
-                        <button class="btn btn-default btn-block">Güncelle &raquo;</button>
+                        <button class="btn btn-default btn-block"><i class="fa fa-save"></i> Güncelle</button>
                     <?php endif; ?>
                 <?php endif; ?>
             </div> <!-- /.col-md-3 -->
@@ -222,7 +222,7 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
                 </div> <!-- /.col-md-8 -->
                 <div class="col-md-3">
                     <input type="hidden" name="log_time" value="<?php echo logTime(); ?>" />
-                    <button class="btn btn-default btn-block">Resim Yükle</button>
+                    <button class="btn btn-default btn-block"><i class="fa fa-upload"></i> Resim Yükle</button>
                 </div> <!-- /.col-md-4 -->
             </div> <!-- /.row -->
             
@@ -350,7 +350,7 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
                     <?php
                         $this->db->where('status', 1);
                         $this->db->where('product_id', $product['id']);
-                        $this->db->where('in_out', '1');
+                        $this->db->where('in_out', 'out');
                         $this->db->select_sum('quantity');
                         $sale_quantity = $this->db->get('form_items')->row_array();
                         if($sale_quantity['quantity'] < 1){$sale_quantity['quantity'] = 0;}
@@ -474,7 +474,7 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
             <td class="text-right fs-11"><?php echo get_money($item['tax_free_sale_price']); ?></td>
             <td class="text-right fs-11"><?php echo get_money($item['total']); ?></td>
             <td class="text-right fs-11"><small class="text-muted">%<?php echo $item['tax_rate']; ?></small> <?php echo get_money($item['tax']); ?></td>
-            <?php if($item['in_out'] == 0): ?>
+            <?php if($item['in_out'] == 'out'): ?>
             	<td class="text-right"><?php echo get_money($item['sub_total']); ?></td>
                 <td></td>
                 	<?php $total['output'] = $total['output'] + $item['sub_total']; ?>
