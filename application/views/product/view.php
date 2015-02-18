@@ -9,28 +9,21 @@
 <?php else: ?>
 
 
-<?php if($product['status'] == '0'): ?>
-	<?php alertbox('alert-danger', 'Stok Kartı Silinmiş.', $product['name'].' stok kartı silinmiş. Stok kartını tekrar aktif hale getirebilirsin.', false); ?>
-<?php endif; ?>
-
 
 
 <ul id="myTab" class="nav nav-tabs">
     <li class="active"><a href="#product_card" data-toggle="tab"><i class="fa fa-folder-o"></i> Ürün Kartı</a></li>
-    <li><a href="#invoices" data-toggle="tab"><i class="fa fa-shopping-cart"></i> Giriş-Çıkış</a></li>
+    <li><a href="#forms" data-toggle="tab"><i class="fa fa-shopping-cart"></i> Giriş-Çıkış</a></li>
     <li><a href="#history" data-toggle="tab"><i class="fa fa-keyboard-o"></i> Geçmiş</a></li>
     <li class="dropdown pull-right">
     	<a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-asterisk"></i> Seçenekler <b class="caret"></b></a>
     	<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">   
         	<li><a href="<?php echo site_url('product/print_barcode/'.$product['id']); ?>?print"><i class="fa fa-barcode mr9"></i>Barkod yazdır</a></li>
-            
-            <?php if(item_access('product_edit_button')): ?>
-                <li class="divider"></li>
-                <?php if($product['status'] == '1'): ?>
-                    <li><a href="?status=<?php echo base64_encode('0'); ?>"><i class="fa fa-trash text-danger"></i>Stok kartını sil</a></li>
-                <?php else: ?>
-                    <li><a href="?status=<?php echo base64_encode('1'); ?>"><i class="fa fa-check-square-o text-success"></i>Aktifleştir</a></li>
-                <?php endif; ?>
+            <li class="divider"></li>
+            <?php if($product['status'] == '1'): ?>
+                <li><a href="?status=<?php echo base64_encode('0'); ?>"><i class="fa fa-trash text-danger"></i>Stok kartını sil</a></li>
+            <?php else: ?>
+                <li><a href="?status=<?php echo base64_encode('1'); ?>"><i class="fa fa-check-square-o text-success"></i>Aktifleştir</a></li>
             <?php endif; ?>
         </ul>
     </li>
@@ -38,24 +31,12 @@
 
 <div id="myTabContent" class="tab-content">
 
-<!-- product card -->
+<!-- start: product card -->
 <div class="tab-pane fade active in" id="product_card">
 <div class="row">
 <div class="col-md-8">
 
-<?php
-if(@$update_product_success) { alertbox('alert-success', 'Stok Kartı Güncellendi.', 
-'"'.$product['code'].'" stok kartı bilgileri veritabanında güncellendi.'); }
-if(@$formError) { alertbox('alert-danger', $formError);	 }
-if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu başka bir ürün kartında bulundu.', 
-	'Başka bir ürün kartı "'.$haveBarcode.'" barkod kodunu kullanıyor. <br/> Barkod kodları eşsiz olmalı ve sadece bir ürün kartına ait olmalı.');	 }
-?>
-
-
-
-
-    <form name="form_new_product" id="form_new_product" action="?" method="POST" class="validation">
-        
+    <form name="form_new_product" id="form_new_product" action="?" method="POST" class="validation"> 
         <h3><i class="fa fa-puzzle-piece"></i> Stok Kartı Yönetimi</h3>
         
         <div class="row">
@@ -87,7 +68,7 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
             </div> <!-- /.col-md-4 -->
             <div class="col-md-6">
                 
-                <?php if(item_access('product_cost_price')): ?>
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -108,7 +89,6 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
                         </div> <!-- /.form-group -->
                     </div> <!-- /.col-md-6 -->
                 </div> <!-- /.row -->
-                <?php endif; ?>
                 
                 <div class="row">
                     <div class="col-md-6">
@@ -154,7 +134,6 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
                 </div> <!-- /.row -->
 
                 
-                <?php if(item_access('product_profit_rate')): ?>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -175,7 +154,7 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
                         </div> <!-- /.form-group -->
                     </div> <!-- /.col-md-6 -->
                 </div> <!-- /.row -->
-                <?php endif; ?>
+
                 
                 
 
@@ -201,11 +180,9 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
             <div class="col-md-9"></div>
             <div class="col-md-3">
                 <?php if($product['status'] == 1): ?>
-                    <?php if(item_access('product_edit_button')): ?>
-                        <input type="hidden" name="log_time" value="<?php echo logTime(); ?>" />
-                        <input type="hidden" name="update_product" />
-                        <button class="btn btn-default btn-block"><i class="fa fa-save"></i> Güncelle</button>
-                    <?php endif; ?>
+                    <input type="hidden" name="log_time" value="<?php echo logTime(); ?>" />
+                    <input type="hidden" name="update_product" />
+                    <button class="btn btn-default btn-block"><i class="fa fa-save"></i> Güncelle</button>
                 <?php endif; ?>
             </div> <!-- /.col-md-3 -->
         </div> <!-- /.row -->
@@ -218,6 +195,7 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
     <div class="bodyLine"></div>
     <div class="h20"></div>
     
+    <!-- start: fotograf galerisi -->
     <form name="form_gallery" id="form_gallery" action="?" method="POST" enctype="multipart/form-data" class="validation_2">
     	<h3><i class="fa fa-puzzle-piece"></i> Ürün Görseli - Fotoğraf Galerisi</h3>
     	<div class="content">
@@ -288,12 +266,14 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
             
         </div> <!-- /.content -->
     </form> <!-- /#form_gallery .widget-->
+    <!-- /finish: fotograf galerisi -->
 
 	
 
 </div> <!-- /.col-md-8 -->
 <div class="col-md-4">    
     
+    <!-- start: sidebar -->
 	<div class="widget">
     	<div class="header dark_gray"><i class="fa fa-puzzle-piece"></i> Stok Kartına Genel Bakış</div>
         <div class="content">
@@ -311,18 +291,17 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
                     </div>
                 </div> <!-- /.row stat -->
 
-                <?php if(item_access('product_cost_price')): ?>
-                    <div class="row stat">
-                        <div class="col-md-2">
-                            <i class="fa fa-try text-warning"></i>
-                        </div>
-                        <div class="col-md-10">
-                            <div class="value"><span class="text-warning"><?php echo get_money($product['amount'] * $product['cost_price']); ?> <i class="fa fa-try fs-16"></i></span></div>
-                            <div class="title">satın alma değeri</div>
-                            <small class="text-warning">alış değerinde stok alman gerekiyor</small>
-                        </div>
-                    </div> <!-- /.row stat -->
-                <?php endif; ?>
+
+                <div class="row stat">
+                    <div class="col-md-2">
+                        <i class="fa fa-try text-warning"></i>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="value"><span class="text-warning"><?php echo get_money($product['amount'] * $product['cost_price']); ?> <i class="fa fa-try fs-16"></i></span></div>
+                        <div class="title">satın alma değeri</div>
+                        <small class="text-warning">alış değerinde stok alman gerekiyor</small>
+                    </div>
+                </div> <!-- /.row stat -->
 
             <?php else: ?>
                 <div class="row stat">
@@ -342,7 +321,7 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
                     <div class="col-md-10">
                         <div class="value"><?php echo get_money($product['amount'] * $product['sale_price']); ?></div>
                         <div class="title">satış değeri</div>
-                        <small class="text-muted">satış değerinde stok bulunmakta, ayrıca <?php if(item_access('product_cost_price')): ?><?php echo get_money($product['amount'] * $product['cost_price']); ?><?php endif; ?> maliyet değeri</small>
+                        <small class="text-muted">satış değerinde stok bulunmakta, ayrıca <?php echo get_money($product['amount'] * $product['cost_price']); ?> maliyet değeri</small>
                     </div>
                 </div> <!-- /.row stat -->
             <?php endif; ?>
@@ -368,18 +347,16 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
             </div> <!-- /.row stat -->
 
             <!-- bu urunden bu gune kadar kac tane satildi -->
-            <?php if(item_access('product_profit_rate')): ?>
-                <div class="row stat">
-                    <div class="col-md-2">
-                        <i class="fa fa-money"></i>
-                    </div>
-                    <div class="col-md-10">
-                        <div class="value"><?php echo get_money($product['profit']); ?></div>
-                        <div class="title">net kazanç</div>
-                        <small class="text-muted">bu ürün satışından bu güne kadar kazanılan para</small>
-                    </div>
-                </div> <!-- /.row stat -->
-            <?php endif; ?>
+            <div class="row stat">
+                <div class="col-md-2">
+                    <i class="fa fa-money"></i>
+                </div>
+                <div class="col-md-10">
+                    <div class="value"><?php echo get_money($product['profit']); ?></div>
+                    <div class="title">net kazanç</div>
+                    <small class="text-muted">bu ürün satışından bu güne kadar kazanılan para</small>
+                </div>
+            </div> <!-- /.row stat -->
             
         </div> <!-- /.content -->
     </div> <!-- /.widget -->
@@ -417,6 +394,8 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
             </a>
         </div> <!-- /.content -->
    </div> <!-- /.widget -->
+
+   <!-- finish: sidebar -->
     
     
 </div> <!-- /.col-md-4 -->
@@ -436,81 +415,75 @@ if(@$haveBarcode) { alertbox('alert-danger', '"'.$haveBarcode.'" Barkod kodu ba�
 
 
 
-<!-- invoice
-	stok kartına ait giriş çıkış fişleri buradan listelenmekte
--->
-<div class="tab-pane fade" id="invoices">
-<?php $accounts = get_account_list_for_array(); ?>
-
-<table class="table table-bordered table-hover table-condensed dataTable">
-	<thead>
-    	<tr>
-        	<th class="hide"></th>
-        	<th width="60">Fiş ID</th>
-            <th width="120">Tarih></th>
-            <th width="60">G/Ç</th>
-            <th>Hesap Kartı</th>
-            <th width="60">Adet</th>
-            <th width="80">B.Fiyatı</th>
-            <th width="80">Toplam</th>
-            <th width="100">Kdv</th>
-            <th width="100">Giriş</th>
-            <th width="100">Çıkış</th>
-        </tr>
-    </thead>
-    <tbody>
-    <?php 
-	$this->db->where('status', 1);
-	$this->db->where('product_id', $product['id']);
-	$this->db->order_by('ID', 'ASC');
-	$invoices = $this->db->get('form_items')->result_array();
-	?>
-    <?php
-	$total['input'] = 0;
-	$total['output'] = 0;
-	?>
-    <?php foreach($invoices as $item): ?>
-    	<tr>
-        	<td class="hide"></td>
-        	<td class="fs-11"><a href="<?php echo site_url('form/view/'.$item['form_id']); ?>">#<?php echo $item['form_id']; ?></a></td>
-            <td class="fs-11"><?php echo substr($item['date'],0,16); ?></td>
-            <td class="text-muted"><small><?php echo strtoupper(replace_TR(get_text_in_out($item['in_out']))); ?></small></td>
-            <td class="fs-11"><a href="<?php echo site_url('account/get_account/'.$item['account_id']); ?>" target="_blank"><?php echo $accounts[$item['account_id']]['name']; ?></a></td>
-            <td class="text-center"><?php echo get_quantity($item['quantity']); ?></td>
-            <td class="text-right fs-11"><?php echo get_money($item['tax_free_sale_price']); ?></td>
-            <td class="text-right fs-11"><?php echo get_money($item['total']); ?></td>
-            <td class="text-right fs-11"><small class="text-muted">%<?php echo $item['tax_rate']; ?></small> <?php echo get_money($item['tax']); ?></td>
-            <?php if($item['in_out'] == 'out'): ?>
-            	<td class="text-right"><?php echo get_money($item['sub_total']); ?></td>
-                <td></td>
-                	<?php $total['output'] = $total['output'] + $item['sub_total']; ?>
-            <?php else: ?>
-            	<td></td>
-            	<td class="text-right"><?php echo get_money($item['sub_total']); ?></td>
-                	<?php $total['input'] = $total['input'] + $item['sub_total']; ?>
-            <?php endif; ?>
-        </tr>
-    <?php endforeach; ?>
-    </tbody>
-    <tfoot>
-    	<tr>
-        	<th colspan="8"></th>
-            <th class="text-right"><?php echo get_money($total['output']); ?></th>
-            <th class="text-right"><?php echo get_money($total['input']); ?></th>
-        </tr>
-    </tfoot>
-</table> <!-- /.table -->
-</div> <!-- /#invoices -->
+<!-- start: stok kartına ait giriş çıkış fişleri buradan listelenmekte -->
+<div class="tab-pane fade" id="forms">
+    
+    <?php $accounts = get_accounts(); ?>
+    <table class="table table-bordered table-hover table-condensed dataTable">
+    	<thead>
+        	<tr>
+            	<th class="hide"></th>
+            	<th width="60">Fiş ID</th>
+                <th width="120">Tarih</th>
+                <th width="60">G/Ç</th>
+                <th>Hesap Kartı</th>
+                <th width="60">Adet</th>
+                <th width="80">B.Fiyatı</th>
+                <th width="80">Toplam</th>
+                <th width="100">Kdv</th>
+                <th width="100">Giriş</th>
+                <th width="100">Çıkış</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php $form_items = get_form_items(array('status'=>1, 'product_id'=>$product['id'], 'order_by'=>'ID ASC')); ?>
+        <?php
+    	$total['input'] = 0;
+    	$total['output'] = 0;
+    	?>
+        <?php foreach($form_items as $item): ?>
+        	<tr>
+            	<td class="hide"></td>
+            	<td class="fs-11"><a href="<?php echo site_url('form/view/'.$item['form_id']); ?>">#<?php echo $item['form_id']; ?></a></td>
+                <td class="fs-11"><?php echo substr($item['date'],0,16); ?></td>
+                <td class="text-muted"><small><?php echo strtoupper(replace_TR(get_text_in_out($item['in_out']))); ?></small></td>
+                <td class="fs-11"><a href="<?php echo site_url('account/get_account/'.$item['account_id']); ?>" target="_blank"><?php echo $accounts[$item['account_id']]['name']; ?></a></td>
+                <td class="text-center"><?php echo get_quantity($item['quantity']); ?></td>
+                <td class="text-right fs-11"><?php echo get_money($item['tax_free_sale_price']); ?></td>
+                <td class="text-right fs-11"><?php echo get_money($item['total']); ?></td>
+                <td class="text-right fs-11"><small class="text-muted">%<?php echo $item['tax_rate']; ?></small> <?php echo get_money($item['tax']); ?></td>
+                <?php if($item['in_out'] == 'out'): ?>
+                	<td class="text-right"><?php echo get_money($item['sub_total']); ?></td>
+                    <td></td>
+                    	<?php $total['output'] = $total['output'] + $item['sub_total']; ?>
+                <?php else: ?>
+                	<td></td>
+                	<td class="text-right"><?php echo get_money($item['sub_total']); ?></td>
+                    	<?php $total['input'] = $total['input'] + $item['sub_total']; ?>
+                <?php endif; ?>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+        <tfoot>
+        	<tr>
+            	<th colspan="8"></th>
+                <th class="text-right"><?php echo get_money($total['output']); ?></th>
+                <th class="text-right"><?php echo get_money($total['input']); ?></th>
+            </tr>
+        </tfoot>
+    </table> <!-- /.table -->
+</div> <!-- /#forms -->
+<!-- finish: stok kartına ait giriş çıkış fişleri buradan listelenmekte -->
 
 
 
 
 
-
-<!-- history -->
+<!-- start: log -->
 <div class="tab-pane fade in" id="history">
 	<?php get_log_table(array('product_id'=>$product['id']), 'DESC'); ?>
 </div> <!-- /#history -->
+<!-- finish: log -->
 
 
 

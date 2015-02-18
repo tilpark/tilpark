@@ -156,6 +156,7 @@ class Product extends CI_Controller {
 	
 	public function view($product_id_or_code)
 	{
+
 		$product = get_product(array('id'=>$product_id_or_code));
 		if($product)
 		{
@@ -178,9 +179,9 @@ class Product extends CI_Controller {
 				$data['product_card_not_found'] = true;
 				$this->template->view('product/view', $data);
 				return false;
-			}
-			
+			}	
 		}
+
 		// sayfa bilgisi
 		$data['meta_title'] = $product['name'];
 		$data['navigation'][0] = '<li><a href="'.site_url('product').'">Stok/Hizmet Kartları</a></li>';
@@ -192,7 +193,8 @@ class Product extends CI_Controller {
 		calc_product($product['id']);
 		
 		
-		
+
+
 		// ürün kartının status durumu güncellenmek istenir ise
 		if(isset($_GET['status']) and get_the_current_user('role') <= 3)
 		{	
@@ -225,7 +227,7 @@ class Product extends CI_Controller {
 		if(isset($_POST['update_product']) and is_log())
 		{
 			$continue = true;
-			$this->form_validation->set_rules('code', get_lang('Barcode Code'), 'min_length[3]|max_length[33]');
+			$this->form_validation->set_rules('code', get_lang('Barcode Code'), 'min_length[3]|max_length[20]');
 			$this->form_validation->set_rules('name', get_lang('Product Name'), 'required|min_length[3]|max_length[100]');
 			$this->form_validation->set_rules('cost_price', get_lang('Cost Price'), 'numeric|max_length[10]');
 			$this->form_validation->set_rules('sale_price', get_lang('Sale Price'), 'numeric|max_length[10]');
@@ -233,7 +235,7 @@ class Product extends CI_Controller {
 		
 			if ($this->form_validation->run() == FALSE)
 			{
-				$data['formError'] = validation_errors();
+				$data['alerts']['form_validation_error_1'] = array('class'=>'danger', 'title'=>'Form Hatası', 'description'=>validation_errors());
 			}
 			else
 			{
@@ -265,7 +267,7 @@ class Product extends CI_Controller {
 							// eger stok kodu baska bir stok kartinda var ise ekrana hata basalim
 							$other_product = get_product(array('code'=>$product['code']));
 
-							$data['messages']['have_barcode'] = array('class'=>'danger', 'title'=>'Stok Kodu Kullanımda.', 'description'=>'"'.$product['code'].'" stok kodu başka bir stok kartında bulundu. Stok kodları/barkod kodları eşssiz olmalı. Bir stok kodu başka bir stok kartında kullanılamaz. <br />'.'
+							$data['alerts']['have_barcode'] = array('class'=>'danger', 'title'=>'Stok Kodu Kullanımda.', 'description'=>'"'.$product['code'].'" stok kodu başka bir stok kartında bulundu. Stok kodları/barkod kodları eşssiz olmalı. Bir stok kodu başka bir stok kartında kullanılamaz. <br />'.'
 								Bulunan stok kartı: <a href="'.site_url('product/view/'.$other_product['code']).'" target="_blank">'.$other_product['name'].'</a>
 							');
 							$continue = false;
@@ -273,17 +275,10 @@ class Product extends CI_Controller {
 					}
 			
 				if($continue)
-				{
-					// eger kullanicinin stok fiyatlarini guncelleme yetkisi yok ise
-					if(!item_access('product_cost_price'))
-					{
-						$product['tax_free_cost_price'] = $data['product']['tax_free_cost_price'];
-						$product['cost_price'] = $data['product']['cost_price'];
-					}
-					
+				{					
 					if(update_product($product['id'], $product))
 					{
-						$data['update_product_success'] = 'Stok Kartı Güncellendi';
+						$data['alerts']['update_product'] = array('class'=>'success', 'title'=>'Stok Kartı Güncellendi');
 						
 						$log['date'] = $this->input->post('log_time');
 						$log['type'] = 'product';
@@ -323,7 +318,7 @@ class Product extends CI_Controller {
 	
 			if(!$this->upload->do_upload('image'))
 			{
-				$data['messages']['no_image_upload'] = array('class'=>'danger', 'title'=>'Resim yüklenirken bir hata oluştu', 'description'=>$this->upload->display_errors());
+				$data['alerts']['no_image_upload'] = array('class'=>'danger', 'title'=>'Resim yüklenirken bir hata oluştu', 'description'=>$this->upload->display_errors());
 			}
 			else
 			{
@@ -342,10 +337,10 @@ class Product extends CI_Controller {
 					$image_id = add_product_meta($image);
 					if($image_id)
 					{
-						$data['messages']['image_uploaded'] = array('class'=>'success', 'title'=>'Stok görseli eklendi.');
+						$data['alerts']['image_uploaded'] = array('class'=>'success', 'title'=>'Stok görseli eklendi.');
 
 						$log['type'] = 'product';
-						$log['title']	= 'Resim Yükleme';
+						$log['title'] = 'Resim Yükleme';
 						$log['description'] = 'Yeni resim yüklendi. /'.$image['key'];
 						$log['product_id'] = $product['id'];
 						add_log($log);
@@ -359,12 +354,12 @@ class Product extends CI_Controller {
 					}
 					else
 					{
-						$data['messages']['error_image_upload'] = array('class'=>'danger', 'title'=>'Bilinmeyen bir hata.');
+						$data['alerts']['error_image_upload'] = array('class'=>'danger', 'title'=>'Bilinmeyen bir hata.');
 					}
 				}
 				else
 				{
-					$data['messages']['no_image_file'] = array('class'=>'danger', 'title'=>'Yüklemeye çalıştığınız dosya, bir resim dosyası değil.');
+					$data['alerts']['no_image_file'] = array('class'=>'danger', 'title'=>'Yüklemeye çalıştığınız dosya, bir resim dosyası değil.');
 				}
 			}
 		}
@@ -392,7 +387,7 @@ class Product extends CI_Controller {
 					$this->db->delete('product_meta');
 					if($this->db->affected_rows() > 0)
 					{
-						$data['messages']['product_image_delete'] = array('class'=>'warning', 'title'=>'Stok görseli silindi.');
+						$data['alerts']['product_image_delete'] = array('class'=>'warning', 'title'=>'Stok görseli silindi.');
 
 						$log['type'] = 'product';
 						$log['title']	= 'Resim Silme';
@@ -410,7 +405,7 @@ class Product extends CI_Controller {
 							$this->db->update('product_meta', array('val_text'=>'default_image'));
 							if($this->db->affected_rows() > 0)
 							{
-								$data['messages']['default_image_change'] = array('class'=>'success', 'title'=>'Varsayılan stok görseli değişti.');
+								$data['alerts']['default_image_change'] = array('class'=>'success', 'title'=>'Varsayılan stok görseli değişti.');
 							}
 						}
 					}
@@ -447,7 +442,7 @@ class Product extends CI_Controller {
 				$this->db->update('product_meta', array('val_text'=>'default_image'));
 				if($this->db->affected_rows() > 0)
 				{
-					$data['messages']['default_image_change'] = array('class'=>'success', 'title'=>'Varsayılan stok görseli değişti.');
+					$data['alerts']['default_image_change'] = array('class'=>'success', 'title'=>'Varsayılan stok görseli değişti.');
 				}
 			}
 		}
@@ -456,19 +451,11 @@ class Product extends CI_Controller {
 		
 		
 		
-		
-
+		// stok kartını çağıralım
 		$data['product'] = get_product(array('id'=>$product['id']));
-		
-		// maliyet fiyatlarını görebilir mi?
-		if(!item_access('product_cost_price'))
-		{
-			$data['product']['tax_free_cost_price'] = 0;
-			$data['product']['cost_price'] = 0;	
-		}
-		
-		
-		
+			// stok kartı silinmis mi?
+			if($data['product']['status'] == '0'){$data['alerts']['product_deleted'] = array('class'=>'danger', 'title'=>'Stok Kartı Silinmiş', 'description'=>'Stok kartı silinmiş, fakat endişe etmeyin. Stok kartını tekrar aktif edebilirsiniz.');}		
+			
 		$this->template->view('product/view', $data);
 	}
 	
@@ -486,55 +473,5 @@ class Product extends CI_Controller {
 		$this->load->view('product/print_barcode', $data);
 	}
 
-
-
-	
-	
-	
-	
-	/* SECENEKLER 
-		bu bölümde stok yönetimi ayarları yapılmaktadır. 
-		örnek:  stok kartlarını kimler düzenler, maliyet fiyatlarını kimler görür gibi... */
-	public function options()
-	{
-		// sayfa bilgisi
-		$data['title'] = 'Stok Yönetimi Seçenekleri';
-
-		if(isset($_POST['update_options']))
-		{
-			unset($_POST['update_options']);
-            $posts = array_keys($_POST);
-            foreach($posts as $input_name)
-            {
-                $option['group'] = 'access';
-                $option['key']   = $input_name;
-                $option['val_1']   = $_POST[$input_name];
-                $option['val_2']   = 'product';
-                update_option($option);
-            }
-            $GLOBALS['access'] = get_options(array('group'=>'access'));
-		}
-	
-
-		// stok yonetimi ayarlari
-		if(isset($_POST['update_product_options']))
-        {
-            unset($_POST['update_product_options']);
-            $posts = array_keys($_POST);
-            foreach($posts as $input_name)
-            {
-                $option['group'] = 'setting';
-                $option['key']   = $input_name;
-                $option['val_1']   = $_POST[$input_name];
-                $option['val_2']   = 'product';
-                update_option($option);
-            }
-            $GLOBALS['setting'] = get_options(array('group'=>'setting'));
-        }
-		
-
-
-		$this->template->view('product/options', $data);	
-	}
 	
 }

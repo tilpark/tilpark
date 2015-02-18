@@ -87,6 +87,29 @@ function get_account($data)
 }
 
 
+/**
+ * get_accounts()
+ * veri tabanındaki tüm hesap kartlarını sorgular ve bir değişkene atar. 
+ * fonksiyon içerisinde $accounts[] dizine aktarılmıştır çünkü tablolarda kullanımı kolaylaştırır.
+ * @author mustafa tanrıverdı
+ */
+function get_accounts()
+{
+	$ci =& get_instance();
+	$accounts_query = $ci->db->get('accounts')->result_array();
+
+	$accounts = array();
+	foreach($accounts_query as $query)
+	{
+		$accounts[$query['id']] = $query;
+	}
+	
+	return $accounts;
+}
+
+
+
+
 function get_account_balance($balance)
 {	
 	return get_money($balance);	
@@ -169,26 +192,7 @@ function get_account_list($data='')
 
 
 
-function get_account_list_for_array()
-{
-	$ci =& get_instance();
-	$accounts_query = $ci->db->get('accounts')->result_array();
-	$i = 0;
-	while($i < 100000)
-	{
-		if(!isset($accounts_query[$i]))
-		{
-			$i = 100000;
-		}
-		else
-		{
-			$accounts[$accounts_query[$i]['id']] = $accounts_query[$i];
-		}
-		$i++;
-	}
-	
-	return @$accounts;
-}
+
 
 
 

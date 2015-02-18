@@ -68,7 +68,7 @@
                         <div class="content">
                         	<div class="note">
                             	<i class="fa fa-quote-left"></i>
-                        		<small>Şu anda en popüler 10 stok kartının raporunu görmektesiniz. Stok kartları satış adetlerine göre hesaplanmaktadır.</small>
+                        		<small>Şu anda en popüler 10 stok kartının raporunu görmektesiniz. En popüler stok kartları satış adetlerinin ortalamalarına göre hesaplanmaktadır.</small>
                             </div>
                             <div style="height:10px;"></div>
                         	<?php

@@ -75,33 +75,37 @@ function update_product($id, $data)
 
 
 
-
-
-
-	
-
-
-
+/** 
+ * GET PRODUCT get_product()
+ * Bu fonksiyon ile parametrede belirtilen degiskene veya diziye gore stok kartını bulur ve dondurur
+ * @author mustafa tanrıverdi
+ * @url https://github.com/tilpark/tilpark/wiki/product:-get_product()
+ */
 function get_product($data)
 {
 	$ci =& get_instance();
 	
 	if(is_array($data))
 	{
-		# eger gonderilen deger ID degil bir dizi ise veritabani sorgusu yapalim
+		# eger gonderilen deger dizi (array) ise 
 		$ci->db->where($data);
 		$ci->db->order_by('id', 'DESC');
 		return $query = $ci->db->get('products')->row_array();
 	}
 	else
 	{
-		# fakat $data degiskeni ID bu sebebler cok fazla veritabanı sorgusu yapmak yerine $GLOBALS['products'] degiskeninden veri cekelim
+		# eger gonderilen deger bizi (!array) degil ise yani degisken ise muhtemelen ID'dir.
 		$ci->db->where('id', $data);
 		return $query = $ci->db->get('products')->row_array();
 	}
 }
 
 
+/** 
+ * GET PRODUCT get_products()
+ * Bu fonksiyon ile parametrede belirtilen degiskene veya diziye gore stok kartlarını bulur ve dizi halinde döndürür
+ * @author mustafa tanrıverdi
+ */
 function get_products($data='')
 {
 	$ci =& get_instance();

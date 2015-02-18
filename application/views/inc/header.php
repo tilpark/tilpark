@@ -46,6 +46,9 @@ $this->session->set_userdata('user', $query);
 <link rel="stylesheet" href="<?php echo base_url('plugins/wysiwyg/dist/summernote.css'); ?>" />
 <script src="<?php echo base_url('plugins/wysiwyg/dist/summernote.min.js'); ?>"></script>
 
+<!-- angular js -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+
 <!-- Initialize JS Plugins -->
 <script src="<?php echo base_url('theme/js/app.js'); ?>"></script>
 <link rel="stylesheet" href="<?php echo base_url('theme/css/app.css'); ?>">

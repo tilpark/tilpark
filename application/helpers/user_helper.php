@@ -507,7 +507,7 @@ function get_log_table($data, $order_by='ASC', $array=array())
 	{
 		$log['date'] = $ci->input->post('log_time');
 		$log['type'] = 'user_reviews';
-		$log['title']	= get_lang('User Reviews');
+		$log['title']	= 'Kullanıcı Yorumu';
 		$log['description'] = $ci->input->post('description');
 		$log['user_id'] = get_the_current_user('id');
 		
@@ -536,9 +536,9 @@ function get_log_table($data, $order_by='ASC', $array=array())
     	<div class="row">
         	<div class="col-md-10">
                 <div class="form-group">
-                    <label for="log_user_description" class="control-label ff-1 fs-16"><?php lang('User Reviews'); ?></label>
+                    <label for="log_user_description" class="control-label ff-1 fs-16">Kullanıcı Yorumu</label>
                     <div class="input-prepend input-group">
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></span>
+                        <span class="input-group-addon"><span class="fa fa-comment"></span></span>
                         <input type="text" id="log_user_description" name="description" class="form-control input-lg ff-1 required" minlength="3" maxlength="2000">
                     </div>
                 </div> <!-- /.form-group -->
@@ -550,7 +550,7 @@ function get_log_table($data, $order_by='ASC', $array=array())
         			<input type="hidden" name="add_log_user_reviews" />
                     <label for="log_user_description" class="control-label ff-1 fs-16">&nbsp;</label>
                     <br />
-                    <button class="btn btn-default2 btn-lg btn-block"><?php lang('Add'); ?></button>
+                    <button class="btn btn-default btn-lg btn-block">Ekle</button>
                 </div> <!-- /.form-group -->
             </div>
     	</div> <!-- /.row -->
@@ -558,36 +558,36 @@ function get_log_table($data, $order_by='ASC', $array=array())
     
     
 	<table class="table table-hover table-bordered table-condensed table-striped dataTable_noExcel_noLength">
-            <thead>
-                <tr>
-                	<th class="hide"></th>
-                    <th width="130"><?php lang('Date'); ?></th>
-                    <?php if($array['user']==true):?><th width="200"><?php lang('User'); ?></th><?php endif; ?>
-                    <?php if($array['form_id']==true):?><th width="100">Form ID</th><?php endif; ?>
-                    <th><?php lang('Title'); ?></th>
-                    <th><?php lang('Description'); ?></th>
-                </tr>
-            </thead>
-            <tbody>
-        <?php
-		$users = get_user_list();
-		$ci->db->where($data);
-		$ci->db->order_by('id', $order_by);
-		$query = $ci->db->get('user_logs')->result_array();
-		foreach($query as $log):
-		?>
-        <tr>
-        	<td class="hide"></td>
-        	<td><?php echo substr($log['date'],0,16); ?></td>
-            <?php if($array['user']==true):?><td><a href="<?php echo site_url('user/profile/'.$log['user_id']); ?>" target="_blank"><?php echo $users[$log['user_id']]['name'].' '.$users[$log['user_id']]['surname']; ?></a></td><?php endif; ?>
-            <?php if($array['form_id']==true):?><td><?php if($log['form_id'] > 0):?><a href="<?php echo site_url('form/view/'.$log['form_id']); ?>" target="_blank">#<?php echo $log['form_id']; ?></a><?php endif; ?></td><?php endif; ?>
-            <td><?php echo $log['title']; ?></td>
-            <td><?php echo $log['description']; ?></td>
-        </tr>
-        <?php endforeach; ?>
-        	</tbody>
-        </table>	
-        <?php
+        <thead>
+            <tr>
+            	<th class="hide"></th>
+                <th width="130">Tarih</th>
+                <?php if($array['user']==true):?><th width="200">Kullanıcı</th><?php endif; ?>
+                <?php if($array['form_id']==true):?><th width="100">Form ID</th><?php endif; ?>
+                <th>Başlık</th>
+                <th>Açıklama</th>
+            </tr>
+        </thead>
+        <tbody>
+    <?php
+	$users = get_user_list();
+	$ci->db->where($data);
+	$ci->db->order_by('id', $order_by);
+	$query = $ci->db->get('user_logs')->result_array();
+	foreach($query as $log):
+	?>
+    <tr>
+    	<td class="hide"></td>
+    	<td><?php echo substr($log['date'],0,16); ?></td>
+        <?php if($array['user']==true):?><td><a href="<?php echo site_url('user/profile/'.$log['user_id']); ?>" target="_blank"><?php echo $users[$log['user_id']]['name'].' '.$users[$log['user_id']]['surname']; ?></a></td><?php endif; ?>
+        <?php if($array['form_id']==true):?><td><?php if($log['form_id'] > 0):?><a href="<?php echo site_url('form/view/'.$log['form_id']); ?>" target="_blank">#<?php echo $log['form_id']; ?></a><?php endif; ?></td><?php endif; ?>
+        <td><?php echo $log['title']; ?></td>
+        <td><?php echo $log['description']; ?></td>
+    </tr>
+    <?php endforeach; ?>
+    	</tbody>
+    </table>	
+    <?php
 }
 
 

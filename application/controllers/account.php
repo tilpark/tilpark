@@ -384,29 +384,5 @@ class Account extends CI_Controller {
 		$this->load->view('account/address_print_view', $data);	
 	}
 	
-	public function ajax_account_list()
-	{
-		$this->db->where('status', '1');
-		$query = $this->db->get('accounts')->result_array();
-		?>
-        {
-  			"aaData": 
-            [
-            <?php $i = 0; ?>
-  			<?php foreach($query as $account): ?>
-                <?php if($i>0):?>,<?php endif;?>[
-                  "<a href='<?php echo site_url('account/view/'.$account['id']); ?>'><?php echo $account['code']; ?></a>",
-                  "<?php echo mb_substr($account['name'],0,25,'utf-8'); ?>",
-                  "<?php echo mb_substr($account['name_surname'],0,20,'utf-8'); ?>",
-                  "<?php echo $account['city']; ?>",
-                  "<?php echo $account['gsm']; ?>",
-                  "<?php echo get_money($account['balance']); ?>"
-                ]
-                <?php $i++; ?>
-             <?php endforeach; ?>
-   			 ]
-    	}
-        <?php	
-	}
 	
 }

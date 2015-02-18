@@ -48,7 +48,11 @@ function get_form($data)
 	return $query;
 }
 
-function get_invoice_item($item_id, $data='')
+
+
+
+
+function get_form_item($item_id, $data='')
 {	
 	$ci =& get_instance();
 	
@@ -67,6 +71,28 @@ function get_invoice_item($item_id, $data='')
 	{
 		return 0;
 	}
+}
+
+/**
+ * get_form_items()
+ * belirtilen parametredeki bütün formları döndürür
+ * @author mustafa tarıverdi
+ */
+function get_form_items($array)
+{
+	$ci =& get_instance();
+
+	if(isset($array['order_by']))
+	{
+		$order_by = $array['order_by'];
+		$ci->db->order_by($order_by);
+		unset($array['order_by']);
+	}
+	
+	$ci->db->where($array);
+	$query = $ci->db->get('form_items')->row_array();
+	return $query;
+
 }
 
 
