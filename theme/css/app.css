@@ -1560,6 +1560,7 @@ span.input-group-addon {
 }
 span.input-group-addon .fa {
   width: 32px;
+  font-weight: bold;
 }
 .form-control {
   border-radius: 0px !important;
@@ -1712,6 +1713,7 @@ ul.logs li span {
   font-family: 'Ubuntu', sans-serif !important;
   border-top: 0px;
   background-color: #FFF;
+  font-size: 12px;
 }
 .table thead {
   background-color: #DEDEDE;

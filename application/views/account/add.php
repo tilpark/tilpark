@@ -2,12 +2,6 @@
 <div class="col-md-8">
 
 
-<?php
-if(isset($success['add_account'])){alertbox('alert-success', 'Hesap Kartı Eklendi', '"'.$account['code'].'" yeni bir hesap kartı eklendi.');}
-if(@$formError) { alertbox('alert-danger', $formError);	 }
-if(@$haveBarcode) { alertbox('alert-danger', '"'.$account['code'].'" Barkod kodu başka bir ürün kartında bulundu.', 
-	'Başka bir ürün kartı "'.$account['code'].'" barkod kodunu kullanıyor. <br/> Barkod kodları eşsiz olmalı ve sadece bir ürün kartına ait olmalı.');	 }
-?>
 	
     <form name="form_new_product" id="form_new_product" action="" method="POST" class="validation">
     	<h3><i class="fa fa fa-puzzle-piece"></i> Yeni Hesap Kartı</h3>

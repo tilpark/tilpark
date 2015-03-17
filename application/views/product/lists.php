@@ -20,6 +20,5 @@
             <td class="text-center"><?php echo get_quantity($product['amount']); ?></td>
         </tr>
     <?php endforeach; ?>
-    
     </tbody>
 </table>

@@ -21,6 +21,7 @@ class Account extends CI_Controller {
 		$data['navigation'][0] = '<li><a href="'.site_url('account').'">Hesap Yönetimi</a></li>';
 		$data['navigation'][1] = '<li class="active">Yeni Hesap Kartı</li>';
 
+
 		$account['code'] = '';
 		$account['name'] = '';
 		$account['name_surname'] = '';
@@ -47,7 +48,7 @@ class Account extends CI_Controller {
 		
 			if($this->form_validation->run() == FALSE)
 			{
-				$data['formError'] = validation_errors();
+				$data['alerts']['form_validation_error_1'] = array('class'=>'danger', 'title'=>'Form Hatası', 'description'=>validation_errors());
 			}
 			else
 			{
@@ -80,7 +81,7 @@ class Account extends CI_Controller {
 					// Have barcode?
 					if(is_account_code($account['code']))
 					{
-						$data['haveBarcode'] = 'Hesap barkod kodu başka bir ürün kartında bulundu.';
+						$data['alerts']['have_barcode'] = array('class'=>'danger', 'title'=>'Hesap Barkod Kodu Zaten Kayıtlı', 'description'=>'"'.$account['code'].'" barkod kodu başka bir hesap kartında bulunduğundan, yeni hesap kartı oluşturulamadı.');
 						$continue = false;
 					}
 				}
@@ -92,6 +93,8 @@ class Account extends CI_Controller {
 					if($account_id > 0)
 					{
 						$data['success']['account_card'] = true;
+						$data['alerts']['add_account_card'] = array('class'=>'success', 'title'=>'Hesap Kartı Eklendi', 'description'=>'"'.$account['code'].'" barkod kodu hesap kartı eklendi.');
+
 						$log['type'] = 'account';
 						$log['title']	= 'Yeni';
 						$log['description'] = 'Yeni hesap kartı oluşturdu.';
@@ -112,6 +115,14 @@ class Account extends CI_Controller {
 		$this->template->view('account/add', $data);
 	}
 	
+
+
+
+
+	/*
+		HESAP KARTI LISTELEME
+		Hesap kartlarının listelendigi sayfayı temsil eder
+	*/
 	public function lists($row=1)
 	{
 		// meta title
@@ -119,126 +130,20 @@ class Account extends CI_Controller {
 		$data['navigation'][0] = '<li><a href="'.site_url('account').'">Hesap Yönetimi</a></li>';
 		$data['navigation'][1] = '<li class="active">Hesap Kartları</li>';
 		
-		// toplam kayit sayisini hesapla
-		$data['num_rows'] = $this->db->select('id')->get('accounts')->num_rows();
-		$overlenght = floor($data['num_rows'] / 20);
 		
-		$data['num_rows'] = $overlenght * 20;
-		
-		$this->load->library('pagination');
-		
-		
-		$config['base_url'] = site_url('account/lists/');
-		$config['total_rows'] = ($data['num_rows']);
-		$config['per_page'] = 20; 
-		$config['num_links'] = 5;
-		$config['use_page_numbers'] = TRUE;
-		$config['display_pages'] = TRUE;
-		
-		$config['full_tag_open'] = '<ul class="pagination">';
-		$config['full_tag_close'] = '</ul>';
-		
-		$config['first_link'] = 'İlk Sayfa';
-		$config['first_tag_open'] = '<li>';
-		$config['first_tag_close'] = '</li>';
-		
-		$config['last_link'] = 'Son Sayfa';
-		$config['last_tag_open'] = '<li>';
-		$config['last_tag_close'] = '</li>';
-		
+		/* hesap kartlarını degiskene aktaralim */
+		$this->db->where('status', '1'); #status "1" olanlar aktif "0" olanlar silinmis
+		$data['accounts'] = $this->db->get('accounts')->result_array();
 
-		$config['next_tag_open'] = '<li>';
-		$config['next_tag_close'] = '</li>';
-		
-		$config['prev_tag_open'] = '<li>';
-		$config['prev_tag_close'] = '</li>';
-		
-		$config['cur_tag_open'] = '<li class="disabled"><a href="javascript:;">';
-		$config['cur_tag_close'] = '</a></li>';
-		
-		$config['num_tag_open'] = '<li>';
-		$config['num_tag_close'] = '</li>';
-		
-		$this->pagination->initialize($config); 
-		
-		$data['pagination'] = $this->pagination->create_links();
-		if($row==1){$row = 0;}else {$row = $row * 20;}
-		
-		// gösterilecek kayitlari cekiyoruz
-			if(isset($_GET['order_by']))
-			{
-				$this->db->order_by($_GET['order_by'].' '.$_GET['order']);
-				if($_GET['order'] == 'ASC')
-				{
-					$data['order_by']['balance'] = '?order_by=balance&order=DESC';
-					$data['order_by']['balance_icon'] = 'fa-arrow-up';
-				}
-				else
-				{
-					$data['order_by']['balance'] = '?order_by=balance&order=ASC';
-					$data['order_by']['balance_icon'] = 'fa-arrow-down';
-				}
-			}
-			else
-			{
-				$data['order_by']['balance'] = '?order_by=balance&order=ASC';
-				$data['order_by']['balance_icon'] = 'fa-arrows-v';
-			}
-			$this->db->where('status', '1');
-			$this->db->limit(20,$row);
-			$data['accounts'] = $this->db->get('accounts')->result_array();
-			$this->template->view('account/lists',$data);	
+		$this->template->view('account/lists',$data);	
 	}
 	
 	
-	public function lists_ajax($text='')
-	{
-		$text = strtoupper(replace_TR(urldecode($text)));
-		if(strlen($text) > 2)
-		{
-			$this->db->select('id, code, name, name_surname, city, phone, balance');
-			$this->db->where('status', '1');
-			if(substr($text,0,2) == 'T:')
-			{
-				$text = trim(substr($text,2));
-				
-				$this->db->where('phone', $text);
-				$this->db->limit(20);
-			}
-			else if(substr($text,0,2) == 'E:')
-			{
-				$text = trim(substr($text,2));
-				
-				$this->db->where('email', $text);
-				$this->db->limit(20);
-			}
-			else
-			{
-				$this->db->like('code', $text);
-				$this->db->or_like('name', $text);
-				$this->db->or_like('name_surname', $text);
-				$this->db->limit(20);
-			}
-			
-			// gösterilecek kayitlari cekiyoruz
-			
-			$data['accounts'] = $this->db->get('accounts')->result_array();
-			if(!$data['accounts'])
-			{
-				$data['error_404'] = '"'.$text.'" arama sonuçlarına ait hesap kartı/kartları bulunamadı';
-			}
-		}
-		else
-		{
-			$data['error_404'] = 'Arama yapmak için en az 3 karakter girmelisin.';
-		}
-		
-		$this->load->view('account/lists_ajax', $data);	
-		
-	}
+
+
 	
-	
-	
+
+
 	/*	HESAP KARTI
 		hesap kartlarını görmek ve güncellemek etmek için kullanılacak fonksiyon
 	*/

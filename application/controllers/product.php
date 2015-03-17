@@ -51,7 +51,7 @@ class Product extends CI_Controller {
 			if($this->form_validation->run() == FALSE)
 			{
 				# eger gonderilen degerlerde eksik var ise ekrana hata mesajini basmak icin hatalari fonksiyona gonder
-				$data['formError'] = validation_errors();
+				$data['alerts']['form_validation_error_1'] = array('class'=>'danger', 'title'=>'Form Hatası', 'description'=>validation_errors());
 			}
 			else
 			{

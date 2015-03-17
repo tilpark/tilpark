@@ -251,13 +251,17 @@ class Form extends CI_Controller {
 
 
 							$data['alerts']['form_update'] = array('class'=>'success', 'title'=>'Form güncellendi.');
+							$form = get_form($form['id']); // forma ait hesap karti guncellendiginden $form degiskenini guncel tutalim.
 						}
 					}	
 				}
 			}
 		}
 
-		/* form hareketleri */
+
+		/* form hareketleri 
+			eger form bilgileri degilde oge eklenip siliniyorsa
+		*/
 		if(isset($_POST['item']) and is_log())
 		{
 			$this->form_validation->set_rules('code', get_lang('Barcode Code'), 'required');
