@@ -277,7 +277,7 @@ function generateRandomInt($length = 100) {
 }
 
 
-for($i=0; $i<50000; $i++)
+for($i=0; $i<0; $i++)
 {
 	$product['code'] 				= '';
 	$product['name'] 				= generateRandomString(20);
