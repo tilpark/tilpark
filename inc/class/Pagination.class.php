@@ -55,7 +55,7 @@
         protected $_variables = array(
             'classes' => array('clearfix', 'pagination'),
             'crumbs' => 10,
-            'rpp' => 6,
+            'rpp' => 20,
             'key' => 'page',
             'target' => '',
             'next' => 'Sonraki &raquo;',

@@ -21,10 +21,10 @@ $query = db()->query("SELECT * FROM ".dbname('products')." WHERE ".$where['query
 	<table class="table table-hover table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>Ürün ID</th>
-				<th>Tarih</th>
-				<th>Ürün Kodu</th>
-				<th>Ürün Adı</th>
+				<th width="80">Ürün ID</th>
+				<th width="100">Tarih</th>
+				<th width="500">Ürün Kodu</th>
+				<th width="500">Ürün Adı</th>
 				<th class="text-right">Satış Fiyatı</th>
 			</tr>
 		</thead>

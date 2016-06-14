@@ -603,6 +603,19 @@ function til_pagination($num_rows, $ops=array())
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* til_table()
 	@description: ajax ile tablolari listeler ;/
 	@return: sonuc olarak html ciktisini ekrana basar ;/ */
@@ -618,8 +631,21 @@ function til_table($array=array())
 	{
 		var search_text = $('#table-search').val();
 
-		$.get( "<?php echo $array['url']; ?>?search_text="+search_text+"&page="+<?php echo $til->pg->page; ?>+"", function( data ) {
-		  $( "<?php echo $array['div_html']; ?>" ).html( data );
+	
+		
+
+
+		$.ajax({
+		  url: "<?php echo $array['url']; ?>?search_text="+search_text+"&page="+<?php echo $til->pg->page; ?>+"",
+		  global: false, 
+		  type: "GET", 
+		  cache: false,
+		  beforeSend: function() {
+		    $("<?php echo $array['div_html']; ?>").html("<div class='text-center'><img src='<?php site_url('theme/img/ajax-loader.gif'); ?>'' /></div>");
+		  },
+		  success: function(data) {
+		    $("<?php echo $array['div_html']; ?>").html(data);
+		  }
 		});
 	}
 
@@ -627,7 +653,7 @@ function til_table($array=array())
 	$(document).ready(function() {
 		table_search();
 		$('#table-search').keyup(function (){
-			table_search();
+			table_search().delay(500);
 		});
 	});
 

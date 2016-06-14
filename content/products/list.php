@@ -13,7 +13,7 @@ $breadcrumb[1] = array('name'=>'Ürün Kartları', 'url'=>'', 'active'=>true);
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<i class="fa fa-list"></i> Formlar 
+		<i class="fa fa-list"></i> Ürün Kartları 
 		<div class="pull-right" style="width:200px; margin-top:-5px;">
 			<?php til_table_search_box(); ?>
 		</div> <!-- /.pull-right -->

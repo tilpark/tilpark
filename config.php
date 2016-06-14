@@ -40,7 +40,7 @@ function dbname($val)
 
 
 $til->pg = new StdClass;
-$til->pg->limit_list = 6; // bir sayfada gosterilecek listeleme limiti, tablonun row limiti
+$til->pg->limit_list = 20; // bir sayfada gosterilecek listeleme limiti, tablonun row limiti
 
 
 
