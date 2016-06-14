@@ -2,11 +2,11 @@
 <?php get_header(); ?>
 <?php get_sidebar(); ?>
 
-<?php 
+<?php
 $form_id = 0;
 if(isset($_GET['id']))  {
 	$form = get_form($_GET['id']);
-	if($form) 
+	if($form)
 	{
 		$form_id = $form['id'];
 		$in_out = $form['in_out'];
@@ -24,7 +24,7 @@ if(isset($_GET['id']))  {
 <?php
 // Header Bilgisi
 $breadcrumb[0] = array('name'=>'Form Yönetimi', 'url'=>get_site_url('content/forms/'));
-if($in_out == 0){ $breadcrumb[1] = array('name'=>'Yeni Giriş/Alış Formu', 'url'=>'', 'active'=>true); } 
+if($in_out == 0){ $breadcrumb[1] = array('name'=>'Yeni Giriş/Alış Formu', 'url'=>'', 'active'=>true); }
 	else { $breadcrumb[1] = array('name'=>'Yeni Çıkış/Satış Formu', 'url'=>'', 'active'=>true); }
 
 
@@ -62,39 +62,39 @@ if(isset($_GET['o_status']))
 
 
 
-<ul id="myTabs" class="nav nav-tabs bordered" role="tablist"> 
-	<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false"><i class="fa fa-shopping-cart"></i> Form</a></li> 
+<ul id="myTabs" class="nav nav-tabs bordered" role="tablist">
+	<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false"><i class="fa fa-shopping-cart"></i> Form</a></li>
 	<?php if(isset($form['id'])): ?><li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="true"><i class="fa fa-clock-o"></i> Geçmiş</a></li> <?php endif; ?>
 	<?php if(isset($form['id'])): ?>
-		<li role="presentation" class="dropdown"> <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false">Seçenekler <span class="caret"></span></a> 
-			<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
-				<li><a href="#dropdown1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1">Yazdır</a></li> 
-				<li><a href="#dropdown2" role="tab" id="dropdown2-tab" data-toggle="tab" aria-controls="dropdown2">Görev Ataması</a></li> 
-			</ul> 
+		<li role="presentation" class="dropdown"> <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false">Seçenekler <span class="caret"></span></a>
+			<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents">
+				<li><a href="#dropdown1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1">Yazdır</a></li>
+				<li><a href="#dropdown2" role="tab" id="dropdown2-tab" data-toggle="tab" aria-controls="dropdown2">Görev Ataması</a></li>
+			</ul>
 		</li>
 	<?php endif; ?>
 	<?php if(isset($form['id'])): ?>
-		<li role="presentation" class="dropdown pull-right"> <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false">Form Durumu <span class="caret"></span></a> 
-			<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
-				<li class="<?php if($form['o_status'] == 'waiting'): ?>disabled<?php endif; ?>"><a href="<?php url_form($form['id']); ?>&o_status=waiting">Onay Bekliyor</a></li> 
-				<li class="<?php if($form['o_status'] == 'preparing'): ?>disabled<?php endif; ?>"><a href="<?php url_form($form['id']); ?>&o_status=preparing">Onaylandı - Hazırlanıyor</a></li> 
-				<li class="<?php if($form['o_status'] == 'shipping'): ?>disabled<?php endif; ?>"><a href="<?php url_form($form['id']); ?>&o_status=shipping">Hazırlandı - Kargoya Verildi</a></li> 
-				<li class="<?php if($form['o_status'] == 'completed'): ?>disabled<?php endif; ?>"><a href="<?php url_form($form['id']); ?>&o_status=completed">Teslim Edildi</a></li> 
+		<li role="presentation" class="dropdown pull-right"> <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false">Form Durumu <span class="caret"></span></a>
+			<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents">
+				<li class="<?php if($form['o_status'] == 'waiting'): ?>disabled<?php endif; ?>"><a href="<?php url_form($form['id']); ?>&o_status=waiting">Onay Bekliyor</a></li>
+				<li class="<?php if($form['o_status'] == 'preparing'): ?>disabled<?php endif; ?>"><a href="<?php url_form($form['id']); ?>&o_status=preparing">Onaylandı - Hazırlanıyor</a></li>
+				<li class="<?php if($form['o_status'] == 'shipping'): ?>disabled<?php endif; ?>"><a href="<?php url_form($form['id']); ?>&o_status=shipping">Hazırlandı - Kargoya Verildi</a></li>
+				<li class="<?php if($form['o_status'] == 'completed'): ?>disabled<?php endif; ?>"><a href="<?php url_form($form['id']); ?>&o_status=completed">Teslim Edildi</a></li>
 				<li role="separator" class="divider"></li>
-				<li class="<?php if($form['o_status'] == 'noapproval'): ?>disabled<?php endif; ?>"><a href="<?php url_form($form['id']); ?>&o_status=noapproval"><span class="<?php if($form['o_status'] != 'noapproval'): ?>text-danger<?php endif; ?>">Onay Verilmedi</span></a></li> 
-			</ul> 
-		</li> 
+				<li class="<?php if($form['o_status'] == 'noapproval'): ?>disabled<?php endif; ?>"><a href="<?php url_form($form['id']); ?>&o_status=noapproval"><span class="<?php if($form['o_status'] != 'noapproval'): ?>text-danger<?php endif; ?>">Onay Verilmedi</span></a></li>
+			</ul>
+		</li>
 	<?php endif; ?>
 </ul>
 
 
 
 
-<div id="myTabContent" class="tab-content"> 
+<div id="myTabContent" class="tab-content">
 <!-- TAB: #HOME -->
-<div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab"> 
+<div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
 
-	
+
 
 
 
@@ -148,11 +148,11 @@ if(isset($_POST['form_submit']) and !is_uniquetime())
 	if(strlen($form_item['product_name']) > 3) {
 		add_form_item($form_item);
 	}
-	
+
 	if($location == true) {
 		header("Location: ".get_url_form($form['id']));
 	}
-	
+
 }
 
 
@@ -198,10 +198,10 @@ if(strlen(@$form['date']) < 1)
 			  	<div class="icon-group">
 			    	<span class="icon-group-addon"><i class="fa fa-text-width"></i></span>
 			    	<input type="text" class="form-control" minlength="3" maxlength="32" name="account_name" id="account_name" value="<?php echo @$form['account_name']; ?>">
-			  	</div> <!-- /.input-group -->
-			  	<div class="typeahead-box typeahead-account_name"></div>
+						<div class="typeahead-box"></div>
+					</div> <!-- /.input-group -->
 			</div> <!-- /.form-group -->
-			
+
 		</div> <!-- /.col-md-3 -->
 		<div class="col-md-3">
 			<div class="form-group">
@@ -213,7 +213,7 @@ if(strlen(@$form['date']) < 1)
 			</div> <!-- /.form-group -->
 		</div> <!-- /.col-md-3 -->
 		<div class="col-md-3">
-			
+
 		</div>
 		<div class="clearfix"></div>
 
@@ -223,8 +223,8 @@ if(strlen(@$form['date']) < 1)
 			  	<div class="icon-group">
 			    	<span class="icon-group-addon"><i class="fa fa-phone"></i></span>
 			    	<input type="text" class="form-control gsm"  name="account_gsm" id="account_gsm" value="<?php echo @$form['account_gsm']; ?>" placeholder="(xxx) xxx-xxxx">
-			  	</div> <!-- /.icon-group -->
-			  	<div class="typeahead-box typeahead-account_gsm"></div>
+						<div class="typeahead-box"></div>
+					</div> <!-- /.icon-group -->
 			</div> <!-- /.form-group -->
 		</div> <!-- /.col-md-3 -->
 		<div class="col-md-3">
@@ -233,56 +233,56 @@ if(strlen(@$form['date']) < 1)
 			  	<div class="icon-group">
 			    	<span class="icon-group-addon"><i class="fa fa-phone"></i></span>
 			    	<input type="text" class="form-control phone" name="account_phone" id="account_phone" value="<?php echo @$form['account_phone']; ?>" placeholder="(xxx) xxx-xxxx">
-			  	</div> <!-- /.icon-group -->
-			  	<div class="typeahead-box typeahead-account_phone"></div>
+						<div class="typeahead-box"></div>
+					</div> <!-- /.icon-group -->
 			</div> <!-- /.form-group -->
 		</div> <!-- /.col-md-3 -->
 		<div class="col-md-3">
 			<div class="form-group">
-			  	<label class="control-label" for="account_tax_home">Vergi Dairesi</label>
-			  	<div class="icon-group">
-			    	<span class="icon-group-addon"><i class="fa fa-text-width"></i></span>
-			    	<input type="text" class="form-control" minlength="3" maxlength="20" name="account_tax_home" id="account_tax_home" value="<?php echo @$form['account_tax_home']; ?>">
-			  	</div> <!-- /.icon-group -->
+		  	<label class="control-label" for="account_tax_home">Vergi Dairesi</label>
+		  	<div class="icon-group">
+		    	<span class="icon-group-addon"><i class="fa fa-text-width"></i></span>
+		    	<input type="text" class="form-control" minlength="3" maxlength="20" name="account_tax_home" id="account_tax_home" value="<?php echo @$form['account_tax_home']; ?>">
+		  	</div> <!-- /.icon-group -->
 			</div> <!-- /.form-group -->
 		</div> <!-- /.col-md-3 -->
 		<div class="col-md-3">
 			<div class="form-group">
-			  	<label class="control-label" for="account_tax_no">Vergi No</label>
-			  	<div class="icon-group">
-			    	<span class="icon-group-addon"><i class="fa fa-text-width"></i></span>
-			    	<input type="text" class="form-control digits digitsOnly" minlength="3" maxlength="20" name="account_tax_no" id="account_tax_no" value="<?php echo @$form['account_tax_no']; ?>">
-			  	</div> <!-- /.icon-group -->
-			  	<div class="typeahead-box typeahead-account_tax_no"></div>
+		  	<label class="control-label" for="account_tax_no">Vergi No</label>
+		  	<div class="icon-group">
+		    	<span class="icon-group-addon"><i class="fa fa-text-width"></i></span>
+		    	<input type="text" class="form-control digits digitsOnly" minlength="3" maxlength="20" name="account_tax_no" id="account_tax_no" value="<?php echo @$form['account_tax_no']; ?>">
+					<div class="typeahead-box"></div>
+				</div> <!-- /.icon-group -->
 			</div> <!-- /.form-group -->
 		</div> <!-- /.col-md-3 -->
 
 		<div class="clearfix"></div>
 		<div class="col-md-6">
 			<div class="form-group">
-			  	<label class="control-label" for="account_address">Adres</label>
-			  	<div class="icon-group">
-			    	<span class="icon-group-addon"><i class="fa fa-text-width"></i></span>
-			    	<input type="text" class="form-control" minlength="3" maxlength="500" name="account_address" id="account_address" value="<?php echo @$form['account_address']; ?>">
-			  	</div> <!-- /.icon-group -->
+		  	<label class="control-label" for="account_address">Adres</label>
+		  	<div class="icon-group">
+		    	<span class="icon-group-addon"><i class="fa fa-text-width"></i></span>
+		    	<input type="text" class="form-control" minlength="3" maxlength="500" name="account_address" id="account_address" value="<?php echo @$form['account_address']; ?>">
+		  	</div> <!-- /.icon-group -->
 			</div> <!-- /.form-group -->
 		</div> <!-- /.col-md-3 -->
 		<div class="col-md-3">
 			<div class="form-group">
-			  	<label class="control-label" for="account_district">İlçe</label>
-			  	<div class="icon-group">
-			    	<span class="icon-group-addon"><i class="fa fa-text-width"></i></span>
-			    	<input type="text" class="form-control" minlength="3" maxlength="32" name="account_district" id="account_district" value="<?php echo @$form['account_district']; ?>">
-			  	</div> <!-- /.icon-group -->
+		  	<label class="control-label" for="account_district">İlçe</label>
+		  	<div class="icon-group">
+		    	<span class="icon-group-addon"><i class="fa fa-text-width"></i></span>
+		    	<input type="text" class="form-control" minlength="3" maxlength="32" name="account_district" id="account_district" value="<?php echo @$form['account_district']; ?>">
+		  	</div> <!-- /.icon-group -->
 			</div> <!-- /.form-group -->
 		</div> <!-- /.col-md-3 -->
 		<div class="col-md-3">
 			<div class="form-group">
-			  	<label class="control-label" for="account_city">Şehir</label>
-			  	<div class="icon-group">
-			    	<span class="icon-group-addon"><i class="fa fa-text-width"></i></span>
-			    	<input type="text" class="form-control" minlength="3" maxlength="32" name="account_city" id="account_city" value="<?php echo @$form['account_city']; ?>">
-			  	</div> <!-- /.icon-group -->
+		  	<label class="control-label" for="account_city">Şehir</label>
+		  	<div class="icon-group">
+		    	<span class="icon-group-addon"><i class="fa fa-text-width"></i></span>
+		    	<input type="text" class="form-control" minlength="3" maxlength="32" name="account_city" id="account_city" value="<?php echo @$form['account_city']; ?>">
+		  	</div> <!-- /.icon-group -->
 			</div> <!-- /.form-group -->
 		</div> <!-- /.col-md-3 -->
 	</div> <!-- /.row -->
@@ -316,14 +316,14 @@ if(strlen(@$form['date']) < 1)
 				  	<div class="icon-group">
 				    	<span class="icon-group-addon"><i class="fa fa-barcode"></i></span>
 				    	<input type="text" class="form-control input-sm" minlength="3" maxlength="32" name="product_code" id="product_code">
+							<div class="typeahead-box"></div>
 				  	</div> <!-- /.input-group -->
-				  	<div class="typeahead-box typeahead-product_code"></div>
 				</div> <!-- /.form-group -->
 			</td>
 			<td>
 				<div class="form-group">
 					<input type="text" class="form-control input-sm text-left" minlength="3" maxlength="32" name="product_name" id="product_name">
-					<div class="typeahead-box typeahead-product_name"></div>
+					<div class="typeahead-box"></div>
 				</div> <!-- /.form-group -->
 			</td>
 			<td><input type="text" class="form-control input-sm text-right numbers" maxlength="10" name="p_sale" id="p_sale"></td>
@@ -338,10 +338,10 @@ if(strlen(@$form['date']) < 1)
 	<?php if(@$form['id'] > 0): ?>
 		<?php $form_items = get_form_items($form['id']); ?>
 		<?php if($form_items): ?>
-			<?php 
-			$sub_total['sub_total'] 	= 0; 
+			<?php
+			$sub_total['sub_total'] 	= 0;
 			$sub_total['quantity'] 		= 0;
-			$sub_total['tax_value'] 	= 0; 
+			$sub_total['tax_value'] 	= 0;
 			?>
 
 			<?php foreach($form_items as $form_item): ?>
@@ -376,7 +376,7 @@ if(strlen(@$form['date']) < 1)
 				</tr>
 			</tfoot>
 		<?php endif; ?>
-		
+
 	<?php endif; ?>
 
 
@@ -395,10 +395,17 @@ if(strlen(@$form['date']) < 1)
 
 		var tax_value = parseFloat(value - (parseFloat(value) / math_tax_rate)).toFixed(<?php echo $til->fixed; ?>);
 		return tax_value;
-	}			
+	}
 
 	$(document).ready(function() {
+		$('form').bind('submit',function(){
 
+		});
+
+
+		$(".typeahead-box").click(function(){
+			$(this).hide();
+		});
 
 		/* eger form_id yok ise "form olusmamis ise" */
 		<?php if(@$form['id'] == 1): ?>
@@ -416,65 +423,115 @@ if(strlen(@$form['date']) < 1)
 				$('#account_city').attr('form', 'form_add_item');
 			});
 		<?php endif; ?>
-		
+
+		form_ajax("#account_name");
+		form_ajax("#account_gsm");
+		form_ajax("#account_phone");
+		form_ajax("#account_tax_no");
+		form_ajax("#product_name");
+		form_ajax("#product_code");
+		form_ajax("#quantity");
 
 
-		$('#account_name').keyup(function(e) {
-			$.get( "ajax_list_account.php?name&q="+$(this).val(), function( data ) {
-				$( ".typeahead-box.typeahead-account_name" ).show();
-			  	$( ".typeahead-box.typeahead-account_name" ).html( data );
+
+		function form_ajax(id)
+		{
+
+
+			$(id).keyup(function() {
+				$(id).next( ".typeahead-box" ).show();
+
+				$(id).focus(function(){
+					$(id).next( ".typeahead-box" ).show();
+				});
+
+
+
+				if(event.which == 40)
+				{
+
+					console.log("down false");
+					if(ajax_list_class_count > $(id).next(".typeahead-box").find("ul li").length - 1)
+					{
+
+					}
+					else
+					{
+						ajax_list_class_count++;
+					}
+
+					var prev = ajax_list_class_count - 1;
+					$(id).next(".typeahead-box").find("ul li:nth-child("+ prev +") a").removeClass("active");
+					$(id).next(".typeahead-box").find("ul li:nth-child("+ ajax_list_class_count +") a").addClass("active");
+					var active_item_val = $(id).next(".typeahead-box").find("ul li a.active .typeahead-account_name").text();
+					$(id).val(active_item_val);
+				}
+				else if(event.which == 38)
+				{
+					window.enter_key = false;
+					if(ajax_list_class_count < 1)
+					{
+						window.enter_key = true;
+					}
+					else
+					{
+						ajax_list_class_count--;
+					}
+
+					var prev = ajax_list_class_count + 1;
+					$(id).next(".typeahead-box").find("ul li:nth-child("+ prev +") a").removeClass("active");
+					$(id).next(".typeahead-box").find("ul li:nth-child("+ ajax_list_class_count +") a").addClass("active");
+					var active_item_val = $(id).next(".typeahead-box").find("ul li a.active .typeahead-account_name").text();
+					$(id).val(active_item_val);
+				}
+				else
+				{
+					$.get( "ajax_list_product.php?name&q="+$(id).val(), function( data ) {
+						$(id).next( ".typeahead-box" ).html( data );
+					});
+					window.ajax_list_class_count = 0;
+				}
+
+
+
+
+				window.enter_key = false;
+				if(event.which == 13)
+				{
+					console.log("burada");
+					window.enter_key = true;
+
+
+					$(id).next(".typeahead-box").find("ul li a.active").click();
+					$(id).next(".typeahead-box").find("ul li a").removeClass("active");
+					$(id).next(".typeahead-box").remove();
+
+
+				}
+
+
+				if($('#p_sale').is(':focus') || $('#quantity').is(':focus') || $('#tax_rate').is(':focus') || $('#sub_total').is(':focus'))
+				{
+					window.enter_key = true;
+				}
+
+				$('form').bind('submit',function(){
+					console.log(enter_key);
+					return enter_key;
+
+
+
+				});
+
 			});
+
+		}
+
+		$("body").click(function(){
+			$(".typeahead-box").hide();
 		});
 
 
-		$('#account_gsm').keyup(function() {
-			$.get( "ajax_list_account.php?gsm&q="+$(this).val(), function( data ) {
-				$( ".typeahead-box.typeahead-account_gsm" ).show();
-			  	$( ".typeahead-box.typeahead-account_gsm" ).html( data );
-			});
-		});
-
-
-		$('#account_phone').keyup(function() {
-			$.get( "ajax_list_account.php?phone&q="+$(this).val(), function( data ) {
-				$( ".typeahead-box.typeahead-account_phone" ).show();
-			  	$( ".typeahead-box.typeahead-account_phone" ).html( data );
-			});
-		});
-
-
-		$('#account_tax_no').keyup(function() {
-			$.get( "ajax_list_account.php?tax_no&q="+$(this).val(), function( data ) {
-				$( ".typeahead-box.typeahead-account_tax_no" ).show();
-			  	$( ".typeahead-box.typeahead-account_tax_no" ).html( data );
-			});
-		});
-
-
-		// ajax product search
-		$('#product_name').keyup(function() {
-			$.get( "ajax_list_product.php?name&q="+$(this).val(), function( data ) {
-				$( ".typeahead-box.typeahead-product_name" ).show();
-			  	$( ".typeahead-box.typeahead-product_name" ).html( data );
-			});
-		});
-
-		$('#product_code').keyup(function() {
-			$.get( "ajax_list_product.php?code&q="+$(this).val(), function( data ) {
-				$( ".typeahead-box.typeahead-product_code" ).show();
-			  	$( ".typeahead-box.typeahead-product_code" ).html( data );
-			});
-		});
-
-
-		$('body').click(function() {
-			$( ".typeahead-box" ).hide();
-		});
-		
-		$( ".typeahead-box" ).hide();
-
-
-		
 
 		$('#p_sale').keyup(function() {
 			var p_sale 	 	 	= $('#p_sale').val();
@@ -564,18 +621,18 @@ if(strlen(@$form['date']) < 1)
 
 </div>  <!-- /.tab-pane #home -->
 <!---------------------------------------------- TAB LOGS ---------------------------------------------->
-<div role="tabpanel" class="tab-pane fade" id="logs" aria-labelledby="logs-tab"> 
+<div role="tabpanel" class="tab-pane fade" id="logs" aria-labelledby="logs-tab">
 
 	<h3 class="row-module-title"><i class="fa fa-clock-o"></i> Geçmiş - Log Kayıtları</h3>
 	<?php get_logs(array('table_id'=>'forms:'.$form['id'])); ?>
 
 </div> <!-- /.tab-pane #logs -->
-<div role="tabpanel" class="tab-pane fade" id="dropdown1" aria-labelledby="dropdown1-tab"> 
-	<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p> 
-</div> 
+<div role="tabpanel" class="tab-pane fade" id="dropdown1" aria-labelledby="dropdown1-tab">
+	<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+</div>
 <div role="tabpanel" class="tab-pane fade" id="dropdown2" aria-labelledby="dropdown2-tab">
-	<p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.</p> 
-</div> 
+	<p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.</p>
+</div>
 </div> <!-- /#myTabContent -->
 
 

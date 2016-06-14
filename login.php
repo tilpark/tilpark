@@ -1,6 +1,5 @@
 <?php
-ob_start();
-session_start();
+  include('functions.php');
 ?>
 <html>
 <head>
@@ -18,7 +17,7 @@ session_start();
 
   <script>
   $(document).ready(function() {
-    
+
 
     $(".validation").validate();
 
@@ -123,25 +122,22 @@ label.error {
 
 </style>
 
-
 <?php
-include('config.php');
-?>
 
-
-<?php 
 $login_form_error = false;
 if(isset($_POST['username']))
 {
   $username = trim(mysql_real_escape_string($_POST['username']));
   $password = trim(mysql_real_escape_string($_POST['password']));
 
-  $q_login = db()->query("SELECT * FROM til_users WHERE username='$username' AND password='$password'");
+  $q_login = db()->query("SELECT * FROM ".dbname('users')." WHERE username='$username' AND password='$password'");
 
   if($q_login->num_rows > 0)
   {
     $login = $q_login->fetch_assoc();
     $_SESSION['user_id'] = $login['id'];
+    header("Location:".get_site_url());
+
   }
   else
   {
@@ -212,7 +208,7 @@ if(isset($_POST['username']))
             <button class="btn btn-success btn-block btn-lg">Giriş Yap</button>
           </div> <!-- /.text-right -->
 
-        </form> 
+        </form>
 
         <div class="social_box">
           <span class="text-muted" style="font-style:italic;">Bizi takip edin: &nbsp; &nbsp;</span>

@@ -189,7 +189,7 @@ $(document).ready(function() {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
-    
+
 });
 	</script>
 
@@ -200,8 +200,8 @@ $(document).ready(function() {
 		    <!-- Brand and toggle get grouped for better mobile display -->
 		    <div class="navbar-header">
 
-		    	
-		      
+
+
 
 		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
 		        <span class="sr-only">Toggle navigation</span>
@@ -250,7 +250,7 @@ $(document).ready(function() {
 		            <li><a href="#">Mesaj Kutusu</a></li>
 		            <li><a href="#">Ayarlar</a></li>
 		            <li role="separator" class="divider"></li>
-		            <li><a href="#">Çıkış Yap</a></li>
+		            <li><a href="<?php site_url('logout.php'); ?>">Çıkış Yap</a></li>
 		          </ul>
 		        </li>
 		      </ul>
@@ -260,10 +260,10 @@ $(document).ready(function() {
 		        <li><a href="#"><i class="fa fa-tasks"></i></a></li>
 		        <li><a href="#"><i class="fa fa-globe"></i></a></li>
 		       </ul>
-		      
-		     
-		       
-		       
+
+
+
+
 		    </div><!-- /.navbar-collapse -->
 		  </div><!-- /.container-fluid -->
 		</nav>
@@ -306,7 +306,7 @@ $(document).ready(function() {
 				<ul class="sidebar-menu">
 					<li class="active home-index"><a href="#"><i class="fa fa-dashboard"></i> <span class="menu-label">Yönetim Paneli</span></a></li>
 					<li class="has_submenu products-index">
-						<a href="#"><i class="fa fa-cubes"></i> <span class="menu-label">Ürünler</span> <span class="caret"></span></a> 
+						<a href="#"><i class="fa fa-cubes"></i> <span class="menu-label">Ürünler</span> <span class="caret"></span></a>
 						<ul class="submenu">
 							<li class="products-add"><a href="#">Ürün Ekle</a>
 							<li><a href="#">Ürün Listesi</a>
@@ -345,11 +345,3 @@ $(document).ready(function() {
 
 <div id="page-content-wrapper">
 <div class="container-fluid">
-
-	
-
-
-
-
-
-	

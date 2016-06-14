@@ -21,7 +21,7 @@
 				$search_name 	= str_replace($q, '<strong>'.$q.'</strong>', $list['name']);
 				$search_code 	= str_replace($q, '<strong>'.$q.'</strong>', $list['code']);
 				$search_price 	= str_replace($q, '<strong>'.$q.'</strong>', $list['p_sale']);
-				
+
 				?>
 				<li>
 					<a href="#" class="typeahead-list-item"
@@ -62,12 +62,14 @@
 				$('#quantity').keyup();
 				$('#quantity').focus();
 
+
+
 			});
 
 
 
 
-				
+
 
 		});
 		</script>

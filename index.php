@@ -11,8 +11,8 @@
 
 
 
-          	
-    
+
+
 
 
 
@@ -111,7 +111,7 @@
 	 				<div class="box-value"><?php echo number_format(1290); ?> <i class="fa fa-try"></i> </div>
 	 			</div>
 	 		</div> <!-- /.row -->
-	 		
+
 	 		<div class="h10"></div>
 
 	 		<div class="row">
@@ -139,7 +139,7 @@
 	 				<div class="box-value"><?php echo number_format(1290); ?> <i class="fa fa-try"></i> </div>
 	 			</div>
 	 		</div> <!-- /.row -->
-	 		
+
 	 		<div class="h10"></div>
 
 	 		<div class="row">
@@ -168,7 +168,7 @@
 	 			</div>
 	 		</div> <!-- /.row -->
 
-	 		<a href="#" class="box-link">yeni siparişler <i class="fa fa-angle-double-right"></i></a>	 			
+	 		<a href="#" class="box-link">yeni siparişler <i class="fa fa-angle-double-right"></i></a>
 
 		</div> <!-- /.box -->
 	</div> <!-- /.col-md-3 -->
@@ -184,8 +184,8 @@
 	 				<div class="box-value">5678 </div>
 	 			</div>
 	 		</div> <!-- /.row -->
-	 		
-	 		<a href="#" class="box-link">tüm siparişler <i class="fa fa-angle-double-right"></i></a>	 
+
+	 		<a href="#" class="box-link">tüm siparişler <i class="fa fa-angle-double-right"></i></a>
 
 		</div> <!-- /.box -->
 	</div> <!-- /.col-md-3 -->
@@ -204,12 +204,12 @@ function chart_forms($array=array())
 	if(isset($array['in_out'])){ $where = $where."AND in_out='".$array['in_out']."'";}
 
 
-	if(isset($array['sum'])) 
-	{ 
-		if(is_array($array['sum'])) 
+	if(isset($array['sum']))
+	{
+		if(is_array($array['sum']))
 		{
 			foreach($array['sum'] as $sum_list)
-			{ 
+			{
 				if(!empty($sum)){$sum=$sum.', ';} else{ $sum='';}
 				$sum=$sum.'sum('.$sum_list.')';
 			}
@@ -226,11 +226,11 @@ function chart_forms($array=array())
 
 	if(isset($array['sum']))
 	{
-		if(is_array($array['sum'])) 
+		if(is_array($array['sum']))
 		{
 			$i=0;
 			foreach($array['sum'] as $sum_list)
-			{ 
+			{
 				$return[$sum_list] = $q_return[$i];
 				$i++;
 			}
@@ -248,7 +248,7 @@ $i=7;
 $charts = array();
 while($i>0)
 { $i = $i-1;
-	
+
 	$day = date("Y-m-d",strtotime("-$i day"));
 
 	$charts[$day] = chart_forms(array('date_start'=>$day,'date_finish'=>$day,'in_out'=>'1','sum'=>array('total', 'profit')));
@@ -313,7 +313,7 @@ for($i=0; $i<0; $i++)
 		    <div class="col-md-10">
 		        <div class="tab-content">
 		        	<div class="tab-pane active" id="a" >
-		         	
+
 		         		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 					    <script type="text/javascript">
 					      google.charts.load('current', {'packages':['corechart']});
@@ -332,10 +332,10 @@ for($i=0; $i<0; $i++)
 					        dataTable.addRows([
 					        	<?php $i=0; foreach($charts as $day=>$value): ?>
 					          		[
-					          			'<?php if($i==0): $i=0; ?><?php echo substr($day,5,5); ?><?php else: $i=0;?><?php endif; ?>', 
+					          			'<?php if($i==0): $i=0; ?><?php echo substr($day,5,5); ?><?php else: $i=0;?><?php endif; ?>',
 					          			<?php echo $value['total']; ?>,
-					          			'<?php echo $value['total']; ?> ₺', 
-					          			<?php echo $value['profit']; ?>, 
+					          			'<?php echo $value['total']; ?> ₺',
+					          			<?php echo $value['profit']; ?>,
 					          			'<div class="bg-success" style="width:100px; padding:2px 5px; border:0px;"><h4><?php echo $value['profit']; ?> ₺</h4></div>'
 					          		],
 					          	<?php endforeach; ?>
@@ -363,9 +363,9 @@ for($i=0; $i<0; $i++)
 						<div id="chart_div" style="width: 100%; height: 300px;"></div>
 
 		        	 </div> <!-- /.tab-pane -->
-			         <div class="tab-pane" id="b">Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan. 
+			         <div class="tab-pane" id="b">Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
 			         Aliquam in felis sit amet augue.</div>
-			         <div class="tab-pane" id="c">Thirdamuno, ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. 
+			         <div class="tab-pane" id="c">Thirdamuno, ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
 			         Quisque mauris augue, molestie tincidunt condimentum vitae. </div>
 		        </div> <!-- /.tab-content -->
 
@@ -373,12 +373,12 @@ for($i=0; $i<0; $i++)
 		</div> <!-- /.row -->
     </div>
     <!-- /tabs -->
-    
 
 
 
 
-			
+
+
 
 	</div> <!-- /.col-md-6 -->
 	<div class="col-md-6">
@@ -408,16 +408,16 @@ for($i=0; $i<0; $i++)
 					padding: 0px;
 				}
 				</style>
-				<ul id="myTabs" class="nav nav-tabs bordered panel-on pull-right" role="tablist"> 
-					<li role="presentation" class="active"><a href="#lastOrders" id="lastOrders-tab" role="tab" data-toggle="tab" aria-controls="lastOrders" aria-expanded="false"><i class="fa fa-shopping-cart"></i> Son Formlar</a></li> 
-					<li role="presentation" class=""><a href="#approvalOrders" role="tab" id="approvalOrders-tab" data-toggle="tab" aria-controls="approvalOrders" aria-expanded="true"><i class="fa fa-clock-o"></i> Bekleyenler</a></li> 
-					<li role="presentation" class=""><a href="#preparingOrders" role="tab" id="preparingOrders-tab" data-toggle="tab" aria-controls="preparingOrders" aria-expanded="true"><i class="fa fa-clock-o"></i> Hazırlanıyor</a></li> 
+				<ul id="myTabs" class="nav nav-tabs bordered panel-on pull-right" role="tablist">
+					<li role="presentation" class="active"><a href="#lastOrders" id="lastOrders-tab" role="tab" data-toggle="tab" aria-controls="lastOrders" aria-expanded="false"><i class="fa fa-shopping-cart"></i> Son Formlar</a></li>
+					<li role="presentation" class=""><a href="#approvalOrders" role="tab" id="approvalOrders-tab" data-toggle="tab" aria-controls="approvalOrders" aria-expanded="true"><i class="fa fa-clock-o"></i> Bekleyenler</a></li>
+					<li role="presentation" class=""><a href="#preparingOrders" role="tab" id="preparingOrders-tab" data-toggle="tab" aria-controls="preparingOrders" aria-expanded="true"><i class="fa fa-clock-o"></i> Hazırlanıyor</a></li>
 				</ul>
 
 
-				<div id="myTabContent" class="tab-content panel-on-div"> 
+				<div id="myTabContent" class="tab-content panel-on-div">
 				<!-- TAB: #HOME -->
-				<div role="tabpanel" class="tab-pane fade in active" id="lastOrders" aria-labelledby="lastOrders-tab"> 
+				<div role="tabpanel" class="tab-pane fade in active" id="lastOrders" aria-labelledby="lastOrders-tab">
 
 					<?php $q_lastOrders = db()->query("SELECT * FROM ".dbname('forms')." WHERE status='1' ORDER BY date DESC LIMIT 10"); ?>
 					<?php if($q_lastOrders->num_rows > 0): ?>
@@ -449,7 +449,7 @@ for($i=0; $i<0; $i++)
 
 				</div> <!-- /#home -->
 				<!-- TAB: approvalOrders -->
-				<div role="tabpanel" class="tab-pane" id="approvalOrders" aria-labelledby="approvalOrders-tab"> 
+				<div role="tabpanel" class="tab-pane" id="approvalOrders" aria-labelledby="approvalOrders-tab">
 					<?php $q_lastOrders = db()->query("SELECT * FROM ".dbname('forms')." WHERE status='1' AND o_status='waiting' ORDER BY date DESC LIMIT 10"); ?>
 					<?php if($q_lastOrders->num_rows > 0): ?>
 						<table id="table_lastOrders" class="table table-condensed table-hover">
@@ -479,7 +479,7 @@ for($i=0; $i<0; $i++)
 				    <?php endif; ?>
 				</div> <!-- /#approvalOrders -->
 				<!-- TAB: preparingOrders -->
-				<div role="tabpanel" class="tab-pane" id="preparingOrders" aria-labelledby="preparingOrders-tab"> 
+				<div role="tabpanel" class="tab-pane" id="preparingOrders" aria-labelledby="preparingOrders-tab">
 					<?php $q_lastOrders = db()->query("SELECT * FROM ".dbname('forms')." WHERE status='1' AND o_status='preparing' ORDER BY date DESC LIMIT 10"); ?>
 					<?php if($q_lastOrders->num_rows > 0): ?>
 						<table id="table_lastOrders" class="table table-condensed table-hover">
@@ -513,7 +513,7 @@ for($i=0; $i<0; $i++)
 		</div> <!-- /.panel -->
 	</div> <!-- /.col-md-6 -->
 </div> <!-- /.row -->
-	
+
 
 
 <div class="h20"></div>
@@ -606,7 +606,7 @@ for($i=0; $i<0; $i++)
 </div> <!-- /.row -->
 
 
-		
+
 
 
 <?php get_footer(); ?>

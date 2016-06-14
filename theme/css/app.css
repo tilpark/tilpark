@@ -271,7 +271,7 @@ background: #35363a;
    border-radius: 3px;
 }
 .sidebar .sidebar-user .profile-img img {
- 
+
   border-radius:3px;
 }
 .sidebar .profile-info {
@@ -362,7 +362,7 @@ ul.sidebar-menu {
 }
 ul.sidebar-menu li {
   list-style-type: none;
-      
+
 }
 ul.sidebar-menu li a {
   color: #eee;
@@ -488,7 +488,7 @@ a.box-item small {
   /* background: rgba(255,255,255,.4); */
   background-color: transparent;
   border-radius:0px;
-  
+
   margin-left: -15px;
   margin-right: -15px;
 }
@@ -567,26 +567,42 @@ footer div.footer-bar {
   z-index: 99;
   background-color: #FFF;
 }
-.typeahead-box a {
-  display: block;
-}
-.typeahead-box a:hover {
-  text-decoration: none;
-}
-.typeahead-box span.typeahead-account_name {
-  display: block;
-}
-.typeahead-box span.typeahead-account_phone {
-  display: block;
-  font-size: 11px;
-  float: left;
-}
-.typeahead-box span.typeahead-account_city {
-  display: block;
-  font-size: 11px;
-  float: right;
+
+
+.typeahead-box ul{
+  -webkit-padding-start: 0;
+  box-shadow: 1px 1px 10px #ddd;
+  margin-bottom: 0;
 }
 
+.typeahead-box ul li{
+  list-style: none;
+
+
+}
+
+.typeahead-box ul li a{
+  color: #333;
+  padding: 10px;
+  display: block;
+}
+
+
+.typeahead-box ul li a:hover,
+.typeahead-box ul li a:focus{
+  background: #efefef;
+  text-decoration: none;
+  outline: none;
+}
+
+.typeahead-box ul li a.active{
+  background: #efefef;
+  text-decoration: none;
+}
+
+.typeahead-box ul li a .typeahead-account_city{
+  float: right;
+}
 
 
 
@@ -795,7 +811,7 @@ input, textarea {
   border:1px solid transparent;
   margin: 0px;
   border-radius: 2px 0px 0px 2px;
- 
+
 }
 .tabs-left ul.nav-tabs li.active a {
   background-color: transparent;
@@ -982,7 +998,7 @@ table .form-group {
 .dataTables_wrapper table thead tr th {
       border: 1px solid #ccc !important;
     background: #fff;
-    border-top:0px !important; 
+    border-top:0px !important;
     border-left:0px !important;
     border-right:0px !important;
 }

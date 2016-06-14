@@ -87,7 +87,19 @@ function is_login()
 // herseyden once bir uyenin giris yapip yapmadigini kontrol ediyoruz
 if(!is_login())
 {
-	header("Location: ".get_site_url('login.php'));
+	$page_url = $_SERVER['REQUEST_URI'];
+	if(!strstr($page_url, "login.php"))
+	{
+		header("Location: ".get_site_url('login.php'));
+	}
+}
+
+
+function user_logout()
+{
+	unset($_SESSION['user_id']);
+	is_login();
+	Header("Location: ".get_site_url('login.php'));
 }
 
 
@@ -104,12 +116,12 @@ function add_breadcrumb($array='')
 {
 	?><script>$(document).ready(function(){ <?php
 	foreach($array as $arr)
-	{	
+	{
 		if(!isset($arr['url']) or $arr['url'] == ''):
 			?> $(".breadcrumb").append( '<li class="active"><?php echo $arr['name']; ?></li>' ); <?php
 		else:
 			?> $(".breadcrumb").append( '<li><a href="<?php echo $arr['url']; ?>"><?php echo $arr['name']; ?></a></li>' ); <?php
-		endif; 
+		endif;
 	}
 	?>}); </script> <?php
 }
@@ -119,7 +131,7 @@ function add_breadcrumb($array='')
 /* is_money()
 	@description: /;
 	@return: /; */
-function is_currency($value) 
+function is_currency($value)
 {
   $r = preg_match("/^-?[0-9]+(?:\.[0-9]{1,2})?$/", $value); return $r;
 }
@@ -130,7 +142,7 @@ function is_currency($value)
 	@return: /; */
 function is_email($value)
 {
-	if (filter_var($value, FILTER_VALIDATE_EMAIL)) { return true; } else { return false; } 
+	if (filter_var($value, FILTER_VALIDATE_EMAIL)) { return true; } else { return false; }
 }
 
 
@@ -144,7 +156,7 @@ function input_control($value)
 
 // form_validation()
 function form_validation($value, $name='', $options=array())
-{	
+{
 	global $til;
 	$value = trim(mysql_real_escape_string($value));
 
@@ -182,7 +194,7 @@ function form_validation($value, $name='', $options=array())
 			/* form_validation()|number /;
 				@description: değişkenin sayısal bir değere sahip olup olmadığını kontrol eder /;
 				@return: true/false değeri döner ve "$error" dizisine hata mesajını ekler. /; */
-			else if($exp == 'number' AND strlen($value) > 0) { 
+			else if($exp == 'number' AND strlen($value) > 0) {
 				if(!ctype_digit($value)){ add_alert('"'.$name.'" yazı alanı sayısal değer olmalıdır.', 'danger', 'form'); }
 			}
 
@@ -190,7 +202,7 @@ function form_validation($value, $name='', $options=array())
 			/* form_validation()|alpha /;
 				@description: değişkenin "alfabetik" yani "sayısal olmayan" degere sahip olup olmadigini kontrol eder. Örnek: azAZ /;
 				@return: true/false değeri döner ve "$error" dizisine hata mesajını ekler. /; */
-			else if($exp == 'alpha' AND strlen($value) > 0) { 
+			else if($exp == 'alpha' AND strlen($value) > 0) {
 				if(!ctype_alpha($value)){ add_alert('"'.$name.'" yazı alanı alfabetik değere sahip olmalıdır.', 'danger', 'form'); }
 			}
 
@@ -198,7 +210,7 @@ function form_validation($value, $name='', $options=array())
 			/* form_validation()|alnum /;
 				@description: değişkenin "alfabetik ve sayısal" degere sahip olup olmadigini kontrol eder. Örnek: azAZ09 /;
 				@return: true/false değeri döner ve "$error" dizisine hata mesajını ekler. /; */
-			else if($exp == 'alnum' AND strlen($value) > 0) { 
+			else if($exp == 'alnum' AND strlen($value) > 0) {
 				if(!ctype_alnum($value)){ add_alert('"'.$name.'" yazı alanı alfabetik değere sahip olmalıdır.', 'danger', 'form'); }
 			}
 
@@ -206,7 +218,7 @@ function form_validation($value, $name='', $options=array())
 			/* form_validation()|money /;
 				@description: değişkenin parasal bir değere sahip olup olmadığını kontrol eder. ÖRNEK: "10", "10.50" /;
 				@return: true/false değeri döner ve "$error" dizisine hata mesajını ekler. /; */
-			else if($exp == 'money' AND strlen($value) > 0) { 
+			else if($exp == 'money' AND strlen($value) > 0) {
 				if(!is_currency($value)){ add_alert('"'.$name.'" yazı alanı parasal bir değere sahip olmalıdır.', 'danger', 'form'); }
 			}
 
@@ -214,20 +226,20 @@ function form_validation($value, $name='', $options=array())
 			/* form_validation()|email /;
 				@description: değişkenin e-posta olup olmadığını kontrol eder. /;
 				@return: true/false değeri döner ve "$error" dizisine hata mesajını ekler. /; */
-			else if($exp == 'email' AND strlen($value) > 0) { 
+			else if($exp == 'email' AND strlen($value) > 0) {
 				if(!is_email($value)){ add_alert('"'.$name.'" yazı alanı "e-posta" olmalıdır.', 'danger', 'form'); }
 			}
 
 
 
 		}
-	}	
+	}
 
 
 
-	
+
 	return $value;
-	
+
 }
 
 
@@ -307,7 +319,7 @@ function alert($alert_name='', $options=array())
 						echo get_alert($array_messages, $type, $options);
 					}
 				}
-				
+
 			}
 		}
 	}
@@ -337,7 +349,7 @@ function get_alert($message, $class='danger', $options=array())
 	if(@$r['title']) { $alert = $alert.'<h4>'.$r['title'].'</h4>'; }
 	if(@$r['description']) {$alert = $alert.'<p>'.$r['description'].'</p>'; }
 	$alert = $alert.'</div>';
-	
+
 	return $alert;
 }
 
@@ -692,15 +704,15 @@ function convert_date($val)
 
 
 /** add_product() /;
-	@description: yeni bir urun/hizmet/kart ekler /; 
+	@description: yeni bir urun/hizmet/kart ekler /;
 	@return: */
 function add_product($array=array())
 { global $til;
-	
+
 	# gerekli degiskenler
 	$array['date'] = date("Y-m-d H:i:s");
 
-	# eger stok kodu bos ise otomatik dolduralim 
+	# eger stok kodu bos ise otomatik dolduralim
 	if(empty($array['code'])) { @$array['code'] = $array['name']; }
 	$array['code'] = get_sef_url($array['code']);
 
@@ -720,7 +732,7 @@ function add_product($array=array())
 	# $array dizisindeki degeleri mysql_query formatına bölelim
 	$convert = convert_mysql_insert_string($array);
 
-	
+
 
 
 
@@ -744,7 +756,7 @@ function add_product($array=array())
 				db()->query("UPDATE ".dbname('products')." SET code='".$insert_id.'-'.$array['code']."' WHERE id='".$insert_id."'");
 			}
 
-	
+
 		add_alert('Stok kartı başarı ile oluşturuldu.', 'success', 'add_product');
 		return $insert_id;
 	} else {
@@ -758,7 +770,7 @@ function add_product($array=array())
 
 
 /* get_all_products() /;
-	@description: veritabanındaki tüm ürünleri listeler /; 
+	@description: veritabanındaki tüm ürünleri listeler /;
 	@return: "products" tablosundaki degeleri dizi halinde döndürür */
 function get_all_products()
 { global $til;
@@ -776,7 +788,7 @@ function get_all_products()
 
 
 /** get_product() /;
-	@description: parametrede belirtilen ID veya query sorgusuna gore "product" tablosundaki urun bilgisini verir /; 
+	@description: parametrede belirtilen ID veya query sorgusuna gore "product" tablosundaki urun bilgisini verir /;
 	@return: deger[]/false doner /; */
 function get_product($id_or_array)
 { global $til;
@@ -784,7 +796,7 @@ function get_product($id_or_array)
 
 	if(is_array($id_or_array))
 	{
-		
+
 	}
 	else
 	{
@@ -801,12 +813,12 @@ function get_product($id_or_array)
 
 
 /** update_product() /;
-	@description: bir urun kartını gunceller/degistir /; 
+	@description: bir urun kartını gunceller/degistir /;
 	@return: true/false doner /; */
 function update_product($array=array())
 { global $til;
 
-	# eger stok kodu bos ise otomatik dolduralim 
+	# eger stok kodu bos ise otomatik dolduralim
 	if(empty($array['code'])) { @$array['code'] = $array['name']; }
 	$array['code'] = get_sef_url($array['code']);
 
@@ -825,7 +837,7 @@ function update_product($array=array())
 	if(empty($array['code'])){ add_alert('Ürün Kodu değeri boş olamaz.'); }
 	if(empty($array['name'])){ add_alert('Ürün Adı değeri boş olamaz.'); return false; }
 
-	
+
 	# barkod kodunun veritabanın baska bir urune ait olup olmadigini kontrol edelim
 	$is_code = db()->query("SELECT * FROM ".dbname('products')." WHERE code='".$array['code']."' AND id NOT IN ('".$array['id']."')");
 	if($is_code->num_rows > 0)
@@ -833,7 +845,7 @@ function update_product($array=array())
 		add_alert($array['code'].' barkod kodu başka bir ürün kartında bulundu.', 'warning', 'update_product');
 		return false;
 	}
-	
+
 
 	#herysey basarili ise urun kartini guncelleyelim
 	$old_product = get_product($array['id']);
@@ -854,13 +866,13 @@ function update_product($array=array())
 		add_alert(array('title'=>'Hata', 'description'=>'Hata Kodu: '.db()->error), 'danger', 'update_product');
 		add_log(array('table_id'=>'products:'.$array['id'], '_key'=>'update_product', 'message'=>'Ürün kartı güncellenirken hata oluştu.', '_event'=>db()->error ));
 		return false;
-	}	
+	}
 }
 
 
 
 /** calc_product_quantity() /;
-	@description: urun kartinin stok durumunu / guncel stok durumunu hesaplar /; 
+	@description: urun kartinin stok durumunu / guncel stok durumunu hesaplar /;
 	@return: true/false doner /; */
 function calc_product_quantity($product_id)
 { global $til;
@@ -881,7 +893,7 @@ function calc_product_quantity($product_id)
 
 
 /* product_url() /;
-	@description: formlara ait url adresini dondurur /; 
+	@description: formlara ait url adresini dondurur /;
 	@return: parametrede belirtilen ID ile birlikte form detail.php sayfasının URL adresini yonlendirir */
 function get_url_product($product_id)
 {
@@ -939,11 +951,11 @@ function url_product($product_id)
 	@return: true/false doner ;/ */
 function add_account($array, $options=array())
 { global $til;
-	
+
 	# gerekli degiskenler
 	$array['date'] = date("Y-m-d H:i:s");
 
-	# eger barkod kodu bos ise otomatik dolduralim 
+	# eger barkod kodu bos ise otomatik dolduralim
 	if(empty($array['code'])) { @$array['code'] = $array['name']; }
 	$array['code'] = get_sef_url($array['code']);
 
@@ -974,11 +986,11 @@ function add_account($array, $options=array())
 
 
 
-	
+
 
 	if($insert_id > 0) {
 		add_alert('Hesap kartı başarı ile oluşturuldu.', 'success', 'add_account');
-		/* options:unset_alert */ 
+		/* options:unset_alert */
 		return $insert_id;
 	} else {
 		return false;
@@ -989,7 +1001,7 @@ function add_account($array, $options=array())
 
 
 /* get_all_accounts() /;
-	@description: veritabanındaki tüm hesaplari listeler /; 
+	@description: veritabanındaki tüm hesaplari listeler /;
 	@return: "accounts" tablosundaki degeleri dizi halinde döndürür */
 function get_all_accounts()
 { global $til;
@@ -1006,7 +1018,7 @@ function get_all_accounts()
 
 
 /** get_account() /;
-	@description: parametrede belirtilen ID veya query sorgusuna gore "accounts" tablosundaki urun bilgisini verir /; 
+	@description: parametrede belirtilen ID veya query sorgusuna gore "accounts" tablosundaki urun bilgisini verir /;
 	@return: deger[]/false doner /; */
 function get_account($id_or_array)
 { global $til;
@@ -1029,12 +1041,12 @@ function get_account($id_or_array)
 
 
 /** update_account() /;
-	@description: bir urun kartını gunceller/degistir /; 
+	@description: bir urun kartını gunceller/degistir /;
 	@return: true/false doner /; */
 function update_account($array=array())
 { global $til;
 
-	# eger stok kodu bos ise otomatik dolduralim 
+	# eger stok kodu bos ise otomatik dolduralim
 	if(empty($array['code'])) { @$array['code'] = $array['name']; }
 	$array['code'] = get_sef_url($array['code']);
 
@@ -1046,7 +1058,7 @@ function update_account($array=array())
 	# $array dizisindeki degeleri mysql_query formatına bölelim
 	$convert = convert_mysql_update_string($array);
 
-	
+
 
 	# barkod kodunun veritabanın baska bir urune ait olup olmadigini kontrol edelim
 	$is_code = db()->query("SELECT * FROM ".dbname('accounts')." WHERE code='".$array['code']."' AND id NOT IN ('".$array['id']."')");
@@ -1055,7 +1067,7 @@ function update_account($array=array())
 		add_alert($array['code'].' barkod kodu başka bir hesap kartında bulundu.', 'warning', 'update_account');
 		return false;
 	}
-	
+
 
 	#herysey basarili ise urun kartini guncelleyelim
 	$old_account = get_account($array['id']);
@@ -1076,13 +1088,13 @@ function update_account($array=array())
 		add_alert(array('title'=>'Hata', 'description'=>'Hata Kodu: '.db()->error), 'danger', 'update_account');
 		add_log(array('table_id'=>'accounts:'.$array['id'], '_key'=>'update_account', 'message'=>'Hesap kartı güncellenirken hata oluştu.', '_event'=>db()->error ));
 		return false;
-	}	
+	}
 }
 
 
 
 /* form_url() /;
-	@description: formlara ait url adresini dondurur /; 
+	@description: formlara ait url adresini dondurur /;
 	@return: parametrede belirtilen ID ile birlikte form detail.php sayfasının URL adresini yonlendirir */
 function get_url_account($account_id)
 {
@@ -1168,8 +1180,8 @@ function add_form($array, $options=array())
 			if($is_account)
 			{
 				$array['account_id'] = $is_account['id'];
-			} 
-			else 
+			}
+			else
 			{
 				$add_account['code'] = date("Y-m-d H:i:s");
 				$add_account['code'] = $array['account_code'];
@@ -1224,7 +1236,7 @@ function update_form($form_id, $array, $options=array())
 	$array['account_phone'] = clean_character($array['account_phone'], 'phone');
 	$array['date']			= $array['date'].' '.substr($old_form['date'],11,5);
 
-	
+
 
 		if(!isset($options['add_account'])) { $options['add_account'] = true; }
 		/* account_id yok ise yeni bir account olusturalim */
@@ -1239,8 +1251,8 @@ function update_form($form_id, $array, $options=array())
 			if($is_account)
 			{
 				$array['account_id'] = $is_account['id'];
-			} 
-			else 
+			}
+			else
 			{
 				$add_account['code'] = $array['account_code'];
 				$add_account['name'] = $array['account_name'];
@@ -1278,13 +1290,13 @@ function update_form($form_id, $array, $options=array())
 		add_alert(array('title'=>'Hata', 'description'=>'Hata Kodu: '.db()->error), 'danger', 'update_form');
 		add_log(array('table_id'=>'forms:'.$form_id, '_key'=>'update_form', 'message'=>'Form güncellenirken hata oluştu.', '_event'=>db()->error ));
 		return false;
-	}	
+	}
 }
 
 
 
 /** get_form() /;
-	@description: parametrede belirtilen ID veya query sorgusuna gore "accounts" tablosundaki urun bilgisini verir /; 
+	@description: parametrede belirtilen ID veya query sorgusuna gore "accounts" tablosundaki urun bilgisini verir /;
 	@return: deger[]/false doner /; */
 function get_form($id_or_array)
 { global $til;
@@ -1307,7 +1319,7 @@ function get_form($id_or_array)
 
 
 /** get_forms() /;
-	@description: parametrede belirtilen ID veya query sorgusuna gore "accounts" tablosundaki urun bilgisini verir /; 
+	@description: parametrede belirtilen ID veya query sorgusuna gore "accounts" tablosundaki urun bilgisini verir /;
 	@return: deger[]/false doner /; */
 function get_forms($array='')
 { global $til;
@@ -1361,7 +1373,7 @@ function update_o_status($form_id, $o_status)
 		add_alert(array('title'=>'Hata', 'description'=>'Hata Kodu: '.db()->error), 'danger', 'update_form');
 		add_log(array('table_id'=>'forms:'.$form_id, '_key'=>'update_form', 'message'=>'Form durumu güncellenirken hata oluştu.', '_event'=>db()->error ));
 		return false;
-	}	
+	}
 }
 
 		/* o_status() */
@@ -1391,7 +1403,7 @@ function update_o_status($form_id, $o_status)
 
 
 /** calc_form() /;
-	@description: parametrede belirtilen #ID'deki form bilgilerini, satir toplamlarini hesaplar ve form['total'] tablosua sonucu ekler /; 
+	@description: parametrede belirtilen #ID'deki form bilgilerini, satir toplamlarini hesaplar ve form['total'] tablosua sonucu ekler /;
 	@return: deger[]/false doner /; */
 function calc_form($form_id)
 { global $til;
@@ -1407,16 +1419,16 @@ function calc_form($form_id)
 	$profit			= $p_sale_out_tax - $p_purchase_out_tax;
 
 	db()->query("UPDATE ".dbname('forms')." SET tax_value='".$tax_value."', profit='".$profit."', quantity='".$quantity."', total='".$sub_total."' WHERE id='".$form_id."'");
-}	
+}
 
 
 
 /** add_form_item() /;
-	@description: parametrede belirtilen ID veya query sorgusuna gore "accounts" tablosundaki urun bilgisini verir /; 
+	@description: parametrede belirtilen ID veya query sorgusuna gore "accounts" tablosundaki urun bilgisini verir /;
 	@return: deger[]/false doner /; */
 function add_form_item($array)
 { global $til;
-	
+
 	# input control
 	form_validation($array['product_name'], 'Ürün Adı', 'required|min_length[3]|max_length[32]');
 	if(is_alert('form')) { return false; }
@@ -1437,7 +1449,7 @@ function add_form_item($array)
 
 		if($array['product_id'] > 0) {
 			$product = get_product($array['product_id']);
-			
+
 			# maliyet fiyati
 			$array['p_purchase'] = $product['p_purchase'];
 			$array['p_purchase_out_tax'] = $product['p_purchase_out_tax'];
@@ -1471,7 +1483,7 @@ function add_form_item($array)
 
 
 /** get_form_item() /;
-	@description: parametrede belirtilen ID veya query sorgusuna gore *_form_items tablosundaki satiri dondurur /; 
+	@description: parametrede belirtilen ID veya query sorgusuna gore *_form_items tablosundaki satiri dondurur /;
 	@return: deger[]/false doner /; */
 function get_form_item($id_or_array)
 { global $til;
@@ -1479,7 +1491,7 @@ function get_form_item($id_or_array)
 
 	if(is_array($id_or_array))
 	{
-		
+
 	}
 	else
 	{
@@ -1493,7 +1505,7 @@ function get_form_item($id_or_array)
 
 
 /* get_form_items() /;
-	@description: veritabanındaki tüm hesaplari listeler /; 
+	@description: veritabanındaki tüm hesaplari listeler /;
 	@return: "accounts" tablosundaki degeleri dizi halinde döndürür */
 function get_form_items($id_or_array)
 { global $til;
@@ -1510,7 +1522,7 @@ function get_form_items($id_or_array)
 
 
 /** delete_form_item() /;
-	@description: parametrede belirtilen ID ve Form ID'sindeki urunu siler /; 
+	@description: parametrede belirtilen ID ve Form ID'sindeki urunu siler /;
 	@return: deger[]/false doner /; */
 function delete_form_item($item_id, $form_id)
 { global $til;
@@ -1534,12 +1546,12 @@ function delete_form_item($item_id, $form_id)
 
 
 /* form_url() /;
-	@description: formlara ait url adresini dondurur /; 
+	@description: formlara ait url adresini dondurur /;
 	@return: parametrede belirtilen ID ile birlikte form detail.php sayfasının URL adresini yonlendirir */
 function get_url_form($form_id)
 {
 	if($form_id > 0) { return get_site_url('content/forms/add.php?id='.$form_id); } else { return get_site_url('content/forms/add.php'); }
-	
+
 }
 function url_form($form_id)
 {
@@ -1547,7 +1559,7 @@ function url_form($form_id)
 }
 
 /** get_text_inout() /;
-	@description: 0 veya 1 degerine gore "Giriş" veya "Çıkış" metnini dondurur /; 
+	@description: 0 veya 1 degerine gore "Giriş" veya "Çıkış" metnini dondurur /;
 	@return: /; */
 function get_text_inout($val)
 {
