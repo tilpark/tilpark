@@ -1,44 +1,49 @@
 <?php
-  include('functions.php');
+ob_start();
+session_start();
 ?>
-<html>
-<head>
-  <title>Tilpark!</title>
-  <meta name="description" content="Tilpark! Açık kaynak kodlu şirket yönetim otomasyonu">
+<?php include('config.php'); ?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Bootstrap 101 Template</title>
 
-  <!-- other lib -->
-  <script src="theme/js/jquery.min.js"></script>
-  <script src="theme/js/jquery.validation.js"></script>
+    <!-- CSS -->
+    <link href="<?php echo _site_url.'/content/themes/default/css/bootstrap.min.css'; ?>" rel="stylesheet">
+    <link href="<?php echo _site_url.'/content/themes/default/css/font-awesome.min.css'; ?>" rel="stylesheet">
+    <link href="<?php echo _site_url.'/content/themes/default/css/tilpark.css'; ?>" rel="stylesheet">
+    <link href="<?php echo _site_url.'/content/themes/default/css/app.css'; ?>" rel="stylesheet">
 
-  <!-- bootstrap -->
-  <link rel="stylesheet" href="theme/css/bootstrap.min.css">
-  <script src="theme/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="theme/css/font-awesome.min.css">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="<?php echo _site_url.'/content/themes/default/js/bootstrap.min.js'; ?>"></script>
 
-  <script>
-  $(document).ready(function() {
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
 
-    $(".validation").validate();
+<style>
 
-
-  });
-  </script>
+</style>
 
 </head>
-<body>
+<body class="body">
 
-
-
-
-
-
-<?php $bg_number = rand(1,5); ?>
+	<?php $bg_number = rand(1,5); ?>
 
 <style>
 
 body {
-  background: url('theme/img/login/bg-<?php echo $bg_number; ?>.jpg') no-repeat center;
+  background: url('<?php echo _site_url; ?>/content/themes/default/img/login/bg-<?php echo $bg_number; ?>.jpg') no-repeat center fixed;
 }
 div.h20 {height: 20px;}
 .bg_opacity {
@@ -135,8 +140,8 @@ if(isset($_POST['username']))
   if($q_login->num_rows > 0)
   {
     $login = $q_login->fetch_assoc();
-    $_SESSION['user_id'] = $login['id'];
-    header("Location:".get_site_url());
+    $_SESSION['login_id'] = $login['id'];
+    header("Location:"._site_url);
 
   }
   else
@@ -157,7 +162,7 @@ if(isset($_POST['username']))
       <div class="loginbox">
 
         <div>
-          <img src="theme/img/logo.png" class="img-responsive" style="width: 150px;">
+          <img src="<?php echo _site_url; ?>/content/themes/default/img/logo_header.png" class="img-responsive" style="width: 150px;">
         </div>
         <div class="h20"></div>
 
@@ -207,6 +212,7 @@ if(isset($_POST['username']))
           <div class="text-right">
             <button class="btn btn-success btn-block btn-lg">Giriş Yap</button>
           </div> <!-- /.text-right -->
+          <div class="h20"></div>
 
         </form>
 
@@ -258,5 +264,7 @@ footer {
 
 <div class="bg_opacity"></div>
 
+
+
 </body>
-</html>
+</script>

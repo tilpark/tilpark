@@ -1,0 +1,90 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FAFAFA !important;
+    font: 12px "Tahoma";
+     -webkit-print-color-adjust: exact !important;
+     
+}
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+.print-page {
+    margin: 5px auto;
+    border-radius: 5px;
+    background: white;
+    position: relative;
+}
+.print-page[size="A4"] {  
+  width: 21cm;
+  height: 29.7cm; 
+}
+.print-page[size="A4"][layout="portrait"] {
+  width: 29.7cm;
+  height: 21cm;  
+}
+.print-page[size="A3"] {
+  width: 29.7cm;
+  height: 42cm;
+}
+.print-page[size="A3"][layout="portrait"] {
+  width: 42cm;
+  height: 29.7cm;  
+}
+.print-page[size="A5"] {
+  width: 14.8cm;
+  height: 21cm;
+}
+.print-page[size="A5"][layout="portrait"] {
+  width: 21cm;
+  height: 14.8cm;  
+}
+
+.print-page h1,h2,h3,h4,h5,h6 {
+  margin: 0;
+}
+
+.print-page table.print-border {
+  width: 100%;
+  font-size: 12px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.print-page table.print-border tr td {
+  border-top:1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+.print-page table.print-border tr th {
+  text-align: left;
+  border-top:1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+.print-page table.print-border tr td:first-child, .print-page table.print-border tr th:first-child {
+  border-left:1px solid #ccc;
+}
+.print-page table.print-border tr:last-child td {
+  border-bottom: 1px solid #ccc;
+}
+.print-page table.print-border tfoot tr th {
+  border-bottom: 1px solid #ccc;
+}
+
+table tr th {
+  font-size: 12px;
+}
+
+
+
+
+
+.document-info-right {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+.document-info-right .col-title {
+  width: 100px !important;
+  margin-bottom: 5px;
+  display: inline-block;
+}

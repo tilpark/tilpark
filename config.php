@@ -1,6 +1,4 @@
 <?php
-
-
 // config
 define('_site_url', 'http://localhost/github/tilpark');
 define('_prefix', 'til_');
@@ -21,14 +19,16 @@ $db->select_db('tilpark');
 $db->query("SET NAMES 'utf8'");
 
 
+
 function db()
 {
 	global $db;
 	return $db;
 }
 
+
 // global ön ek
-$til = (object)[];
+$til = (object) array();
 global $til;
 
 $til->fixed = '2';
@@ -39,10 +39,14 @@ function dbname($val)
 }
 
 
+function til($val='')
+{ global $til;
+	return $til;
+}
+
+
 $til->pg = new StdClass;
-$til->pg->limit_list = 20; // bir sayfada gosterilecek listeleme limiti, tablonun row limiti
-
-
+$til->pg->list_limit = 20; // bir sayfada gosterilecek listeleme limiti, tablonun row limiti
 
 
 
