@@ -28,7 +28,7 @@ set_staff_salary($user->id);
 
 	Toplam Bakiye : <span class="text-success"><?php echo get_set_money($account->balance,true); ?></span>
 	<div class="h-20"></div>
-	<a href="<?php site_url('admin/payment/detail.php?out'); ?>&account_id=<?php echo $user->account_id; ?>&monthly&user_type=user" target="_blank" class="btn btn-default"><i class="fa fa-paypal"></i> Ödeme Yap</a>
+	<a href="<?php site_url('admin/payment/detail.php?out'); ?>&type=pay_salary&account_id=<?php echo $user->account_id; ?>&user_type=user" target="_blank" class="btn btn-default"><i class="fa fa-paypal"></i> Ödeme Yap</a>
 
 		
 

@@ -60,7 +60,8 @@ function get_set_money($val, $arr=array()) {
     $val = str_replace(',', '', $val);
     
     if(!is_array($arr)) {
-        if($arr == true) { $arr = array('icon'=>true); }
+        if($arr == 'str') { $arr = array('str'=>true); }
+        elseif($arr == true) { $arr = array('icon'=>true); }
         $arr['decimal_separator']   = '.';
         $arr['digit_separator']     = ',';
     }
@@ -71,6 +72,7 @@ function get_set_money($val, $arr=array()) {
 
     $icon = '';
     if(@$arr['icon'] == true) { $icon = ' <i class="fa fa-try icon-money"></i>'; }
+    if(@$arr['str'] == true) { $icon = ' TL'; }
 
     
     if(is_numeric($val)) {
@@ -252,8 +254,7 @@ function is_json($string){
 
 
 
-/**
- * remove_accents()
+/** * remove_accents()
  * bir degiskendeki boşluk nokta virgül gibi fazlaıkları siler "-" olarak değiştirir
  */
 function remove_accents($fonktmp) {
@@ -673,7 +674,7 @@ function til_get_money_convert_string($money='0.00') {
  * ülke listelerini dizi halinde dondurur
  */
 function get_country_array() {
-    include root_path('includes/lib/countries/country.php');
+    include get_root_path('includes/lib/countries/country.php');
     return $countries;
 } //.get_country_array()
 

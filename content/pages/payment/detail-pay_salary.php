@@ -32,14 +32,16 @@ $cases = get_case_all(array('where'=>array('is_bank'=>0, 'orderby'=>'name ASC'))
 $banks = get_case_all(array('where'=>array('is_bank'=>1, 'orderby'=>'name ASC')));
 
 
-add_page_info( 'title', 'Yeni Ödeme - '.get_in_out_label($payment->in_out) );
+add_page_info( 'title', 'Maaş Ödemesi' );
 add_page_info( 'nav', array('name'=>'Ödemeler', 'url'=>get_site_url('admin/payment')) );
-add_page_info( 'nav', array('name'=>'Yeni Ödeme - '.get_in_out_label($payment->in_out)) );
+add_page_info( 'nav', array('name'=>'Maaş Ödemesi') );
 ?>
 
 
 <?php
 if(isset($_POST['payment'])) {
+	$_POST['type'] = 'pay_salary';
+
 	if($payment_id = set_payment($_POST)) {
 		// eger ilk defa form olusyor ise yonlendirme yapalim
 		if(empty($payment->id)) { header("Location:?id=".$payment_id); }
@@ -81,8 +83,6 @@ print_alert('set_payment');
 <ul class="nav nav-tabs" role="tablist"> 
 	<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-file-text-o"></i> Form</a></li> 
 	<?php if($payment->id): ?>
-		<li role="presentation" class="disabled"><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false"><i class="fa fa-list"></i> Formlar</a></li> 
-		<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i> Geçmiş</a></li> 
 		<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-cogs"></i> Seçenekler <span class="caret"></span></a> 
 			<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
 				<li><a href="#dropdown1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1"><i class="fa fa-tasks fa-fw"></i> Görev Ata</a></li> 
@@ -107,44 +107,22 @@ print_alert('set_payment');
 		<form name="form_payment" id="form_payment" action="" method="POST">
 
 			<div class="row">
-				<div class="col-md-3">
-					<div class="form-group">
-						<label for="blank">Blank </label>
-						<input type="text" name="blank" id="blank" value="<?php echo @$payment->account_code; ?>" class="form-control input-sm" minlength="3" maxlength="32">
-					</div> <!-- /.form-group -->
-				</div> <!-- /.col-md-3 -->
-				<div class="col-md-3">
+				<div class="col-md-2">
 					<div class="form-group">
 						<label for="date"><i class="fa fa-calendar"></i> Tarih </label>
 						<input type="text" name="date" id="date" value="<?php echo @substr($payment->date,0,16); ?>" class="form-control input-sm datetime" >
 					</div> <!-- /.form-group -->
-				</div> <!-- /.col-md-3 -->
-				<div class="col-md-2"></div>
+				</div> <!-- /.col-md-* -->
 				<div class="col-md-2">
-					<div class="form-group">
-						<label for="account_tax_home">Vergi Dairesi </label>
-						<input type="text" name="account_tax_home" id="account_tax_home" value="<?php echo @$payment->account_tax_home; ?>" class="form-control input-sm" minlength="3" maxlength="32">
-					</div> <!-- /.form-group -->
-				</div> <!-- /.col-md-2 -->
-				<div class="col-md-2">
-					<div class="form-group">
-						<label for="account_tax_no">Vergi No veya T.C. </label>
-						<input type="text" name="account_tax_no" id="account_tax_no" value="<?php echo @$payment->account_tax_no; ?>" class="form-control input-sm" minlength="3" maxlength="32">
-					</div> <!-- /.form-group -->
-				</div> <!-- /.col-md-2 -->
-			</div> <!-- /.row -->
-
-			<div class="row">
-				<div class="col-md-3">
 					<div class="form-group">
 						<label for="account_code"><i class="fa fa-barcode"></i> Hesap Kodu </label>
 						<input type="text" name="account_code" id="account_code" value="<?php echo @$payment->account_code; ?>" class="form-control input-sm focus" minlength="3" maxlength="32">
 						
 					</div> <!-- /.form-group -->
-				</div> <!-- /.col-md-3 -->
-				<div class="col-md-3">
+				</div> <!-- /.col-md-* -->
+				<div class="col-md-2">
 					<div class="form-group">
-						<label for="account_name">Hesap Adı <?php if(@$payment->account_id):?><a href="../account/detail.php?id=<?php echo $payment->account_id; ?>" target="_blank"><i class="fa fa-external-link"></i></a><?php endif; ?> </label>
+						<label for="account_name">Personel Adı Soyadı <?php if(@$payment->account_id):?><a href="../account/detail.php?id=<?php echo $payment->account_id; ?>" target="_blank"><i class="fa fa-external-link"></i></a><?php endif; ?> </label>
 						
 							<!-- yeni hesap karti olusturulsun mu? -->
 							<label id="new_account" class="pull-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="Yeni bir hesap kartı oluşturulsun mu?"><input type="checkbox" name="new_account" id="new_account" value="true" class="toogle" data-size="extramini" data-on-text="Evet" data-off-text="Hayır" tabindex="-1"></label>
@@ -152,7 +130,13 @@ print_alert('set_payment');
 						<input type="text" name="account_name" id="account_name" value="<?php echo @$payment->account_name; ?>" class="form-control input-sm" minlength="3" maxlength="32">
 						
 					</div> <!-- /.form-group -->
-				</div> <!-- /.col-md-3 -->
+				</div> <!-- /.col-md-* -->
+				<div class="col-md-2">
+					<div class="form-group">
+						<label for="account_tax_no">T.C. Kimlik No </label>
+						<input type="text" name="account_tax_no" id="account_tax_no" value="<?php echo @$payment->account_tax_no; ?>" class="form-control input-sm" minlength="3" maxlength="32">
+					</div> <!-- /.form-group -->
+				</div> <!-- /.col-md-2 -->
 				<div class="col-md-2">
 					<div class="form-group">
 						<label for="account_gsm">Cep Telefonu </label>
@@ -161,47 +145,12 @@ print_alert('set_payment');
 				</div> <!-- /.col-md-2 -->
 				<div class="col-md-2">
 					<div class="form-group">
-						<label for="account_phone">Sabit Telefonu </label>
-						<input type="text" name="account_phone" id="account_phone" value="<?php echo @$payment->account_phone; ?>" class="form-control input-sm" minlength="3" maxlength="32">
-					</div> <!-- /.form-group -->
-				</div> <!-- /.col-md-3 -->
-				<div class="col-md-2">
-					<div class="form-group">
 						<label for="account_email">E-Posta </label>
 						<input type="text" name="account_email" id="account_email" value="<?php echo @$payment->account_email; ?>" class="form-control input-sm email">
 					</div> <!-- /.form-group -->
 				</div> <!-- /.col-md-3 -->
-
-				<div class="clearfix"></div>
-
-				<?php if(!isset($_GET['monthly'])): ?>
-					<div class="col-md-6">
-						<div class="form-group">
-							<label for="account_address">Adres </label>
-							<input type="text" name="account_address" id="account_address" value="<?php echo @$payment->account_address; ?>" class="form-control input-sm">
-						</div> <!-- /.form-group -->
-					</div> <!-- /.col-md-6 -->
-					<div class="col-md-2">
-						<div class="form-group">
-							<label for="account_district">İlçe </label>
-							<input type="text" name="account_district" id="account_district" value="<?php echo @$payment->account_district; ?>" class="form-control input-sm">
-						</div> <!-- /.form-group -->
-					</div> <!-- /.col-md-2 -->
-					<div class="col-md-2">
-						<div class="form-group">
-							<label for="account_city">Şehir </label>
-							<input type="text" name="account_city" id="account_city" value="<?php echo @$payment->account_city; ?>" class="form-control input-sm">
-						</div> <!-- /.form-group -->
-					</div> <!-- /.col-md-2 -->
-					<div class="col-md-2">
-						<div class="form-group country_selected">
-							<label for="account_country">Ülke </label>
-							<?php echo list_selectbox(get_country_array(), array('name'=>'account_country', 'selected'=>'Turkey', 'class'=>'form-control select select-account input-sm')); ?>
-						</div> <!-- /.form-group -->
-					</div> <!-- /.col-md-2 -->	
-				<?php endif; ?>
-				
 			</div> <!-- /.row -->
+
 
 
 			<script>

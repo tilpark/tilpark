@@ -16,24 +16,25 @@ function set_payment($args=array()) {
 	@form_validation($insert['date'], 'date', 'Tarih', 'required|datetime', __FUNCTION__);
 	
 	// giris cikis turu kontrol edelim
-	if($insert['in_out'] != '0' and $insert['in_out'] != '1') {
-		add_alert('Giriş çıkış türü yanlış', 'danger', __FUNCTION__); return false; }
+	if($insert['in_out'] != '0' and $insert['in_out'] != '1') { add_alert('Giriş çıkış türü yanlış', 'danger', __FUNCTION__); return false; }
 
 	if(!is_alert(__FUNCTION__)) {
 
-		if(!isset($_insert['type'])) { $_insert['type'] = 'payment'; }
+		if(!isset($insert['type'])) { $insert['type'] = 'payment'; }
 
-		
-		$_insert['in_out']			= $insert['in_out'];
-		$_insert['date'] 			= $insert['date'];
-		$_insert['account_id'] 		= $insert['account_id'];
-		$_insert['account_code'] 	= $insert['account_code'];
-		$_insert['account_name'] 	= $insert['account_name'];
-		$_insert['account_gsm'] 	= $insert['account_gsm'];
-		$_insert['account_phone'] 	= $insert['account_phone'];
-		$_insert['account_email'] 	= $insert['account_email'];
-		$_insert['account_city'] 	= $insert['account_city'];
-		$_insert['status_id']		= $insert['status_id'];
+		$_insert['type']			= @$insert['type'];
+		$_insert['in_out']			= @$insert['in_out'];
+		$_insert['date'] 			= @$insert['date'];
+		$_insert['account_id'] 		= @$insert['account_id'];
+		$_insert['account_code'] 	= @$insert['account_code'];
+		$_insert['account_name'] 	= @$insert['account_name'];
+		$_insert['account_gsm'] 	= @$insert['account_gsm'];
+		$_insert['account_phone'] 	= @$insert['account_phone'];
+		$_insert['account_email'] 	= @$insert['account_email'];
+		$_insert['account_city'] 	= @$insert['account_city'];
+		$_insert['account_tax_home']= @$insert['account_tax_home'];
+		$_insert['account_tax_no'] 	= @$insert['account_tax_no'];
+		$_insert['status_id']		= @$insert['status_id'];
 		$_insert['user_id']			= get_active_user('id');
 		$_insert['val_1']			= @$insert['val_1'];
 		$_insert['val_2']			= @$insert['val_2'];
@@ -41,13 +42,13 @@ function set_payment($args=array()) {
 		$_insert['val_int']			= @$insert['val_int'];
 		$_insert['val_date']		= @$insert['val_date'];
 		$_insert['val_decimal']		= @$insert['val_decimal'];
+
 		
 		//$_insert['payment_type'] 	= $insert['payment_type'];
 		$_insert['total'] 			= get_set_decimal_db($insert['payment']);
 
 		if($q_insert = db()->query("INSERT INTO ".dbname('forms')." ".sql_insert_string($_insert)." ")) {
-			if(db()->insert_id) {
-				$insert_id = db()->insert_id;
+			if($insert_id = db()->insert_id) {
 
 				// hesap kartinin bakiyesini guncelle
 				if(!empty($_insert['account_id'])) { if(calc_account($_insert['account_id'])); }

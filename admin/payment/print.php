@@ -1,11 +1,17 @@
 <?php include('../../tilpark.php'); ?>
-<link href="<?php echo template_url('css/print.css'); ?>" rel="stylesheet">
-<link href="<?php echo template_url('css/tilpark.css'); ?>" rel="stylesheet">
+
 <?php if(isset($_GET['id'])): ?>
 	<?php if(!$payment = get_payment($_GET['id'])) { exit('odeme formu bulunamadı.'); } ?>
 <?php else: exit('odeme id gerekli'); endif; ?>
 
+<?php
+// eger teması var ise temayı goster yok ise devam et
+if(include_content_page('print', $payment->type, 'payment')) { return false; }
+?>
 
+
+<link href="<?php echo template_url('css/print.css'); ?>" rel="stylesheet">
+<link href="<?php echo template_url('css/tilpark.css'); ?>" rel="stylesheet">
 <style>
 .i-company-address {
 	position: absolute;

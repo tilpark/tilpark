@@ -18,15 +18,18 @@ error_reporting(E_ALL);
  */
 define( 'ROOT_PATH', dirname(__FILE__));
 
-function root_path($val) {
+function get_root_path($val) {
 	return ROOT_PATH.'/'.$val;
 }
-include root_path('config.php');
+function root_path($val) {
+	echo get_root_path($val);
+}
+include get_root_path('config.php');
 
 
 
 function til_include($val) {
-	require_once root_path('includes/'.$val.'.php');
+	require_once get_root_path('includes/'.$val.'.php');
 }
 
 
@@ -43,7 +46,7 @@ function til_include($val) {
  */
 function get_header()
 {
-	include root_path('content/themes/default/header.php');
+	include get_root_path('content/themes/default/header.php');
 }
 
 /** 
@@ -52,7 +55,7 @@ function get_header()
  */
 function get_footer()
 {
-	include root_path('content/themes/default/footer.php');
+	include get_root_path('content/themes/default/footer.php');
 }
 
 /** 
@@ -61,7 +64,7 @@ function get_footer()
  */
 function get_sidebar()
 {
-	include root_path('content/themes/default/sidebar.php');
+	include get_root_path('content/themes/default/sidebar.php');
 }
 
 

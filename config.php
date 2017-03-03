@@ -31,6 +31,15 @@ $til = (object) array();
 global $til;
 
 $til->fixed = '2';
+$til->company = array();
+$til->company['name'] = 'Tilpark!';
+$til->company['address'] = 'Hocaömer Mah. 206. SK. No:1 Kat:4';
+$til->company['district'] = 'Merkez';
+$til->company['city'] = 'Adıyaman';
+$til->company['country'] = 'TURKEY';
+$til->company['email'] = 'info@tilpark.com';
+$til->company['phone'] = '2129091212';
+$til->company['gsm'] = '2129091212';
 
 function dbname($val)
 { global $til;
@@ -42,6 +51,7 @@ function til($val='')
 { global $til;
 	return $til;
 }
+
 
 
 $til->pg = new StdClass;

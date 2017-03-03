@@ -129,3 +129,9 @@ table tr th {
   color:#777 !important;
   -webkit-print-color-adjust: exact !important; 
 }
+
+
+.bg-gray {
+  background-color: #e8e8e8 !important;
+  -webkit-print-color-adjust: exact !important;
+}

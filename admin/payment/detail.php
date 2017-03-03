@@ -8,52 +8,60 @@ if(isset($_GET['id'])) {
 	$payment = new StdClass;
 }
 
-# maas formu mu?
-if(@$payment->val_1 == 'salary') { $_GET['monthly'] = true; }
-
 
 // eger payment->type yok ise ve GET metodu ile type degeri gelmis ise
 if(!isset($payment->type)) {
 	if(isset($_GET['type'])) {
 		$payment->type = $_GET['type'];
-	}
+	} else { $payment->type = ''; }
 }
 
-<<<<<<< HEAD
-// eger detail-TYPE.php sayfasi var goster yokse "detail-payment.php" goster
-if(file_exists('detail-'.$payment->type.'.php')) {
-	include('detail-'.$payment->type.'.php'); 
-	return false;
-} else {
-	include('detail-payment.php');
-	return false;
-}
 
+// eger teması var ise temayı goster yok ise devam et
+if(include_content_page('detail', $payment->type, 'payment')) { return false; }
 ?>
-=======
+
+
+
+
+<?php get_header(); ?>
+<?php
+if(@$payment->account_id) { calc_account($payment->account_id); $account = get_account($payment->account_id); }
+
+
+
+if(empty($payment->id)) {
+	$payment->id = 0;
+	$payment->date = date('Y-m-d H:i:s');
+
+	if(isset($_GET['in'])) { $payment->in_out = '0'; } 
+	elseif(isset($_GET['out'])) { $payment->in_out = '1'; }
+}
+
+
+
+// in_out control
+if($payment->in_out != '0' and $payment->in_out != '1') {
+	echo get_alert('Giriş çıkış türü yanlış.', 'warning', false);
+	get_footer();
+	exit; 
+}
+
 
 // kasa ve banka hesapları
 $cases = get_case_all(array('where'=>array('is_bank'=>0, 'orderby'=>'name ASC')));
 $banks = get_case_all(array('where'=>array('is_bank'=>1, 'orderby'=>'name ASC')));
 
 
-if(isset($_GET['monthly'])) {
-	// eger maas odeme formu ise
-	add_page_info( 'title', 'Maaş Ödemesi' );
-	add_page_info( 'nav', array('name'=>'Ödemeler', 'url'=>get_site_url('admin/payment')) );
-	add_page_info( 'nav', array('name'=>'Maaş Ödemesi') );
-} else {
-	// odeme formu
-	add_page_info( 'title', 'Yeni Ödeme - '.get_in_out_label($payment->in_out) );
-	add_page_info( 'nav', array('name'=>'Ödemeler', 'url'=>get_site_url('admin/payment')) );
-	add_page_info( 'nav', array('name'=>'Yeni Ödeme - '.get_in_out_label($payment->in_out)) );
-}
+
+add_page_info( 'title', 'Yeni Ödeme - '.get_in_out_label($payment->in_out) );
+add_page_info( 'nav', array('name'=>'Ödemeler', 'url'=>get_site_url('admin/payment')) );
+add_page_info( 'nav', array('name'=>'Yeni Ödeme - '.get_in_out_label($payment->in_out)) );
 ?>
 
 
 <?php
 if(isset($_POST['payment'])) {
-	if(isset($_GET['monthly'])) { $_POST['val_1'] = 'salary'; }
 	if($payment_id = set_payment($_POST)) {
 		// eger ilk defa form olusyor ise yonlendirme yapalim
 		if(empty($payment->id)) { header("Location:?id=".$payment_id); }
@@ -62,8 +70,6 @@ if(isset($_POST['payment'])) {
 
 print_alert('set_payment');
 ?>
-
-
 
 
 
@@ -118,8 +124,6 @@ print_alert('set_payment');
 <div class="tab-content"> 
 	<div class="tab-pane fade active in" role="tabpanel" id="home" aria-labelledby="home-tab"> 
 		
-		<?php if(isset($_GET['monthly'])): ?><?php echo get_alert('<b>Dikkat!</b> Bu bir maaş ödemesi.', 'warning', false); ?><?php endif; ?>
-
 		<form name="form_payment" id="form_payment" action="" method="POST">
 
 			<div class="row">
@@ -190,6 +194,7 @@ print_alert('set_payment');
 
 				<div class="clearfix"></div>
 
+
 				<div class="col-md-6">
 					<div class="form-group">
 						<label for="account_address">Adres </label>
@@ -211,7 +216,7 @@ print_alert('set_payment');
 				<div class="col-md-2">
 					<div class="form-group country_selected">
 						<label for="account_country">Ülke </label>
-						<?php echo list_selectbox(get_country_array(), array('name'=>'account_country', 'id'=>'account_country', 'selected'=>'TURKEY', 'class'=>'form-control select select-account account_country input-sm')); ?>
+						<?php echo list_selectbox(get_country_array(), array('name'=>'account_country', 'selected'=>'Turkey', 'class'=>'form-control select select-account input-sm')); ?>
 					</div> <!-- /.form-group -->
 				</div> <!-- /.col-md-2 -->	
 				
@@ -449,25 +454,6 @@ print_alert('set_payment');
 			</div>
 
 		</form>
-
-
-		<?php if(isset($_GET['monthly'])): ?>
-			<script>
-			$(document).ready(function() {
-				$('#account_code').attr('readonly', true);
-				$('#account_name').attr('readonly', true);
-				$('#account_gsm').attr('readonly', true);
-				$('#account_phone').attr('readonly', true);
-				$('#account_email').attr('readonly', true);
-				$('#account_tax_home').attr('readonly', true);
-				$('#account_tax_no').attr('readonly', true);
-				$('#account_address').attr('readonly', true);
-				$('#account_district').attr('readonly', true);
-				$('#account_city').attr('readonly', true);
-				$('#payment').focus();
-			});
-			</script>
-		<?php endif; ?>
 	</div> <!-- /#home -->
 					
 	<div class="tab-pane fade" role="tabpanel" id="profile" aria-labelledby="profile-tab"> 
@@ -491,6 +477,5 @@ print_alert('set_payment');
 	<?php echo get_alert('<b>Kasa/Banka hesabı bulunamadı. Ödeme alıp verebilmeniz için bir kasa/banka oluşturmanız gerekiyor. Kasa veya Banka hesabı oluşturmak için <a href="'.get_site_url('admin/system/case/index.php').'" class="bold" title="Kasa veya banka hesabı oluşturabilir veya eski hesapları düzenleyebilirsiniz.">buraya</a> tıklayınız.', 'warning', false); ?>
 <?php endif; ?>
 
+<? get_footer(); ?>
 
-<?php get_footer(); ?>
->>>>>>> origin/master

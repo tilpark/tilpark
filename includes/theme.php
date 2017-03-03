@@ -108,6 +108,37 @@ function get_table_order_by($name='', $orderby_type='') {
 
 
 
+function include_content_page($name='', $attachment=false, $folder=false) {
+	$path = 'content/pages/';
+
+	if( $folder ) { 
+		$path .= $folder.'/'; 
+	}
+
+	if( $attachment ) {
+		$name .= '-'.$attachment; 
+	}
+
+	if(substr($name, -4, 4) != '.php') {
+		$name .= '.php';
+	}
+
+
+
+	$path .= $name;
+
+	if( file_exists(get_root_path($path)) ) {
+		include get_root_path($path);
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+
+
+
 
 /**
  * pagination()
