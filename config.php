@@ -14,7 +14,6 @@ if($db->connect_errno){
 }
 
 // Veritabanımızı Seçelim.
-
 $db->select_db('tilpark');
 $db->query("SET NAMES 'utf8'");
 

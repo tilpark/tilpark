@@ -241,19 +241,14 @@ function user_info($id, $return) {
  * sadece kullanıcının gerçek adının almak icin get_active_user('name') veya get_active_user()->name seklinde kullanabilirsiniz.
  */
 function get_active_user($val='') {
-	if($query = db()->query("SELECT * FROM ".dbname('users')." WHERE id='".$_SESSION['login_id']."' LIMIT 1")) {
-		if($query->num_rows > 0) {
-			$obj = $query->fetch_object();
-			if(isset($obj->$val)) {
-				return $obj->$val;
-			} else {
-				return $obj;
-			}
+	if($user = get_user($_SESSION['login_id'])) {
+		if(isset($user->$val)) {
+			return $user->$val;
 		} else {
-			exit('giris yapmis uye bulunamadi.');
+			return $user;
 		}
 	} else {
-		db_query_error('get_active_user');
+		exit('giris yapmis uye bulunamadi.');
 	}
 }
 function active_user($val='') {
@@ -376,7 +371,9 @@ function update_user_meta($user_id, $meta_key, $meta_value, $args=array()) {
 	if(!$user = get_user($user_id)) { add_console_log('#'.$user_id.' kullanıcı bulunamadı.', __FUNCTION__); return false; }
 	if(empty($meta_key)) { add_console_log('Meta anahtar boş olamaz.', __FUNCTION__); return false; }
 
+
 	if(is_array($meta_value) or is_object($meta_value)) { $meta_value = json_encode_utf8($meta_value); }
+
 
 
 	$where['user_id'] 	= $user_id;
@@ -471,23 +468,41 @@ function get_user_meta($user_id, $meta_key=false, $args=array()) {
 
 
 
-/* --------------------------------------------------- STAF */
+/*
+| -------------------------------------------------------------------
+| STAFF SALARY
+| -------------------------------------------------------------------
+| Bir üyenin aylık maaş durumunu hesaplar
+|
+|
+| -------------------------------------------------------------------
+| Fonksiyonlar
+| -------------------------------------------------------------------
+|
+| * set_sataff_salary()
+|
+*/
+
 
 
 /**
- * set_staff_salary()
- * personellerin maaslarını hesaplar ve duzenler
+ * @func set_staff_salary()
+ * @desc personellerin maaslarını hesaplar ve duzenler
  */
 function set_staff_salary($user_id) {
 
 	if(!$user = get_user($user_id)) { add_console_log('üye id bulunamadı', __FUNCTION__); return false; }
 	$user_meta = get_user_meta($user->id);
 
+
+
+	// eger hesap karti yok ise olusturalim
 	if($user->account_id == 0) {
 		$_account['insert']['type'] = 'user';
 		$_account['insert']['code'] = 'TILUA-'.$user->id;
 		$_account['insert']['name'] = $user->display_name;
 		$_account['insert']['gsm']  = $user->gsm;
+		$_account['insert']['email'] = $user->username;
 		$_account['insert']['tax_no'] = $user->citizenship_no;
 
 		$_account['add_log'] = false;
@@ -498,22 +513,27 @@ function set_staff_salary($user_id) {
 
 			}
 		}	
-	}
+	} //. hesap karti yok ise olustur
 
 
-	if(!@$user_meta['date_start_work']) { add_console_log('işe başlama tarihi bulunamadı.', __FUNCTION__); return false; } 
+	// hesap kartini cagiralim
+	if(!$account = get_account($user->account_id)) { add_console_log('Hesap kartı bulunamadı.', __FUNCTION__); return false; }
 
-	$current_month = date('Y-m').'-00';
+	// ise baslama tarihini bulalim
+	if(!@$user_meta['date_start_work']) { add_console_log('işe başlama tarihi bulunamadı.', __FUNCTION__); return false; }
 
-	$start_date = strtotime($user_meta['date_start_work']);
-	$now_date 	= strtotime(date('Y-m-d'));
+	// tarihler degismis olabileceginden diger tarihlerin statuslerini degistirelim
+	db()->query("UPDATE ".dbname('forms')." SET status='0' WHERE type='salary' AND account_id='".$user->account_id."'");
+	db()->query("UPDATE ".dbname('form_items')." SET status='0' WHERE type='salary' AND item_name='monthly_day' AND account_id='".$user->account_id."'");
 
-	while($start_date < $now_date)
+
+	$str_start_date = strtotime($user_meta['date_start_work']);
+	while($str_start_date <= strtotime(date('Y-m-d')))
 	{
-	    $current_date 	= date('Y-m', $start_date);
-     	$start_date 	= strtotime("+1 month", $start_date);
+	    $current_date 		= date('Y-m', $str_start_date);
+     	$str_start_date 	= strtotime(date('Y-m', strtotime("+1 month", $str_start_date)).'-01'); // bir sonraki ayi hesaplamak icin 1 ay ileri atıyor ve  ay basini aliyoruz.
 
-     	# eger baslama tarihi ay basi degilse gun farki ile birlikte $current_date ekleyelim
+     	# ise baslama tarihinin ay basi olmama ihtimali yuksek. Bu sebeble ise baslama tarihinin gun degerini ekleyelim
 		if( date('Y-m', strtotime($user_meta['date_start_work'])) == date('Y-m', strtotime($current_date)) ) {
 			$current_date 	.= '-'.date('d', strtotime($user_meta['date_start_work'])).' 00:00';
 		} else {
@@ -521,83 +541,113 @@ function set_staff_salary($user_id) {
 		}
 
 
-     	
+		# ay baslangic tarihi Y-m-d
+		$monthly_start_date = date('Y-m-d', strtotime($current_date));
 
-     	if($q_select = db()->query("SELECT * FROM ".dbname('forms')." WHERE type='salary' AND val_1='".date('Y-m', strtotime($current_date))."' AND account_id='".$user->account_id."' AND user_id='".$user->id."' ")) {
+		# ay tarihi Y-m
+		$monthly_Ym 	= date('Y-m', strtotime($current_date));
+
+		# bir ay kac gun
+		$monthly_how_days = date("t", strtotime($current_date));
+
+		# bu ay kac gun calisti
+		$monthly_active_days = '0';
+			$current_day = date("d", strtotime($current_date)) - 1 ;
+			$monthly_active_days = ( $monthly_how_days - $current_day );
+			if($monthly_Ym == date('Y-m')) {
+				$monthly_active_days = $monthly_active_days - (date('t') - date('d'));
+			}
+		$monthly_active_days;
+
+		# bu ay bitis tarihi
+		$monthly_end_date = date('Y-m-t', strtotime($current_date));
+
+
+		// test icin
+		if(10 < 9) {
+			echo $monthly_start_date;
+			echo '<br />';
+			echo $monthly_Ym;
+			echo '<br />';
+			echo $monthly_how_days;
+			echo '<br />';
+			echo $monthly_active_days;
+			echo '<br />';
+			echo $monthly_end_date;
+			echo '<br />';
+			echo '<br />';
+		}
+
+
+
+     	if($q_select = db()->query("SELECT * FROM ".dbname('forms')." WHERE type='salary' AND val_1='".$monthly_Ym."' AND account_id='".$user->account_id."'")) {
 			if($q_select->num_rows) {
 				while($monthly = $q_select->fetch_object()) {
 
-					// form kartinin bakiyesini guncelleyelim
-					calc_form($monthly->id);
+					// status guncellemsi silinenleri tekrar aktif edelim
+					db()->query("UPDATE ".dbname('forms')." SET status='1' WHERE id='".$monthly->id."'");
 
+					# bir gun kac para
+					$monthly_day_wage = number_format($monthly->val_decimal / $monthly_how_days,4); // gunluk kac para
 
-					# eger baslama degismis ise once gunluk degisen tarihi bulalim ve veritabanini guncelleyelim
-					if( date('Y-m', strtotime($user_meta['date_start_work'])) == date('Y-m', strtotime($monthly->date)) ) {
-						$current_date = date('Y-m', $current_date).'-'.date('d', strtotime($user_meta['date_start_work'])).' 00:00';
-						db()->query("UPDATE ".dbname('forms')." SET date='".$current_date."' WHERE id='".$monthly->id."'");
-						$monthly->date = $current_date;
-					}
-
-					$how_days = date("t", strtotime($monthly->date)); // ayda kac gun var
-					$day_wage = number_format($monthly->val_decimal / $how_days,4); // gunluk kac para
-
-
-					# aylıklar veritabanı eklenmis mi eklenmemis mi?
-					if($q_select_item = db()->query("SELECT * FROM ".dbname('form_items')." WHERE form_id='".$monthly->id."' AND type='wage' AND item_name='monthly_day'")) {
+					if($q_select_item = db()->query("SELECT * FROM ".dbname('form_items')." WHERE type='salary' AND form_id='".$monthly->id."' AND item_name='monthly_day' AND val_1='".$monthly_Ym."' ")) {
 						if($q_select_item->num_rows) {
 
-							# eger eklenen aylik simdiki zamandaki aydan kucuk ise guncelleyelim
-							# soyle dusun; nisan ayındayiz ve nisan ayinin 16'sindayiz. Biz bu aya ait bakiyeyi 16 gunluk yapmaliyiz
-							if(strtotime(date("Y-m-t", strtotime($monthly->date))) >= strtotime(date('Y-m-d'))) {
-								$form_item = array();
-								$form_item['quantity'] 	= ($how_days - ($how_days - date('d') )); // simdiki ay, kac gunluk gunluk yevmiye hak edis
-								$form_item['val_3']		= date('Y-m-d');
-								$form_item['price'] 	= $day_wage;
+							// eger form'a ait gunluk yevmiye hesaplamasi var olasi bir degisiklige karsi guncelleyelim
+							$_form_item = array();
+							$_form_item['status'] 	= 1;
+							$_form_item['in_out']   = '0';
+							$_form_item['account_id'] = $user->account_id;
+							$_form_item['val_2']	= $monthly_start_date;
+							$_form_item['quantity'] = $monthly_active_days;
+							$_form_item['price'] 	= $monthly_day_wage;
+							$_form_item['total']	= $_form_item['quantity'] * $_form_item['price'];
 
-								db()->query("UPDATE ".dbname('form_items')." SET ".sql_update_string($form_item)." WHERE id='".$q_select_item->fetch_object()->id."' ");
-							} 
+							db()->query("UPDATE ".dbname('form_items')." SET ".sql_update_string($_form_item)." WHERE id='".$q_select_item->fetch_object()->id."' ");
+
 						} else {
-							
-							$form_item = array();
-							$form_item['type'] 		= 'wage';
-							$form_item['form_id'] 	= $monthly->id;
-							$form_item['item_name']	= 'monthly_day';
-							$form_item['val_1']		= date('Y-m', strtotime($monthly->date));
-							$form_item['val_2']		= date('Y-m-d', strtotime($monthly->date));
-							$form_item['val_3']		= date('Y-m-t', strtotime($monthly->date));
-							$form_item['quantity']  = $how_days;
-							$form_item['price'] 	= $day_wage;
+							// eger form'a ait gunluk yevmiye hesaplamasi yapilmamis ise form_items tablosuna ekleyelim
+							$_form_item = array();
+							$_form_item['type'] 	= 'salary';
+							$_form_item['in_out']   = '0';
+							$_form_item['status'] 	= 1;
+							$_form_item['form_id'] 	= $monthly->id;
+							$_form_item['account_id'] = $user->account_id;
+							$_form_item['item_name']= 'monthly_day';
+							$_form_item['val_1'] 	= $monthly_Ym;
+							$_form_item['val_2'] 	= $monthly_start_date;
+							$_form_item['val_3'] 	= $monthly_end_date;
+							$_form_item['quantity'] = $monthly_active_days;
+							$_form_item['price'] 	= $monthly_day_wage;
 
-							## eger baslama tarihi ay basi degilise gun farkini hesapla
-							if(date('d', strtotime($user_meta['date_start_work'])) > 1) {
-								$form_item['quantity'] = $form_item['quantity'] - date('d', strtotime($user_meta['date_start_work']));
-							}
-
-
-							insert_form_item($form_item);
+							insert_form_item($_form_item);
 						}
 					}
 
-				}
+					# form kartinin bakiyesini guncelleyelim
+					calc_form($monthly->id);
+
+				} //.while
+
 			} else {
-
-				
-
+				// eger herhangi bir form yok ise olusturalim
+				// her ay icin bir form kaydi olmalidir
+				$_form['in_out'] = '0';
 				$_form['type'] = 'salary';
 				$_form['date'] = $current_date;
 				$_form['account_id'] 		= $user->account_id;
-				$_form['account_code']   	= 'TILUA-'.$user->id;
-				$_form['account_name'] 		= $user->display_name;
+				$_form['account_code']   	= $account->code;
+				$_form['account_name'] 		= $account->name;
 				$_form['user_id'] 			= $user->id;
-				$_form['val_1']				= substr($current_date,0,7);
+				$_form['val_1']				= $monthly_Ym;
 				$_form['val_decimal']    	= $user_meta['net_salary'];
 
 				if($salary_id = insert_form($_form)) {
 					$salary_id;
 				}
 			}	
-		}	
-	}
+		} //.query
+	} //.while strtotime
 
 	# personelin hesap karti bakiyesini guncelleyelim
 	calc_account($user->account_id);

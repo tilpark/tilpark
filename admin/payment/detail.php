@@ -9,6 +9,9 @@ if(isset($_GET['id'])) {
 	$payment = new StdClass;
 }
 
+# maas formu mu?
+if(@$payment->val_1 == 'salary') { $_GET['monthly'] = true; }
+
 
 
 if(empty($payment->id)) {
@@ -33,14 +36,23 @@ $cases = get_case_all(array('where'=>array('is_bank'=>0, 'orderby'=>'name ASC'))
 $banks = get_case_all(array('where'=>array('is_bank'=>1, 'orderby'=>'name ASC')));
 
 
-add_page_info( 'title', 'Yeni Ödeme - '.get_in_out_label($payment->in_out) );
-add_page_info( 'nav', array('name'=>'Ödemeler', 'url'=>get_site_url('admin/payment')) );
-add_page_info( 'nav', array('name'=>'Yeni Ödeme - '.get_in_out_label($payment->in_out)) );
+if(isset($_GET['monthly'])) {
+	// eger maas odeme formu ise
+	add_page_info( 'title', 'Maaş Ödemesi' );
+	add_page_info( 'nav', array('name'=>'Ödemeler', 'url'=>get_site_url('admin/payment')) );
+	add_page_info( 'nav', array('name'=>'Maaş Ödemesi') );
+} else {
+	// odeme formu
+	add_page_info( 'title', 'Yeni Ödeme - '.get_in_out_label($payment->in_out) );
+	add_page_info( 'nav', array('name'=>'Ödemeler', 'url'=>get_site_url('admin/payment')) );
+	add_page_info( 'nav', array('name'=>'Yeni Ödeme - '.get_in_out_label($payment->in_out)) );
+}
 ?>
 
 
 <?php
 if(isset($_POST['payment'])) {
+	if(isset($_GET['monthly'])) { $_POST['val_1'] = 'salary'; }
 	if($payment_id = set_payment($_POST)) {
 		// eger ilk defa form olusyor ise yonlendirme yapalim
 		if(empty($payment->id)) { header("Location:?id=".$payment_id); }
@@ -105,6 +117,8 @@ print_alert('set_payment');
 <div class="tab-content"> 
 	<div class="tab-pane fade active in" role="tabpanel" id="home" aria-labelledby="home-tab"> 
 		
+		<?php if(isset($_GET['monthly'])): ?><?php echo get_alert('<b>Dikkat!</b> Bu bir maaş ödemesi.', 'warning', false); ?><?php endif; ?>
+
 		<form name="form_payment" id="form_payment" action="" method="POST">
 
 			<div class="row">
@@ -175,32 +189,30 @@ print_alert('set_payment');
 
 				<div class="clearfix"></div>
 
-				<?php if(!isset($_GET['monthly'])): ?>
-					<div class="col-md-6">
-						<div class="form-group">
-							<label for="account_address">Adres </label>
-							<input type="text" name="account_address" id="account_address" value="<?php echo @$payment->account_address; ?>" class="form-control input-sm">
-						</div> <!-- /.form-group -->
-					</div> <!-- /.col-md-6 -->
-					<div class="col-md-2">
-						<div class="form-group">
-							<label for="account_district">İlçe </label>
-							<input type="text" name="account_district" id="account_district" value="<?php echo @$payment->account_district; ?>" class="form-control input-sm">
-						</div> <!-- /.form-group -->
-					</div> <!-- /.col-md-2 -->
-					<div class="col-md-2">
-						<div class="form-group">
-							<label for="account_city">Şehir </label>
-							<input type="text" name="account_city" id="account_city" value="<?php echo @$payment->account_city; ?>" class="form-control input-sm">
-						</div> <!-- /.form-group -->
-					</div> <!-- /.col-md-2 -->
-					<div class="col-md-2">
-						<div class="form-group country_selected">
-							<label for="account_country">Ülke </label>
-							<?php echo list_selectbox(get_country_array(), array('name'=>'account_country', 'selected'=>'Turkey', 'class'=>'form-control select select-account input-sm')); ?>
-						</div> <!-- /.form-group -->
-					</div> <!-- /.col-md-2 -->	
-				<?php endif; ?>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="account_address">Adres </label>
+						<input type="text" name="account_address" id="account_address" value="<?php echo @$payment->account_address; ?>" class="form-control input-sm">
+					</div> <!-- /.form-group -->
+				</div> <!-- /.col-md-6 -->
+				<div class="col-md-2">
+					<div class="form-group">
+						<label for="account_district">İlçe </label>
+						<input type="text" name="account_district" id="account_district" value="<?php echo @$payment->account_district; ?>" class="form-control input-sm">
+					</div> <!-- /.form-group -->
+				</div> <!-- /.col-md-2 -->
+				<div class="col-md-2">
+					<div class="form-group">
+						<label for="account_city">Şehir </label>
+						<input type="text" name="account_city" id="account_city" value="<?php echo @$payment->account_city; ?>" class="form-control input-sm">
+					</div> <!-- /.form-group -->
+				</div> <!-- /.col-md-2 -->
+				<div class="col-md-2">
+					<div class="form-group country_selected">
+						<label for="account_country">Ülke </label>
+						<?php echo list_selectbox(get_country_array(), array('name'=>'account_country', 'id'=>'account_country', 'selected'=>'TURKEY', 'class'=>'form-control select select-account account_country input-sm')); ?>
+					</div> <!-- /.form-group -->
+				</div> <!-- /.col-md-2 -->	
 				
 			</div> <!-- /.row -->
 
@@ -436,6 +448,25 @@ print_alert('set_payment');
 			</div>
 
 		</form>
+
+
+		<?php if(isset($_GET['monthly'])): ?>
+			<script>
+			$(document).ready(function() {
+				$('#account_code').attr('readonly', true);
+				$('#account_name').attr('readonly', true);
+				$('#account_gsm').attr('readonly', true);
+				$('#account_phone').attr('readonly', true);
+				$('#account_email').attr('readonly', true);
+				$('#account_tax_home').attr('readonly', true);
+				$('#account_tax_no').attr('readonly', true);
+				$('#account_address').attr('readonly', true);
+				$('#account_district').attr('readonly', true);
+				$('#account_city').attr('readonly', true);
+				$('#payment').focus();
+			});
+			</script>
+		<?php endif; ?>
 	</div> <!-- /#home -->
 					
 	<div class="tab-pane fade" role="tabpanel" id="profile" aria-labelledby="profile-tab"> 

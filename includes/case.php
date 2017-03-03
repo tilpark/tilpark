@@ -35,6 +35,12 @@ function set_payment($args=array()) {
 		$_insert['account_city'] 	= $insert['account_city'];
 		$_insert['status_id']		= $insert['status_id'];
 		$_insert['user_id']			= get_active_user('id');
+		$_insert['val_1']			= @$insert['val_1'];
+		$_insert['val_2']			= @$insert['val_2'];
+		$_insert['val_3']			= @$insert['val_3'];
+		$_insert['val_int']			= @$insert['val_int'];
+		$_insert['val_date']		= @$insert['val_date'];
+		$_insert['val_decimal']		= @$insert['val_decimal'];
 		
 		//$_insert['payment_type'] 	= $insert['payment_type'];
 		$_insert['total'] 			= get_set_decimal_db($insert['payment']);

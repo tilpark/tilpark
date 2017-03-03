@@ -1,11 +1,15 @@
 body {
-    margin: 0;
-    padding: 0;
-    background-color: #FAFAFA !important;
-    font: 12px "Tahoma";
-     -webkit-print-color-adjust: exact !important;
+  margin: 0;
+  padding: 0;
+  background-color: #FAFAFA !important;
+  font: 12px "Tahoma";
+  -webkit-print-color-adjust: exact !important;
+  -webkit-print-color-adjust: exact;
      
 }
+
+
+
 * {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -76,6 +80,28 @@ table tr th {
 
 
 
+.print-tilpark-logo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 300px;
+  width: 300px;
+  opacity: 0.05;
+  z-index: 1;
+}
+
+.print-footer {
+  position: absolute;
+  bottom: 0px;
+}
+.print-footer-left {
+  left: 0px;
+}
+.print-footer-right {
+  right: 0px;
+}
+
+
 
 
 .document-info-right {
@@ -87,4 +113,19 @@ table tr th {
   width: 100px !important;
   margin-bottom: 5px;
   display: inline-block;
+}
+
+
+
+
+
+
+
+
+
+
+/* color style */
+.text-muted {
+  color:#777 !important;
+  -webkit-print-color-adjust: exact !important; 
 }

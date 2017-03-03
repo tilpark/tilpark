@@ -384,7 +384,7 @@ function db_query_list_return_user($query, $arr=array()) {
 	$return = array();
 	while($list = $query->fetch_object()) {
 		if(isset($arr['prefix'])) {
-			if(!$list->avatar) { $list->avatar = get_template_url('img/no-avatar.jpg'); } else { $list->avatar = get_site_url($list->avatar); }
+			if(!$list->avatar) { $list->avatar = get_template_url('img/no-avatar-'.$list->gender.'.jpg'); } else { $list->avatar = get_site_url($list->avatar); }
 			if(!isset($list->display_name)) { $list->display_name = $list->name.' '.$list->surname; }
 
 			$return[$list->$arr['prefix']] = $list;

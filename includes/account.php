@@ -267,7 +267,7 @@ function calc_account($id) {
 		$out = 0;
 
 		// giris hareketlerini toplayalim
-		if($q_select_sum = db()->query("SELECT sum(total) as total,sum(profit) as profit FROM ".dbname('forms')." WHERE type IN ('form', 'salary') AND in_out='0' AND account_id='".$account->id."' ")) {
+		if($q_select_sum = db()->query("SELECT sum(total) as total,sum(profit) as profit FROM ".dbname('forms')." WHERE status='1' AND type IN ('form', 'salary') AND in_out='0' AND account_id='".$account->id."' ")) {
 			if($q_select_sum->num_rows) {
 				$in = $q_select_sum->fetch_object();
 			}
@@ -275,7 +275,7 @@ function calc_account($id) {
 		
 
 		// cikis hareketlerini toplayalim
-		if($q_select_sum = db()->query("SELECT sum(total) as total,sum(profit) as profit FROM ".dbname('forms')." WHERE type IN ('form', 'salary') AND in_out='1' AND account_id='".$account->id."' ")) {
+		if($q_select_sum = db()->query("SELECT sum(total) as total,sum(profit) as profit FROM ".dbname('forms')." WHERE status='1' AND type IN ('form', 'salary') AND in_out='1' AND account_id='".$account->id."' ")) {
 			if($q_select_sum->num_rows) {
 				$out = $q_select_sum->fetch_object();
 			}
@@ -289,7 +289,7 @@ function calc_account($id) {
 
 
 		// odemeler icin giris cikis
-		if($q_select_sum = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE type='payment' AND in_out='0' AND account_id='".$account->id."' ")) {
+		if($q_select_sum = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE status='1' AND type='payment' AND in_out='0' AND account_id='".$account->id."' ")) {
 			if($q_select_sum->num_rows) {
 				$in_payment = $q_select_sum->fetch_object();
 				$balance = $balance - $in_payment->total;
@@ -297,7 +297,7 @@ function calc_account($id) {
 		} else { add_mysqli_error_log(__FUNCTION__); }
 
 		// odemeler icin
-		if($q_select_sum = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE type='payment' AND in_out='1' AND account_id='".$account->id."' ")) {
+		if($q_select_sum = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE status='1' AND type='payment' AND in_out='1' AND account_id='".$account->id."' ")) {
 			if($q_select_sum->num_rows) {
 				$out_payment = $q_select_sum->fetch_object();
 				$balance = $balance + $out_payment->total;
