@@ -3,8 +3,8 @@
 
 <?php
 // aktif olan kullanıcın tüm bilgilerini cekelim
-$user = get_user($_GET['id']);
-
+if( !$user = get_user($_GET['id']) ) { echo get_alert('Kullanıcı hesabı bulunamadı.', 'warning', false); get_footer(); return false; }
+if($user->account_id) { $account = get_account($user->account_id); }
 
 
 
@@ -142,7 +142,7 @@ if(isset($_POST['update_cv'])) {
 
 
 	if(isset($_POST['emergency_name'])) {
-		$school = array();
+		$emergency = array();
 		for($i=0; $i<count($_POST['emergency_name']); $i++) {
 			if(strlen($_POST['emergency_name'][$i]) OR strlen($_POST['emergency_relative'][$i]) OR $_POST['emergency_phone'][$i]) {
 				$emergency[$i]['emergency_name'] 		= $_POST['emergency_name'][$i];
@@ -319,6 +319,9 @@ add_page_info( 'nav', array('name'=>$user->name.' '.$user->surname) );
 	<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-print"></i> Yazdır <span class="caret"></span></a> 
 		<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
 			<li><a href="print_cv.php?id=<?php echo $user->id; ?>" target="_blank">Özgeçmiş (CV) Yazdır</a></li> 
+			<li class="divider"></li>
+			<li><a href="print_salary.php?id=<?php echo $user->id; ?>" target="_blank">Maaş Ekstresi Yazdır</a></li> 
+			<li><a href="print_salary_detail.php?id=<?php echo $user->id; ?>" target="_blank">Detaylı Maaş Ekstresi Yazdır</a></li> 
 		</ul> 
 	</li>
 </ul>
