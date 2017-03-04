@@ -2,7 +2,7 @@
 /* --------------------------------------------------- PAYMENT */
 
 /**
- * add_payment()
+ * set_payment()
  * bir odeme yontemi ekler
  */
 function set_payment($args=array()) {
@@ -20,9 +20,10 @@ function set_payment($args=array()) {
 
 	if(!is_alert(__FUNCTION__)) {
 
-		if(!isset($insert['type'])) { $insert['type'] = 'payment'; }
+		$insert['type'] = 'payment';
 
 		$_insert['type']			= @$insert['type'];
+		$_insert['template']		= @$insert['template'];
 		$_insert['in_out']			= @$insert['in_out'];
 		$_insert['date'] 			= @$insert['date'];
 		$_insert['account_id'] 		= @$insert['account_id'];
@@ -60,7 +61,7 @@ function set_payment($args=array()) {
 		} else { add_mysqli_error_log(__FUNCTION__); }
 
 	} else { return false; }
-}
+} //.set_payment()
 
 
 

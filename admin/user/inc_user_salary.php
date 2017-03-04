@@ -1,6 +1,3 @@
-
-
-
 <?php
 if(isset($_POST['update_staff_salary'])) {
 	update_user_meta($user->id, 'date_start_work', $_POST['date_start_work']);
@@ -10,16 +7,9 @@ if(isset($_POST['update_staff_salary'])) {
 $user_meta = get_user_meta($user->id);
 
 
-
-if(isset($_POST['add_payment'])) {
-
-}
-
-
-
+// maas hesaplamasi yapilsin ve personel hesap karti cagrilsin
 set_staff_salary($user->id);
-
-
+$account = get_account($user->account_id);
 ?>
 
 
@@ -28,7 +18,7 @@ set_staff_salary($user->id);
 
 	Toplam Bakiye : <span class="text-success"><?php echo get_set_money($account->balance,true); ?></span>
 	<div class="h-20"></div>
-	<a href="<?php site_url('admin/payment/detail.php?out'); ?>&type=pay_salary&account_id=<?php echo $user->account_id; ?>&user_type=user" target="_blank" class="btn btn-default"><i class="fa fa-paypal"></i> Ödeme Yap</a>
+	<a href="<?php site_url('admin/payment/detail.php?out'); ?>&template=salary&account_id=<?php echo $user->account_id; ?>&user_type=user" target="_blank" class="btn btn-default"><i class="fa fa-paypal"></i> Ödeme Yap</a>
 
 		
 
@@ -109,13 +99,13 @@ if($q_select = db()->query("SELECT * FROM ".dbname('forms')." WHERE status='1' A
 						<?php echo til_get_date($monthly->date, 'str: F Y'); ?> dönem hakediş
 					<?php endif; ?>
 				</td>
-				<td class="text-right"><?php if($monthly->type != 'payment'): ?><?php echo get_set_money($monthly->total, true); ?><?php endif; ?></td>
-				<td class="text-right"><?php if($monthly->type == 'payment'): ?><?php echo get_set_money($monthly->total, true); ?><?php endif; ?></td>
+				<td class="text-right"><?php if($monthly->type != 'payment'): ?><?php echo get_set_money($monthly->total, 'icon'); ?><?php endif; ?></td>
+				<td class="text-right"><?php if($monthly->type == 'payment'): ?><?php echo get_set_money($monthly->total, 'icon'); ?><?php endif; ?></td>
 			</tr>
 		<?php endforeach; ?>
 		<tfoot>
 			<tr>
-				<td colspan="5" class="text-right"><?php echo get_set_money($account->balance, true); ?></td>
+				<td colspan="5" class="text-right"><?php echo get_set_money($account->balance, 'icon'); ?></td>
 			</tr>
 		</tfoot>
 	</table> <!-- /.table -->

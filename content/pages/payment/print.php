@@ -4,10 +4,13 @@
 <link href="<?php echo template_url('css/print.css'); ?>" rel="stylesheet">
 
 
-<?php if(!$payment = get_payment($_GET['id'])) { exit('Ödeme Formu Bulunamadi'); } ?>
 
+<?php if($payment->in_out == 0): ?>
+	<title>Tahsilat Formu : <?php echo $payment->account_name; ?></title>
+<?php else: ?>
+	<title>Tediye Formu : <?php echo $payment->account_name; ?></title>
+<?php endif; ?>
 
-<title>Maaş/Avans Makbuzu</title>
 <div class="print-page" size="A4">
 
 	<div class="print-tilpark-logo">
@@ -16,10 +19,21 @@
 
 	<div class="row">
 		<div class="col-xs-6">
-			<h4 class="content-title">Maaş/Avans Makbuzu</h4>
+		<?php if($payment->in_out == 0): ?>
+			<h3 class="content-title ff-2 text-uppercase">TAHSİLAT FORMU</h3>
+		<?php else: ?>
+			<h3 class="content-title ff-2 text-uppercase">TEDİYE FORMU</h3>
+		<?php endif; ?>
+			
 		</div> <!-- /.col-md-* -->
 		<div class="col-xs-6">
-
+			<div class="pull-right">
+				<img src="<?php barcode_url('TILP-'.$payment->id); ?>" />
+				<br />
+				<div class="text-right mr-15"><?php echo 'TILP-'.$payment->id; ?></div>
+				<div class="h-20"></div>
+				<div class="text-right mr-15"><?php echo til_get_date($payment->date, 'datetime'); ?></div>
+			</div>
 		</div> <!-- /.col-md-* -->
 	</div> <!-- /.row -->
 
@@ -31,13 +45,7 @@
 
 		</div> <!-- /.col-md-6 -->
 		<div class="col-xs-6">
-			<div class="pull-right">
-				<img src="<?php barcode_url('TILP-'.$payment->id); ?>" />
-				<br />
-				<div class="text-right mr-15"><?php echo 'TILP-'.$payment->id; ?></div>
-				<div class="h-20"></div>
-				<div class="text-right mr-15"><?php echo til_get_date($payment->date, 'datetime'); ?></div>
-			</div>
+			
 		</div> <!-- /.col-md-6 -->
 	</div> <!-- /.row -->
 
@@ -97,7 +105,11 @@
 	<div class="row">
 		<div class="col-xs-6">
 			
-			<div class="fs-10 text-muted">ÖDEMEYİ YAPAN - <small>AD/SOYAD/İMZA</small></div>
+			<?php if($payment->in_out == 1): ?>
+				<div class="fs-10 text-muted">ÖDEMEYİ YAPAN - <small>AD/SOYAD/İMZA</small></div>
+			<?php else: ?>
+				<div class="fs-10 text-muted">TAHSİLATI YAPAN - <small>AD/SOYAD/İMZA</small></div>
+			<?php endif; ?>
 			<div class="h-10"></div>
 			<div><?php echo get_user_info($payment->user_id, 'name'); ?> <?php echo get_user_info($payment->user_id, 'surname'); ?></div>
 			
@@ -107,7 +119,12 @@
 		<div class="col-xs-6">
 			
 			<div class="pull-right">
-				<div class="fs-10 text-muted">ÖDEMEYİ ALAN - <small>AD/SOYAD/İMZA</small></div>
+				<?php if($payment->in_out == 1): ?>
+					<div class="fs-10 text-muted">ÖDEMEYİ ALAN - <small>AD/SOYAD/İMZA</small></div>
+				<?php else: ?>
+					<div class="fs-10 text-muted">ÖDEMEYİ YAPAN - <small>AD/SOYAD/İMZA</small></div>
+				<?php endif; ?>
+
 				<div class="h-10"></div>
 				<div><?php echo $payment->account_name; ?></div>
 				
@@ -125,3 +142,5 @@
 		<small class="text-muted"><img src="<?php site_url('content/themes/default/img/logo_header.png'); ?>" class="img-responsive pull-left" width="64"> açık kaynak yazılımlar.</small>
 	</div>
 </div>
+
+

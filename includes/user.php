@@ -479,7 +479,7 @@ function get_user_meta($user_id, $meta_key=false, $args=array()) {
 | Fonksiyonlar
 | -------------------------------------------------------------------
 |
-| * set_sataff_salary()
+| * set_staff_salary()
 |
 */
 
@@ -552,7 +552,7 @@ function set_staff_salary($user_id) {
 
 		# bu ay kac gun calisti
 		$monthly_active_days = '0';
-			$current_day = date("d", strtotime($current_date)) - 1 ;
+			$current_day = date("d", strtotime($current_date)) - 1;
 			$monthly_active_days = ( $monthly_how_days - $current_day );
 			if($monthly_Ym == date('Y-m')) {
 				$monthly_active_days = $monthly_active_days - (date('t') - date('d'));
@@ -645,6 +645,8 @@ function set_staff_salary($user_id) {
 				if($salary_id = insert_form($_form)) {
 					$salary_id;
 				}
+
+				set_staff_salary($user_id);
 			}	
 		} //.query
 	} //.while strtotime

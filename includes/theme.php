@@ -106,9 +106,20 @@ function get_table_order_by($name='', $orderby_type='') {
 
 
 
+$tilpark['kral'] = 'example';
+
+$tilpark['mustafa'] = 'example';
+
+$tilpark['cumhali'] = 'example';
 
 
-function include_content_page($name='', $attachment=false, $folder=false) {
+
+
+function include_content_page($name='', $attachment=false, $folder=false, $extract=false) {
+	
+	// eger include edilecek sayfaya herhangi bir deger gonderilecek ise
+	if($extract) { extract($extract); }
+
 	$path = 'content/pages/';
 
 	if( $folder ) { 
@@ -131,6 +142,7 @@ function include_content_page($name='', $attachment=false, $folder=false) {
 		include get_root_path($path);
 		return true;
 	} else {
+		add_console_log('not found: '.get_root_path($path), __FUNCTION__);
 		return false;
 	}
 }

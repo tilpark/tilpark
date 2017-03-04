@@ -61,7 +61,7 @@ function get_set_money($val, $arr=array()) {
     
     if(!is_array($arr)) {
         if($arr == 'str') { $arr = array('str'=>true); }
-        elseif($arr == true) { $arr = array('icon'=>true); }
+        elseif($arr == 'icon') { $arr = array('icon'=>true); }
         $arr['decimal_separator']   = '.';
         $arr['digit_separator']     = ',';
     }
@@ -71,8 +71,8 @@ function get_set_money($val, $arr=array()) {
 
 
     $icon = '';
-    if(@$arr['icon'] == true) { $icon = ' <i class="fa fa-try icon-money"></i>'; }
-    if(@$arr['str'] == true) { $icon = ' TL'; }
+    if( isset($arr['icon']) ) { $icon = ' <i class="fa fa-try icon-money"></i>'; }
+    if( isset($arr['str']) ) { $icon = ' TL'; }
 
     
     if(is_numeric($val)) {
