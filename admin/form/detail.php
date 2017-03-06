@@ -7,18 +7,11 @@ if($form = get_form(@$_GET['id'])) {
 }
 
 // eger payment->type yok ise ve GET metodu ile type degeri gelmis ise
-if(!isset($payment->type)) {
-	if(isset($_GET['type'])) {
-		$payment->type = $_GET['type'];
+if(!isset($form->template)) {
+	if(isset($_GET['template'])) {
+		$form->template = $_GET['template'];
 	}
 }
 
-// eger detail-TYPE.php sayfasi var goster yokse "detail-payment.php" goster
-if(file_exists('detail-'.$form->type.'.php')) {
-	include('detail-'.$form->type.'.php'); 
-	return false;
-} else {
-	include('detail-form.php');
-	return false;
-}
+include_content_page('detail', $form->template, 'form', array('form'=>$form));
 ?>

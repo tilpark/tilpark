@@ -80,7 +80,7 @@ if($form->id) {
 	calc_form($form->id); // form toplamlarini hesaplayalim
 	calc_account($form->account_id); // eger hesap karti var ise bakiyesini hesaplayalim
 	$form = get_form($form->id); // formu tekrar cagiralim
-	$form_meta = get_form_metas($form->id); // form elemanlarını cagiralim
+	$form_meta = get_form_meta($form->id); // form elemanlarını cagiralim
 }
 ?>
 
@@ -144,7 +144,7 @@ if($form->id) {
 								
 								<div class="form-group">
 									<label for="note"><i class="fa fa-pencil"></i> Not <sup class="text-muted">*bu form ile ilgili hatırlatıcı veya önemli bir not yazabilirsiniz</sup> </label>
-									<input type="text" name="note" id="note" value="<?php echo @$form_meta['note']->val; ?>" class="form-control input-sm" minlength="1" maxlength="128">
+									<input type="text" name="note" id="note" value="<?php echo @$form_meta->note; ?>" class="form-control input-sm" minlength="1" maxlength="128">
 								</div> <!-- /.form-group -->
 
 							</div>
@@ -204,13 +204,13 @@ if($form->id) {
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="account_address">Adres </label>
-									<input type="text" name="account_address" id="account_address" value="<?php echo @$form_meta['address']->val; ?>" class="form-control input-sm">
+									<input type="text" name="account_address" id="account_address" value="<?php echo @$form_meta->address; ?>" class="form-control input-sm">
 								</div> <!-- /.form-group -->
 							</div> <!-- /.col-md-6 -->
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="account_district">İlçe </label>
-									<input type="text" name="account_district" id="account_district" value="<?php echo @$form_meta['district']->val; ?>" class="form-control input-sm">
+									<input type="text" name="account_district" id="account_district" value="<?php echo @$form_meta->district; ?>" class="form-control input-sm">
 								</div> <!-- /.form-group -->
 							</div> <!-- /.col-md-2 -->
 							<div class="col-md-2">
@@ -279,8 +279,8 @@ if($form->id) {
 
 						});
 
-						<?php if(@$form_meta['country']->val): ?>
-							$('#account_country').val("<?php echo $form_meta['country']->val; ?>");
+						<?php if(@$form_meta->country): ?>
+							$('#account_country').val("<?php echo $form_meta->country; ?>");
 						<?php endif; ?>
 
 						function account_getJSON_click(param) {

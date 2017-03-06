@@ -18,6 +18,13 @@
 .h-90 { height: 90px !important; }
 .h-100 { height: 100px !important; }
 
+.full-height {
+  width: 100% !important;
+}
+.full-width {
+  width: 100% !important;
+}
+
 
 /**
  * margin
@@ -57,14 +64,16 @@
 
 
 /* helper */
-.absolute { position: absolute; }
-.relative { position: relative; }
+.absolute { position: absolute !important; }
+.relative { position: relative !important; }
 .strong { font-weight: bold !important; }
 .bold { font-weight: bold !important; }
 .italic { font-style: italic !important; }
 .underline { text-decoration: underline !important; }
 /* cursor */
 .pointer { cursor: pointer; }
+
+
 
 .veritical-center {
 	display:flex;

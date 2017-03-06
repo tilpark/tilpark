@@ -129,7 +129,17 @@ function barcode( $filepath="", $text="0", $size="20", $orientation="horizontal"
 		imagestring($image, 5, 31, $img_height, $text, $black );
 	}
 
+
 	$location = 10;
+	if(isset($_GET['position'])) { 
+		if($_GET['position'] == 'left') {
+			$location = 0;
+		} elseif($_GET['position'] == 'center') {
+			$location = 10;
+		} elseif($_GET['position'] == 'right') {
+			$location = 20;
+		}
+	}
 	for ( $position = 1 ; $position <= strlen($code_string); $position++ ) {
 		$cur_size = $location + ( substr($code_string, ($position-1), 1) );
 		if ( strtolower($orientation) == "horizontal" )

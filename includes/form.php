@@ -170,10 +170,10 @@ function set_form($id, $args=array()) {
 			
 
 			// form meta guncele
-			update_form_meta($form->id, array('name'=>'district', 'val'=>$_form_meta['account_district']));
-			update_form_meta($form->id, array('name'=>'address', 'val'=>$_form_meta['account_address']));
-			update_form_meta($form->id, array('name'=>'country', 'val'=>$_form_meta['account_country']));
-			update_form_meta($form->id, array('name'=>'note', 'val'=>$_form_meta['note']));
+			update_form_meta($form->id, 'district', $_form_meta['account_district']);
+			update_form_meta($form->id, 'address', $_form_meta['account_address']);
+			update_form_meta($form->id, 'country', $_form_meta['account_country']);
+			update_form_meta($form->id, 'note', $_form_meta['note']);
 
 
 			// eger form guncellenecek ise
@@ -677,29 +677,28 @@ function get_form_items($form_id, $opt=array()) {
  * add_form_meta()
  * bir form tablosuna ait meta bilgisi ekler
  */
-function add_form_meta($form_id, $args=array()) {
+function add_form_meta($form_id, $meta_key, $meta_value) {
 	$form_id 	= input_check($form_id);
-	$args 		= _args_helper(input_check($args), 'insert');
-	$insert 	= $args['insert'];
+	$meta_key 	= input_check($meta_key);
+	$meta_value = input_check($meta_value);
 
-	@form_validation($form_id, 'form_id', 'Form ID', 'required', __FUNCTION__);
-	@form_validation($insert['name'], 'form_meta_name', 'Form bilgi anahtarı', 'required|min_lenght[3]', __FUNCTION__);
+	$alert_rnd = rand(1000,1000000);
 
-	if(!is_alert(__FUNCTION__, 'warning')) {
+	@form_validation($form_id, 'form_id', 'Form ID', 'required', __FUNCTION__.'-'.$alert_rnd);
+	@form_validation($meta_key, 'meta_key', 'Meta Anahtarı', 'required', __FUNCTION__.'-'.$alert_rnd);
+
+	if(!is_alert(__FUNCTION__.'-'.$alert_rnd)) {
 
 		if($form = get_form($form_id)) {
-			// required
-			if(!isset($insert['taxonomy'])) { $insert['taxonomy'] = ''; }
-			$insert['form_id'] = $form_id;
 
 			// daha onceden eklenmis mi?
-			if($q_select = db()->query("SELECT * FROM ".dbname('form_meta')." WHERE form_id='".$insert['form_id']."' AND taxonomy='".$insert['taxonomy']."' AND name='".$insert['name']."'  ")) {
+			if($q_select = db()->query("SELECT * FROM ".dbname('form_meta')." WHERE form_id='".$form_id."' AND meta_key='".$meta_key."' AND meta_value='".$meta_value."'  ")) {
 				if($q_select->num_rows) {
-					if($args['add_alert']) { add_alert(_b($insert['name']).' form ek bilgi anahtarı, daha önceden eklenmiş.', 'warning', __FUNCTION__); }
+					add_console_log($insert['name'].' form ek bilgi anahtarı, daha önceden eklenmiş.', __FUNCTION__);
 					return false;
 				} else {
 
-					if($q_insert = db()->query("INSERT INTO ".dbname('form_meta')." ".sql_insert_string($insert)." ")) {
+					if($q_insert = db()->query("INSERT INTO ".dbname('form_meta')." ".sql_insert_string(array('form_id'=>$form_id, 'meta_key'=>$meta_key, 'meta_value'=>$meta_value))." ")) {
 						if(db()->insert_id) {
 							$insert_id = db()->insert_id;
 							return $insert_id;
@@ -708,7 +707,7 @@ function add_form_meta($form_id, $args=array()) {
 
 				} //.q_select->num_rows
 			} else { add_mysqli_error_log(__FUNCTION__); }
-		} else { if($args['add_alert']) { add_alert('Form bulunamadı', 'warning', __FUNCTION__); } return false;  }
+		} else { add_console_log('Form bulunamadı', 'warning', __FUNCTION__); return false;  }
 
 	} else { return false; }
 } //.add_form_meta()
@@ -722,27 +721,26 @@ function add_form_meta($form_id, $args=array()) {
  * update_form_meta()
  * form_meta tablosundan veri gunecller
  */
-function update_form_meta($form_id, $args=array()) {
+function update_form_meta($form_id, $meta_key, $meta_value) {
 
 	$form_id 	= input_check($form_id);
-	$args 		= _args_helper(input_check($args), 'update');
-	$update 	= $args['update'];
+	$meta_key 	= input_check($meta_key);
+	$meta_value = input_check($meta_value);
 
-	@form_validation($form_id, 'form_id', 'Form ID', 'required', __FUNCTION__);
-	@form_validation($update['name'], 'form_meta_name', 'Form ek bilgi anahtarı', 'required|min_lenght[3]', __FUNCTION__);
+	$alert_rnd = rand(1000,1000000);
 
-	if(!is_alert(__FUNCTION__, 'warning')) {
+	@form_validation($form_id, 'form_id', 'Form ID', 'required', __FUNCTION__.'-'.$alert_rnd);
+	@form_validation($meta_key, 'meta_key', 'Meta Anahtarı', 'required', __FUNCTION__.'-'.$alert_rnd);
+
+	if(!is_alert(__FUNCTION__.'-'.$alert_rnd)) {
 
 		if($form = get_form($form_id)) {
-			// required
-			if(!isset($update['taxonomy'])) { $update['taxonomy'] = ''; }
-			$update['form_id'] = $form_id;
 
 			// daha onceden eklenmis mi?
-			if($q_select = db()->query("SELECT * FROM ".dbname('form_meta')." WHERE form_id='".$update['form_id']."' AND taxonomy='".$update['taxonomy']."' AND name='".$update['name']."'  ")) {
+			if($q_select = db()->query("SELECT * FROM ".dbname('form_meta')." WHERE form_id='".$form_id."' AND meta_key='".$meta_key."' AND meta_value='".$meta_value."'  ")) {
 				if($q_select->num_rows) {
 					$found_meta_id = $q_select->fetch_object()->id;
-					if($q_insert = db()->query("UPDATE ".dbname('form_meta')." SET ".sql_update_string($update)." WHERE id='".$found_meta_id."'  ")) {
+					if($q_insert = db()->query("UPDATE ".dbname('form_meta')." SET ".sql_update_string(array('meta_key'=>$meta_key, 'meta_value'=>$meta_value))." WHERE id='".$found_meta_id."'  ")) {
 						if(db()->affected_rows) {
 							return true;
 						} else { return false; }
@@ -750,13 +748,11 @@ function update_form_meta($form_id, $args=array()) {
 
 				} else {
 
-					$_args 				= $args;
-					$_args['insert'] 	= $update;
-					if($args['add_new']) { add_form_meta($form_id, $_args); }
+					add_form_meta($form_id, $meta_key, $meta_value);
 
 				} //.q_select->num_rows
 			} else { add_mysqli_error_log(__FUNCTION__); }
-		} else { if($args['add_alert']) { add_alert('Form bulunamadı', 'warning', __FUNCTION__); } return false;  }
+		} else { add_console_log('Form bulunamadı', 'warning', __FUNCTION__); return false;  }
 
 	} else { return false; }
 } //.update_form_meta()
@@ -811,37 +807,31 @@ function delete_form_meta($form_id, $args=array()) {
  * get_form_meta()
  * form meta bilgisini dondurur
  */
-function get_form_meta($form_id, $args=array()) {
+function get_form_meta($form_id, $meta_key=false) {
 	$form_id 	= input_check($form_id);
+	$meta_key 	= input_check($meta_key);
 	
+	// required
+	$where['form_id'] 	= $form_id;
+	if($meta_key) {
+		$where['meta_key']	= $meta_key;
+	}
 
-	if(empty($args)) {
-		$meta_id 	= $form_id;
-		$args 		= _args_helper(input_check($args));
-
-		if($q_select = db()->query("SELECT * FROM ".dbname('form_meta')." WHERE id='".$meta_id."' ")) {
-			if($q_select->num_rows) {
+	if($q_select =  db()->query("SELECT * FROM ".dbname('form_meta')." ".sql_where_string($where)." ")) {
+		if($q_select->num_rows) {
+			if($q_select->num_rows == 1) {
 				$return = $q_select->fetch_object();
-				return $return;
-			} else { return false; }
-		} else { add_mysqli_error_log(__FUNCTION__); }
-	} else {
+			} else {
+				$return = new stdclass;
+				while( $list = $q_select->fetch_object() ) {
+					$return->{$list->meta_key} = $list->meta_value;
+				}
+			}
+			
+			return $return;
+		} else { return false; }
+	} else { add_mysqli_error_log(__FUNCTION__); }
 
-		$args 		= _args_helper(input_check($args), 'where');
-		$where 		= $args['where'];
-
-		// required
-		if(!isset($where['taxonomy'])) { $where['taxonomy'] = ''; }
-		$where['form_id'] = $form_id;
-
-		if($q_select =  db()->query("SELECT * FROM ".dbname('form_meta')." ".sql_where_string($where)." ")) {
-			if($q_select->num_rows) {
-				$return = $q_select->fetch_object();
-				return $return;
-			} else { return false; }
-		} else { add_mysqli_error_log(__FUNCTION__); }
-
-	} //.empty($args)
 
 } //.get_form_meta()
 
@@ -854,7 +844,7 @@ function get_form_meta($form_id, $args=array()) {
  * get_form_metas()
  * form meta bilgilerinin hepsini dondurur
  */
-function get_form_metas($form_id, $args=array()) {
+function get_form_metas($form_id) {
 	$form_id 	= input_check($form_id);
 	$args 		= _args_helper(input_check($args), 'where');
 	$where 		= $args['where'];

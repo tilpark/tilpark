@@ -143,6 +143,7 @@ function include_content_page($name='', $attachment=false, $folder=false, $extra
 		return true;
 	} else {
 		add_console_log('not found: '.get_root_path($path), __FUNCTION__);
+		include get_root_path('admin/system/404.php');
 		return false;
 	}
 }
@@ -291,11 +292,15 @@ function search_form_for_panel($arr=array()) {
  * get_barcode_url()
  * barkod adresini URL formatında dondurur
  */
-function get_barcode_url($val, $codeType='Code128', $print='false') {
-	return site_url('includes/lib/barcode/barcode.php?codetype='.$codeType.'&text='.$val.'&print='.$print.'');
+function get_barcode_url($val, $args=array()) {
+	if(!isset($args['codeType'])) { $args['codeType'] = 'Code128'; }
+	if(!isset($args['print'])) { $args['print'] = 'false'; }
+	if(!isset($args['position'])) { $args['position'] = 'center'; }
+
+	return site_url('includes/lib/barcode/barcode.php?text='.$val.'&codetype='.$args['codeType'].'&print='.$args['print'].'&position='.$args['position'].'');
 }
-function barcode_url($val, $codeType='Code128', $print='false') {
-	echo get_barcode_url($val, $codeType, $print);
+function barcode_url($val, $args=array()) {
+	echo get_barcode_url($val, $args);
 }
 
 
