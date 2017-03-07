@@ -4,7 +4,7 @@
 <link href="<?php echo template_url('css/print.css'); ?>" rel="stylesheet">
 
 
-<?php $form_meta = get_form_metas($form->id); print_r($form_meta); ?>
+<?php $form_meta = get_form_meta($form->id); ?>
 
 
 <?php if($form->in_out == '0'): ?>
@@ -60,8 +60,8 @@
 			<div class="bg-gray p-10 br-3">
 				<div class="fs-14 bold"><?php echo $form->account_name; ?></div>
 				<div class="fs-12">T.C. No : <?php echo $form_meta->address; ?></div>
-				<div class="fs-12"><?php echo $form->account_email; ?></div>
-				<div class="fs-12"><?php echo $form->account_gsm; ?></div>
+				<div class="fs-12"><?php echo $form_meta->city; ?></div>
+				<div class="fs-12"><?php echo $form_meta->address; ?></div>
 			</div>
 
 		</div> <!-- /.ol-md-* -->
