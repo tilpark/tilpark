@@ -1,0 +1,2148 @@
+-- phpMyAdmin SQL Dump
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
+--
+-- Anamakine: localhost
+-- Üretim Zamanı: 21 Mar 2017, 15:38:05
+-- Sunucu sürümü: 10.1.21-MariaDB
+-- PHP Sürümü: 5.6.30
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Veritabanı: `tilpark`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `til_accounts`
+--
+
+CREATE TABLE `til_accounts` (
+  `id` int(11) NOT NULL,
+  `status` int(1) NOT NULL DEFAULT '1',
+  `date` datetime NOT NULL,
+  `type` varchar(10) NOT NULL,
+  `code` varchar(32) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `gsm` varchar(20) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `address` varchar(500) NOT NULL,
+  `city` varchar(20) NOT NULL,
+  `district` varchar(20) NOT NULL,
+  `country` varchar(20) NOT NULL,
+  `tax_no` varchar(20) NOT NULL,
+  `tax_home` varchar(20) NOT NULL,
+  `balance` decimal(15,4) NOT NULL,
+  `profit` decimal(15,4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tablo döküm verisi `til_accounts`
+--
+
+INSERT INTO `til_accounts` (`id`, `status`, `date`, `type`, `code`, `name`, `email`, `gsm`, `phone`, `address`, `city`, `district`, `country`, `tax_no`, `tax_home`, `balance`, `profit`) VALUES
+(9, 1, '2017-02-27 18:25:25', 'user', 'TILUA-20', 'ORHAN GÜRBÜZ', 'orhan@tilpark.com', '5322343434', '', '', '', '', '', '12312312323', '', '-3500.0021', '0.0000'),
+(10, 1, '2017-03-06 09:16:36', 'user', 'TILUA-21', 'MUHAMMET INAN', 'muhammet@tilpark.com', '5350140011', '', '', '', '', '', '12312312345', '', '-1570.2767', '0.0000');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `til_extra`
+--
+
+CREATE TABLE `til_extra` (
+  `id` int(11) NOT NULL,
+  `taxonomy` varchar(64) NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `val` text NOT NULL,
+  `val_1` varchar(128) NOT NULL,
+  `val_2` varchar(128) NOT NULL,
+  `val_3` varchar(128) NOT NULL,
+  `val_4` varchar(256) NOT NULL,
+  `val_5` varchar(256) NOT NULL,
+  `val_6` varchar(256) NOT NULL,
+  `val_7` varchar(512) NOT NULL,
+  `val_8` varchar(512) NOT NULL,
+  `val_9` varchar(512) NOT NULL,
+  `val_text` text NOT NULL,
+  `val_int` int(11) NOT NULL,
+  `val_decimal` decimal(15,4) NOT NULL,
+  `val_date` datetime NOT NULL,
+  `val_enum` enum('0','1') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tablo döküm verisi `til_extra`
+--
+
+INSERT INTO `til_extra` (`id`, `taxonomy`, `name`, `val`, `val_1`, `val_2`, `val_3`, `val_4`, `val_5`, `val_6`, `val_7`, `val_8`, `val_9`, `val_text`, `val_int`, `val_decimal`, `val_date`, `val_enum`) VALUES
+(1, 'til_fs_form', 'Yeni Sipariş', '', '#000000', '#fdc430', '', '', 'default', '', '', '', '[form_id] no\'lu siparişinizin durumu [form_status] olarak değiştirildi.', '', 8, '0.0000', '0000-00-00 00:00:00', '1'),
+(2, 'til_fs_form', 'Onaylanan Sipariş', '', '#000000', '#fdc430', '', '', '', '', '', '', '[form_id] no\'lu siparişinizin durumu [form_status] olarak değiştirildi.', '', 0, '0.0000', '0000-00-00 00:00:00', '1'),
+(3, 'til_fs_form', 'Kapatılan Sipariş', '', '#000000', '#fdc430', '', '', '', '', '', '', '[form_id] no\'lu siparişinizin durumu [form_status] olarak değiştirildi.', '', 0, '0.0000', '0000-00-00 00:00:00', '1'),
+(4, 'til_case', 'Ofis Kasası', '', '', '', '', '', 'default', '', '', '', '', '', 0, '-2000.0000', '0000-00-00 00:00:00', '0'),
+(5, 'til_case', 'İş Bankası', '', '', '', '', '', 'default', 'İş Bankası', 'Mustafa Tanrıverdi', '{\"branch_code\":\"1020\",\"account_no\":\"1657181\",\"iban\":\"\"}', '', '', 0, '0.0000', '0000-00-00 00:00:00', '1'),
+(6, 'til_fs_form', 'Yeni Giriş', '', '#000000', '#fdc430', '', '', 'default', '', '', '', '[form_id] no\'lu siparişinizin durumu [form_status] olarak değiştirildi.', '', 0, '0.0000', '0000-00-00 00:00:00', '0'),
+(7, 'til_fs_form', 'Hazırlanıyor', '', '#000000', '#fdc430', '', '', '', '', '', '', '[form_id] no\'lu siparişinizin durumu [form_status] olarak değiştirildi.', '', 0, '0.0000', '0000-00-00 00:00:00', '1'),
+(8, 'til_fs_form', 'Nakliyede', '', '#000000', '#fdc430', '', '', '', '', '', '', '[form_id] no\'lu siparişinizin durumu [form_status] olarak değiştirildi.', '', 0, '0.0000', '0000-00-00 00:00:00', '0'),
+(9, 'til_fs_form', 'Teslim Edildi', '', '#000000', '#fdc430', '', '', '', '', '', '', '[form_id] no\'lu siparişinizin durumu [form_status] olarak değiştirildi.', '', 0, '0.0000', '0000-00-00 00:00:00', '0'),
+(10, 'til_fs_form', 'Teslim Edildi', '', '#000000', '#fdc430', '', '', '', '', '', '', '[form_id] no\'lu siparişinizin durumu [form_status] olarak değiştirildi.', '', 2, '0.0000', '0000-00-00 00:00:00', '1');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `til_forms`
+--
+
+CREATE TABLE `til_forms` (
+  `id` int(11) NOT NULL,
+  `status` enum('0','1') NOT NULL DEFAULT '1',
+  `date` datetime NOT NULL,
+  `type` varchar(10) NOT NULL DEFAULT 'form',
+  `template` varchar(20) NOT NULL,
+  `in_out` enum('0','1') NOT NULL DEFAULT '1',
+  `account_id` int(11) NOT NULL,
+  `account_code` varchar(32) NOT NULL,
+  `account_name` varchar(50) NOT NULL,
+  `account_gsm` varchar(20) NOT NULL,
+  `account_phone` varchar(20) NOT NULL,
+  `account_email` varchar(100) NOT NULL,
+  `account_city` varchar(20) NOT NULL,
+  `account_tax_home` varchar(20) NOT NULL,
+  `account_tax_no` varchar(20) NOT NULL,
+  `total` decimal(15,4) NOT NULL,
+  `profit` decimal(15,4) NOT NULL,
+  `payment` decimal(15,4) NOT NULL,
+  `item_count` int(11) NOT NULL,
+  `item_quantity` int(11) NOT NULL,
+  `status_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `val_1` varchar(255) NOT NULL,
+  `val_2` varchar(512) NOT NULL,
+  `val_3` varchar(1024) NOT NULL,
+  `val_int` int(11) NOT NULL,
+  `val_date` datetime NOT NULL,
+  `val_decimal` decimal(15,4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tablo döküm verisi `til_forms`
+--
+
+INSERT INTO `til_forms` (`id`, `status`, `date`, `type`, `template`, `in_out`, `account_id`, `account_code`, `account_name`, `account_gsm`, `account_phone`, `account_email`, `account_city`, `account_tax_home`, `account_tax_no`, `total`, `profit`, `payment`, `item_count`, `item_quantity`, `status_id`, `user_id`, `date_updated`, `val_1`, `val_2`, `val_3`, `val_int`, `val_date`, `val_decimal`) VALUES
+(157, '1', '2017-01-01 00:00:00', 'salary', '', '0', 10, 'TILUA-21', 'MUHAMMET INAN', '', '', '', '', '', '', '1999.9991', '0.0000', '0.0000', 1, 31, 0, 21, '0000-00-00 00:00:00', '2017-01', '', '', 0, '0000-00-00 00:00:00', '2000.0000'),
+(158, '1', '2017-02-01 00:00:00', 'salary', '', '0', 10, 'TILUA-21', 'MUHAMMET INAN', '', '', '', '', '', '', '892.8575', '0.0000', '0.0000', 3, 31, 0, 21, '0000-00-00 00:00:00', '2017-02', '', '', 0, '0000-00-00 00:00:00', '1000.0000'),
+(159, '1', '2017-03-01 00:00:00', 'salary', '', '0', 10, 'TILUA-21', 'MUHAMMET INAN', '', '', '', '', '', '', '677.4201', '0.0000', '0.0000', 1, 21, 0, 21, '0000-00-00 00:00:00', '2017-03', '', '', 0, '0000-00-00 00:00:00', '1000.0000'),
+(160, '0', '2016-08-29 00:00:00', 'salary', '', '0', 10, 'TILUA-21', 'MUHAMMET INAN', '', '', '', '', '', '', '290.3226', '0.0000', '0.0000', 1, 3, 0, 21, '0000-00-00 00:00:00', '2016-08', '', '', 0, '0000-00-00 00:00:00', '3000.0000'),
+(161, '0', '2016-09-01 00:00:00', 'salary', '', '0', 10, 'TILUA-21', 'MUHAMMET INAN', '', '', '', '', '', '', '3000.0000', '0.0000', '0.0000', 1, 30, 0, 21, '0000-00-00 00:00:00', '2016-09', '', '', 0, '0000-00-00 00:00:00', '3000.0000'),
+(162, '0', '2016-10-01 00:00:00', 'salary', '', '0', 10, 'TILUA-21', 'MUHAMMET INAN', '', '', '', '', '', '', '3000.0002', '0.0000', '0.0000', 1, 31, 0, 21, '0000-00-00 00:00:00', '2016-10', '', '', 0, '0000-00-00 00:00:00', '3000.0000'),
+(163, '0', '2016-11-01 00:00:00', 'salary', '', '0', 10, 'TILUA-21', 'MUHAMMET INAN', '', '', '', '', '', '', '3000.0000', '0.0000', '0.0000', 1, 30, 0, 21, '0000-00-00 00:00:00', '2016-11', '', '', 0, '0000-00-00 00:00:00', '3000.0000'),
+(164, '0', '2016-12-01 00:00:00', 'salary', '', '0', 10, 'TILUA-21', 'MUHAMMET INAN', '', '', '', '', '', '', '3000.0002', '0.0000', '0.0000', 1, 31, 0, 21, '0000-00-00 00:00:00', '2016-12', '', '', 0, '0000-00-00 00:00:00', '3000.0000'),
+(165, '1', '2017-03-21 17:23:00', 'payment', 'salary', '1', 10, 'TILUA-21', 'MUHAMMET INAN', '5350140011', '', 'muhammet@tilpark.com', '', '', '12312312345', '2000.0000', '0.0000', '0.0000', 0, 0, 4, 1, '0000-00-00 00:00:00', '', '', '', 0, '0000-00-00 00:00:00', '0.0000');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `til_form_items`
+--
+
+CREATE TABLE `til_form_items` (
+  `id` int(11) NOT NULL,
+  `status` int(1) NOT NULL DEFAULT '1',
+  `date` datetime NOT NULL,
+  `type` varchar(20) NOT NULL DEFAULT 'item',
+  `in_out` int(1) NOT NULL DEFAULT '1',
+  `form_id` int(11) NOT NULL,
+  `account_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `item_code` varchar(32) NOT NULL,
+  `item_name` varchar(50) NOT NULL,
+  `item_p_purc` decimal(15,4) NOT NULL,
+  `item_p_sale` decimal(15,4) NOT NULL,
+  `price` decimal(15,4) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `vat` int(2) NOT NULL,
+  `vat_total` decimal(15,4) NOT NULL,
+  `total` decimal(15,4) NOT NULL,
+  `profit` decimal(15,4) NOT NULL,
+  `val_1` varchar(32) NOT NULL,
+  `val_2` varchar(512) NOT NULL,
+  `val_3` varchar(1024) NOT NULL,
+  `val_int` int(11) NOT NULL,
+  `val_date` datetime NOT NULL,
+  `val_decimal` decimal(15,4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tablo döküm verisi `til_form_items`
+--
+
+INSERT INTO `til_form_items` (`id`, `status`, `date`, `type`, `in_out`, `form_id`, `account_id`, `item_id`, `item_code`, `item_name`, `item_p_purc`, `item_p_sale`, `price`, `quantity`, `vat`, `vat_total`, `total`, `profit`, `val_1`, `val_2`, `val_3`, `val_int`, `val_date`, `val_decimal`) VALUES
+(231, 1, '2017-03-15 13:49:06', 'salary', 0, 157, 10, 0, '', 'monthly_day', '0.0000', '0.0000', '64.5161', 31, 0, '0.0000', '1999.9991', '0.0000', '2017-01', '2017-01-01', '2017-01-31', 0, '0000-00-00 00:00:00', '0.0000'),
+(232, 1, '2017-03-15 13:49:06', 'salary', 0, 158, 10, 0, '', 'monthly_day', '0.0000', '0.0000', '35.7143', 28, 0, '0.0000', '1000.0004', '0.0000', '2017-02', '2017-02-01', '2017-02-28', 0, '0000-00-00 00:00:00', '0.0000'),
+(233, 1, '2017-03-15 13:49:07', 'salary', 0, 159, 10, 0, '', 'monthly_day', '0.0000', '0.0000', '32.2581', 21, 0, '0.0000', '677.4201', '0.0000', '2017-03', '2017-03-01', '2017-03-31', 0, '0000-00-00 00:00:00', '0.0000'),
+(234, 0, '2017-03-15 14:11:16', 'wage', 1, 159, 0, 0, '', 'overtime', '0.0000', '0.0000', '8.0600', 9, 0, '0.0000', '72.5400', '0.0000', '2017-03', '', '', 0, '2017-03-15 00:00:00', '0.0000'),
+(235, 0, '2017-03-15 14:11:22', 'wage', 0, 159, 0, 0, '', 'not_overtime', '0.0000', '0.0000', '-8.0645', 4, 0, '0.0000', '-32.2581', '0.0000', '2017-03', '', '', 0, '2017-03-15 00:00:00', '0.0000'),
+(236, 0, '2017-03-15 14:12:55', 'wage', 0, 159, 0, 0, '', 'did_not_come', '0.0000', '0.0000', '-64.5161', 1, 0, '0.0000', '-64.5161', '0.0000', '2017-03-13', '2017-03-14', '', 0, '2017-03-13 00:00:00', '0.0000'),
+(237, 0, '2017-03-15 14:27:14', 'wage', 0, 159, 0, 0, '', 'not_overtime', '0.0000', '0.0000', '-4.0323', 90, 0, '0.0000', '-362.9036', '0.0000', '2017-03', '', 'deneme', 0, '2017-03-15 00:00:00', '0.0000'),
+(238, 0, '2017-03-16 15:59:44', 'wage', 0, 159, 0, 0, '', 'did_not_come', '0.0000', '0.0000', '0.0000', 1, 0, '0.0000', '0.0000', '0.0000', '2017-03-16', '2017-03-17', '', 0, '2017-03-16 00:00:00', '0.0000'),
+(239, 1, '2017-03-21 17:12:17', 'wage', 0, 158, 0, 0, '', 'did_not_come', '0.0000', '0.0000', '-35.7143', 1, 0, '0.0000', '-35.7143', '0.0000', '2017-02-14', '2017-02-15', 'gelmedi habersiz', 0, '2017-02-14 00:00:00', '0.0000'),
+(240, 1, '2017-03-21 17:12:41', 'wage', 0, 158, 0, 0, '', 'did_not_come', '0.0000', '0.0000', '-35.7143', 2, 0, '0.0000', '-71.4286', '0.0000', '2017-03-13', '2017-03-15', '', 0, '2017-03-13 00:00:00', '0.0000'),
+(241, 0, '2017-03-21 17:14:33', 'salary', 0, 160, 10, 0, '', 'monthly_day', '0.0000', '0.0000', '96.7742', 3, 0, '0.0000', '290.3226', '0.0000', '2016-08', '2016-08-29', '2016-08-31', 0, '0000-00-00 00:00:00', '0.0000'),
+(242, 0, '2017-03-21 17:14:33', 'salary', 0, 161, 10, 0, '', 'monthly_day', '0.0000', '0.0000', '100.0000', 30, 0, '0.0000', '3000.0000', '0.0000', '2016-09', '2016-09-01', '2016-09-30', 0, '0000-00-00 00:00:00', '0.0000'),
+(243, 0, '2017-03-21 17:14:33', 'salary', 0, 162, 10, 0, '', 'monthly_day', '0.0000', '0.0000', '96.7742', 31, 0, '0.0000', '3000.0002', '0.0000', '2016-10', '2016-10-01', '2016-10-31', 0, '0000-00-00 00:00:00', '0.0000'),
+(244, 0, '2017-03-21 17:14:33', 'salary', 0, 163, 10, 0, '', 'monthly_day', '0.0000', '0.0000', '100.0000', 30, 0, '0.0000', '3000.0000', '0.0000', '2016-11', '2016-11-01', '2016-11-30', 0, '0000-00-00 00:00:00', '0.0000'),
+(245, 0, '2017-03-21 17:14:33', 'salary', 0, 164, 10, 0, '', 'monthly_day', '0.0000', '0.0000', '96.7742', 31, 0, '0.0000', '3000.0002', '0.0000', '2016-12', '2016-12-01', '2016-12-31', 0, '0000-00-00 00:00:00', '0.0000');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `til_form_meta`
+--
+
+CREATE TABLE `til_form_meta` (
+  `id` int(11) NOT NULL,
+  `form_id` int(11) NOT NULL,
+  `meta_key` varchar(32) NOT NULL,
+  `meta_value` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tablo döküm verisi `til_form_meta`
+--
+
+INSERT INTO `til_form_meta` (`id`, `form_id`, `meta_key`, `meta_value`) VALUES
+(103, 150, 'district', ''),
+(104, 150, 'address', ''),
+(105, 150, 'country', 'AFGHANISTAN'),
+(106, 150, 'note', 'DSFSDF SD5\'TEN SONRA'),
+(107, 153, 'district', ''),
+(108, 153, 'address', ''),
+(109, 153, 'country', 'AFGHANISTAN'),
+(110, 153, 'note', '');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `til_items`
+--
+
+CREATE TABLE `til_items` (
+  `id` int(11) NOT NULL,
+  `status` int(1) NOT NULL DEFAULT '1',
+  `date` datetime NOT NULL,
+  `type` varchar(10) NOT NULL,
+  `code` varchar(32) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `p_purc_out_vat` decimal(15,4) NOT NULL,
+  `p_sale_out_vat` decimal(15,4) NOT NULL,
+  `vat` int(2) NOT NULL,
+  `p_purc` decimal(15,4) NOT NULL,
+  `p_sale` decimal(15,4) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `total_purc` decimal(15,4) NOT NULL,
+  `total_sale` decimal(15,4) NOT NULL,
+  `profit` decimal(15,4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tablo döküm verisi `til_items`
+--
+
+INSERT INTO `til_items` (`id`, `status`, `date`, `type`, `code`, `name`, `p_purc_out_vat`, `p_sale_out_vat`, `vat`, `p_purc`, `p_sale`, `quantity`, `total_purc`, `total_sale`, `profit`) VALUES
+(1, 1, '2017-01-16 10:49:40', 'product', 'TILI-1', 'KIRMIZI AYAKKABI', '0.0000', '0.0000', 0, '0.0000', '0.0000', -1, '0.0000', '35.0000', '35.0000'),
+(2, 1, '2017-01-18 16:16:22', 'product', 'TILI-2', 'KRAL KRAL', '8.4746', '16.9492', 18, '10.0000', '20.0000', -1, '0.0000', '20.0000', '8.4746'),
+(3, 1, '2017-01-19 13:24:23', 'product', 'TILI-3', 'ŞARK KÖŞESİ MODEL 1', '84.7458', '127.1186', 18, '100.0000', '150.0000', -1, '0.0000', '150.0000', '42.3729'),
+(4, 1, '2017-01-19 13:40:36', 'product', 'TILI-4', 'ŞARK KÖŞESİ CEREN', '50.0000', '80.0000', 0, '50.0000', '80.0000', -1, '0.0000', '80.0000', '30.0000'),
+(5, 1, '2017-01-24 10:53:03', 'product', '86936217', 'ROTHMANS OF LONDON - MAVİ PAKET', '5.0847', '7.6271', 18, '6.0000', '9.0000', -12, '0.0000', '108.0000', '30.5088');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `til_logs`
+--
+
+CREATE TABLE `til_logs` (
+  `id` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `uniquetime` char(15) NOT NULL,
+  `table_id` varchar(20) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `log_url` varchar(250) NOT NULL,
+  `log_key` varchar(64) NOT NULL,
+  `log_text` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tablo döküm verisi `til_logs`
+--
+
+INSERT INTO `til_logs` (`id`, `date`, `uniquetime`, `table_id`, `user_id`, `log_url`, `log_key`, `log_text`) VALUES
+(1, '2017-01-03 12:47:02', '1483440396.1704', 'accounts:1', 1, '/github/tilpark/admin/account/add.php', 'add_account', 'Hesap kartı eklendi.'),
+(2, '2017-01-03 12:47:26', '1483440433.7698', 'extra:1', 1, '/github/tilpark/admin/system/form_status/form_status.php?taxonomy=til_fs_form', 'add_form_status', '\"<b>Form</b>\" için \"<b>Yeni Sipariş</b>\" form durumu eklendi.'),
+(3, '2017-01-03 12:47:43', '1483440446.6321', 'extra:2', 1, '/github/tilpark/admin/system/form_status/form_status.php?taxonomy=til_fs_form', 'add_form_status', '\"<b>Form</b>\" için \"<b>Onaylanan Sipariş</b>\" form durumu eklendi.'),
+(4, '2017-01-03 12:47:50', '1483440463.8115', 'extra:3', 1, '/github/tilpark/admin/system/form_status/form_status.php?taxonomy=til_fs_form', 'add_form_status', '\"<b>Form</b>\" için \"<b>Kapatılan Sipariş</b>\" form durumu eklendi.'),
+(5, '2017-01-03 12:48:08', '1483440474.405', 'forms:1', 1, '/github/tilpark/admin/form/detail.php?out', 'set_form', 'Form oluşturuldu.'),
+(6, '2017-01-03 12:48:08', '1483440474.4053', 'forms:1', 1, '/github/tilpark/admin/form/detail.php?out', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">WEB TASARIM HIZMETI</small>'),
+(7, '2017-01-03 13:16:48', '1483442194.3858', 'extra:4', 1, '/github/tilpark/admin/system/case/index.php?taxonomy=til_case', 'add_case', '\"<b>Ofis Kasası</b>\" kasası oluşturuldu.'),
+(8, '2017-01-03 13:17:05', '1483442208.2808', 'extra:5', 1, '/github/tilpark/admin/system/case/index.php?taxonomy=til_case', 'add_case', '\"<b>İş Bankası</b>\" banka hesabı oluşturuldu.'),
+(9, '2017-01-16 10:49:40', '1484556561.6301', 'items:1', 1, '/github/tilpark/admin/item/add.php', 'add_item', 'Ürün kartı eklendi.'),
+(10, '2017-01-16 10:50:01', '1484556587.7864', 'forms:3', 1, '/github/tilpark/admin/form/detail.php?out', 'set_form', 'Form oluşturuldu.'),
+(11, '2017-01-16 10:50:01', '1484556587.7867', 'forms:3', 1, '/github/tilpark/admin/form/detail.php?out', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">KIRMIZI AYAKKABI</small>'),
+(12, '2017-01-16 10:50:30', '1484556613.421', 'extra:6', 1, '/github/tilpark/admin/system/form_status/form_status.php?taxonomy=til_fs_form', 'add_form_status', '\"<b>Form</b>\" için \"<b>Yeni Giriş</b>\" form durumu eklendi.'),
+(13, '2017-01-16 10:50:46', '1484556635.0069', 'forms:4', 1, '/github/tilpark/admin/form/detail.php?in', 'set_form', 'Form oluşturuldu.'),
+(14, '2017-01-16 10:50:46', '1484556635.0071', 'forms:4', 1, '/github/tilpark/admin/form/detail.php?in', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">KIRMIZI AYAKKABI</small>'),
+(15, '2017-01-17 14:50:23', '1484657422.219', 'users:1', 1, '/github/tilpark/admin/user/profile.php?', 'update_user', 'Profil bilgileri güncellendi.'),
+(16, '2017-01-17 14:51:19', '1484657471.1203', 'users:1', 1, '/github/tilpark/admin/user/profile.php?', 'update_user', 'Profil bilgileri güncellendi.'),
+(17, '2017-01-17 14:52:12', '1484657479.5043', 'users:1', 1, '/github/tilpark/admin/user/profile.php?', 'update_user', 'Profil bilgileri güncellendi.'),
+(18, '2017-01-17 14:59:27', '1484657907.3499', 'users:1', 1, '/github/tilpark/admin/user/profile.php?', 'update_user', 'Profil bilgileri güncellendi.'),
+(19, '2017-01-17 14:59:31', '1484657967.1688', 'users:1', 1, '/github/tilpark/admin/user/profile.php?', 'update_user', 'Profil bilgileri güncellendi.'),
+(20, '2017-01-17 15:05:50', '1484658342.1317', 'users:1', 1, '/github/tilpark/admin/user/profile.php?', 'update_user', 'Profil bilgileri güncellendi.'),
+(21, '2017-01-17 15:05:53', '1484658350.5785', 'users:1', 1, '/github/tilpark/admin/user/profile.php?', 'update_user', 'Profil bilgileri güncellendi.'),
+(22, '2017-01-17 15:09:11', '1484658548.7893', 'users:1', 1, '/github/tilpark/admin/user/profile.php', 'update_user', 'Profil bilgileri güncellendi.'),
+(23, '2017-01-17 15:09:20', '1484658551.809', 'users:1', 1, '/github/tilpark/admin/user/profile.php', 'update_user', 'Profil bilgileri güncellendi.'),
+(24, '2017-01-17 16:15:44', '1484661858.8694', 'users:', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\"<b>kral@kral.com</b>\"'),
+(25, '2017-01-17 16:17:47', '1484662640.3877', '', 1, '/github/tilpark/admin/user/add.php', 'mysqli_error', 'Duplicate entry \'0\' for key \'PRIMARY\''),
+(26, '2017-01-17 19:51:24', '1484675437.0288', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\"<b>orhangurbuz@tilpark.com</b>\"'),
+(27, '2017-01-17 20:02:22', '1484676135.4177', '', 1, '/github/tilpark/admin/user/add.php', 'mysqli_error', 'Duplicate entry \'0\' for key \'PRIMARY\''),
+(28, '2017-01-17 20:05:42', '1484676329.8291', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\"<b>orhangurbuz@tilpark.com</b>\"'),
+(29, '2017-01-17 20:24:56', '1484677215.4468', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\"<b>orhangurbuz@tilpark.com</b>\"'),
+(30, '2017-01-17 20:33:20', '1484677993.1962', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\"<b>orhangurbuz2@tilpark.com</b>\"'),
+(31, '2017-01-17 20:38:33', '1484678071.4341', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\"<b>orhangurbuz2@tilpark.com</b>\"'),
+(32, '2017-01-18 10:01:18', '1484726474.2846', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7', 'update_user', 'Profil bilgileri güncellendi.'),
+(33, '2017-01-18 10:02:28', '1484726546.5775', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7', 'update_user', 'Profil bilgileri güncellendi.'),
+(34, '2017-01-18 10:03:49', '1484726626.6757', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(35, '2017-01-18 10:04:39', '1484726645.0781', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(36, '2017-01-18 10:06:55', '1484726813.5141', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(37, '2017-01-18 10:07:03', '1484726815.3945', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(38, '2017-01-18 10:07:15', '1484726833.7165', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(39, '2017-01-18 10:08:09', '1484726887.7014', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(40, '2017-01-18 10:08:18', '1484726892.6359', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(41, '2017-01-18 10:15:47', '1484727342.2871', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(42, '2017-01-18 10:18:35', '1484727513.5435', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(43, '2017-01-18 10:41:22', '1484728842.5285', 'users:1', 1, '/github/tilpark/admin/user/profile.php', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(44, '2017-01-18 10:56:15', '1484729623.0289', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\"<b>sahinaslan@tilpark.com</b>\"'),
+(45, '2017-01-18 10:56:55', '1484729814.1214', 'users:3', 1, '/github/tilpark/admin/user/user.php?id=3', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(46, '2017-01-18 10:56:59', '1484729818.2166', 'users:2', 1, '/github/tilpark/admin/user/user.php?id=2', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(47, '2017-01-18 11:17:07', '1484731013.2847', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\"<b>kralmustafa@tilpark.com</b>\"'),
+(48, '2017-01-18 12:22:29', '1484734861.0942', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(49, '2017-01-18 12:22:47', '1484734965.4649', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(50, '2017-01-18 12:23:02', '1484734972.7031', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(51, '2017-01-18 12:23:08', '1484734982.9723', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(52, '2017-01-18 12:24:47', '1484735063.6447', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(53, '2017-01-18 12:24:50', '1484735087.6101', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(54, '2017-01-18 12:25:55', '1484735148.6055', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(55, '2017-01-18 12:26:23', '1484735180.6296', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(56, '2017-01-18 12:28:58', '1484735336.0361', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(57, '2017-01-18 12:29:01', '1484735338.7393', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(58, '2017-01-18 12:35:42', '1484735740.0047', 'users:1', 1, '/github/tilpark/admin/user/profile.php', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(59, '2017-01-18 12:35:49', '1484735745.0122', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(60, '2017-01-18 14:54:57', '1484744095.5029', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(61, '2017-01-18 14:55:10', '1484744103.4225', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(62, '2017-01-18 14:56:31', '1484744158.7825', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(63, '2017-01-18 14:57:14', '1484744230.1247', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(64, '2017-01-18 14:57:40', '1484744249.5006', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(65, '2017-01-18 15:14:52', '1484745284.0537', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(66, '2017-01-18 15:17:32', '1484745448.4605', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(67, '2017-01-18 15:23:02', '1484745778.7919', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(68, '2017-01-18 15:23:03', '1484745783.6402', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(69, '2017-01-18 15:23:38', '1484745813.9945', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(70, '2017-01-18 15:23:46', '1484745826.5152', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(71, '2017-01-18 15:23:50', '1484745826.5167', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(72, '2017-01-18 15:24:39', '1484745875.2476', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(73, '2017-01-18 15:26:01', '1484745912.4399', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(74, '2017-01-18 15:34:05', '1484746439.9281', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(75, '2017-01-18 15:34:32', '1484746472.4717', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(76, '2017-01-18 15:34:51', '1484746472.4734', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'image_upload', 'Bir resim dosyası yükledi.'),
+(77, '2017-01-18 15:40:33', '1484746810.7145', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'image_upload', 'Bir resim dosyası yükledi.'),
+(78, '2017-01-18 15:40:54', '1484746850.0467', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'image_upload', 'Bir resim dosyası yükledi.'),
+(79, '2017-01-18 15:49:38', '1484747365.9095', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'image_upload', 'Bir resim dosyası yükledi.'),
+(80, '2017-01-18 15:50:25', '1484747378.9437', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'image_upload', 'Bir resim dosyası yükledi.'),
+(81, '2017-01-18 15:50:30', '1484747427.6033', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'image_upload', 'Bir resim dosyası yükledi.'),
+(82, '2017-01-18 15:50:48', '1484747443.2881', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'image_upload', 'Bir resim dosyası yükledi.'),
+(83, '2017-01-18 15:50:56', '1484747448.8916', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'image_upload', 'Bir resim dosyası yükledi.'),
+(84, '2017-01-18 15:53:58', '1484747632.0227', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'image_upload', 'Bir resim dosyası yükledi.'),
+(85, '2017-01-18 15:53:58', '1484747632.0214', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(86, '2017-01-18 15:54:21', '1484747645.1424', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'image_upload', 'Bir resim dosyası yükledi.'),
+(87, '2017-01-18 15:54:21', '1484747645.1413', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(88, '2017-01-18 15:54:50', '1484747690.7581', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(89, '2017-01-18 15:55:12', '1484747690.7626', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'image_upload', 'Bir resim dosyası yükledi.'),
+(90, '2017-01-18 15:55:12', '1484747690.7614', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(91, '2017-01-18 15:55:25', '1484747725.9934', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(92, '2017-01-18 15:55:33', '1484747729.4367', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'image_upload', 'Bir resim dosyası yükledi.'),
+(93, '2017-01-18 15:55:33', '1484747729.4356', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(94, '2017-01-18 15:58:47', '1484747922.4323', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=9', 'image_upload', 'Bir resim dosyası yükledi.'),
+(95, '2017-01-18 15:58:47', '1484747922.4308', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(96, '2017-01-18 16:16:22', '1484748976.3096', 'items:2', 9, '/github/tilpark/admin/item/add.php', 'add_item', 'Ürün kartı eklendi.'),
+(97, '2017-01-18 16:51:53', '1484751093.0434', 'users:9', 9, '/github/tilpark/admin/user/profile.php', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(98, '2017-01-18 16:53:55', '1484751219.361', 'users:9', 9, '/github/tilpark/admin/user/profile.php', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(99, '2017-01-18 16:57:19', '1484751419.0087', 'users:9', 9, '/github/tilpark/admin/user/profile.php', 'image_upload', 'Bir resim dosyası yükledi.'),
+(100, '2017-01-18 16:57:19', '1484751419.0075', 'users:9', 9, '/github/tilpark/admin/user/profile.php', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(101, '2017-01-18 16:58:02', '1484751473.8505', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9&delete_avatar', 'image_upload', 'Bir resim dosyası yükledi.'),
+(102, '2017-01-18 16:58:02', '1484751473.8492', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(103, '2017-01-18 16:58:52', '1484751532.9358', 'users:1', 1, '/github/tilpark/admin/user/profile.php?id=1&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(104, '2017-01-18 16:58:55', '1484751535.2611', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(105, '2017-01-18 16:59:46', '1484751580.4307', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9&delete_avatar', 'image_upload', 'Bir resim dosyası yükledi.'),
+(106, '2017-01-18 16:59:46', '1484751580.4294', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(107, '2017-01-18 16:59:48', '1484751588.7985', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(108, '2017-01-18 17:00:20', '1484751612.84', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'image_upload', 'Bir resim dosyası yükledi.'),
+(109, '2017-01-18 17:00:20', '1484751612.8388', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(110, '2017-01-18 17:00:47', '1484751647.0711', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(111, '2017-01-18 17:00:57', '1484751649.6855', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'image_upload', 'Bir resim dosyası yükledi.'),
+(112, '2017-01-18 17:00:57', '1484751649.6843', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(113, '2017-01-18 20:14:34', '1484763104.1823', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'image_upload', 'Bir resim dosyası yükledi.'),
+(114, '2017-01-18 20:14:34', '1484763104.1811', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(115, '2017-01-18 20:15:06', '1484763274.1778', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'image_upload', 'Bir resim dosyası yükledi.'),
+(116, '2017-01-18 20:15:06', '1484763274.1767', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(117, '2017-01-18 20:23:53', '1484763768.5443', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'image_upload', 'Bir resim dosyası yükledi.'),
+(118, '2017-01-18 20:23:53', '1484763768.5431', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(119, '2017-01-18 20:24:05', '1484763833.0445', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'image_upload', 'Bir resim dosyası yükledi.'),
+(120, '2017-01-18 20:24:05', '1484763833.0432', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(121, '2017-01-18 20:24:13', '1484763845.0429', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'image_upload', 'Bir resim dosyası yükledi.'),
+(122, '2017-01-18 20:24:13', '1484763845.0417', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(123, '2017-01-18 20:24:21', '1484763853.2647', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'image_upload', 'Bir resim dosyası yükledi.'),
+(124, '2017-01-18 20:24:21', '1484763853.2635', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(125, '2017-01-18 20:29:23', '1484764157.5862', 'users:1', 1, '/github/tilpark/admin/user/profile.php?id=1', 'image_upload', 'Bir resim dosyası yükledi.'),
+(126, '2017-01-18 20:29:23', '1484764157.585', 'users:1', 1, '/github/tilpark/admin/user/profile.php?id=1', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(127, '2017-01-18 20:29:34', '1484764163.407', 'users:1', 1, '/github/tilpark/admin/user/profile.php?id=1', 'image_upload', 'Bir resim dosyası yükledi.'),
+(128, '2017-01-18 20:29:34', '1484764163.4057', 'users:1', 1, '/github/tilpark/admin/user/profile.php?id=1', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(129, '2017-01-18 20:29:51', '1484764186.7161', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'image_upload', 'Bir resim dosyası yükledi.'),
+(130, '2017-01-18 20:29:51', '1484764186.715', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(131, '2017-01-18 20:30:07', '1484764191.0809', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'image_upload', 'Bir resim dosyası yükledi.'),
+(132, '2017-01-18 20:30:07', '1484764191.0797', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(133, '2017-01-18 20:32:09', '1484764321.105', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=8', 'image_upload', 'Bir resim dosyası yükledi.'),
+(134, '2017-01-18 20:32:09', '1484764321.1038', 'users:8', 1, '/github/tilpark/admin/user/user.php?id=8', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(135, '2017-01-18 20:32:44', '1484764329.4969', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=8', 'image_upload', 'Bir resim dosyası yükledi.'),
+(136, '2017-01-18 20:32:44', '1484764329.4954', 'users:8', 1, '/github/tilpark/admin/user/user.php?id=8', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(137, '2017-01-18 20:32:49', '1484764364.8925', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=8', 'image_upload', 'Bir resim dosyası yükledi.'),
+(138, '2017-01-18 20:32:49', '1484764364.8911', 'users:8', 1, '/github/tilpark/admin/user/user.php?id=8', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(139, '2017-01-18 20:33:16', '1484764396.4115', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(140, '2017-01-18 20:33:21', '1484764396.4179', 'users:9', 9, '/github/tilpark/admin/user/profile.php?', 'image_upload', 'Bir resim dosyası yükledi.'),
+(141, '2017-01-18 20:33:21', '1484764396.4167', 'users:9', 9, '/github/tilpark/admin/user/profile.php?', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(142, '2017-01-18 20:33:48', '1484764428.4501', 'users:8', 1, '/github/tilpark/admin/user/user.php?id=8&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(143, '2017-01-18 20:33:53', '1484764428.4526', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=8', 'image_upload', 'Bir resim dosyası yükledi.'),
+(144, '2017-01-18 20:33:53', '1484764428.4511', 'users:8', 1, '/github/tilpark/admin/user/user.php?id=8', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(145, '2017-01-18 20:33:54', '1484764434.9591', 'users:8', 1, '/github/tilpark/admin/user/user.php?id=8&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(146, '2017-01-18 20:33:59', '1484764434.9616', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=8', 'image_upload', 'Bir resim dosyası yükledi.'),
+(147, '2017-01-18 20:33:59', '1484764434.9602', 'users:8', 1, '/github/tilpark/admin/user/user.php?id=8', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(148, '2017-01-18 20:34:30', '1484764470.6226', 'users:9', 9, '/github/tilpark/admin/user/profile.php?id=9&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(149, '2017-01-18 20:34:34', '1484764470.6249', 'users:9', 9, '/github/tilpark/admin/user/profile.php?', 'image_upload', 'Bir resim dosyası yükledi.'),
+(150, '2017-01-18 20:34:34', '1484764470.6237', 'users:9', 9, '/github/tilpark/admin/user/profile.php?', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(151, '2017-01-18 21:03:02', '1484764439.2286', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=8', 'image_upload', 'Bir resim dosyası yükledi.'),
+(152, '2017-01-18 21:03:02', '1484764439.2271', 'users:8', 1, '/github/tilpark/admin/user/user.php?id=8', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(153, '2017-01-18 21:07:42', '1484766443.3452', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\"<b>bilal@tilpark.com</b>\"'),
+(154, '2017-01-18 21:07:51', '1484766466.6967', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=10', 'image_upload', 'Bir resim dosyası yükledi.'),
+(155, '2017-01-18 21:07:51', '1484766466.6956', 'users:10', 1, '/github/tilpark/admin/user/user.php?id=10', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(156, '2017-01-18 21:08:04', '1484766471.1356', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=10', 'image_upload', 'Bir resim dosyası yükledi.'),
+(157, '2017-01-18 21:08:04', '1484766471.134', 'users:10', 1, '/github/tilpark/admin/user/user.php?id=10', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(158, '2017-01-19 10:00:37', '1484812377.5051', 'users:9', 9, '/github/tilpark/admin/user/profile.php?', 'image_upload', 'Bir resim dosyası yükledi.'),
+(159, '2017-01-19 10:00:37', '1484812377.5039', 'users:9', 9, '/github/tilpark/admin/user/profile.php?', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(160, '2017-01-19 13:24:23', '1484825035.2384', 'items:3', 1, '/github/tilpark/admin/item/add.php', 'add_item', 'Ürün kartı eklendi.'),
+(161, '2017-01-19 13:25:19', '1484825103.0431', 'accounts:2', 1, '/github/tilpark/admin/account/add.php', 'add_account', 'Hesap kartı eklendi.'),
+(162, '2017-01-19 13:26:04', '1484825139.6692', 'forms:6', 1, '/github/tilpark/admin/form/detail.php?in', 'set_form', 'Form oluşturuldu.'),
+(163, '2017-01-19 13:26:05', '1484825139.6693', 'forms:6', 1, '/github/tilpark/admin/form/detail.php?in', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ŞARK KÖŞESİ MODEL 1</small>'),
+(164, '2017-01-19 13:26:44', '1484825185.9229', 'forms:7', 1, '/github/tilpark/admin/form/detail.php?out', 'set_form', 'Form oluşturuldu.'),
+(165, '2017-01-19 13:26:44', '1484825185.9231', 'forms:7', 1, '/github/tilpark/admin/form/detail.php?out', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ŞARK KÖŞESİ MODEL 1</small>'),
+(166, '2017-01-19 13:34:55', '1484825657.5656', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\"<b>esref@hotmail.com</b>\"'),
+(167, '2017-01-19 13:40:36', '1484825944.7045', 'items:4', 1, '/github/tilpark/admin/item/add.php', 'add_item', 'Ürün kartı eklendi.'),
+(168, '2017-01-19 13:40:53', '1484826045.2336', 'forms:9', 1, '/github/tilpark/admin/form/detail.php?in', 'set_form', 'Form oluşturuldu.'),
+(169, '2017-01-19 13:40:53', '1484826045.2339', 'forms:9', 1, '/github/tilpark/admin/form/detail.php?in', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ŞARK KÖŞESİ CEREN</small>'),
+(170, '2017-01-19 13:41:17', '1484826070.1514', 'forms:10', 1, '/github/tilpark/admin/form/detail.php?out', 'set_form', 'Form oluşturuldu.'),
+(171, '2017-01-19 13:41:17', '1484826070.1516', 'forms:10', 1, '/github/tilpark/admin/form/detail.php?out', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ŞARK KÖŞESİ CEREN</small>'),
+(172, '2017-01-19 13:44:19', '1484826245.2508', 'forms:11', 1, '/github/tilpark/admin/form/detail.php?out', 'set_form', 'Form oluşturuldu.'),
+(173, '2017-01-19 13:44:19', '1484826245.2512', 'forms:11', 1, '/github/tilpark/admin/form/detail.php?out', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ŞARK KÖŞESİ CEREN</small>'),
+(174, '2017-01-19 13:45:36', '1484826327.4928', 'extra:7', 1, '/github/tilpark/admin/system/form_status/form_status.php?taxonomy=til_fs_form', 'add_form_status', '\"<b>Form</b>\" için \"<b>Hazırlanıyor</b>\" form durumu eklendi.'),
+(175, '2017-01-19 13:45:42', '1484826336.353', 'extra:8', 1, '/github/tilpark/admin/system/form_status/form_status.php?taxonomy=til_fs_form', 'add_form_status', '\"<b>Form</b>\" için \"<b>Nakliyede</b>\" form durumu eklendi.'),
+(176, '2017-01-19 13:45:46', '1484826342.1282', 'extra:9', 1, '/github/tilpark/admin/system/form_status/form_status.php?taxonomy=til_fs_form', 'add_form_status', '\"<b>Form</b>\" için \"<b>Teslim Edildi</b>\" form durumu eklendi.'),
+(177, '2017-01-19 13:45:53', '1484826346.185', 'extra:10', 1, '/github/tilpark/admin/system/form_status/form_status.php?taxonomy=til_fs_form', 'add_form_status', '\"<b>Form</b>\" için \"<b>Teslim Edildi</b>\" form durumu eklendi.'),
+(178, '2017-01-19 13:46:12', '1484826368.9864', 'forms:11', 1, '/github/tilpark/admin/form/detail.php?id=11&status_id=2&update_status_id&uniquetime=1484826368.9864', 'change_form_status', 'Form durumu \"<b>Onaylanan Sipariş</b>\" olarak değiştirildi.'),
+(179, '2017-01-19 13:46:36', '1484826393.7822', 'forms:11', 1, '/github/tilpark/admin/form/detail.php?id=11&status_id=10&update_status_id&uniquetime=1484826393.7822', 'change_form_status', 'Form durumu \"<b>Teslim Edildi</b>\" olarak değiştirildi.'),
+(180, '2017-01-19 13:52:34', '1484826720.2064', 'forms:13', 1, '/github/tilpark/admin/form/detail.php?out', 'set_form', 'Form oluşturuldu.'),
+(181, '2017-01-19 13:52:34', '1484826720.2066', 'forms:13', 1, '/github/tilpark/admin/form/detail.php?out', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ŞARK KÖŞESİ CEREN</small>'),
+(182, '2017-01-20 10:37:05', '1484901425.3768', '', 1, '/github/tilpark/admin/user/message/list.php', 'mysqli_error', 'Unknown column \'inox_u_id\' in \'where clause\''),
+(183, '2017-01-20 10:37:08', '1484901428.0199', '', 11, '/github/tilpark/admin/user/message/list.php', 'mysqli_error', 'Unknown column \'inox_u_id\' in \'where clause\''),
+(184, '2017-01-20 10:37:09', '1484901429.1273', '', 11, '/github/tilpark/admin/user/message/list.php', 'mysqli_error', 'Unknown column \'inox_u_id\' in \'where clause\''),
+(185, '2017-01-20 11:10:06', '1484903406.6938', '', 1, '/github/tilpark/admin/user/message/list.php', 'mysqli_error', 'Unknown column \'update_date\' in \'order clause\''),
+(186, '2017-01-20 11:11:13', '1484903473.4418', '', 1, '/github/tilpark/admin/user/message/list.php', 'mysqli_error', 'Unknown column \'update_date\' in \'order clause\''),
+(187, '2017-01-22 12:52:02', '1485082296.2153', 'accounts:3', 1, '/github/tilpark/admin/form/detail.php?out', 'add_account', 'Hesap kartı eklendi.'),
+(188, '2017-01-22 12:52:02', '1485082296.2153', 'forms:14', 1, '/github/tilpark/admin/form/detail.php?out', 'set_form', 'Form oluşturuldu.'),
+(189, '2017-01-22 12:52:02', '1485082296.2185', 'forms:14', 1, '/github/tilpark/admin/form/detail.php?out', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">KIRMIZI AYAKKABI</small>'),
+(190, '2017-01-22 12:54:05', '1485082436.8192', 'forms:14', 1, '/github/tilpark/admin/form/detail.php?id=14&status_id=10&update_status_id&uniquetime=1485082436.8192', 'change_form_status', 'Form durumu \"<b>Teslim Edildi</b>\" olarak değiştirildi.'),
+(191, '2017-01-23 13:51:29', '1485172289.3292', '', 1, '/github/tilpark/admin/user/message/list.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'read_it ASC\' at line 1'),
+(192, '2017-01-23 13:51:30', '1485172290.6368', '', 1, '/github/tilpark/admin/user/message/list.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'read_it ASC\' at line 1'),
+(193, '2017-01-23 15:20:29', '1485177629.497', '', 1, '/github/tilpark/admin/user/message/list.php?trash', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'=\'1\' OR rec_trash_u_id=\'1\'\' at line 1'),
+(194, '2017-01-23 15:32:31', '1485178351.6306', '', 1, '/github/tilpark/admin/user/message/list.php?message_id=59&move=trash', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'INT (\'1\') AND sen_trash_u_id NOT IN (\'1\')\' at line 1'),
+(195, '2017-01-24 10:26:27', '1485246385.5921', 'messages:125', 1, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi.'),
+(196, '2017-01-24 10:30:27', '1485246626.3917', 'messages:126', 1, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi.\"<b>MUSTAFA</b>\"'),
+(197, '2017-01-24 10:31:01', '1485246660.5676', 'messages:127', 1, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi.\"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(198, '2017-01-24 10:31:19', '1485246678.9495', 'messages:128', 1, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(199, '2017-01-24 10:33:54', '1485246832.6713', 'messages:129', 1, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(200, '2017-01-24 10:33:57', '1485246836.8691', 'messages:130', 1, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(201, '2017-01-24 10:41:42', '1485247283.9549', 'messages:131', 1, '/github/tilpark/admin/user/message/detail.php?id=130', 'add_message', 'Yeni bir mesaj gönderildi. \"<b> </b>\"'),
+(202, '2017-01-24 10:44:35', '1485247471.2584', 'messages:132', 1, '/github/tilpark/admin/user/message/detail.php?id=130', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(203, '2017-01-24 10:45:35', '1485247531.4932', 'messages:133', 11, '/github/tilpark/admin/user/message/detail.php?id=130', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(204, '2017-01-24 10:45:49', '1485247543.3055', 'messages:134', 1, '/github/tilpark/admin/user/message/detail.php?id=130', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(205, '2017-01-24 10:45:56', '1485247537.9875', 'messages:135', 11, '/github/tilpark/admin/user/message/detail.php?id=130', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(206, '2017-01-24 10:53:03', '1485247959.9665', 'items:5', 1, '/github/tilpark/admin/item/add.php', 'add_item', 'Ürün kartı eklendi.'),
+(207, '2017-01-24 10:53:10', '1485247987.7405', 'forms:16', 1, '/github/tilpark/admin/form/detail.php?out', 'set_form', 'Form oluşturuldu.'),
+(208, '2017-01-24 10:53:10', '1485247987.7407', 'forms:16', 1, '/github/tilpark/admin/form/detail.php?out', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ROTHMANS OF LONDON - MAVİ PAKET</small>'),
+(209, '2017-01-24 10:53:15', '1485247990.6936', 'forms:16', 1, '/github/tilpark/admin/form/detail.php?id=16', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ROTHMANS OF LONDON - MAVİ PAKET</small>'),
+(210, '2017-01-24 10:53:16', '1485247995.9', 'forms:16', 1, '/github/tilpark/admin/form/detail.php?id=16', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ROTHMANS OF LONDON - MAVİ PAKET</small>'),
+(211, '2017-01-24 10:53:17', '1485247996.6532', 'forms:16', 1, '/github/tilpark/admin/form/detail.php?id=16', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ROTHMANS OF LONDON - MAVİ PAKET</small>'),
+(212, '2017-01-24 10:53:17', '1485247997.2914', 'forms:16', 1, '/github/tilpark/admin/form/detail.php?id=16', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ROTHMANS OF LONDON - MAVİ PAKET</small>'),
+(213, '2017-01-24 10:53:18', '1485247997.9391', 'forms:16', 1, '/github/tilpark/admin/form/detail.php?id=16', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ROTHMANS OF LONDON - MAVİ PAKET</small>'),
+(214, '2017-01-24 10:53:25', '1485247998.4873', 'forms:16', 1, '/github/tilpark/admin/form/detail.php?id=16', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ROTHMANS OF LONDON - MAVİ PAKET</small>'),
+(215, '2017-01-24 10:53:35', '1485248005.0251', 'forms:16', 1, '/github/tilpark/admin/form/detail.php?id=16', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ROTHMANS OF LONDON - MAVİ PAKET</small>'),
+(216, '2017-01-24 10:53:38', '1485248015.0339', 'forms:16', 1, '/github/tilpark/admin/form/detail.php?id=16', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ROTHMANS OF LONDON - MAVİ PAKET</small>'),
+(217, '2017-01-24 10:53:39', '1485248018.0815', 'forms:16', 1, '/github/tilpark/admin/form/detail.php?id=16', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ROTHMANS OF LONDON - MAVİ PAKET</small>'),
+(218, '2017-01-24 14:03:25', '1485259399.7843', 'forms:17', 1, '/github/tilpark/admin/form/detail.php?out', 'set_form', 'Form oluşturuldu.'),
+(219, '2017-01-24 14:03:25', '1485259399.7848', 'forms:17', 1, '/github/tilpark/admin/form/detail.php?out', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ROTHMANS OF LONDON - MAVİ PAKET</small>'),
+(220, '2017-01-24 14:03:29', '1485259405.94', 'forms:17', 1, '/github/tilpark/admin/form/detail.php?id=17', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">ROTHMANS OF LONDON - MAVİ PAKET</small>'),
+(221, '2017-01-24 14:20:27', '1485260418.5758', 'messages:136', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(222, '2017-01-24 14:21:08', '1485260452.1891', 'messages:137', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(223, '2017-01-24 18:08:54', '1485274134.1221', '', 1, '/github/question/admin/question/cat_add.php?title=sdfsdf&add_cat=', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\'title\', top_id) VALUES (\'sdfsdf\', \'0\')\' at line 1'),
+(224, '2017-01-24 18:09:06', '1485274146.245', '', 1, '/github/question/admin/question/cat_add.php?title=sdfsdf&add_cat=', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\'title\', top_id) VALUES (\'sdfsdf\', \'0\')\' at line 1'),
+(225, '2017-01-24 18:14:52', '1485274492.0868', '', 1, '/github/question/admin/question/cat_add.php', 'mysqli_error', 'Unknown column \'descriptionn\' in \'field list\''),
+(226, '2017-01-24 18:19:54', '1485274794.8795', 'question_cats:8', 1, '/github/question/admin/question/cat_add.php', 'add_question_cat', 'Kategori eklendi.\"<b>sdfsdf</b>\"'),
+(227, '2017-01-24 18:27:24', '1485275244.5874', 'question_cats:9', 1, '/github/question/admin/question/cat_add.php', 'add_question_cat', 'Kategori eklendi.\"<b>Matematik</b>\"'),
+(228, '2017-01-24 18:27:57', '1485275277.4351', 'question_cats:10', 1, '/github/question/admin/question/cat_add.php', 'add_question_cat', 'Kategori eklendi.\"<b>Edebiyat</b>\"'),
+(229, '2017-01-24 18:28:02', '1485275282.6863', 'question_cats:11', 1, '/github/question/admin/question/cat_add.php', 'add_question_cat', 'Kategori eklendi.\"<b>Matematik</b>\"'),
+(230, '2017-01-24 18:28:10', '1485275290.8473', 'question_cats:12', 1, '/github/question/admin/question/cat_add.php', 'add_question_cat', 'Kategori eklendi.\"<b>Matematik</b>\"'),
+(231, '2017-01-24 18:28:41', '1485275321.1887', 'question_cats:13', 1, '/github/question/admin/question/cat_add.php', 'add_question_cat', 'Kategori eklendi.\"<b>Matematik</b>\"'),
+(232, '2017-01-24 18:28:42', '1485275322.7943', 'question_cats:14', 1, '/github/question/admin/question/cat_add.php', 'add_question_cat', 'Kategori eklendi.\"<b>Matematik</b>\"'),
+(233, '2017-01-24 18:29:07', '1485275347.8137', 'question_cats:15', 1, '/github/question/admin/question/cat_add.php', 'add_question_cat', 'Kategori eklendi.\"<b>Matematik</b>\"'),
+(234, '2017-01-24 18:29:19', '1485275347.8173', 'question_cats:16', 1, '/github/question/admin/question/cat_add.php', 'add_question_cat', 'Kategori eklendi.\"<b>Fen Belgesi</b>\"'),
+(235, '2017-01-24 18:36:36', '1485275791.9875', 'question_cats:17', 1, '/github/question/admin/question/cat_add.php', 'add_question_cat', 'Kategori eklendi.\"<b>Türkçe</b>\"'),
+(236, '2017-01-24 18:36:41', '1485275796.3036', 'question_cats:18', 1, '/github/question/admin/question/cat_add.php', 'add_question_cat', 'Kategori eklendi.\"<b>Matematik</b>\"'),
+(237, '2017-01-24 18:48:29', '1485276479.2991', 'question_cats:19', 1, '/github/question/admin/question/cat_add.php?top_id=17', 'add_question_cat', 'Kategori eklendi.\"<b>İslamiyet Öncesi Türk Edebiyatı</b>\"'),
+(238, '2017-01-24 18:48:54', '1485276509.7471', 'question_cats:20', 1, '/github/question/admin/question/cat_add.php?top_id=17', 'add_question_cat', 'Kategori eklendi.\"<b>Geçiş Dönemi Türk Edebiyatı</b>\"'),
+(239, '2017-01-24 18:52:45', '1485276543.0634', 'question_cats:21', 1, '/github/question/admin/question/cat_add.php?top_id=17', 'add_question_cat', 'Kategori eklendi.\"<b>Halk Edebiyatı</b>\"'),
+(240, '2017-01-24 18:56:49', '1485276983.6403', 'question_cats:22', 1, '/github/question/admin/question/cat_add.php?top_id=21', 'add_question_cat', 'Kategori eklendi.\"<b>Anonim Halk Edebiyatı</b>\"'),
+(241, '2017-01-24 18:57:13', '1485277009.2891', 'question_cats:23', 1, '/github/question/admin/question/cat_add.php?top_id=21', 'add_question_cat', 'Kategori eklendi.\"<b>Aşık Edebiyatı</b>\"'),
+(242, '2017-01-24 19:01:30', '1485277264.1412', 'question_cats:24', 1, '/github/question/admin/question/cat_add.php?top_id=23', 'add_question_cat', 'Kategori eklendi.\"<b>Şairler</b>\"'),
+(243, '2017-01-24 19:01:36', '1485277290.8613', 'question_cats:25', 1, '/github/question/admin/question/cat_add.php?top_id=23', 'add_question_cat', 'Kategori eklendi.\"<b>Nazım Biçimleri</b>\"'),
+(244, '2017-01-24 19:01:40', '1485277296.8166', 'question_cats:26', 1, '/github/question/admin/question/cat_add.php?top_id=23', 'add_question_cat', 'Kategori eklendi.\"<b>Karma Sorular</b>\"'),
+(245, '2017-01-24 19:55:02', '1485280498.6329', 'question_cats:', 1, '/github/question/admin/question/cat_add.php?top_id=21', 'update_question_cat', 'Kategori güncellendi.\"<b>Halk Edebiyatı</b>\"-\"<b>Halk Edebiyatıee</b>\"'),
+(246, '2017-01-24 19:56:54', '1485280599.7499', 'question_cats:', 1, '/github/question/admin/question/cat_add.php?top_id=21', 'update_question_cat', 'Kategori güncellendi.\"<b>0</b>\"-\"<b>0sdfsdf</b>\"'),
+(247, '2017-01-24 19:57:09', '1485280626.9661', 'question_cats:', 1, '/github/question/admin/question/cat_add.php?top_id=21', 'update_question_cat', 'Kategori güncellendi.\"<b>0sdfsdf</b>\"-\"<b>0sdfsdf</b>\"'),
+(248, '2017-01-24 19:57:34', '1485280638.5856', 'question_cats:21', 1, '/github/question/admin/question/cat_add.php?top_id=21', 'update_question_cat', 'Kategori güncellendi.\"<b>0sdfsdf</b>\"-\"<b>Halk Edebiyatı</b>\"'),
+(249, '2017-01-24 19:57:40', '1485280657.7377', 'question_cats:23', 1, '/github/question/admin/question/cat_add.php?top_id=23', 'update_question_cat', 'Kategori güncellendi.\"<b>Aşık Edebiyatı</b>\"-\"<b>Aşık Edebiyatıddd</b>\"'),
+(250, '2017-01-24 19:57:45', '1485280660.8239', 'question_cats:23', 1, '/github/question/admin/question/cat_add.php?top_id=23', 'update_question_cat', 'Kategori güncellendi.\"<b>Aşık Edebiyatıddd</b>\"-\"<b>Aşık Edebiyatı</b>\"'),
+(251, '2017-01-24 20:23:42', '1485282214.6503', 'question_cats:27', 1, '/github/question/admin/question/cat_add.php', 'add_question_cat', 'Kategori eklendi.\"<b>Sosyal Bilimler</b>\"'),
+(252, '2017-01-24 20:23:52', '1485282224.1969', 'question_cats:27', 1, '/github/question/admin/question/cat_add.php?top_id=27', 'update_question_cat', 'Kategori güncellendi.\"<b>Sosyal Bilimler</b>\"-\"<b>Hayat Bilgisi</b>\"'),
+(253, '2017-01-24 20:36:37', '1485282375.3241', '', 1, '/github/question/admin/question/questions.php?cat_id=23', 'mysqli_error', 'Table \'tilpark.til_question\' doesn\'t exist'),
+(254, '2017-01-24 20:37:02', '1485283003.8391', '', 1, '/github/question/admin/question/questions.php?cat_id=23', 'mysqli_error', 'Unknown column \'descripiton\' in \'field list\''),
+(255, '2017-01-24 20:39:17', '1485283072.0894', 'questions:1', 1, '/github/question/admin/question/questions.php?cat_id=23', 'add_question', 'Soru eklendi.'),
+(256, '2017-01-24 20:40:24', '1485283219.2051', 'questions:2', 1, '/github/question/admin/question/questions.php?cat_id=23', 'add_question', 'Soru eklendi.'),
+(257, '2017-01-24 20:41:06', '1485283224.0301', '', 1, '/github/question/admin/question/questions.php?cat_id=23', 'mysqli_error', 'Unknown column \'unser_id\' in \'field list\''),
+(258, '2017-01-24 20:41:27', '1485283274.0436', 'questions:3', 1, '/github/question/admin/question/questions.php?cat_id=23', 'add_question', 'Soru eklendi.'),
+(259, '2017-01-24 20:52:55', '1485283749.6915', 'questions:4', 1, '/github/question/admin/question/questions.php?cat_id=23', 'add_question', 'Soru eklendi.'),
+(260, '2017-01-24 21:27:18', '1485286038.647', '', 1, '/github/question/admin/question/questions.php?cat_id=23&edit_question=3', 'mysqli_error', 'Table \'tilpark.til_question\' doesn\'t exist'),
+(261, '2017-01-24 21:27:23', '1485286043.0861', '', 1, '/github/question/admin/question/questions.php?cat_id=23&edit_question=3', 'mysqli_error', 'Table \'tilpark.til_question\' doesn\'t exist'),
+(262, '2017-01-24 21:30:26', '1485286216.7792', 'questions:5', 1, '/github/question/admin/question/questions.php?cat_id=23', 'add_question', 'Soru eklendi.'),
+(263, '2017-01-24 21:32:57', '1485286370.7264', 'questions:3', 1, '/github/question/admin/question/questions.php?cat_id=23&edit_question=3', 'update_question', 'Soru güncellendi.'),
+(264, '2017-01-24 21:33:53', '1485286428.5426', 'questions:3', 1, '/github/question/admin/question/questions.php?cat_id=23&edit_question=3', 'update_question', 'Soru güncellendi.'),
+(265, '2017-01-24 21:36:25', '1485286576.9617', 'questions:3', 1, '/github/question/admin/question/questions.php?cat_id=23&edit_question=3', 'update_question', 'Soru güncellendi.'),
+(266, '2017-01-24 21:37:57', '1485286625.5825', 'questions:6', 1, '/github/question/admin/question/questions.php?cat_id=23', 'add_question', 'Soru eklendi.'),
+(267, '2017-01-24 21:38:33', '1485286703.6385', 'questions:6', 1, '/github/question/admin/question/questions.php?cat_id=23&edit_question=6', 'update_question', 'Soru güncellendi.'),
+(268, '2017-01-25 09:59:44', '1485331184.2845', '', 0, '/github/question/online_sinav.php?cat_id=23', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'RAND() LIMIT 1\' at line 1'),
+(269, '2017-01-25 10:26:54', '1485332814.5173', '', 0, '/github/question/online_sinav.php?cat_id=23', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'id NOT IN (\'0\', \'4\') ORDER BY RAND() LIMIT 1\' at line 1'),
+(270, '2017-01-25 10:29:07', '1485332559.1954', 'questions:7', 1, '/github/question/admin/question/questions.php?cat_id=23', 'add_question', 'Soru eklendi.'),
+(271, '2017-01-25 10:30:08', '1485332947.548', 'questions:8', 1, '/github/question/admin/question/questions.php?cat_id=23', 'add_question', 'Soru eklendi.'),
+(272, '2017-01-25 10:31:32', '1485333008.6457', 'questions:9', 1, '/github/question/admin/question/questions.php?cat_id=23', 'add_question', 'Soru eklendi.'),
+(273, '2017-01-25 12:07:52', '1485338843.4731', 'questions:10', 1, '/github/question/admin/question/questions.php?cat_id=18', 'add_question', 'Soru eklendi.'),
+(274, '2017-01-25 14:59:41', '1485349175.5976', 'messages:138', 1, '/github/tilpark/admin/user/message/detail.php?id=137', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(275, '2017-01-25 15:43:04', '1485351780.0653', 'messages:139', 11, '/github/tilpark/admin/user/message/detail.php?id=129', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(276, '2017-01-25 15:49:09', '1485352124.4956', 'messages:140', 11, '/github/tilpark/admin/user/message/detail.php?id=117', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(277, '2017-01-25 16:26:48', '1485354386.3747', 'forms:18', 1, '/github/tilpark/admin/form/detail.php?out', 'set_form', 'Form oluşturuldu.'),
+(278, '2017-01-25 16:26:48', '1485354386.3767', 'forms:18', 1, '/github/tilpark/admin/form/detail.php?out', 'add_form_item', 'Ürün hareketi eklendi. <small class=\"text-muted\">KIRMIZI AYAKKABI</small>'),
+(279, '2017-01-25 17:04:30', '1485356660.9321', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=11', 'image_upload', 'Bir resim dosyası yükledi.'),
+(280, '2017-01-25 17:04:30', '1485356660.9307', 'users:11', 1, '/github/tilpark/admin/user/user.php?id=11', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(281, '2017-01-25 17:25:21', '1485357913.4431', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=11', 'image_upload', 'Bir resim dosyası yükledi.'),
+(282, '2017-01-25 17:25:21', '1485357913.4418', 'users:11', 1, '/github/tilpark/admin/user/user.php?id=11', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(283, '2017-01-25 17:25:50', '1485357943.9057', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=11', 'image_upload', 'Bir resim dosyası yükledi.'),
+(284, '2017-01-25 17:25:50', '1485357943.9044', 'users:11', 1, '/github/tilpark/admin/user/user.php?id=11', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(285, '2017-01-25 17:27:31', '1485358043.2558', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=11', 'image_upload', 'Bir resim dosyası yükledi.'),
+(286, '2017-01-25 17:27:31', '1485358043.2545', 'users:11', 1, '/github/tilpark/admin/user/user.php?id=11', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(287, '2017-01-25 17:27:46', '1485358066.8779', 'users:11', 1, '/github/tilpark/admin/user/user.php?id=11&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.');
+INSERT INTO `til_logs` (`id`, `date`, `uniquetime`, `table_id`, `user_id`, `log_url`, `log_key`, `log_text`) VALUES
+(288, '2017-01-25 17:32:38', '1485358340.6208', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=11', 'image_upload', 'Bir resim dosyası yükledi.'),
+(289, '2017-01-25 17:32:38', '1485358340.6194', 'users:11', 1, '/github/tilpark/admin/user/user.php?id=11', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(290, '2017-01-25 17:32:53', '1485358373.8602', 'users:11', 1, '/github/tilpark/admin/user/user.php?id=11&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(291, '2017-01-25 17:45:34', '1485359131.6167', 'messages:141', 1, '/github/tilpark/admin/user/message/add.php?rec_u_id=11', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(292, '2017-01-25 18:08:26', '1485360485.8195', 'messages:142', 1, '/github/tilpark/admin/user/message/add.php?form_id=18', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>KRAL MUSTAFA DENEME 123</b>\"'),
+(293, '2017-01-25 18:08:54', '1485360526.2959', 'messages:143', 1, '/github/tilpark/admin/user/message/add.php?form_id=18', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(294, '2017-01-25 18:10:15', '1485360593.8919', 'messages:144', 1, '/github/tilpark/admin/user/message/add.php?form_id=18', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(295, '2017-01-25 18:19:03', '1485361112.1645', 'messages:145', 1, '/github/tilpark/admin/user/message/add.php?form_id=18', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(296, '2017-01-25 18:19:13', '1485361147.8664', 'messages:146', 1, '/github/tilpark/admin/user/message/add.php?form_id=18', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(297, '2017-01-26 09:23:52', '1485361778.9035', 'messages:147', 1, '/github/tilpark/admin/user/message/add.php?form_id=18', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(298, '2017-01-26 09:24:34', '1485415468.1065', 'messages:148', 1, '/github/tilpark/admin/user/message/add.php?form_id=18', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(299, '2017-01-26 09:24:59', '1485415490.7866', 'messages:149', 1, '/github/tilpark/admin/user/message/add.php?form_id=18', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(300, '2017-01-26 09:40:30', '1485416416.785', 'questions:11', 1, '/github/question/admin/question/questions.php?cat_id=18', 'add_question', 'Soru eklendi.'),
+(301, '2017-01-26 09:44:21', '1485416595.976', 'questions:12', 1, '/github/question/admin/question/questions.php?cat_id=18', 'add_question', 'Soru eklendi.'),
+(302, '2017-01-26 09:45:26', '1485416719.4928', 'questions:13', 1, '/github/question/admin/question/questions.php?cat_id=18', 'add_question', 'Soru eklendi.'),
+(303, '2017-01-26 09:47:10', '1485416817.8667', 'questions:12', 1, '/github/question/admin/question/questions.php?cat_id=18&edit_question=12', 'update_question', 'Soru güncellendi.'),
+(304, '2017-01-26 09:49:27', '1485416952.9687', 'questions:12', 1, '/github/question/admin/question/questions.php?cat_id=18&edit_question=12', 'update_question', 'Soru güncellendi.'),
+(305, '2017-01-26 09:49:32', '1485416967.7163', 'questions:12', 1, '/github/question/admin/question/questions.php?cat_id=18&edit_question=12', 'update_question', 'Soru güncellendi.'),
+(306, '2017-01-26 09:49:51', '1485416972.4251', 'questions:14', 1, '/github/question/admin/question/questions.php?cat_id=18', 'add_question', 'Soru eklendi.'),
+(307, '2017-01-26 11:48:16', '1485423987.1428', 'messages:150', 1, '/github/tilpark/admin/user/message/add.php?form_id=18', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(308, '2017-01-26 11:48:47', '1485424114.5166', 'messages:151', 1, '/github/tilpark/admin/user/message/add.php?form_id=18', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(309, '2017-01-26 11:50:18', '1485424212.5878', 'messages:152', 1, '/github/tilpark/admin/user/message/add.php?form_id=18', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(310, '2017-01-26 11:50:40', '1485424233.2675', 'messages:153', 1, '/github/tilpark/admin/user/message/add.php?form_id=18', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(311, '2017-01-26 11:51:47', '1485424296.2526', 'messages:154', 11, '/github/tilpark/admin/user/message/detail.php?id=153', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(312, '2017-01-26 12:04:51', '1485425086.9863', 'messages:155', 1, '/github/tilpark/admin/user/message/add.php?form_id=18', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(313, '2017-01-26 12:45:36', '1485427467.6971', 'messages:156', 1, '/github/tilpark/admin/user/message/add.php?item_id=2', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(314, '2017-01-26 12:58:54', '1485428324.3718', 'messages:157', 1, '/github/tilpark/admin/user/message/add.php?account_id=1', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(315, '2017-01-26 13:28:53', '1485430127.2574', 'messages:158', 11, '/github/tilpark/admin/user/message/detail.php?id=157', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(316, '2017-01-26 16:45:49', '1485441930.097', 'messages:159', 1, '/github/tilpark/admin/user/message/add.php?attachment&payment_id=2', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(317, '2017-01-27 11:00:26', '1485507606.4861', 'messages:160', 1, '/github/tilpark/admin/user/message/add.php?attachment&form_id=4', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(318, '2017-01-27 11:00:36', '1485507632.3941', 'messages:161', 1, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(319, '2017-01-27 11:11:19', '1485508275.4122', 'users:11', 11, '/github/tilpark/admin/user/profile.php?', 'image_upload', 'Bir resim dosyası yükledi.'),
+(320, '2017-01-27 11:11:19', '1485508275.411', 'users:11', 11, '/github/tilpark/admin/user/profile.php?', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(321, '2017-01-27 11:12:21', '1485508341.5775', 'users:11', 11, '/github/tilpark/admin/user/profile.php?id=11&delete_avatar', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(322, '2017-01-27 11:12:29', '1485508341.5784', 'users:11', 11, '/github/tilpark/admin/user/profile.php?', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(323, '2017-01-28 14:37:16', '1485595736.6557', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'Unknown column \'date_start\' in \'field list\''),
+(324, '2017-01-28 14:56:03', '1485608143.0481', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'Unknown column \'choice\' in \'field list\''),
+(325, '2017-01-28 15:25:12', '1485608385.3637', 'messages:162', 1, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(326, '2017-01-28 15:30:39', '1485610231.7954', 'messages:163', 1, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(327, '2017-01-28 15:31:54', '1485610239.5278', 'messages:164', 1, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(328, '2017-01-28 15:32:33', '1485610314.535', 'messages:165', 1, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(329, '2017-01-30 10:59:53', '1485766723.5142', 'messages:166', 1, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \"<b>KRAL MUSTAFA DENEME 123</b>\"'),
+(330, '2017-01-30 11:12:24', '1485767525.8159', 'messages:167', 11, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(331, '2017-01-30 13:16:28', '1485774988.3734', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'=\'\' AND type=\'task\' AND read_it=\'0\'\' at line 1'),
+(332, '2017-01-30 13:20:59', '1485775250.7569', 'messages:168', 11, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(333, '2017-01-30 14:58:58', '1485781133.3437', 'messages:169', 11, '/github/tilpark/admin/user/task/detail.php?id=165', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(334, '2017-01-30 16:11:20', '1485785246.8804', 'messages:170', 11, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(335, '2017-01-30 16:14:06', '1485785485.7823', '', 1, '/github/tilpark/admin/user/task/detail.php?id=170', 'mysqli_error', 'Table \'tilpark.til_message\' doesn\'t exist'),
+(336, '2017-01-30 16:15:30', '1485785480.9415', 'messages:171', 11, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(337, '2017-01-30 16:24:14', '1485785730.7887', 'messages:172', 11, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(338, '2017-01-30 23:00:47', '1485809996.2222', 'messages:173', 1, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(339, '2017-01-31 12:52:13', '1485859868.5142', 'messages:174', 1, '/github/tilpark/admin/user/task/detail.php?id=173', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(340, '2017-01-31 12:52:28', '1485811123.7484', 'messages:175', 11, '/github/tilpark/admin/user/task/detail.php?id=173', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>MUSTAFA TANRIVERDISDF</b>\"'),
+(341, '2017-01-31 12:55:15', '1485859958.9806', 'messages:176', 1, '/github/tilpark/admin/user/task/detail.php?id=173', 'add_message', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(342, '2017-01-31 14:04:47', '1485864272.9279', 'messages:173', 1, '/github/tilpark/admin/user/task/detail.php?id=173', 'add_task_message', 'Görev için cevap mesajı eklendi.'),
+(343, '2017-01-31 14:04:55', '1485864287.0109', 'messages:173', 1, '/github/tilpark/admin/user/task/detail.php?id=173', 'add_task_message', 'Görev için cevap mesajı eklendi.'),
+(344, '2017-01-31 14:09:41', '1485864295.7571', 'messages:173', 1, '/github/tilpark/admin/user/task/detail.php?id=173', 'add_task_message', 'Görev için cevap mesajı eklendi.'),
+(345, '2017-01-31 14:10:10', '1485864605.2972', 'messages:173', 1, '/github/tilpark/admin/user/task/detail.php?id=173', 'add_task_message', 'Görev için cevap mesajı eklendi.'),
+(346, '2017-01-31 14:11:43', '1485864610.7618', 'messages:173', 1, '/github/tilpark/admin/user/task/detail.php?id=173', 'add_task_message', 'Görev için cevap mesajı eklendi.'),
+(347, '2017-01-31 14:12:25', '1485864703.0802', 'messages:173', 1, '/github/tilpark/admin/user/task/detail.php?id=173', 'add_task_message', 'Görev için cevap mesajı eklendi.'),
+(348, '2017-01-31 14:12:58', '1485864745.7864', 'messages:173', 1, '/github/tilpark/admin/user/task/detail.php?id=173', 'add_task_message', 'Görev için cevap mesajı eklendi.'),
+(349, '2017-01-31 14:31:15', '1485865043.313', 'messages:173', 1, '/github/tilpark/admin/user/task/detail.php?id=173', 'add_task_message', 'Görev için cevap mesajı eklendi.'),
+(350, '2017-01-31 14:31:49', '1485865875.3963', 'messages:173', 1, '/github/tilpark/admin/user/task/detail.php?id=173', 'add_task_message', 'Görev için cevap mesajı gönderdi. \"<b>173</b>\"'),
+(351, '2017-01-31 14:32:10', '1485865909.2742', 'messages:173', 1, '/github/tilpark/admin/user/task/detail.php?id=173', 'add_task_message', 'Görev için cevap mesajı gönderdi. \"<b>ID: 173</b>\"'),
+(352, '2017-01-31 14:33:33', '1485866006.7408', 'messages:173', 11, '/github/tilpark/admin/user/task/detail.php?id=173', 'add_task_message', 'Görev için cevap mesajı gönderdi. \"<b>ID: 173</b>\"'),
+(353, '2017-01-31 14:51:51', '1485867084.2169', 'messages:188', 1, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \"<b>EŞREF AKBAŞ</b>\"'),
+(354, '2017-01-31 14:59:06', '1485867546.8633', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(355, '2017-01-31 15:00:00', '1485867600.1689', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id NOT IN (\\\'1\\\') ORDER \' at line 1'),
+(356, '2017-01-31 15:00:01', '1485867601.4422', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id NOT IN (\\\'1\\\') ORDER \' at line 1'),
+(357, '2017-01-31 15:00:21', '1485867621.6311', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(358, '2017-01-31 15:03:37', '1485867817.135', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(359, '2017-01-31 15:03:38', '1485867818.2496', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(360, '2017-01-31 15:03:54', '1485867834.3814', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(361, '2017-01-31 15:04:34', '1485867874.8468', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(362, '2017-01-31 15:04:45', '1485867885.7575', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(363, '2017-01-31 15:05:23', '1485867923.9835', '', 1, '/github/tilpark/admin/user/profile.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(364, '2017-01-31 15:05:25', '1485867925.4359', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(365, '2017-01-31 15:05:40', '1485867940.9566', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(366, '2017-01-31 15:06:30', '1485867990.5532', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(367, '2017-01-31 15:06:31', '1485867991.7383', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(368, '2017-01-31 15:06:49', '1485868009.4894', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(369, '2017-01-31 15:06:53', '1485868013.2478', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(370, '2017-01-31 15:08:03', '1485868083.6382', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(371, '2017-01-31 15:08:16', '1485868096.0244', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(372, '2017-01-31 15:08:21', '1485868101.7501', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(373, '2017-01-31 15:08:23', '1485868103.315', '', 1, '/github/tilpark/admin/user/task/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\' AND rec_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') AND sen_trash_u_id NOT IN (\\\\\\\'1\\\\\\\') ORDER \\\' at line 1'),
+(374, '2017-01-31 15:25:26', '1485869111.5815', 'messages:189', 1, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(375, '2017-01-31 15:56:43', '1485871003.0593', '', 11, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=open', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(376, '2017-01-31 15:56:43', '1485871003.0618', '', 11, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=open', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(377, '2017-01-31 15:56:45', '1485871005.6688', '', 11, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=completed', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(378, '2017-01-31 15:56:45', '1485871005.6705', '', 11, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=completed', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(379, '2017-01-31 15:58:54', '1485871134.4623', '', 11, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=open', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(380, '2017-01-31 15:58:54', '1485871134.4645', '', 11, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=open', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(381, '2017-01-31 15:58:56', '1485871136.3441', '', 11, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=completed', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(382, '2017-01-31 15:58:56', '1485871136.346', '', 11, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=completed', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(383, '2017-01-31 16:00:24', '1485871224.118', '', 11, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=open', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(384, '2017-01-31 16:00:24', '1485871224.1217', '', 11, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=open', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(385, '2017-01-31 16:00:26', '1485871226.7687', '', 11, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=completed', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(386, '2017-01-31 16:00:26', '1485871226.7721', '', 11, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=completed', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(387, '2017-01-31 16:00:28', '1485871228.0634', '', 11, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=open', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(388, '2017-01-31 16:00:28', '1485871228.0653', '', 11, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=open', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(389, '2017-01-31 16:00:57', '1485871257.8707', '', 11, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=open', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(390, '2017-01-31 16:00:57', '1485871257.8722', '', 11, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=open', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(391, '2017-01-31 16:00:59', '1485871259.7003', '', 11, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=open', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(392, '2017-01-31 16:00:59', '1485871259.7023', '', 11, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=open', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(393, '2017-01-31 16:01:00', '1485871260.8066', '', 11, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=completed', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(394, '2017-01-31 16:01:00', '1485871260.8085', '', 11, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=completed', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(395, '2017-01-31 16:01:13', '1485871273.3503', '', 1, '/github/tilpark/admin/user/task/list.php?box=outbox', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(396, '2017-01-31 16:01:13', '1485871273.3527', '', 1, '/github/tilpark/admin/user/task/list.php?box=outbox', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(397, '2017-01-31 16:01:15', '1485871275.991', '', 1, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=open', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(398, '2017-01-31 16:01:15', '1485871275.9935', '', 1, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=open', 'mysqli_error', 'Unknown column \\\'send_u_id\\\' in \\\'where clause\\\''),
+(399, '2017-01-31 16:03:34', '1485871404.3564', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(400, '2017-01-31 16:12:22', '1485871417.8131', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(401, '2017-01-31 16:12:54', '1485871942.0135', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(402, '2017-01-31 16:13:42', '1485871974.4924', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(403, '2017-01-31 16:14:08', '1485872022.4893', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(404, '2017-01-31 16:15:15', '1485872048.7661', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(405, '2017-01-31 16:15:35', '1485872115.7616', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(406, '2017-01-31 16:16:02', '1485872135.155', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(407, '2017-01-31 16:23:47', '1485872162.9869', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(408, '2017-01-31 16:23:59', '1485872627.5681', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(409, '2017-01-31 16:27:12', '1485872639.9579', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(410, '2017-01-31 16:33:07', '1485873149.615', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(411, '2017-01-31 16:33:35', '1485873213.1487', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(412, '2017-01-31 16:35:01', '1485873215.2814', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(413, '2017-01-31 16:35:08', '1485873301.9774', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(414, '2017-01-31 16:36:54', '1485873308.2359', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(415, '2017-01-31 16:40:02', '1485873509.9635', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(416, '2017-01-31 16:40:26', '1485873602.9941', 'messages:189', 1, '/github/tilpark/admin/user/task/detail.php?id=189', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 189</b>\\\"'),
+(417, '2017-01-31 16:42:32', '1485873717.2555', 'messages:208', 11, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(418, '2017-01-31 16:43:30', '1485873805.1039', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(419, '2017-01-31 16:45:14', '1485873909.0221', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(420, '2017-01-31 16:45:14', '1485873909.0221', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(421, '2017-01-31 16:47:05', '1485874019.2666', 'messages:208', 11, '/github/tilpark/admin/user/task/detail.php?id=208', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(422, '2017-02-02 10:41:04', '1486024862.1966', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(423, '2017-02-02 10:43:05', '1486024980.3435', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(424, '2017-02-02 10:43:08', '1486024985.5922', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(425, '2017-02-02 10:45:40', '1486025135.5981', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(426, '2017-02-02 10:45:40', '1486025135.5981', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(427, '2017-02-02 10:45:40', '1486025135.5981', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(428, '2017-02-02 10:49:11', '1486025346.818', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(429, '2017-02-02 10:49:15', '1486025351.4872', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(430, '2017-02-02 10:54:34', '1486025561.141', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=open', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(431, '2017-02-02 10:54:46', '1486025680.8657', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=completed', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(432, '2017-02-02 10:54:50', '1486025686.0767', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=completed', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(433, '2017-02-02 10:56:48', '1486025806.008', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=completed', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(434, '2017-02-02 11:18:32', '1486027112.7153', '', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=1', 'mysqli_error', 'Unknown column \\\'add_alert\\\' in \\\'field list\\\''),
+(435, '2017-02-02 11:19:00', '1486027140.5307', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(436, '2017-02-02 11:20:04', '1486027204.1807', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(437, '2017-02-02 11:20:09', '1486027209.2899', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(438, '2017-02-02 11:20:10', '1486027210.5782', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(439, '2017-02-02 11:20:16', '1486027216.0263', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(440, '2017-02-02 11:20:16', '1486027216.9939', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(441, '2017-02-02 11:20:22', '1486027222.0136', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(442, '2017-02-02 11:20:23', '1486027223.1571', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(443, '2017-02-02 11:20:23', '1486027223.9926', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(444, '2017-02-02 11:20:41', '1486027241.7347', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(445, '2017-02-02 11:20:47', '1486027247.4585', 'messages:208', 1, '/github/tilpark/admin/user/task/detail.php?id=208&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 208</b>\\\"'),
+(446, '2017-02-02 11:25:36', '1486027492.2474', 'messages:236', 11, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(447, '2017-02-02 12:24:57', '1486031004.0069', 'messages:236', 11, '/github/tilpark/admin/user/task/detail.php?id=236&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(448, '2017-02-02 12:24:57', '1486031004.0069', 'messages:236', 11, '/github/tilpark/admin/user/task/detail.php?id=236&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(449, '2017-02-02 12:24:57', '1486031004.0069', 'messages:236', 11, '/github/tilpark/admin/user/task/detail.php?id=236&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(450, '2017-02-02 12:25:29', '1486031129.8008', 'messages:236', 11, '/github/tilpark/admin/user/task/detail.php?id=236&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(451, '2017-02-02 12:25:35', '1486031131.8759', 'messages:236', 11, '/github/tilpark/admin/user/task/detail.php?id=236', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(452, '2017-02-02 12:28:35', '1486031312.8721', 'messages:236', 11, '/github/tilpark/admin/user/task/detail.php?id=236', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(453, '2017-02-02 12:28:39', '1486031315.6541', 'messages:236', 11, '/github/tilpark/admin/user/task/detail.php?id=236', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(454, '2017-02-02 12:30:04', '1486031401.2382', 'messages:236', 1, '/github/tilpark/admin/user/task/detail.php?id=236', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(455, '2017-02-02 12:30:06', '1486031406.4115', 'messages:236', 1, '/github/tilpark/admin/user/task/detail.php?id=236&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(456, '2017-02-02 12:30:13', '1486031409.8566', 'messages:236', 11, '/github/tilpark/admin/user/task/detail.php?id=236', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(457, '2017-02-02 12:31:29', '1486031480.1764', 'messages:236', 1, '/github/tilpark/admin/user/task/detail.php?id=236', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(458, '2017-02-02 12:31:34', '1486031489.4213', 'messages:236', 1, '/github/tilpark/admin/user/task/detail.php?id=236', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(459, '2017-02-02 12:32:24', '1486031413.493', 'messages:236', 11, '/github/tilpark/admin/user/task/detail.php?id=236', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(460, '2017-02-02 12:40:09', '1486031989.3088', 'messages:236', 1, '/github/tilpark/admin/user/task/detail.php?id=236', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(461, '2017-02-02 13:02:51', '1486033367.3656', 'messages:236', 1, '/github/tilpark/admin/user/task/detail.php?id=236', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(462, '2017-02-02 13:02:53', '1486033373.4128', 'messages:236', 1, '/github/tilpark/admin/user/task/detail.php?id=236&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(463, '2017-02-02 13:03:09', '1486033389.8064', 'messages:236', 1, '/github/tilpark/admin/user/task/detail.php?id=236&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(464, '2017-02-02 13:03:32', '1486033412.5799', 'messages:236', 1, '/github/tilpark/admin/user/task/detail.php?id=236&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(465, '2017-02-02 13:14:50', '1486034090.697', 'messages:236', 11, '/github/tilpark/admin/user/task/detail.php?id=236&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(466, '2017-02-02 13:14:53', '1486034093.5912', 'messages:236', 11, '/github/tilpark/admin/user/task/detail.php?id=236&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(467, '2017-02-02 13:21:21', '1486034420.0549', 'messages:236', 11, '/github/tilpark/admin/user/task/detail.php?id=236', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(468, '2017-02-02 13:43:23', '1486035803.549', 'messages:236', 1, '/github/tilpark/admin/user/task/detail.php?id=236&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(469, '2017-02-02 13:44:30', '1486035850.8207', 'messages:290', 11, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(470, '2017-02-02 13:44:40', '1486035870.1615', 'messages:291', 11, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(471, '2017-02-02 13:44:50', '1486035880.7497', 'messages:292', 11, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(472, '2017-02-02 13:46:05', '1486035960.6502', 'messages:236', 11, '/github/tilpark/admin/user/task/detail.php?id=236', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(473, '2017-02-02 13:46:25', '1486035985.9226', 'messages:236', 11, '/github/tilpark/admin/user/task/detail.php?id=236&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 236</b>\\\"'),
+(474, '2017-02-02 13:52:09', '1486036326.4127', 'messages:291', 1, '/github/tilpark/admin/user/task/detail.php?id=291', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 291</b>\\\"'),
+(475, '2017-02-02 13:52:11', '1486036331.7212', 'messages:291', 1, '/github/tilpark/admin/user/task/detail.php?id=291&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 291</b>\\\"'),
+(476, '2017-02-02 13:55:16', '1486036423.8059', 'messages:297', 1, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(477, '2017-02-02 13:57:07', '1486036627.9438', 'messages:297', 1, '/github/tilpark/admin/user/task/detail.php?id=297&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 297</b>\\\"'),
+(478, '2017-02-02 13:57:10', '1486036630.6421', 'messages:297', 1, '/github/tilpark/admin/user/task/detail.php?id=297&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 297</b>\\\"'),
+(479, '2017-02-02 13:58:12', '1486036692.7673', 'messages:297', 1, '/github/tilpark/admin/user/task/detail.php?id=297&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 297</b>\\\"'),
+(480, '2017-02-02 13:58:50', '1486036730.0164', 'messages:297', 1, '/github/tilpark/admin/user/task/detail.php?id=297&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 297</b>\\\"'),
+(481, '2017-02-02 13:58:55', '1486036735.2885', 'messages:297', 1, '/github/tilpark/admin/user/task/detail.php?id=297&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 297</b>\\\"'),
+(482, '2017-02-02 13:59:17', '1486036757.1475', 'messages:297', 1, '/github/tilpark/admin/user/task/detail.php?id=297&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 297</b>\\\"'),
+(483, '2017-02-02 13:59:49', '1486036769.252', 'messages:292', 1, '/github/tilpark/admin/user/task/detail.php?id=292', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 292</b>\\\"'),
+(484, '2017-02-02 14:08:18', '1486037289.8609', 'messages:305', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(485, '2017-02-02 14:21:32', '1486037324.7435', 'messages:290', 11, '/github/tilpark/admin/user/task/detail.php?id=290', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 290</b>\\\"'),
+(486, '2017-02-02 14:23:25', '1486038200.1575', 'messages:307', 1, '/github/tilpark/admin/user/message/detail.php?id=305', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(487, '2017-02-02 14:25:08', '1486038298.5849', 'messages:308', 11, '/github/tilpark/admin/user/message/detail.php?id=305', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(488, '2017-02-05 22:20:13', '1486326013.8471', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'task\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(489, '2017-02-05 22:20:13', '1486326013.8978', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(490, '2017-02-05 22:20:13', '1486326013.9003', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(491, '2017-02-05 22:20:13', '1486326013.9089', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'read_it=\\\'0\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'\\\' at line 1'),
+(492, '2017-02-05 22:20:13', '1486326013.9114', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'read_it=\\\'1\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'\\\' at line 1'),
+(493, '2017-02-05 22:20:13', '1486326013.9133', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'type=\\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_tra\\\' at line 1'),
+(494, '2017-02-05 22:20:13', '1486326013.916', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'type=\\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' at line 1'),
+(495, '2017-02-05 22:20:16', '1486326016.1052', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'task\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(496, '2017-02-05 22:20:16', '1486326016.1073', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(497, '2017-02-05 22:20:16', '1486326016.11', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(498, '2017-02-05 22:20:16', '1486326016.1148', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'message\\\' AND read_it=\\\'0\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id=\\\'1\\\' AND sen_tra\\\' at line 1'),
+(499, '2017-02-05 22:20:16', '1486326016.1167', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'read_it=\\\'0\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'\\\' at line 1'),
+(500, '2017-02-05 22:20:16', '1486326016.1207', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'read_it=\\\'1\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'\\\' at line 1'),
+(501, '2017-02-05 22:20:16', '1486326016.1229', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'type=\\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_tra\\\' at line 1'),
+(502, '2017-02-05 22:20:16', '1486326016.1259', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'type=\\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' at line 1'),
+(503, '2017-02-05 22:20:17', '1486326017.0887', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'task\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(504, '2017-02-05 22:20:17', '1486326017.0908', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(505, '2017-02-05 22:20:17', '1486326017.0926', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1');
+INSERT INTO `til_logs` (`id`, `date`, `uniquetime`, `table_id`, `user_id`, `log_url`, `log_key`, `log_text`) VALUES
+(506, '2017-02-05 22:20:17', '1486326017.0973', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'message\\\' AND read_it=\\\'1\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id=\\\'1\\\' AND sen_tra\\\' at line 1'),
+(507, '2017-02-05 22:20:17', '1486326017.0994', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'read_it=\\\'0\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'\\\' at line 1'),
+(508, '2017-02-05 22:20:17', '1486326017.1016', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'read_it=\\\'1\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'\\\' at line 1'),
+(509, '2017-02-05 22:20:17', '1486326017.1063', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'type=\\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_tra\\\' at line 1'),
+(510, '2017-02-05 22:20:17', '1486326017.1082', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'type=\\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' at line 1'),
+(511, '2017-02-05 22:20:18', '1486326018.4294', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'task\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(512, '2017-02-05 22:20:18', '1486326018.4314', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(513, '2017-02-05 22:20:18', '1486326018.4338', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(514, '2017-02-05 22:20:18', '1486326018.4378', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND status=\\\'1\\\' AND type=\\\'task\\\' AND top_id=\\\'0\\\' AND orderby=\\\'type_status ASC,\\\' at line 1'),
+(515, '2017-02-05 22:20:18', '1486326018.4404', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type_status=\\\'0\\\' AND type=\\\'task\\\'\\\' at line 1'),
+(516, '2017-02-05 22:20:18', '1486326018.4422', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type_status=\\\'1\\\' AND type=\\\'task\\\'\\\' at line 1'),
+(517, '2017-02-05 22:20:18', '1486326018.4441', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type_status=\\\'0\\\' AND type=\\\'task\\\'\\\' at line 1'),
+(518, '2017-02-05 22:20:18', '1486326018.4464', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type_status=\\\'1\\\' AND type=\\\'task\\\'\\\' at line 1'),
+(519, '2017-02-05 22:20:18', '1486326018.4485', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'task\\\'\\\' at line 1'),
+(520, '2017-02-05 22:20:19', '1486326019.8247', '', 1, '/github/tilpark/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'task\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(521, '2017-02-05 22:20:19', '1486326019.8272', '', 1, '/github/tilpark/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(522, '2017-02-05 22:20:19', '1486326019.8291', '', 1, '/github/tilpark/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(523, '2017-02-05 22:20:21', '1486326021.0881', '', 1, '/github/tilpark/admin/account/list.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'task\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(524, '2017-02-05 22:20:21', '1486326021.0902', '', 1, '/github/tilpark/admin/account/list.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(525, '2017-02-05 22:20:21', '1486326021.0923', '', 1, '/github/tilpark/admin/account/list.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(526, '2017-02-05 22:20:22', '1486326022.3716', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'task\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(527, '2017-02-05 22:20:22', '1486326022.3737', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(528, '2017-02-05 22:20:22', '1486326022.3764', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(529, '2017-02-05 22:20:22', '1486326022.3804', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'2\\\'\\\' at line 1'),
+(530, '2017-02-05 22:20:33', '1486326033.4387', '', 1, '/github/tilpark/admin/form/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'task\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(531, '2017-02-05 22:20:33', '1486326033.4408', '', 1, '/github/tilpark/admin/form/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(532, '2017-02-05 22:20:33', '1486326033.4426', '', 1, '/github/tilpark/admin/form/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(533, '2017-02-05 22:20:33', '1486326033.4477', '', 1, '/github/tilpark/admin/form/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'til_fs_form\\\' AND val_5=\\\'default\\\' AND val_enum=\\\'1\\\'\\\' at line 1'),
+(534, '2017-02-05 22:20:35', '1486326035.6719', '', 1, '/github/tilpark/admin/form/detail.php?in', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'task\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(535, '2017-02-05 22:20:35', '1486326035.6744', '', 1, '/github/tilpark/admin/form/detail.php?in', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(536, '2017-02-05 22:20:35', '1486326035.6816', '', 1, '/github/tilpark/admin/form/detail.php?in', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(537, '2017-02-05 22:20:35', '1486326035.6847', '', 1, '/github/tilpark/admin/form/detail.php?in', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'til_fs_form\\\' AND val_5=\\\'default\\\' AND val_enum=\\\'0\\\'\\\' at line 1'),
+(538, '2017-02-05 22:20:37', '1486326037.7807', '', 1, '/github/tilpark/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'task\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(539, '2017-02-05 22:20:37', '1486326037.7829', '', 1, '/github/tilpark/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(540, '2017-02-05 22:20:37', '1486326037.7847', '', 1, '/github/tilpark/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(541, '2017-02-05 22:20:38', '1486326038.7263', '', 1, '/github/tilpark/admin/form/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'task\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(542, '2017-02-05 22:20:38', '1486326038.7283', '', 1, '/github/tilpark/admin/form/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(543, '2017-02-05 22:20:38', '1486326038.7305', '', 1, '/github/tilpark/admin/form/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(544, '2017-02-05 22:20:38', '1486326038.7352', '', 1, '/github/tilpark/admin/form/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'til_fs_form\\\' AND val_5=\\\'default\\\' AND val_enum=\\\'1\\\'\\\' at line 1'),
+(545, '2017-02-05 22:20:40', '1486326040.8068', '', 1, '/github/tilpark/admin/item/list.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'task\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(546, '2017-02-05 22:20:40', '1486326040.8085', '', 1, '/github/tilpark/admin/item/list.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(547, '2017-02-05 22:20:40', '1486326040.8106', '', 1, '/github/tilpark/admin/item/list.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(548, '2017-02-05 22:20:42', '1486326042.2741', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'task\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(549, '2017-02-05 22:20:42', '1486326042.2773', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(550, '2017-02-05 22:20:42', '1486326042.2792', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'1\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(551, '2017-02-05 22:20:42', '1486326042.2831', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'2\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND add_new=\\\'1\\\' AND return=\\\'default\\\'\\\' at line 1'),
+(552, '2017-02-05 22:22:52', '1486326172.6598', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(553, '2017-02-05 22:22:52', '1486326172.6629', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'return=\\\'default\\\'\\\' at line 1'),
+(554, '2017-02-05 22:22:59', '1486326179.7432', '', 1, '/github/tilpark/admin/form/list.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(555, '2017-02-05 22:23:01', '1486326181.3568', '', 1, '/github/tilpark/admin/form/detail.php?id=18', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(556, '2017-02-05 22:23:01', '1486326181.3614', '', 1, '/github/tilpark/admin/form/detail.php?id=18', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND add_new=\\\'1\\\'\\\' at line 1'),
+(557, '2017-02-05 22:23:04', '1486326184.2356', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(558, '2017-02-05 22:23:04', '1486326184.2403', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(559, '2017-02-05 22:23:04', '1486326184.2417', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'0\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(560, '2017-02-05 22:23:04', '1486326184.2436', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(561, '2017-02-05 22:23:04', '1486326184.2449', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(562, '2017-02-05 22:23:04', '1486326184.247', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(563, '2017-02-05 22:23:06', '1486326186.0048', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(564, '2017-02-05 22:23:06', '1486326186.0087', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(565, '2017-02-05 22:23:07', '1486326187.476', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(566, '2017-02-05 22:23:07', '1486326187.4791', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=0', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(567, '2017-02-05 22:23:08', '1486326188.3882', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(568, '2017-02-05 22:23:08', '1486326188.391', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=1', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(569, '2017-02-05 22:23:09', '1486326189.6058', '', 1, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(570, '2017-02-05 22:23:09', '1486326189.6089', '', 1, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=0', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(571, '2017-02-05 22:23:10', '1486326190.0677', '', 1, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(572, '2017-02-05 22:23:10', '1486326190.0713', '', 1, '/github/tilpark/admin/user/task/list.php?box=outbox&type_status=1', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(573, '2017-02-05 22:23:10', '1486326190.7766', '', 1, '/github/tilpark/admin/user/task/list.php?box=trash', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(574, '2017-02-05 22:23:11', '1486326191.6169', '', 1, '/github/tilpark/admin/user/list.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(575, '2017-02-05 22:23:13', '1486326193.1797', '', 1, '/github/tilpark/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(576, '2017-02-05 22:23:13', '1486326193.9843', '', 1, '/github/tilpark/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(577, '2017-02-05 22:23:17', '1486326197.1741', '', 1, '/github/tilpark/admin/item/list.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(578, '2017-02-05 22:23:18', '1486326198.0997', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(579, '2017-02-05 22:23:18', '1486326198.1023', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'return=\\\'default\\\'\\\' at line 1'),
+(580, '2017-02-05 22:27:31', '1486326451.8379', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(581, '2017-02-05 22:27:31', '1486326451.8425', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'return=\\\'default\\\'\\\' at line 1'),
+(582, '2017-02-05 22:27:56', '1486326476.6186', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(583, '2017-02-05 22:27:56', '1486326476.6224', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'return=\\\'default\\\'\\\' at line 1'),
+(584, '2017-02-05 22:28:49', '1486326529.5194', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(585, '2017-02-05 22:28:49', '1486326529.5231', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'return=\\\'default\\\'\\\' at line 1'),
+(586, '2017-02-05 22:29:07', '1486326547.1695', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(587, '2017-02-05 22:29:07', '1486326547.1719', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'return=\\\'default\\\'\\\' at line 1'),
+(588, '2017-02-05 22:29:22', '1486326562.1139', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'WHERE type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_\\\' at line 1'),
+(589, '2017-02-05 22:29:22', '1486326562.1168', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'return=\\\'default\\\'\\\' at line 1'),
+(590, '2017-02-05 22:31:24', '1486326684.1168', '', 1, '/github/tilpark/admin/item/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'return=\\\'default\\\'\\\' at line 1'),
+(591, '2017-02-05 22:32:08', '1486326728.2549', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\' at line 1'),
+(592, '2017-02-05 22:32:13', '1486326733.2331', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'0\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(593, '2017-02-05 22:32:13', '1486326733.2354', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(594, '2017-02-05 22:32:13', '1486326733.2372', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(595, '2017-02-05 22:32:13', '1486326733.2388', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(596, '2017-02-05 22:32:14', '1486326734.9627', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'0\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(597, '2017-02-05 22:32:14', '1486326734.965', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(598, '2017-02-05 22:32:14', '1486326734.9672', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(599, '2017-02-05 22:32:14', '1486326734.969', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(600, '2017-02-05 22:32:16', '1486326736.0525', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'0\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(601, '2017-02-05 22:32:16', '1486326736.0553', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(602, '2017-02-05 22:32:16', '1486326736.0576', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(603, '2017-02-05 22:32:16', '1486326736.0593', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(604, '2017-02-05 22:32:17', '1486326737.0799', '', 1, '/github/tilpark/admin/user/message/list.php?trash', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'0\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(605, '2017-02-05 22:32:17', '1486326737.0818', '', 1, '/github/tilpark/admin/user/message/list.php?trash', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(606, '2017-02-05 22:32:17', '1486326737.0846', '', 1, '/github/tilpark/admin/user/message/list.php?trash', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(607, '2017-02-05 22:32:17', '1486326737.0862', '', 1, '/github/tilpark/admin/user/message/list.php?trash', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(608, '2017-02-05 22:32:19', '1486326739.0564', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'0\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(609, '2017-02-05 22:32:19', '1486326739.0583', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(610, '2017-02-05 22:32:19', '1486326739.0607', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(611, '2017-02-05 22:32:19', '1486326739.0628', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(612, '2017-02-05 22:33:03', '1486326783.4596', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'0\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(613, '2017-02-05 22:33:03', '1486326783.4632', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(614, '2017-02-05 22:33:03', '1486326783.4664', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(615, '2017-02-05 22:33:03', '1486326783.4684', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(616, '2017-02-05 22:33:50', '1486326830.9826', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'0\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(617, '2017-02-05 22:33:50', '1486326830.9844', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(618, '2017-02-05 22:33:50', '1486326830.9872', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(619, '2017-02-05 22:33:50', '1486326830.9901', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(620, '2017-02-05 22:34:36', '1486326876.6172', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'0\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(621, '2017-02-05 22:34:36', '1486326876.62', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(622, '2017-02-05 22:34:36', '1486326876.6217', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(623, '2017-02-05 22:34:36', '1486326876.6239', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(624, '2017-02-05 22:34:42', '1486326882.9956', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'0\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(625, '2017-02-05 22:34:42', '1486326882.9994', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(626, '2017-02-05 22:34:43', '1486326883.0012', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(627, '2017-02-05 22:34:43', '1486326883.0057', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(628, '2017-02-05 22:41:35', '1486327295.3604', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' AND type=\\\'message\\\' AND inbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen\\\' at line 1'),
+(629, '2017-02-05 22:41:35', '1486327295.3619', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(630, '2017-02-05 22:41:35', '1486327295.3633', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(631, '2017-02-05 22:43:25', '1486327405.7095', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(632, '2017-02-05 22:43:25', '1486327405.7117', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(633, '2017-02-05 22:43:31', '1486327411.9835', '', 11, '/github/tilpark/admin/user/message/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'11\\\' AND rec_trash_u_id NOT IN (\\\'11\\\') AND sen_trash_u_i\\\' at line 1'),
+(634, '2017-02-05 22:43:31', '1486327411.9847', '', 11, '/github/tilpark/admin/user/message/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'11\\\' OR rec_trash_u_id=\\\'11\\\'\\\' AND type=\\\'message\\\' AND \\\' at line 1'),
+(635, '2017-02-05 22:43:38', '1486327411.9867', 'messages:309', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(636, '2017-02-05 22:43:38', '1486327411.9867', '', 11, '/github/tilpark/admin/user/message/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'11\\\' AND rec_trash_u_id NOT IN (\\\'11\\\') AND sen_trash_u_i\\\' at line 1'),
+(637, '2017-02-05 22:43:38', '1486327411.9867', '', 11, '/github/tilpark/admin/user/message/add.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'11\\\' OR rec_trash_u_id=\\\'11\\\'\\\' AND type=\\\'message\\\' AND \\\' at line 1'),
+(638, '2017-02-05 22:43:38', '1486327418.2236', '', 11, '/github/tilpark/admin/user/message/detail.php?id=309', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'11\\\' AND rec_trash_u_id NOT IN (\\\'11\\\') AND sen_trash_u_i\\\' at line 1'),
+(639, '2017-02-05 22:43:38', '1486327418.2256', '', 11, '/github/tilpark/admin/user/message/detail.php?id=309', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'11\\\' OR rec_trash_u_id=\\\'11\\\'\\\' AND type=\\\'message\\\' AND \\\' at line 1'),
+(640, '2017-02-05 22:43:40', '1486327420.8876', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(641, '2017-02-05 22:43:40', '1486327420.8894', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(642, '2017-02-05 22:43:42', '1486327422.6252', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(643, '2017-02-05 22:43:42', '1486327422.6278', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(644, '2017-02-05 22:43:43', '1486327423.5486', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(645, '2017-02-05 22:43:43', '1486327423.5503', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(646, '2017-02-05 22:43:44', '1486327424.8398', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1');
+INSERT INTO `til_logs` (`id`, `date`, `uniquetime`, `table_id`, `user_id`, `log_url`, `log_key`, `log_text`) VALUES
+(647, '2017-02-05 22:43:44', '1486327424.8416', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(648, '2017-02-05 22:44:27', '1486327467.5551', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(649, '2017-02-05 22:44:27', '1486327467.5569', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(650, '2017-02-05 22:46:03', '1486327563.4282', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(651, '2017-02-05 22:46:03', '1486327563.4345', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(652, '2017-02-05 22:46:58', '1486327618.7686', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(653, '2017-02-05 22:46:58', '1486327618.7722', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(654, '2017-02-05 22:47:27', '1486327647.7767', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(655, '2017-02-05 22:47:27', '1486327647.7788', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(656, '2017-02-05 22:47:35', '1486327655.846', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(657, '2017-02-05 22:47:35', '1486327655.8473', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(658, '2017-02-05 22:48:00', '1486327680.1984', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(659, '2017-02-05 22:48:00', '1486327680.2011', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(660, '2017-02-05 22:48:19', '1486327699.2355', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(661, '2017-02-05 22:48:19', '1486327699.2379', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(662, '2017-02-05 22:48:27', '1486327707.0017', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(663, '2017-02-05 22:48:27', '1486327707.0034', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(664, '2017-02-05 22:48:42', '1486327722.8055', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(665, '2017-02-05 22:48:42', '1486327722.8075', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(666, '2017-02-05 22:48:46', '1486327726.8622', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(667, '2017-02-05 22:48:46', '1486327726.8643', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(668, '2017-02-05 22:48:52', '1486327732.8291', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(669, '2017-02-05 22:48:52', '1486327732.8309', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(670, '2017-02-05 22:48:54', '1486327734.0287', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(671, '2017-02-05 22:48:54', '1486327734.0304', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(672, '2017-02-05 22:49:48', '1486327788.0349', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(673, '2017-02-05 22:49:48', '1486327788.0365', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(674, '2017-02-05 22:50:11', '1486327811.4072', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(675, '2017-02-05 22:50:11', '1486327811.409', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(676, '2017-02-05 22:52:39', '1486327959.8197', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(677, '2017-02-05 22:52:39', '1486327959.8231', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(678, '2017-02-05 22:54:36', '1486328076.786', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(679, '2017-02-05 22:54:36', '1486328076.7876', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(680, '2017-02-05 22:54:40', '1486328080.6258', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(681, '2017-02-05 22:54:40', '1486328080.6273', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(682, '2017-02-05 22:54:41', '1486328081.9059', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(683, '2017-02-05 22:54:41', '1486328081.9075', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(684, '2017-02-05 22:54:46', '1486328086.1069', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(685, '2017-02-05 22:54:46', '1486328086.1088', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(686, '2017-02-05 22:55:00', '1486328100.7667', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(687, '2017-02-05 22:55:00', '1486328100.7689', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(688, '2017-02-05 22:55:16', '1486328116.5719', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(689, '2017-02-05 22:55:16', '1486328116.5742', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(690, '2017-02-05 22:55:24', '1486328124.2387', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(691, '2017-02-05 22:55:24', '1486328124.2414', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(692, '2017-02-05 22:55:24', '1486328124.2437', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(693, '2017-02-05 22:55:30', '1486328130.4134', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(694, '2017-02-05 22:55:30', '1486328130.4153', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(695, '2017-02-05 22:55:34', '1486328134.6151', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(696, '2017-02-05 22:55:34', '1486328134.6171', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(697, '2017-02-05 22:55:41', '1486328141.6544', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(698, '2017-02-05 22:55:41', '1486328141.6558', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(699, '2017-02-05 22:55:48', '1486328148.5508', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(700, '2017-02-05 22:55:48', '1486328148.5531', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(701, '2017-02-05 22:56:28', '1486328188.5513', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(702, '2017-02-05 22:56:28', '1486328188.5539', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(703, '2017-02-05 22:57:44', '1486328264.4906', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND outbox_u_id=\\\'1\\\' AND rec_trash_u_id NOT IN (\\\'1\\\') AND sen_trash_u_id \\\' at line 1'),
+(704, '2017-02-05 22:57:44', '1486328264.4921', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'message\\\' AND sen_trash_u_id=\\\'1\\\' OR rec_trash_u_id=\\\'1\\\'\\\' AND type=\\\'message\\\' AND re\\\' at line 1'),
+(705, '2017-02-06 00:04:41', '1486332281.4755', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(706, '2017-02-06 00:04:41', '1486332281.5153', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(707, '2017-02-06 00:04:41', '1486332281.5173', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(708, '2017-02-06 00:05:13', '1486332313.8216', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(709, '2017-02-06 00:05:13', '1486332313.8258', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(710, '2017-02-06 00:05:13', '1486332313.8293', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(711, '2017-02-06 00:05:20', '1486332320.375', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(712, '2017-02-06 00:05:20', '1486332320.3781', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(713, '2017-02-06 00:05:20', '1486332320.3798', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(714, '2017-02-06 00:05:34', '1486332334.4258', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(715, '2017-02-06 00:05:34', '1486332334.4298', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(716, '2017-02-06 00:05:34', '1486332334.431', '', 1, '/github/tilpark/admin/user/message/list.php?inbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(717, '2017-02-06 00:06:04', '1486332364.4968', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(718, '2017-02-06 00:06:04', '1486332364.5003', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(719, '2017-02-06 00:06:04', '1486332364.5012', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(720, '2017-02-06 00:06:06', '1486332366.0737', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(721, '2017-02-06 00:06:06', '1486332366.0774', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(722, '2017-02-06 00:06:06', '1486332366.0787', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(723, '2017-02-06 00:06:07', '1486332367.0815', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(724, '2017-02-06 00:06:07', '1486332367.0848', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(725, '2017-02-06 00:06:07', '1486332367.0867', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(726, '2017-02-06 00:07:20', '1486332440.537', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(727, '2017-02-06 00:07:20', '1486332440.543', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(728, '2017-02-06 00:07:20', '1486332440.5455', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(729, '2017-02-06 00:07:40', '1486332460.5015', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(730, '2017-02-06 00:07:40', '1486332460.5031', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(731, '2017-02-06 00:07:40', '1486332460.5061', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(732, '2017-02-06 00:07:40', '1486332460.5078', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(733, '2017-02-06 00:07:45', '1486332465.593', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(734, '2017-02-06 00:07:45', '1486332465.5957', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(735, '2017-02-06 00:07:45', '1486332465.5997', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(736, '2017-02-06 00:07:45', '1486332465.601', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(737, '2017-02-06 00:07:57', '1486332477.0282', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(738, '2017-02-06 00:07:57', '1486332477.0299', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(739, '2017-02-06 00:07:57', '1486332477.0342', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(740, '2017-02-06 00:07:57', '1486332477.0354', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(741, '2017-02-06 00:13:57', '1486332837.0587', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(742, '2017-02-06 00:13:57', '1486332837.0824', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'AND type=\\\'message\\\'\\\' at line 1'),
+(743, '2017-02-06 00:13:57', '1486332837.0865', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(744, '2017-02-06 00:13:57', '1486332837.0891', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(745, '2017-02-06 00:14:34', '1486332874.8845', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(746, '2017-02-06 00:14:34', '1486332874.8877', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(747, '2017-02-06 00:15:11', '1486332911.7637', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(748, '2017-02-06 00:15:11', '1486332911.7665', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(749, '2017-02-06 00:16:00', '1486332960.0896', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\' at line 1'),
+(750, '2017-02-06 00:16:00', '1486332960.0913', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\' at line 1'),
+(751, '2017-02-06 00:16:00', '1486332960.0921', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\' at line 1'),
+(752, '2017-02-06 00:16:00', '1486332960.0982', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\' at line 1'),
+(753, '2017-02-06 00:16:00', '1486332960.1016', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\' ORDER BY\\\' at line 1'),
+(754, '2017-02-06 00:16:00', '1486332960.1027', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\' ORDER BY\\\' at line 1'),
+(755, '2017-02-06 00:16:50', '1486333010.2545', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(756, '2017-02-06 00:16:50', '1486333010.257', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(757, '2017-02-06 00:16:55', '1486333015.2031', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(758, '2017-02-06 00:16:55', '1486333015.2065', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(759, '2017-02-06 00:16:59', '1486333019.0632', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(760, '2017-02-06 00:16:59', '1486333019.0667', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(761, '2017-02-06 00:17:08', '1486333028.2584', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(762, '2017-02-06 00:17:08', '1486333028.2609', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(763, '2017-02-06 00:17:18', '1486333038.6033', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(764, '2017-02-06 00:17:18', '1486333038.6042', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(765, '2017-02-06 00:17:31', '1486333051.5588', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(766, '2017-02-06 00:17:31', '1486333051.5607', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(767, '2017-02-06 00:17:39', '1486333059.4349', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(768, '2017-02-06 00:17:39', '1486333059.4372', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(769, '2017-02-06 00:17:56', '1486333076.9234', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(770, '2017-02-06 00:17:56', '1486333076.9248', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(771, '2017-02-06 00:18:05', '1486333085.9961', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(772, '2017-02-06 00:18:05', '1486333085.9971', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(773, '2017-02-06 00:18:07', '1486333087.0502', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(774, '2017-02-06 00:18:07', '1486333087.0518', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(775, '2017-02-06 00:18:25', '1486333105.7028', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(776, '2017-02-06 00:18:25', '1486333105.7041', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(777, '2017-02-06 00:18:29', '1486333109.7177', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(778, '2017-02-06 00:18:29', '1486333109.7191', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(779, '2017-02-06 00:18:30', '1486333110.8756', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(780, '2017-02-06 00:18:30', '1486333110.8765', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(781, '2017-02-06 00:18:32', '1486333112.0247', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(782, '2017-02-06 00:18:32', '1486333112.0259', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(783, '2017-02-06 00:18:41', '1486333121.7617', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(784, '2017-02-06 00:18:41', '1486333121.763', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1');
+INSERT INTO `til_logs` (`id`, `date`, `uniquetime`, `table_id`, `user_id`, `log_url`, `log_key`, `log_text`) VALUES
+(785, '2017-02-06 00:18:43', '1486333123.342', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(786, '2017-02-06 00:18:43', '1486333123.3432', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(787, '2017-02-06 00:18:44', '1486333124.3733', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(788, '2017-02-06 00:18:44', '1486333124.3749', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(789, '2017-02-06 00:19:56', '1486333196.2094', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(790, '2017-02-06 00:19:56', '1486333196.2109', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(791, '2017-02-06 00:19:57', '1486333197.6485', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(792, '2017-02-06 00:19:57', '1486333197.6512', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(793, '2017-02-06 00:19:58', '1486333198.8367', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(794, '2017-02-06 00:19:58', '1486333198.8383', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(795, '2017-02-06 00:20:00', '1486333200.0832', '', 1, '/github/tilpark/admin/user/message/detail.php?id=309', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(796, '2017-02-06 00:20:00', '1486333200.0845', '', 1, '/github/tilpark/admin/user/message/detail.php?id=309', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(797, '2017-02-06 00:20:01', '1486333201.1132', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(798, '2017-02-06 00:20:01', '1486333201.1153', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(799, '2017-02-06 00:20:01', '1486333201.8814', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(800, '2017-02-06 00:20:01', '1486333201.8834', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(801, '2017-02-06 00:20:03', '1486333203.0194', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(802, '2017-02-06 00:20:03', '1486333203.021', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(803, '2017-02-06 00:20:03', '1486333203.5453', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(804, '2017-02-06 00:20:03', '1486333203.5476', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(805, '2017-02-06 00:20:29', '1486333229.0341', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(806, '2017-02-06 00:20:29', '1486333229.0364', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(807, '2017-02-06 00:21:03', '1486333263.0559', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'Unknown column \\\'unset\\\' in \\\'where clause\\\''),
+(808, '2017-02-06 00:21:03', '1486333263.0569', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(809, '2017-02-06 00:21:09', '1486333269.9872', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(810, '2017-02-06 00:21:11', '1486333271.6297', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(811, '2017-02-06 00:21:13', '1486333273.3318', '', 11, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(812, '2017-02-06 00:21:14', '1486333274.4973', '', 11, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(813, '2017-02-06 00:21:21', '1486333281.8497', '', 11, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'Unknown column \\\'unset\\\' in \\\'where clause\\\''),
+(814, '2017-02-06 00:21:21', '1486333281.8509', '', 11, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(815, '2017-02-06 00:22:05', '1486333325.1409', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'Unknown column \\\'unset\\\' in \\\'where clause\\\''),
+(816, '2017-02-06 00:22:05', '1486333325.142', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(817, '2017-02-06 00:22:06', '1486333326.6651', '', 11, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'Unknown column \\\'unset\\\' in \\\'where clause\\\''),
+(818, '2017-02-06 00:22:06', '1486333326.6663', '', 11, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(819, '2017-02-06 00:22:19', '1486333339.2297', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'Unknown column \\\'unset\\\' in \\\'where clause\\\''),
+(820, '2017-02-06 00:22:19', '1486333339.234', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(821, '2017-02-06 00:22:47', '1486333367.1456', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' at line 1'),
+(822, '2017-02-06 00:22:47', '1486333367.1467', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(823, '2017-02-06 00:23:16', '1486333396.1206', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' at line 1'),
+(824, '2017-02-06 00:23:16', '1486333396.1213', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(825, '2017-02-06 00:23:32', '1486333412.1567', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' at line 1'),
+(826, '2017-02-06 00:23:32', '1486333412.1577', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(827, '2017-02-06 00:23:56', '1486333436.6583', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' at line 1'),
+(828, '2017-02-06 00:23:56', '1486333436.66', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(829, '2017-02-06 00:23:58', '1486333438.8273', '', 11, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\' at line 1'),
+(830, '2017-02-06 00:23:58', '1486333438.8291', '', 11, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(831, '2017-02-06 00:24:24', '1486333464.8788', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(832, '2017-02-06 00:24:27', '1486333467.8261', '', 11, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(833, '2017-02-06 00:24:42', '1486333482.1258', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(834, '2017-02-06 00:25:05', '1486333505.6145', '', 1, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(835, '2017-02-06 00:25:07', '1486333507.7684', '', 11, '/github/tilpark/admin/user/message/list.php?outbox', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND type=\\\'message\\\' AND read_it=\\\'0\\\'\\\' at line 1'),
+(836, '2017-02-06 11:20:49', '1486372844.4319', 'messages:310', 1, '/github/tilpark/admin/user/message/detail.php?id=305', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(837, '2017-02-06 11:21:34', '1486372894.06', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(838, '2017-02-06 11:21:36', '1486372896.6809', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=0', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(839, '2017-02-06 11:32:19', '1486373539.6781', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(840, '2017-02-06 11:32:41', '1486373561.2586', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(841, '2017-02-06 11:32:42', '1486373562.4983', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=0', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(842, '2017-02-06 11:33:07', '1486373587.9262', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(843, '2017-02-06 11:33:09', '1486373589.447', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=0', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(844, '2017-02-06 11:33:29', '1486373609.2202', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\' at line 1'),
+(845, '2017-02-06 11:33:30', '1486373610.9964', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\' at line 1'),
+(846, '2017-02-06 12:06:24', '1486375576.7804', 'messages:311', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(847, '2017-02-06 12:07:49', '1486375666.6262', 'messages:312', 1, '/github/tilpark/admin/user/message/detail.php?id=309', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(848, '2017-02-06 13:49:59', '1486381791.8016', 'messages:313', 1, '/github/tilpark/admin/user/message/detail.php?id=305', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(849, '2017-02-06 13:52:06', '1486381922.3564', 'messages:314', 1, '/github/tilpark/admin/user/message/detail.php?id=311', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(850, '2017-02-06 13:53:12', '1486381987.3416', 'messages:315', 11, '/github/tilpark/admin/user/message/detail.php?id=309', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(851, '2017-02-06 14:08:05', '1486382871.6117', 'messages:316', 1, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(852, '2017-02-06 14:08:39', '1486382908.3135', 'messages:317', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(853, '2017-02-06 14:14:46', '1486382920.0094', 'messages:318', 11, '/github/tilpark/admin/user/message/detail.php?id=317', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(854, '2017-02-06 14:15:05', '1486383298.3011', 'messages:319', 1, '/github/tilpark/admin/user/message/detail.php?id=317', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(855, '2017-02-06 14:16:23', '1486383368.5678', 'messages:320', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(856, '2017-02-07 13:25:15', '1486466703.3038', 'messages:1', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(857, '2017-02-07 13:26:02', '1486466749.9502', 'messages:2', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(858, '2017-02-07 13:26:39', '1486466782.3548', 'messages:3', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(859, '2017-02-07 13:27:15', '1486466820.9666', 'messages:4', 1, '/github/tilpark/admin/user/message/detail.php?id=1', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(860, '2017-02-07 13:35:03', '1486467292.2818', 'messages:5', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(861, '2017-02-07 13:49:50', '1486468190.4036', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'message\\\\\\\' AND read_it=\\\\\\\'0\\\\\\\' AND sen_trash_u_id != (\\\\\\\'1\\\\\\\') AND rec_trash_u_id !\\\' at line 1'),
+(862, '2017-02-07 13:49:52', '1486468192.3186', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'message\\\\\\\' AND read_it=\\\\\\\'0\\\\\\\' AND sen_trash_u_id != (\\\\\\\'1\\\\\\\') AND rec_trash_u_id !\\\' at line 1'),
+(863, '2017-02-07 13:49:53', '1486468193.2103', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'message\\\\\\\' AND read_it=\\\\\\\'0\\\\\\\' AND sen_trash_u_id != (\\\\\\\'1\\\\\\\') AND rec_trash_u_id !\\\' at line 1'),
+(864, '2017-02-07 13:49:53', '1486468193.996', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'message\\\\\\\' AND read_it=\\\\\\\'0\\\\\\\' AND sen_trash_u_id != (\\\\\\\'1\\\\\\\') AND rec_trash_u_id !\\\' at line 1'),
+(865, '2017-02-07 13:49:55', '1486468195.1352', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'message\\\\\\\' AND read_it=\\\\\\\'0\\\\\\\' AND sen_trash_u_id != (\\\\\\\'1\\\\\\\') AND rec_trash_u_id !\\\' at line 1'),
+(866, '2017-02-07 13:50:03', '1486468203.1277', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'message\\\\\\\' AND read_it=\\\\\\\'0\\\\\\\' AND sen_trash_u_id != (\\\\\\\'1\\\\\\\') AND rec_trash_u_id !\\\' at line 1'),
+(867, '2017-02-07 13:50:04', '1486468204.3499', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'message\\\\\\\' AND read_it=\\\\\\\'0\\\\\\\' AND sen_trash_u_id != (\\\\\\\'1\\\\\\\') AND rec_trash_u_id !\\\' at line 1'),
+(868, '2017-02-07 13:50:14', '1486468214.2187', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=0', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'message\\\\\\\' AND read_it=\\\\\\\'0\\\\\\\' AND sen_trash_u_id != (\\\\\\\'1\\\\\\\') AND rec_trash_u_id !\\\' at line 1'),
+(869, '2017-02-07 13:58:32', '1486468699.5899', 'messages:6', 1, '/github/tilpark/admin/user/message/detail.php?id=3', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(870, '2017-02-07 14:07:05', '1486469225.4271', '', 11, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\' at line 1'),
+(871, '2017-02-07 14:07:07', '1486469227.1227', '', 11, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\' at line 1'),
+(872, '2017-02-07 14:15:20', '1486469713.6394', 'messages:7', 11, '/github/tilpark/admin/user/message/detail.php?id=2', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(873, '2017-02-07 14:20:39', '1486470030.9758', 'messages:8', 11, '/github/tilpark/admin/user/message/detail.php?id=2', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(874, '2017-02-07 14:21:06', '1486470058.43', 'messages:9', 1, '/github/tilpark/admin/user/message/detail.php?id=2', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(875, '2017-02-07 15:11:59', '1486473104.3051', 'messages:10', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(876, '2017-02-07 15:12:39', '1486473154.6488', 'messages:11', 1, '/github/tilpark/admin/user/message/detail.php?id=10', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(877, '2017-02-07 15:17:45', '1486473465.2195', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\')\\\' at line 1'),
+(878, '2017-02-07 15:17:47', '1486473467.1695', '', 1, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\')\\\' at line 1'),
+(879, '2017-02-07 15:17:48', '1486473468.7792', '', 11, '/github/tilpark/admin/user/message/list.php?inbox&read_it=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'1\\\')\\\' at line 1'),
+(880, '2017-02-07 15:20:24', '1486473608.6357', 'messages:12', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(881, '2017-02-07 15:21:04', '1486473656.559', 'messages:13', 1, '/github/tilpark/admin/user/message/detail.php?id=12', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(882, '2017-02-07 15:24:14', '1486473847.8906', 'messages:14', 11, '/github/tilpark/admin/user/message/detail.php?id=10', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(883, '2017-02-07 15:25:59', '1486473947.5846', 'messages:15', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(884, '2017-02-07 15:27:32', '1486474044.9202', 'messages:16', 1, '/github/tilpark/admin/user/message/detail.php?id=15', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(885, '2017-02-07 15:30:19', '1486474215.25', 'messages:17', 11, '/github/tilpark/admin/user/message/detail.php?id=15', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(886, '2017-02-07 15:31:16', '1486474269.7665', 'messages:18', 1, '/github/tilpark/admin/user/message/detail.php?id=15', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(887, '2017-02-07 16:19:20', '1486477027.2498', 'messages:19', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(888, '2017-02-07 16:40:05', '1486478398.9526', 'messages:20', 11, '/github/tilpark/admin/user/message/detail.php?id=15', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(889, '2017-02-08 10:45:02', '1486543497.3167', 'messages:21', 11, '/github/tilpark/admin/user/message/detail.php?id=15', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(890, '2017-02-08 10:50:24', '1486543502.9803', 'messages:22', 11, '/github/tilpark/admin/user/message/detail.php?id=15', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(891, '2017-02-08 10:51:03', '1486543857.4461', 'messages:23', 11, '/github/tilpark/admin/user/message/detail.php?id=19', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(892, '2017-02-08 10:56:28', '1486544167.3149', 'messages:24', 11, '/github/tilpark/admin/user/message/detail.php?id=19', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(893, '2017-02-08 10:57:20', '1486544188.039', 'messages:25', 11, '/github/tilpark/admin/user/message/detail.php?id=19', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDISDF</b>\\\"'),
+(894, '2017-02-08 10:58:02', '1486544266.8479', 'messages:26', 1, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(895, '2017-02-08 10:58:36', '1486544304.0974', 'messages:27', 1, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(896, '2017-02-08 10:59:18', '1486544355.2112', 'users:1', 1, '/github/tilpark/admin/user/profile.php?', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(897, '2017-02-08 10:59:37', '1486544370.184', 'messages:28', 11, '/github/tilpark/admin/user/message/detail.php?id=27', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDI</b>\\\"'),
+(898, '2017-02-08 11:09:51', '1486544991.2203', '', 1, '/github/tilpark/admin/user/message/list.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\\\\\'1\\\\\\\'  AND type=\\\'message\\\' AND top_id=\\\'0\\\' ORDER BY read_it ASC, date_update DESC,\\\' at line 1'),
+(899, '2017-02-08 12:21:12', '1486549266.5096', 'messages:29', 11, '/github/tilpark/admin/user/message/detail.php?id=27', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDI</b>\\\"'),
+(900, '2017-02-08 12:26:54', '1486549614.1349', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox&read_it=0', 'mysqli_error', 'Unknown column \\\'query\\\' in \\\'where clause\\\''),
+(901, '2017-02-08 12:27:08', '1486549628.8272', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox&read_it=0', 'mysqli_error', 'Unknown column \\\'query\\\' in \\\'where clause\\\''),
+(902, '2017-02-08 12:27:39', '1486549659.3608', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox&read_it=0', 'mysqli_error', 'Unknown column \\\'query\\\' in \\\'where clause\\\''),
+(903, '2017-02-08 12:27:40', '1486549660.6156', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox&read_it=0', 'mysqli_error', 'Unknown column \\\'query\\\' in \\\'where clause\\\''),
+(904, '2017-02-08 12:28:10', '1486549690.5898', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox&read_it=0', 'mysqli_error', 'Unknown column \\\'query\\\' in \\\'where clause\\\''),
+(905, '2017-02-08 12:28:17', '1486549697.8154', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox&read_it=0', 'mysqli_error', 'Unknown column \\\'query\\\' in \\\'where clause\\\''),
+(906, '2017-02-08 12:28:30', '1486549710.8297', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox&read_it=0', 'mysqli_error', 'Unknown column \\\'query\\\' in \\\'where clause\\\''),
+(907, '2017-02-08 12:28:32', '1486549712.1003', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox&read_it=0', 'mysqli_error', 'Unknown column \\\'query\\\' in \\\'where clause\\\''),
+(908, '2017-02-08 12:28:49', '1486549729.0618', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox&read_it=0', 'mysqli_error', 'Unknown column \\\'query\\\' in \\\'where clause\\\''),
+(909, '2017-02-08 12:28:57', '1486549737.3553', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox&read_it=0', 'mysqli_error', 'Unknown column \\\'query\\\' in \\\'where clause\\\''),
+(910, '2017-02-08 12:29:16', '1486549756.1118', '', 1, '/github/tilpark/admin/user/message/list.php?box=inbox&read_it=0', 'mysqli_error', 'Unknown column \\\'query\\\' in \\\'where clause\\\''),
+(911, '2017-02-08 13:18:18', '1486552688.137', 'messages:30', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDI</b>\\\"'),
+(912, '2017-02-09 09:09:03', '1486624132.9084', 'messages:31', 11, '/github/tilpark/admin/user/message/add.php', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDI</b>\\\"'),
+(913, '2017-02-09 09:09:37', '1486624169.5408', 'messages:32', 1, '/github/tilpark/admin/user/message/detail.php?id=30', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(914, '2017-02-09 09:10:17', '1486624191.5821', 'messages:33', 11, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDI</b>\\\"'),
+(915, '2017-02-09 09:10:38', '1486624238.3362', '', 1, '/github/tilpark/admin/form/detail.php?id=18', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(916, '2017-02-09 09:20:06', '1486624802.5252', 'messages:33', 1, '/github/tilpark/admin/user/task/detail.php?id=33', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 33</b>\\\"'),
+(917, '2017-02-09 09:20:08', '1486624806.3496', 'messages:33', 1, '/github/tilpark/admin/user/task/detail.php?id=33', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 33</b>\\\"'),
+(918, '2017-02-09 09:20:10', '1486624808.8346', 'messages:33', 1, '/github/tilpark/admin/user/task/detail.php?id=33', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 33</b>\\\"'),
+(919, '2017-02-09 09:20:52', '1486624850.3543', 'messages:33', 1, '/github/tilpark/admin/user/task/detail.php?id=33', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 33</b>\\\"'),
+(920, '2017-02-09 09:20:53', '1486624853.0355', 'messages:33', 1, '/github/tilpark/admin/user/task/detail.php?id=33&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 33</b>\\\"'),
+(921, '2017-02-09 09:28:47', '1486625327.7095', 'messages:33', 1, '/github/tilpark/admin/user/task/detail.php?id=33&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 33</b>\\\"'),
+(922, '2017-02-09 09:30:07', '1486625407.8597', 'messages:33', 1, '/github/tilpark/admin/user/task/detail.php?id=33&type_status=0', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 33</b>\\\"'),
+(923, '2017-02-09 09:30:21', '1486625419.2701', 'messages:41', 1, '/github/tilpark/admin/user/message/detail.php?id=30', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(924, '2017-02-09 12:58:54', '1486637889.0202', 'messages:42', 11, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDI</b>\\\"'),
+(925, '2017-02-09 13:45:22', '1486640722.2051', 'messages:33', 1, '/github/tilpark/admin/user/task/detail.php?id=33&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 33</b>\\\"'),
+(926, '2017-02-09 14:35:49', '1486643749.1663', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'Unknown column \\\'query\\\' in \\\'where clause\\\''),
+(927, '2017-02-09 14:36:30', '1486643790.5012', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox', 'mysqli_error', 'Unknown column \\\'query\\\' in \\\'where clause\\\''),
+(928, '2017-02-09 15:14:05', '1486646045.58', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\' at line 1'),
+(929, '2017-02-09 15:14:05', '1486646045.5826', '', 1, '/github/tilpark/admin/user/task/list.php?box=inbox&type_status=1', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'\\\' at line 1'),
+(930, '2017-02-10 09:35:10', '1486712099.8748', 'messages:33', 11, '/github/tilpark/admin/user/task/detail.php?id=33', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 33</b>\\\"'),
+(931, '2017-02-10 09:38:34', '1486712289.3098', 'messages:33', 1, '/github/tilpark/admin/user/task/detail.php?id=33', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 33</b>\\\"'),
+(932, '2017-02-10 09:52:00', '1486713118.4318', 'messages:33', 11, '/github/tilpark/admin/user/task/detail.php?id=33', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 33</b>\\\"'),
+(933, '2017-02-10 09:52:32', '1486713149.8507', 'messages:42', 1, '/github/tilpark/admin/user/task/detail.php?id=42', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 42</b>\\\"'),
+(934, '2017-02-10 09:52:36', '1486713154.9838', 'messages:42', 1, '/github/tilpark/admin/user/task/detail.php?id=42', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 42</b>\\\"'),
+(935, '2017-02-10 09:52:41', '1486713159.8846', 'messages:42', 1, '/github/tilpark/admin/user/task/detail.php?id=42', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 42</b>\\\"'),
+(936, '2017-02-10 09:54:12', '1486713252.58', 'messages:33', 1, '/github/tilpark/admin/user/task/detail.php?id=33&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 33</b>\\\"'),
+(937, '2017-02-10 10:15:39', '1486714522.7989', 'messages:52', 11, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDI</b>\\\"'),
+(938, '2017-02-10 10:39:00', '1486715940.0784', '', 1, '/github/tilpark/admin/system/case/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(939, '2017-02-10 10:39:00', '1486715940.0793', '', 1, '/github/tilpark/admin/system/case/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(940, '2017-02-10 10:39:06', '1486715946.6281', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(941, '2017-02-10 10:39:09', '1486715949.6848', '', 1, '/github/tilpark/admin/system/case/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(942, '2017-02-10 10:39:09', '1486715949.6862', '', 1, '/github/tilpark/admin/system/case/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(943, '2017-02-10 11:45:58', '1486719958.3808', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7&status=0', 'update_user', 'Kullanıcı hesabı güncellendi.'),
+(944, '2017-02-10 13:04:52', '1486724689.6555', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7', 'update_user', '\\\"<b>ORHAN GÜRBÜZSDFSDF</b>\\\" Kullanıcı hesabı güncellendi.'),
+(945, '2017-02-10 13:08:49', '1486724929.6248', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7&status=1', 'update_user', '\\\"<b>ORHAN GÜRBÜZSDFSDFFFF</b>\\\" Kullanıcı hesabı güncellendi.'),
+(946, '2017-02-10 13:09:49', '1486724989.1608', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7&status=0', 'update_user', '\\\"<b>ORHAN GÜRBÜZSDFSDFFFF</b>\\\" Kullanıcı hesabı güncellendi.'),
+(947, '0000-00-00 00:00:00', '\\', '\\', 0, '\\', '\\', '\\'),
+(948, '2017-02-10 13:17:40', '1486725460.9421', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7&status=1', '', '\\\"<b>ORHAN GÜRBÜZSDFSDFFFF</b>\\\" kullanıcı hesabını aktife aldı.'),
+(949, '2017-02-10 13:18:17', '1486725497.7839', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7&status=1', '', '\\\"<b>ORHAN GÜRBÜZSDFSDFFFF</b>\\\" kullanıcı hesabını <u>aktife</u> aldı.'),
+(950, '2017-02-10 13:18:19', '1486725499.6342', 'users:7', 1, '/github/tilpark/admin/user/user.php?id=7&status=0', '', '\\\"<b>ORHAN GÜRBÜZSDFSDFFFF</b>\\\" kullanıcı hesabını <u>pasife</u> aldı.'),
+(951, '2017-02-10 13:44:21', '1486727061.0229', 'users:3', 1, '/github/tilpark/admin/user/user.php?id=3&status=0', '', '\\\"<b>ORHAN GÜRBÜZ</b>\\\" kullanıcı hesabını <u>pasife</u> aldı.'),
+(952, '2017-02-10 13:58:32', '1486727857.9817', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\\\"<b>kral@kraggl.com</b>\\\"'),
+(953, '2017-02-10 14:48:50', '1486725501.2311', 'users:1', 1, '/github/tilpark/admin/user/profile.php?', 'update_user', '\\\"<b>MUSTAFA TANRIVERDI</b>\\\" Kullanıcı hesabı güncellendi.'),
+(954, '2017-02-10 14:51:58', '1486731110.5229', 'users:1', 1, '/github/tilpark/admin/user/profile.php?', 'update_user', '\\\"<b>MUSTAFA TANRIVERDI</b>\\\" Kullanıcı hesabı güncellendi.'),
+(955, '2017-02-10 15:03:49', '1486731824.4195', 'users:1', 1, '/github/tilpark/admin/user/profile.php?', 'update_user', '\\\"<b>MUSTAFA TANRIVERDI</b>\\\" Kullanıcı hesabı güncellendi.'),
+(956, '2017-02-10 15:05:31', '1486731907.4437', 'messages:53', 1, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(957, '2017-02-10 15:41:43', '1486734103.1096', 'users:8', 1, '/github/tilpark/admin/user/user.php?id=8&status=0', '', '\\\"<b>ŞAHIN ASLAN</b>\\\" kullanıcı hesabını <u>pasife</u> aldı.'),
+(958, '2017-02-10 15:41:48', '1486734108.7957', 'users:9', 1, '/github/tilpark/admin/user/user.php?id=9&status=0', '', '\\\"<b>ORHAN GÜRBÜZ</b>\\\" kullanıcı hesabını <u>pasife</u> aldı.'),
+(959, '2017-02-10 16:52:48', '1486738279.1783', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\\\"<b>orhan@gurbuz.com</b>\\\"'),
+(960, '2017-02-10 16:53:41', '1486738410.8357', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\\\"<b>orhan@tilpark.com</b>\\\"'),
+(961, '2017-02-10 16:57:58', '1486738519.2992', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\\\"<b>rihanna@gi.com</b>\\\"'),
+(962, '2017-02-10 17:00:03', '1486738790.6015', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\\\"<b>dfsdf@dfsdf.com</b>\\\"'),
+(963, '2017-02-10 17:01:21', '1486738841.2703', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\\\"<b>kralmustfa@tilprk.com</b>\\\"'),
+(964, '2017-02-10 17:03:20', '1486738950.8448', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\\\"<b>orhan.gurbuz@tilpark.com</b>\\\"'),
+(965, '2017-02-10 17:08:17', '1486739297.8346', 'users:15', 1, '/github/tilpark/admin/user/user.php?id=15&status=0', '', '\\\"<b>RIHANNA RIHANNA</b>\\\" kullanıcı hesabını <u>pasife</u> aldı.'),
+(966, '2017-02-10 17:08:25', '1486739305.4664', 'users:17', 1, '/github/tilpark/admin/user/user.php?id=17&status=0', '', '\\\"<b>KRAL MUSTAFA SADASD</b>\\\" kullanıcı hesabını <u>pasife</u> aldı.'),
+(967, '2017-02-10 17:08:32', '1486739312.5661', 'users:16', 1, '/github/tilpark/admin/user/user.php?id=16&status=0', '', '\\\"<b>SDFSDFSDF 12123123</b>\\\" kullanıcı hesabını <u>pasife</u> aldı.'),
+(968, '2017-02-10 19:32:50', '1486747702.8936', '', 1, '/github/tilpark/admin/user/user.php?id=18', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'user_detail\\\', val_1=\\\'ORHAN\\\', val_2=\\\'GÜRBÜZ\\\', val_3=\\\'66852342342\\\', val_4=\\\'Kaf\\\' at line 1'),
+(969, '2017-02-10 19:32:56', '1486747970.6132', '', 1, '/github/tilpark/admin/user/user.php?id=18', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'user_detail\\\', val_1=\\\'ORHAN\\\', val_2=\\\'GÜRBÜZ\\\', val_3=\\\'23423423423\\\', val_4=\\\'\\\', \\\' at line 1'),
+(970, '2017-02-10 19:33:12', '1486747970.6132', '', 1, '/github/tilpark/admin/user/user.php?id=18', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'user_detail\\\', val_1=\\\'ORHAN\\\', val_2=\\\'GÜRBÜZ\\\', val_3=\\\'23423423423\\\', val_4=\\\'\\\', \\\' at line 1'),
+(971, '2017-02-10 19:33:41', '1486747992.7174', '', 1, '/github/tilpark/admin/user/user.php?id=18', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'=\\\'user_detail\\\', val_1=\\\'ORHAN\\\', val_2=\\\'GÜRBÜZ\\\', val_3=\\\'21323423423\\\', val_4=\\\'sdf\\\' at line 1'),
+(972, '2017-02-10 19:34:05', '1486747992.7174', '', 1, '/github/tilpark/admin/user/user.php?id=18', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'UPADET til_user_meta SET name=\\\'user_detail\\\', val_1=\\\'ORHAN\\\', val_2=\\\'GÜRBÜZ\\\', va\\\' at line 1'),
+(973, '2017-02-10 19:34:08', '1486747992.7174', '', 1, '/github/tilpark/admin/user/user.php?id=18', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'UPADET til_user_meta SET name=\\\'user_detail\\\', val_1=\\\'ORHAN\\\', val_2=\\\'GÜRBÜZ\\\', va\\\' at line 1'),
+(974, '2017-02-10 20:27:09', '1486751214.8423', 'items:2', 1, '/github/tilpark/admin/item/detail.php?id=2', 'update_item', 'Ürün kartı güncellendi.'),
+(975, '2017-02-10 20:29:07', '1486751257.9906', 'items:2', 1, '/github/tilpark/admin/item/detail.php?id=2', 'update_item', 'Ürün kartı güncellendi.'),
+(976, '2017-02-10 20:35:52', '1486751538.7444', 'items:2', 1, '/github/tilpark/admin/item/detail.php?id=2', 'update_item', 'Ürün kartı güncellendi.'),
+(977, '2017-02-10 20:35:58', '1486751752.3649', 'items:2', 1, '/github/tilpark/admin/item/detail.php?id=2', 'update_item', 'Ürün kartı güncellendi.'),
+(978, '2017-02-10 20:47:42', '1486752443.0723', '', 1, '/github/tilpark/admin/user/user.php?id=18', 'mysqli_error', 'Unknown column \\\'val_1\\\' in \\\'field list\\\''),
+(979, '2017-02-14 16:52:19', '1487083939.7765', 'items:1', 1, '/github/tilpark/admin/item/detail.php?id=1&status=0', 'update_item', 'Ürün kartı güncellendi.'),
+(980, '2017-02-14 16:55:22', '1487084122.2968', 'items:1', 1, '/github/tilpark/admin/item/detail.php?id=1&status=0', 'update_item', 'Ürün kartı güncellendi.'),
+(981, '2017-02-14 16:56:41', '1487084201.1199', 'items:1', 1, '/github/tilpark/admin/item/detail.php?id=1&status=1', 'update_item', 'Ürün kartı güncellendi.'),
+(982, '2017-02-14 16:57:18', '1487084238.2205', 'items:1', 1, '/github/tilpark/admin/item/detail.php?id=1&status=0', 'update_item', 'Ürün kartı güncellendi.'),
+(983, '2017-02-14 17:00:35', '1487084435.0979', 'items:1', 1, '/github/tilpark/admin/item/detail.php?id=1&status=1', 'update_item', 'Ürün kartı güncellendi.'),
+(984, '2017-02-14 17:00:37', '1487084437.2033', 'items:1', 1, '/github/tilpark/admin/item/detail.php?id=1&status=0', 'update_item', 'Ürün kartı güncellendi.'),
+(985, '2017-02-14 17:29:45', '1487086185.2727', 'items:1', 1, '/github/tilpark/admin/item/detail.php?id=1&status=1', 'update_item', 'Ürün kartı güncellendi.');
+INSERT INTO `til_logs` (`id`, `date`, `uniquetime`, `table_id`, `user_id`, `log_url`, `log_key`, `log_text`) VALUES
+(986, '2017-02-14 17:30:13', '1487086213.1511', 'items:1', 1, '/github/tilpark/admin/item/detail.php?id=1&status=0', 'update_item', 'Ürün kartı güncellendi.'),
+(987, '2017-02-14 17:30:14', '1487086214.7284', 'items:1', 1, '/github/tilpark/admin/item/detail.php?id=1&status=1', 'update_item', 'Ürün kartı güncellendi.'),
+(988, '2017-02-14 18:18:24', '1487089104.6345', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(989, '2017-02-14 18:19:14', '1487089154.365', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(990, '2017-02-14 18:19:25', '1487089165.8611', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(991, '2017-02-14 18:19:44', '1487089184.2186', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(992, '2017-02-14 18:20:51', '1487089251.6195', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(993, '2017-02-14 18:24:15', '1487089455.0336', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(994, '2017-02-14 18:24:23', '1487089463.0638', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(995, '2017-02-14 18:24:32', '1487089472.0098', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(996, '2017-02-14 18:25:06', '1487089506.3196', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(997, '2017-02-14 18:25:27', '1487089527.3885', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(998, '2017-02-14 18:25:36', '1487089536.6613', '', 1, '/github/tilpark/admin/account/detail.php?id=2&status=0', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(999, '2017-02-14 18:26:19', '1487089579.8184', '', 1, '/github/tilpark/admin/account/detail.php?id=2&status=0', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1000, '2017-02-14 18:28:18', '1487089698.3989', 'accounts:2', 1, '/github/tilpark/admin/account/detail.php?id=2&status=0', 'update_account', 'Hesap kartı güncellendi.'),
+(1001, '2017-02-14 18:28:18', '1487089698.4038', '', 1, '/github/tilpark/admin/account/detail.php?id=2&status=0', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1002, '2017-02-14 18:28:28', '1487089708.323', '', 1, '/github/tilpark/admin/account/detail.php?id=2&status=0', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1003, '2017-02-14 18:28:46', '1487089726.6646', 'accounts:2', 1, '/github/tilpark/admin/account/detail.php?id=2&status=1', 'update_account', 'Hesap kartı güncellendi.'),
+(1004, '2017-02-14 18:28:46', '1487089726.6717', '', 1, '/github/tilpark/admin/account/detail.php?id=2&status=1', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1005, '2017-02-14 18:28:57', '1487089737.6464', 'accounts:2', 1, '/github/tilpark/admin/account/detail.php?id=2&status=0', 'update_account', 'Hesap kartı güncellendi.'),
+(1006, '2017-02-14 18:28:57', '1487089737.6542', '', 1, '/github/tilpark/admin/account/detail.php?id=2&status=0', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1007, '2017-02-14 18:28:59', '1487089739.6494', 'accounts:2', 1, '/github/tilpark/admin/account/detail.php?id=2&status=1', 'update_account', 'Hesap kartı güncellendi.'),
+(1008, '2017-02-14 18:28:59', '1487089739.6562', '', 1, '/github/tilpark/admin/account/detail.php?id=2&status=1', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1009, '2017-02-14 18:29:01', '1487089741.53', '', 1, '/github/tilpark/admin/account/detail.php?id=2&status=1', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1010, '2017-02-14 18:29:04', '1487089744.9804', 'accounts:2', 1, '/github/tilpark/admin/account/detail.php?id=2&status=0', 'update_account', 'Hesap kartı güncellendi.'),
+(1011, '2017-02-14 18:29:04', '1487089744.9875', '', 1, '/github/tilpark/admin/account/detail.php?id=2&status=0', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1012, '2017-02-14 18:29:07', '1487089747.6914', '', 1, '/github/tilpark/admin/account/detail.php?id=2&status=0', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1013, '2017-02-14 18:29:10', '1487089750.2669', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1014, '2017-02-14 18:29:14', '1487089754.4077', 'accounts:2', 1, '/github/tilpark/admin/account/detail.php?id=2&status=1', 'update_account', 'Hesap kartı güncellendi.'),
+(1015, '2017-02-14 18:29:14', '1487089754.4165', '', 1, '/github/tilpark/admin/account/detail.php?id=2&status=1', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1016, '2017-02-14 18:29:18', '1487089758.3631', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1017, '2017-02-14 18:29:34', '1487089774.3133', 'accounts:2', 1, '/github/tilpark/admin/account/detail.php?id=2&status=0', 'update_account', 'Hesap kartı güncellendi.'),
+(1018, '2017-02-14 18:29:34', '1487089774.32', '', 1, '/github/tilpark/admin/account/detail.php?id=2&status=0', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1019, '2017-02-14 18:29:40', '1487089780.7374', '', 1, '/github/tilpark/admin/account/detail.php?id=2&status=0', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1020, '2017-02-14 18:34:02', '1487090042.9218', 'items:1', 1, '/github/tilpark/admin/item/detail.php?id=1&status=0', 'update_item', 'Ürün kartı güncellendi.'),
+(1021, '2017-02-14 18:34:12', '1487090052.0222', 'items:1', 1, '/github/tilpark/admin/item/detail.php?id=1&status=1', 'update_item', 'Ürün kartı güncellendi.'),
+(1022, '2017-02-14 18:36:02', '1487090162.3578', '', 1, '/github/tilpark/admin/account/detail.php?id=1', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1023, '2017-02-14 18:36:04', '1487090164.5584', '', 1, '/github/tilpark/admin/account/detail.php?id=2', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1024, '2017-02-14 18:36:43', '1487090203.3739', '', 1, '/github/tilpark/admin/payment/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1025, '2017-02-14 18:36:43', '1487090203.3769', '', 1, '/github/tilpark/admin/payment/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1026, '2017-02-14 18:36:49', '1487090209.4314', '', 1, '/github/tilpark/admin/payment/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1027, '2017-02-14 18:36:49', '1487090209.4325', '', 1, '/github/tilpark/admin/payment/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1028, '2017-02-15 15:47:47', '1487166467.7028', '', 1, '/github/tilpark/admin/user/user.php?id=2', 'mysqli_error', 'Unknown column \\\'name\\\' in \\\'where clause\\\''),
+(1029, '2017-02-15 15:47:47', '1487166467.7054', '', 1, '/github/tilpark/admin/user/user.php?id=2', 'mysqli_error', 'Unknown column \\\'name\\\' in \\\'where clause\\\''),
+(1030, '2017-02-15 15:47:47', '1487166467.7063', '', 1, '/github/tilpark/admin/user/user.php?id=2', 'mysqli_error', 'Unknown column \\\'name\\\' in \\\'where clause\\\''),
+(1031, '2017-02-15 15:47:47', '1487166467.7075', '', 1, '/github/tilpark/admin/user/user.php?id=2', 'mysqli_error', 'Unknown column \\\'name\\\' in \\\'where clause\\\''),
+(1032, '2017-02-15 15:50:51', '1487166467.7089', '', 1, '/github/tilpark/admin/user/user.php?id=2', 'mysqli_error', 'Unknown column \\\'name\\\' in \\\'where clause\\\''),
+(1033, '2017-02-15 15:50:51', '1487166467.7089', '', 1, '/github/tilpark/admin/user/user.php?id=2', 'mysqli_error', 'Unknown column \\\'name\\\' in \\\'where clause\\\''),
+(1034, '2017-02-15 15:50:51', '1487166467.7089', '', 1, '/github/tilpark/admin/user/user.php?id=2', 'mysqli_error', 'Unknown column \\\'name\\\' in \\\'where clause\\\''),
+(1035, '2017-02-15 15:50:51', '1487166467.7089', '', 1, '/github/tilpark/admin/user/user.php?id=2', 'mysqli_error', 'Unknown column \\\'name\\\' in \\\'where clause\\\''),
+(1036, '2017-02-15 15:51:01', '1487166651.7027', '', 1, '/github/tilpark/admin/user/user.php?id=2', 'mysqli_error', 'Unknown column \\\'name\\\' in \\\'where clause\\\''),
+(1037, '2017-02-15 15:51:01', '1487166651.7027', '', 1, '/github/tilpark/admin/user/user.php?id=2', 'mysqli_error', 'Unknown column \\\'name\\\' in \\\'where clause\\\''),
+(1038, '2017-02-15 15:51:01', '1487166651.7027', '', 1, '/github/tilpark/admin/user/user.php?id=2', 'mysqli_error', 'Unknown column \\\'name\\\' in \\\'where clause\\\''),
+(1039, '2017-02-15 15:51:01', '1487166651.7027', '', 1, '/github/tilpark/admin/user/user.php?id=2', 'mysqli_error', 'Unknown column \\\'name\\\' in \\\'where clause\\\''),
+(1040, '2017-02-17 10:34:26', '1487320466.543', '', 1, '/github/tilpark/admin/_developer/helper.php', 'mysqli_error', 'Unknown column \\\'p_price\\\' in \\\'field list\\\''),
+(1041, '2017-02-17 17:17:18', '1487344634.3539', 'messages:54', 1, '/github/tilpark/admin/user/message/detail.php?id=31', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>EŞREF AKBAŞ</b>\\\"'),
+(1042, '2017-02-17 17:18:07', '1487344682.1689', 'messages:42', 1, '/github/tilpark/admin/user/task/detail.php?id=42', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 42</b>\\\"'),
+(1043, '2017-02-17 17:18:25', '1487344705.1009', '', 1, '/github/tilpark/admin/system/case/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1044, '2017-02-17 17:18:25', '1487344705.1026', '', 1, '/github/tilpark/admin/system/case/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1045, '2017-02-17 17:18:37', '1487344717.2344', '', 1, '/github/tilpark/admin/system/form_status/form_status.php?taxonomy=til_fs_form', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1046, '2017-02-17 17:18:37', '1487344717.2368', '', 1, '/github/tilpark/admin/system/form_status/form_status.php?taxonomy=til_fs_form', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1047, '2017-02-17 17:23:34', '1487345014.7749', '', 1, '/github/tilpark/admin/payment/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1048, '2017-02-17 17:23:34', '1487345014.778', '', 1, '/github/tilpark/admin/payment/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1049, '2017-02-20 12:53:30', '1487588010.5232', '', 1, '/github/tilpark/admin/account/detail.php?id=1', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1050, '2017-02-21 12:04:54', '1487671488.0179', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\\\"<b>orhan@tilpark2.com</b>\\\"'),
+(1051, '2017-02-21 12:57:50', '1487674634.7459', 'users:14', 1, '/github/tilpark/admin/user/user.php?id=14', 'update_user', '\\\"<b>ORHAN GÜRBÜZ</b>\\\" Kullanıcı hesabı güncellendi.'),
+(1052, '2017-02-21 13:01:23', '1487674880.6004', 'users:14', 1, '/github/tilpark/admin/user/user.php?id=14', 'update_user', '\\\"<b>ORHAN GÜRBÜZ</b>\\\" Kullanıcı hesabı güncellendi.'),
+(1053, '2017-02-21 13:51:34', '1487677894.8565', '', 1, '/github/tilpark/admin/form/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1054, '2017-02-21 13:51:39', '1487677899.4112', '', 1, '/github/tilpark/admin/form/detail.php?id=18', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1055, '2017-02-21 14:03:12', '1487678393.6374', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'update_user', '\\\"<b>MUSTAFA TANRIVERDI</b>\\\" Kullanıcı hesabı güncellendi.'),
+(1056, '2017-02-21 17:21:25', '1487690485.728', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=14', 'image_upload', 'Bir resim dosyası yükledi.'),
+(1057, '2017-02-21 17:21:25', '1487690176.0333', 'users:14', 1, '/github/tilpark/admin/user/user.php?id=14', 'update_user', '\\\"<b>ORHAN GÜRBÜZ</b>\\\" Kullanıcı hesabı güncellendi.'),
+(1058, '2017-02-22 13:09:09', '1487761749.9277', 'forms:19', 1, '/github/tilpark/admin/user/user.php?id=19', 'set_form', 'Form oluşturuldu.'),
+(1059, '2017-02-22 13:10:21', '1487761821.5219', 'forms:20', 1, '/github/tilpark/admin/user/user.php?id=19', 'set_form', 'Form oluşturuldu.'),
+(1060, '2017-02-22 13:15:17', '1487762117.1917', 'forms:21', 1, '/github/tilpark/admin/user/user.php?id=19', 'set_form', 'Form oluşturuldu.'),
+(1061, '2017-02-22 13:16:03', '1487762163.5994', 'forms:22', 1, '/github/tilpark/admin/user/user.php?id=19', 'set_form', 'Form oluşturuldu.'),
+(1062, '2017-02-22 13:18:52', '1487762332.0506', 'forms:23', 1, '/github/tilpark/admin/user/user.php?id=19', 'set_form', 'Form oluşturuldu.'),
+(1063, '2017-02-22 13:19:05', '1487762345.1919', 'forms:24', 1, '/github/tilpark/admin/user/user.php?id=19', 'set_form', 'Form oluşturuldu.'),
+(1064, '2017-02-22 13:19:16', '1487762356.6472', 'forms:25', 1, '/github/tilpark/admin/user/user.php?id=19', 'set_form', 'Form oluşturuldu.'),
+(1065, '2017-02-22 13:21:13', '1487762473.6182', 'forms:26', 1, '/github/tilpark/admin/user/user.php?id=19', 'set_form', 'Form oluşturuldu.'),
+(1066, '2017-02-23 13:05:23', '1487847923.9574', '', 1, '/github/tilpark/admin/system/case/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1067, '2017-02-23 13:05:23', '1487847923.9861', '', 1, '/github/tilpark/admin/system/case/', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1068, '2017-02-24 14:36:20', '1487939780.9203', '', 1, '/github/tilpark/admin/user/user.php?id=19', 'mysqli_error', 'Unknown column \\\'date_update\\\' in \\\'field list\\\''),
+(1069, '2017-02-24 14:36:28', '1487939788.3068', '', 1, '/github/tilpark/admin/user/user.php?id=19', 'mysqli_error', 'Unknown column \\\'date_update\\\' in \\\'field list\\\''),
+(1070, '2017-02-24 14:48:59', '1487940539.4185', '', 1, '/github/tilpark/admin/user/user.php?id=19', 'mysqli_error', 'Unknown column \\\'name\\\' in \\\'field list\\\''),
+(1071, '2017-02-27 11:18:48', '1488187128.7416', 'users:19', 1, '/github/tilpark/admin/user/salary.php?id=68&delete_form_item=134', 'user_wage', 'İşe gelmedi. \\\"<b>1</b>\\\" gün'),
+(1072, '2017-02-27 11:18:51', '1488187131.0226', 'users:19', 1, '/github/tilpark/admin/user/salary.php?id=68&delete_form_item=134', 'user_wage', 'İşe gelmedi. \\\"<b>1</b>\\\" gün'),
+(1073, '2017-02-27 11:18:53', '1488187133.1018', 'users:19', 1, '/github/tilpark/admin/user/salary.php?id=68&delete_form_item=134', 'user_wage', 'İşe gelmedi. \\\"<b>1</b>\\\" gün'),
+(1074, '2017-02-27 11:19:29', '1488187169.7957', 'users:19', 1, '/github/tilpark/admin/user/salary.php?id=68&delete_form_item=134', 'user_wage', 'İşe gelmedi. \\\"<b>1</b>\\\" gün'),
+(1075, '2017-02-27 11:19:31', '1488187171.7609', 'users:19', 1, '/github/tilpark/admin/user/salary.php?id=68&delete_form_item=134', 'user_wage', 'İşe gelmedi. \\\"<b>1</b>\\\" gün'),
+(1076, '2017-02-27 11:19:33', '1488187173.5229', 'users:19', 1, '/github/tilpark/admin/user/salary.php?id=68&delete_form_item=134', 'user_wage', 'İşe gelmedi. \\\"<b>1</b>\\\" gün'),
+(1077, '2017-02-27 11:20:01', '1488187199.581', 'users:19', 1, '/github/tilpark/admin/user/salary.php?id=68&delete_form_item=134', 'user_wage', 'İşe gelmedi. \\\"<b>1</b>\\\" gün'),
+(1078, '2017-02-27 11:20:11', '1488187205.5817', 'users:19', 1, '/github/tilpark/admin/user/salary.php?id=68&delete_form_item=134', 'user_wage', 'Fazla mesai eklendi. \\\"<b>3</b>\\\" saat'),
+(1079, '2017-02-27 11:20:36', '1488187230.3934', 'users:19', 1, '/github/tilpark/admin/user/salary.php?id=68&delete_form_item=135', 'user_wage', 'Fazla mesai eklendi. \\\"<b>5</b>\\\" saat'),
+(1080, '2017-02-27 15:09:28', '1488200968.207', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1081, '2017-02-27 15:09:28', '1488200968.2089', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1082, '2017-02-27 15:09:39', '1488200979.1634', '', 1, '/github/tilpark/admin/system/case/index.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1083, '2017-02-27 15:09:39', '1488200979.1649', '', 1, '/github/tilpark/admin/system/case/index.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1084, '2017-02-27 15:09:42', '1488200982.4558', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1085, '2017-02-27 15:09:42', '1488200982.457', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1086, '2017-02-27 15:11:10', '1488201070.1449', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1087, '2017-02-27 15:11:10', '1488201070.1459', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1088, '2017-02-27 15:11:43', '1488201103.1922', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1089, '2017-02-27 15:11:43', '1488201103.1935', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1090, '2017-02-27 15:12:22', '1488201142.3647', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1091, '2017-02-27 15:12:22', '1488201142.3657', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1092, '2017-02-27 15:12:42', '1488201162.8801', '', 1, '/github/tilpark/admin/system/case/index.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1093, '2017-02-27 15:12:42', '1488201162.8831', '', 1, '/github/tilpark/admin/system/case/index.php', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1094, '2017-02-27 15:12:47', '1488201167.9193', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1095, '2017-02-27 15:12:47', '1488201167.9206', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1096, '2017-02-27 15:12:56', '1488201176.2184', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1097, '2017-02-27 15:12:56', '1488201176.22', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1098, '2017-02-27 15:13:54', '1488201234.009', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1099, '2017-02-27 15:13:54', '1488201234.0105', '', 1, '/github/tilpark/admin/payment/detail.php?out', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND return=\\\'plural_object\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND a\\\' at line 1'),
+(1100, '2017-02-27 15:27:46', '1488202066.2218', 'accounts:4', 1, '/github/tilpark/admin/user/user.php?id=18', 'add_account', 'Hesap kartı eklendi.'),
+(1101, '2017-02-27 15:30:48', '1488202248.34', 'users:18', 1, '/github/tilpark/admin/user/user.php?id=18', 'update_user', '\\\"<b>ORHAN GÜRBÜZ</b>\\\" Kullanıcı hesabı güncellendi.'),
+(1102, '2017-02-27 15:34:25', '1488202465.0241', 'users:14', 1, '/github/tilpark/admin/user/user.php?id=14', 'update_user', '\\\"<b>ORHAN GÜRBÜZ</b>\\\" Kullanıcı hesabı güncellendi.'),
+(1103, '2017-02-27 15:56:13', '1488203773.9842', 'users:1', 1, '/github/tilpark/admin/user/user.php?id=1', 'update_user', '\\\"<b>MUSTAFA TANRIVERDI</b>\\\" Kullanıcı hesabı güncellendi.'),
+(1104, '2017-02-27 15:58:00', '1488203880.8055', '', 1, '/github/tilpark/admin/payment/detail.php?id=71', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND add_new=\\\'1\\\' AND return=\\\'defa\\\' at line 1'),
+(1105, '2017-02-27 15:58:45', '1488203925.5094', '', 1, '/github/tilpark/admin/payment/detail.php?id=72', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND add_new=\\\'1\\\' AND return=\\\'defa\\\' at line 1'),
+(1106, '2017-02-27 15:59:32', '1488203972.8578', '', 1, '/github/tilpark/admin/payment/detail.php?id=72', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND add_new=\\\'1\\\' AND return=\\\'defa\\\' at line 1'),
+(1107, '2017-02-27 16:00:01', '1488204001.8147', '', 1, '/github/tilpark/admin/payment/detail.php?id=72', 'mysqli_error', 'You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \\\'where=\\\'Array\\\' AND add_alert=\\\'1\\\' AND add_log=\\\'1\\\' AND add_new=\\\'1\\\' AND return=\\\'defa\\\' at line 1'),
+(1108, '2017-02-27 16:25:02', '1488205502.1749', 'users:19', 1, '/github/tilpark/admin/user/user.php?id=19', 'update_user', '\\\"<b>ORHAN GÜRBÜZ</b>\\\" Kullanıcı hesabı güncellendi.'),
+(1109, '2017-02-27 18:25:25', '1488212662.3014', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\\\"<b>orhan@tilpark.com</b>\\\"'),
+(1110, '2017-02-27 18:25:25', '1488212725.4113', 'users:20', 1, '/github/tilpark/admin/user/user.php?id=20', 'update_user', '\\\"<b>ORHAN GÜRBÜZ</b>\\\" Kullanıcı hesabı güncellendi.'),
+(1111, '2017-02-28 16:06:13', '1488287169.2758', 'users:20', 1, '/github/tilpark/admin/user/user.php?id=20', 'update_user', '\\\"<b>ORHAN GÜRBÜZ</b>\\\" Kullanıcı hesabı güncellendi.'),
+(1112, '2017-03-01 14:07:30', '1488366442.8243', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=109', 'user_wage', 'Fazla mesai eklendi. \\\"<b>9</b>\\\" saat'),
+(1113, '2017-03-01 14:07:45', '1488366450.6465', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=109', 'user_wage', 'Fazla mesai eklendi. \\\"<b>11</b>\\\" saat'),
+(1114, '2017-03-01 14:23:06', '1488367379.1307', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=103', 'user_wage', 'Fazla mesai eklendi. \\\"<b>9</b>\\\" saat'),
+(1115, '2017-03-01 14:23:56', '1488367421.3634', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=103', 'user_wage', 'İşe gelmedi. \\\"<b>2</b>\\\" gün'),
+(1116, '2017-03-01 14:24:16', '1488367436.6577', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=103', 'user_wage', 'İşe gelmedi. \\\"<b>1</b>\\\" gün'),
+(1117, '2017-03-01 14:26:09', '1488367569.4363', '', 1, '/github/tilpark/admin/account/detail.php?id=9', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1118, '2017-03-01 14:28:40', '1488367720.8474', '', 1, '/github/tilpark/admin/account/detail.php?id=9', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1119, '2017-03-01 14:29:02', '1488367732.6581', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=109', 'user_wage', 'Fazla mesai eklendi. \\\"<b>9</b>\\\" saat'),
+(1120, '2017-03-01 14:29:13', '1488367753.9673', '', 1, '/github/tilpark/admin/account/detail.php?id=9', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1121, '2017-03-01 14:48:39', '1488368915.1604', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=109', 'user_wage', 'İşe gelmedi. \\\"<b>1</b>\\\" gün'),
+(1122, '2017-03-01 14:49:57', '1488368970.5553', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=109', 'user_wage', 'İzin kullandı. \\\"<b>1</b>\\\" gün'),
+(1123, '2017-03-01 14:51:24', '1488369064.6019', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=109', 'user_wage', 'İzin kullandı. \\\"<b>1</b>\\\" gün'),
+(1124, '2017-03-01 14:51:35', '1488369084.8389', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=109', 'user_wage', 'İzin kullandı. \\\"<b>1</b>\\\" gün'),
+(1125, '2017-03-01 14:53:28', '1488369095.3838', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=109', 'user_wage', 'Fazla mesai eklendi. \\\"<b>8</b>\\\" saat'),
+(1126, '2017-03-01 14:57:25', '1488369429.9015', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=109', 'user_wage', 'Eksik mesai eklendi. \\\"<b>9</b>\\\" saat'),
+(1127, '2017-03-01 14:57:44', '1488369445.1905', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=109', 'user_wage', 'Fazla mesai eklendi. \\\"<b>12</b>\\\" saat'),
+(1128, '2017-03-01 15:00:34', '1488369613.0313', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=109', 'user_wage', 'İzin kullandı. \\\"<b>3</b>\\\" gün'),
+(1129, '2017-03-01 15:22:47', '1488370967.9046', '', 1, '/github/tilpark/admin/account/detail.php?id=9', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1130, '2017-03-01 15:22:55', '1488370975.408', '', 1, '/github/tilpark/admin/account/detail.php?id=9', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1131, '2017-03-01 15:23:27', '1488371007.1716', '', 1, '/github/tilpark/admin/account/detail.php?id=9', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1132, '2017-03-01 15:23:29', '1488371009.3309', '', 1, '/github/tilpark/admin/account/detail.php?id=9', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1133, '2017-03-01 18:53:50', '1488383630.6955', '', 1, '/github/tilpark/admin/account/detail.php?id=9', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1134, '2017-03-02 11:10:35', '1488442235.2248', '', 1, '/github/tilpark/admin/account/detail.php?id=9', 'mysqli_error', 'Unknown column \\\'orderby\\\' in \\\'where clause\\\''),
+(1135, '2017-03-02 11:23:54', '1488443034.9836', 'items:1', 1, '/github/tilpark/admin/item/detail.php?id=1&status=0', 'update_item', 'Ürün kartı güncellendi.'),
+(1136, '2017-03-02 11:24:07', '1488443047.2052', 'items:1', 1, '/github/tilpark/admin/item/detail.php?id=1&status=1', 'update_item', 'Ürün kartı güncellendi.'),
+(1137, '2017-03-02 13:07:01', '1488448424.8872', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=116', 'user_wage', 'Fazla mesai eklendi. \\\"<b>9</b>\\\" saat'),
+(1138, '2017-03-02 13:45:53', '1488449221.9379', 'users:20', 1, '/github/tilpark/admin/user/salary.php?id=116', 'user_wage', 'Eksik mesai eklendi. \\\"<b>4</b>\\\" saat'),
+(1139, '2017-03-06 09:16:36', '1488780942.5201', 'users:1', 1, '/github/tilpark/admin/user/add.php', 'add_user', 'Yeni bir kullanıcı hesabı oluşturdu.\\\"<b>muhammet@tilpark.com</b>\\\"'),
+(1140, '2017-03-06 09:16:36', '1488780996.4755', 'users:21', 1, '/github/tilpark/admin/user/user.php?id=21', 'update_user', '\\\"<b>MUHAMMET INAN</b>\\\" Kullanıcı hesabı güncellendi.'),
+(1141, '2017-03-06 09:20:08', '1488781177.8487', 'users:21', 1, '/github/tilpark/admin/user/salary.php?id=148', 'user_wage', 'Fazla mesai eklendi. \\\"<b>6</b>\\\" saat'),
+(1142, '2017-03-06 09:22:36', '1488781326.2459', 'forms:150', 1, '/github/tilpark/admin/form/detail.php?out', 'set_form', 'Form oluşturuldu.'),
+(1143, '2017-03-06 09:22:37', '1488781326.246', 'forms:150', 1, '/github/tilpark/admin/form/detail.php?out', 'add_form_item', 'Ürün hareketi eklendi. <small class=\\\"text-muted\\\">KIRMIZI AYAKKABI</small>'),
+(1144, '2017-03-06 09:23:37', '1488781410.9819', 'forms:150', 1, '/github/tilpark/admin/form/detail.php?id=150&status_id=7&update_status_id&uniquetime=1488781410.9819', 'change_form_status', 'Form durumu \\\"<b>Hazırlanıyor</b>\\\" olarak değiştirildi.'),
+(1145, '2017-03-06 09:23:51', '1488781428.0475', 'forms:150', 1, '/github/tilpark/admin/form/detail.php?id=150&status_id=10&update_status_id&uniquetime=1488781428.0475', 'change_form_status', 'Form durumu \\\"<b>Teslim Edildi</b>\\\" olarak değiştirildi.'),
+(1146, '2017-03-06 09:25:14', '1488781489.4987', 'messages:56', 1, '/github/tilpark/admin/user/message/add.php?attachment&form_id=150', 'add_message', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDI</b>\\\"'),
+(1147, '2017-03-06 09:26:09', '1488781538.3341', 'messages:57', 1, '/github/tilpark/admin/user/task/add.php', 'add_task', 'Yeni bir mesaj gönderildi. \\\"<b>MUSTAFA TANRIVERDI</b>\\\"'),
+(1148, '2017-03-06 09:26:26', '1488781577.5772', 'messages:57', 1, '/github/tilpark/admin/user/task/detail.php?id=57', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 57</b>\\\"'),
+(1149, '2017-03-06 09:26:32', '1488781586.442', 'messages:57', 1, '/github/tilpark/admin/user/task/detail.php?id=57', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 57</b>\\\"'),
+(1150, '2017-03-06 09:26:36', '1488781596.6096', 'messages:57', 1, '/github/tilpark/admin/user/task/detail.php?id=57&type_status=1', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 57</b>\\\"'),
+(1151, '2017-03-06 10:57:45', '1488787053.9565', 'messages:57', 1, '/github/tilpark/admin/user/task/detail.php?id=57', 'add_task_message', 'Görev için cevap mesajı gönderdi. \\\"<b>ID: 57</b>\\\"'),
+(1152, '2017-03-06 14:19:06', '1488797865.0911', 'forms:150', 1, '/github/tilpark/admin/form/detail.php?id=150', 'set_form', 'Form güncellendi.'),
+(1153, '2017-03-06 14:19:11', '1488799146.042', 'forms:150', 1, '/github/tilpark/admin/form/detail.php?id=150', 'add_form_item', 'Ürün hareketi eklendi. <small class=\\\"text-muted\\\">KRAL KRAL</small>'),
+(1154, '2017-03-06 14:19:16', '1488799151.4709', 'forms:150', 1, '/github/tilpark/admin/form/detail.php?id=150', 'add_form_item', 'Ürün hareketi eklendi. <small class=\\\"text-muted\\\">ŞARK KÖŞESİ MODEL 1</small>'),
+(1155, '2017-03-06 14:19:19', '1488799156.3188', 'forms:150', 1, '/github/tilpark/admin/form/detail.php?id=150', 'add_form_item', 'Ürün hareketi eklendi. <small class=\\\"text-muted\\\">ŞARK KÖŞESİ CEREN</small>'),
+(1156, '2017-03-07 10:37:54', '1488870714.4467', 'forms:150', 1, '/github/tilpark/admin/form/detail.php?id=150', 'set_form', 'Form güncellendi.'),
+(1157, '2017-03-07 10:42:06', '1488872274.1809', 'forms:150', 1, '/github/tilpark/admin/form/detail.php?id=150', 'set_form', 'Form güncellendi.'),
+(1158, '2017-03-07 10:42:15', '1488872526.7711', 'forms:150', 1, '/github/tilpark/admin/form/detail.php?id=150', 'set_form', 'Form güncellendi.'),
+(1159, '2017-03-07 10:42:43', '1488872548.3547', 'forms:150', 1, '/github/tilpark/admin/form/detail.php?id=150', 'set_form', 'Form güncellendi.'),
+(1160, '2017-03-14 15:38:48', '1489495096.1197', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?out', 'set_form', 'Form oluşturuldu.'),
+(1161, '2017-03-14 15:39:19', '1489495150.2917', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1162, '2017-03-14 15:42:19', '1489495326.4443', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1163, '2017-03-14 15:44:48', '1489495484.2158', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1164, '2017-03-14 15:45:56', '1489495552.9544', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1165, '2017-03-14 15:47:32', '1489495648.6715', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1166, '2017-03-14 15:47:50', '1489495667.0941', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1167, '2017-03-14 15:48:11', '1489495687.1967', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1168, '2017-03-14 15:49:37', '1489495693.0825', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1169, '2017-03-14 15:49:54', '1489495777.4154', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1170, '2017-03-14 15:50:21', '1489495818.4822', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1171, '2017-03-14 15:50:25', '1489495821.2723', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1172, '2017-03-14 15:51:01', '1489495859.9647', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1173, '2017-03-14 15:51:49', '1489495896.5648', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1174, '2017-03-14 15:52:00', '1489495909.5734', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1175, '2017-03-14 15:52:26', '1489495939.1964', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1176, '2017-03-14 15:54:04', '1489496040.6429', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1177, '2017-03-14 15:54:12', '1489496044.0745', 'forms:153', 1, '/github/tilpark/admin/form/detail.php?id=153', 'set_form', 'Form güncellendi.'),
+(1178, '2017-03-15 14:11:16', '1489576267.0231', 'users:21', 1, '/github/tilpark/admin/user/salary.php?id=159', 'user_wage', 'Fazla mesai eklendi. \"<b>9</b>\" saat'),
+(1179, '2017-03-15 14:11:22', '1489576276.1634', 'users:21', 1, '/github/tilpark/admin/user/salary.php?id=159', 'user_wage', 'Eksik mesai eklendi. \"<b>4</b>\" saat'),
+(1180, '2017-03-15 14:12:55', '1489576282.7279', 'users:21', 1, '/github/tilpark/admin/user/salary.php?id=159', 'user_wage', 'İşe gelmedi. \"<b>1</b>\" gün'),
+(1181, '2017-03-15 14:27:14', '1489577196.6739', 'users:21', 1, '/github/tilpark/admin/user/salary.php?id=159', 'user_wage', 'Eksik mesai eklendi. \"<b>90</b>\" saat'),
+(1182, '2017-03-16 15:59:44', '1489669181.7177', 'users:21', 1, '/github/tilpark/admin/user/salary.php?id=159', 'user_wage', 'İşe gelmedi. \"<b>1</b>\" gün'),
+(1183, '2017-03-21 17:12:17', '1490105514.696', 'users:21', 1, '/github/tilpark/admin/user/salary.php?id=158', 'user_wage', 'İşe gelmedi. \"<b>1</b>\" gün'),
+(1184, '2017-03-21 17:12:41', '1490105537.2414', 'users:21', 1, '/github/tilpark/admin/user/salary.php?id=158', 'user_wage', 'İşe gelmedi. \"<b>2</b>\" gün');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `til_log_meta`
+--
+
+CREATE TABLE `til_log_meta` (
+  `id` int(11) NOT NULL,
+  `log_id` int(11) NOT NULL,
+  `meta_val` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tablo döküm verisi `til_log_meta`
+--
+
+INSERT INTO `til_log_meta` (`id`, `log_id`, `meta_val`) VALUES
+(1, 944, '{\"surname\":{\"old\":\"GÜRBÜZSDFSDF\",\"new\":\"GÜRBÜZSDFSDFFFF\"},\"display_name\":{\"old\":\"ORHAN GÜRBÜZSDFSDF\",\"new\":\"ORHAN GÜRBÜZSDFSDFFFF\"}}'),
+(2, 945, '{\"status\":{\"old\":\"0\",\"new\":\"1\"}}'),
+(3, 946, '{\"status\":{\"old\":\"1\",\"new\":\"0\"}}'),
+(4, 953, '{\"avatar\":{\"old\":\"http:\\/\\/localhost\\/github\\/tilpark\\/content\\/upload\\/2017\\/01\\/18\\/til-uid-1-dt-20170118202934.jpg\",\"new\":\"http:\\/\\/localhost\\/github\\/tilpark\\/content\\/upload\\/2017\\/02\\/10\\/til-uid-1-dt-20170210144850.jpg\"}}'),
+(5, 954, '{\"avatar\":{\"old\":\"http:\\/\\/localhost\\/github\\/tilpark\\/content\\/upload\\/2017\\/02\\/10\\/til-uid-1-dt-20170210144850.jpg\",\"new\":\"http:\\/\\/localhost\\/github\\/tilpark\\/content\\/upload\\/2017\\/02\\/10\\/til-uid-1-dt-20170210145158.jpg\"}}'),
+(6, 955, '{\"avatar\":{\"old\":\"http:\\/\\/localhost\\/github\\/tilpark\\/content\\/upload\\/2017\\/02\\/10\\/til-uid-1-dt-20170210145158.jpg\",\"new\":\"http:\\/\\/localhost\\/github\\/tilpark\\/content\\/upload\\/2017\\/02\\/10\\/til-uid-1-dt-20170210150349.jpg\"}}'),
+(7, 974, '{\"name\":{\"old\":\"DENEME ÜRÜN KARTI\",\"new\":\"DENEME ÜRÜN KARTI\\\\\' OR\"}}'),
+(8, 976, '{\"name\":{\"old\":\"1\",\"new\":\"1\\\\\'; UPDATE \\\\\'TIL_ITEMS\\\\\' SET ‘NAME‘ = ‘KRAL\"}}'),
+(9, 977, '{\"name\":{\"old\":\"1\\\\\'; UPDATE \\\\\'TIL_ITEMS\\\\\' SET ‘NAME‘ = ‘KRAL\",\"new\":\"KRAL KRAL\"}}'),
+(10, 979, '{\"status\":{\"old\":\"1\",\"new\":\"0\"},\"vat\":{\"old\":\"18\",\"new\":\"0\"}}'),
+(11, 980, '{\"p_purc_out_vat\":{\"old\":\"8.4746\",\"new\":\"0.0000\"},\"p_sale_out_vat\":{\"old\":\"16.9492\",\"new\":\"0.0000\"},\"p_purc\":{\"old\":\"10.0000\",\"new\":\"0.0000\"},\"p_sale\":{\"old\":\"20.0000\",\"new\":\"0.0000\"}}'),
+(12, 981, '{\"status\":{\"old\":\"0\",\"new\":\"1\"}}'),
+(13, 982, '{\"status\":{\"old\":\"1\",\"new\":\"0\"}}'),
+(14, 983, '{\"status\":{\"old\":\"0\",\"new\":\"1\"}}'),
+(15, 984, '{\"status\":{\"old\":\"1\",\"new\":\"0\"}}'),
+(16, 985, '{\"status\":{\"old\":\"0\",\"new\":\"1\"}}'),
+(17, 986, '{\"status\":{\"old\":\"1\",\"new\":\"0\"}}'),
+(18, 987, '{\"status\":{\"old\":\"0\",\"new\":\"1\"}}'),
+(19, 1000, '{\"status\":{\"old\":\"1\",\"new\":\"0\"}}'),
+(20, 1003, '{\"status\":{\"old\":\"0\",\"new\":\"1\"}}'),
+(21, 1005, '{\"status\":{\"old\":\"1\",\"new\":\"0\"}}'),
+(22, 1007, '{\"status\":{\"old\":\"0\",\"new\":\"1\"}}'),
+(23, 1010, '{\"status\":{\"old\":\"1\",\"new\":\"0\"}}'),
+(24, 1014, '{\"status\":{\"old\":\"0\",\"new\":\"1\"}}'),
+(25, 1017, '{\"status\":{\"old\":\"1\",\"new\":\"0\"}}'),
+(26, 1020, '{\"status\":{\"old\":\"1\",\"new\":\"0\"}}'),
+(27, 1021, '{\"status\":{\"old\":\"0\",\"new\":\"1\"}}'),
+(28, 1051, '{\"citizenship_no\":{\"old\":\"\",\"new\":\"12312312312\"}}'),
+(29, 1052, '{\"til_login\":{\"old\":\"1\",\"new\":\"0\"}}'),
+(30, 1055, '{\"citizenship_no\":{\"old\":\"\",\"new\":\"12312312312\"}}'),
+(31, 1057, '{\"avatar\":{\"old\":\"http:\\/\\/localhost\\/github\\/tilpark\\/\\/content\\/themes\\/default\\/img\\/no-avatar-0.jpg\",\"new\":\"http:\\/\\/localhost\\/github\\/tilpark\\/content\\/upload\\/2017\\/02\\/21\\/til-uid-1-dt-20170221172125.jpg\"}}'),
+(32, 1101, '{\"account_id\":{\"old\":\"0\",\"new\":\"5\"}}'),
+(33, 1102, '{\"account_id\":{\"old\":\"0\",\"new\":\"6\"}}'),
+(34, 1103, '{\"account_id\":{\"old\":\"0\",\"new\":\"7\"}}'),
+(35, 1108, '{\"account_id\":{\"old\":\"0\",\"new\":\"8\"}}'),
+(36, 1110, '{\"account_id\":{\"old\":\"0\",\"new\":\"9\"}}'),
+(37, 1111, '{\"avatar\":{\"old\":\"http:\\/\\/localhost\\/github\\/tilpark\\/\\/content\\/themes\\/default\\/img\\/no-avatar-1.jpg\",\"new\":\"http:\\/\\/localhost\\/github\\/tilpark\\/\\/content\\/themes\\/default\\/img\\/no-avatar-0.jpg\"},\"gender\":{\"old\":\"1\",\"new\":\"0\"}}'),
+(38, 1135, '{\"status\":{\"old\":\"1\",\"new\":\"0\"}}'),
+(39, 1136, '{\"status\":{\"old\":\"0\",\"new\":\"1\"}}'),
+(40, 1140, '{\"account_id\":{\"old\":\"0\",\"new\":\"10\"}}'),
+(41, 1152, '{\"account_gsm\":{\"old\":\"\",\"new\":\"5371234545\"},\"account_phone\":{\"old\":\"\",\"new\":\"2123453433\"},\"account_email\":{\"old\":\"\",\"new\":\"yilmaz@tilpark.com\"},\"account_city\":{\"old\":\"\",\"new\":\"ISTANBUL\"}}'),
+(42, 1156, '{\"account_tax_home\":{\"old\":\"\",\"new\":\"MERCAN\"},\"account_tax_no\":{\"old\":\"\",\"new\":\"66754200370\"}}'),
+(43, 1157, '{\"account_tax_home\":{\"old\":\"MERCAN\",\"new\":\"\"}}'),
+(44, 1158, '{\"account_tax_home\":{\"old\":\"\",\"new\":\"MERCAN\"},\"account_tax_no\":{\"old\":\"66754200370\",\"new\":\"\"}}'),
+(45, 1159, '{\"account_tax_no\":{\"old\":\"\",\"new\":\"66754299379\"}}'),
+(46, 1161, '{\"account_name\":{\"old\":\"KRAL MUSTAFA ; , \'\' \\ / \",\"new\":\"SAAT 5\'TEN\"}}'),
+(47, 1162, '{\"account_name\":{\"old\":\"SAAT 5\'TEN\",\"new\":\"SAAT 5\'TENLL\"}}');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `til_messages`
+--
+
+CREATE TABLE `til_messages` (
+  `id` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `status` int(1) NOT NULL DEFAULT '1',
+  `type` varchar(10) NOT NULL,
+  `top_id` int(11) NOT NULL,
+  `sen_u_id` int(11) NOT NULL,
+  `rec_u_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `read_it` enum('0','1') NOT NULL DEFAULT '0',
+  `inbox_u_id` int(11) NOT NULL,
+  `outbox_u_id` int(11) NOT NULL,
+  `date_update` datetime NOT NULL,
+  `sen_trash_u_id` int(11) NOT NULL,
+  `rec_trash_u_id` int(11) NOT NULL,
+  `date_start` datetime NOT NULL,
+  `date_end` datetime NOT NULL,
+  `choice` text NOT NULL,
+  `type_status` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tablo döküm verisi `til_messages`
+--
+
+INSERT INTO `til_messages` (`id`, `date`, `status`, `type`, `top_id`, `sen_u_id`, `rec_u_id`, `title`, `message`, `read_it`, `inbox_u_id`, `outbox_u_id`, `date_update`, `sen_trash_u_id`, `rec_trash_u_id`, `date_start`, `date_end`, `choice`, `type_status`) VALUES
+(15, '2017-02-07 15:25:59', 1, 'message', 0, 11, 1, 'Bundan sonra yapılacak birşey kalmadı', '<p>Bundan sonra yapılacak birşey kalmadı</p>', '1', 1, 11, '2017-02-08 10:50:24', 11, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(16, '2017-02-07 15:27:32', 1, 'mess-reply', 15, 1, 11, 'bu bir cevap mesajıdır.', 'bu bir cevap mesajıdır.', '0', 0, 0, '2017-02-07 15:27:32', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(17, '2017-02-07 15:30:19', 1, 'mess-reply', 15, 11, 1, 'cevap yazıyorum.', 'cevap yazıyorum.', '0', 0, 0, '2017-02-07 15:30:19', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(18, '2017-02-07 15:31:16', 1, 'mess-reply', 15, 1, 11, 'bende cevap yazıyorum', 'bende cevap yazıyorum', '0', 0, 0, '2017-02-07 15:31:16', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(19, '2017-02-07 16:19:20', 1, 'message', 0, 11, 1, 'bu akşam spor var orhan dimi', '<p>bu akşam spor var orhan dimi</p>', '1', 1, 11, '2017-02-08 10:57:20', 0, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(20, '2017-02-07 16:40:05', 1, 'mess-reply', 15, 11, 1, 'bende cevap yazdım.', 'bende cevap yazdım.', '0', 0, 0, '2017-02-07 16:40:05', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(21, '2017-02-08 10:45:02', 1, 'mess-reply', 15, 11, 1, 'tekrar cevap yazdım.', 'tekrar cevap yazdım.', '0', 0, 0, '2017-02-08 10:45:02', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(22, '2017-02-08 10:50:24', 1, 'mess-reply', 15, 11, 1, 'birdaha cevap yazdım.', 'birdaha cevap yazdım.', '0', 0, 0, '2017-02-08 10:50:24', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(23, '2017-02-08 10:51:03', 1, 'mess-reply', 19, 11, 1, 'evet abi var mı?', 'evet abi var mı?', '0', 0, 0, '2017-02-08 10:51:03', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(24, '2017-02-08 10:56:28', 1, 'mess-reply', 19, 11, 1, 'bu işlem daha önceden gerçekleşmiş.', 'bu işlem daha önceden gerçekleşmiş.', '0', 0, 0, '2017-02-08 10:56:28', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(25, '2017-02-08 10:57:20', 1, 'mess-reply', 19, 11, 1, 'helal adnalaı celal', 'helal adnalaı celal', '0', 0, 0, '2017-02-08 10:57:20', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(26, '2017-02-08 10:58:02', 1, 'message', 0, 1, 11, 'MerhabaMerhaba büyük üstat', '<p>Merhaba</p><p><br></p><p>Merhaba büyük üstat</p>', '1', 11, 1, '2017-02-08 10:58:02', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(27, '2017-02-08 10:58:36', 1, 'message', 0, 1, 11, 'Hop 1-2-3 tanıtık var mı?', '<p>Hop 1-2-3 tanıtık var mı?</p>', '1', 1, 11, '2017-02-08 12:21:12', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(28, '2017-02-08 10:59:37', 1, 'mess-reply', 27, 11, 1, 'artık bende cevap yazıyorum', 'artık bende cevap yazıyorum', '0', 0, 0, '2017-02-08 10:59:37', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(29, '2017-02-08 12:21:12', 1, 'mess-reply', 27, 11, 1, 'tekrar cevap yazdım.', 'tekrar cevap yazdım.', '0', 0, 0, '2017-02-08 12:21:12', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(30, '2017-02-08 13:18:18', 1, 'message', 0, 11, 1, 'nbr mustafa başkan nasılsın', '<p>nbr mustafa başkan nasılsın</p>', '0', 11, 1, '2017-02-09 09:30:21', 0, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(31, '2017-02-09 09:09:03', 1, 'message', 0, 11, 1, 'deneme 123-123123123', '<p>deneme 123-123123123</p>', '0', 11, 1, '2017-02-17 17:17:18', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(32, '2017-02-09 09:09:37', 1, 'mess-reply', 30, 1, 11, 'cevap veriyorum', 'cevap veriyorum', '0', 0, 0, '2017-02-09 09:09:37', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(33, '2017-02-09 09:10:17', 1, 'task', 0, 11, 1, 'ssk daireise', '<p>asfasfsdfsdf</p>', '0', 11, 1, '2017-02-10 09:54:12', 0, 0, '2017-02-09 09:09:00', '2017-02-16 14:44:00', '{\"1\":{\"is_it_done\":1,\"date\":\"2017-02-10 09:52:00\",\"user_id\":\"11\",\"text\":\"muhammetin sigortası\"},\"2\":{\"is_it_done\":1,\"date\":\"2017-02-10 09:52:00\",\"user_id\":\"11\",\"text\":\"mifer dayının sigortaı\"}}', '1'),
+(34, '2017-02-09 09:20:06', 1, 'task-reply', 33, 1, 11, '', '\\\"<small class=\\\"text-muted italic\\\">muhammetin sigortası</small>\\\" görevini \\\"<b>yapıldı</b>\\\" olarak işaretledi.', '0', 0, 0, '2017-02-09 09:20:06', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(35, '2017-02-09 09:20:08', 1, 'task-reply', 33, 1, 11, '', '\\\"<small class=\\\"text-muted italic\\\">mifer dayının sigortaı</small>\\\" görevini \\\"<b>yapıldı</b>\\\" olarak işaretledi.', '0', 0, 0, '2017-02-09 09:20:08', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(36, '2017-02-09 09:20:10', 1, 'task-reply', 33, 1, 11, '', '\\\"<small class=\\\"text-muted italic\\\">muhammetin sigortası</small>\\\" görevini \\\"<b>yapılmadı</b>\\\" olarak işaretledi.', '0', 0, 0, '2017-02-09 09:20:10', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(37, '2017-02-09 09:20:52', 1, 'task-reply', 33, 1, 11, '', '\\\"<small class=\\\"text-muted italic\\\">muhammetin sigortası</small>\\\" görevini \\\"<b>yapıldı</b>\\\" olarak işaretledi.', '0', 0, 0, '2017-02-09 09:20:52', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(38, '2017-02-09 09:20:53', 1, 'task-reply', 33, 1, 11, '', 'Bu görev tarafımdan kapatıldı.', '0', 0, 0, '2017-02-09 09:20:53', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(39, '2017-02-09 09:28:47', 1, 'task-reply', 33, 1, 11, '', 'Bu görev tarafımdan tekrar aktif edildi.', '0', 0, 0, '2017-02-09 09:28:47', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(40, '2017-02-09 09:30:07', 1, 'task-reply', 33, 1, 11, '', 'Bu görev tarafımdan tekrar aktif edildi.', '0', 0, 0, '2017-02-09 09:30:07', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(41, '2017-02-09 09:30:21', 1, 'mess-reply', 30, 1, 11, 'sdfsdfsdf', 'sdfsdfsdf', '0', 0, 0, '2017-02-09 09:30:21', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(42, '2017-02-09 12:58:54', 1, 'task', 0, 11, 1, 'konuşssana bir tanem neden hep ağlıyorsun', '<p>Susmak neyi hallederrrrrrr</p><p><br></p><p>neden anlatmıyorsun</p>', '0', 11, 1, '2017-02-17 17:18:07', 0, 0, '2017-02-09 12:58:00', '2017-02-09 12:58:00', '{\"1\":{\"is_it_done\":0,\"text\":\"konuşsana bir tane\"},\"2\":{\"is_it_done\":1,\"date\":\"2017-02-17 17:18:07\",\"user_id\":\"1\",\"text\":\"neden hep susuyorsun\"},\"3\":{\"is_it_done\":1,\"date\":\"2017-02-17 17:18:07\",\"user_id\":\"1\",\"text\":\"susmak neyi halleder\"},\"4\":{\"is_it_done\":0,\"text\":\"neden ağlatmıyorsun\"}}', '0'),
+(43, '2017-02-09 13:44:54', 1, 'task-reply', 33, 11, 1, '', 'Görev bitirme tarihini \\\"<b>2017-02-16 14:44</b>\\\" olarak değiştirdi.', '0', 0, 0, '2017-02-09 13:44:54', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(44, '2017-02-09 13:45:22', 1, 'task-reply', 33, 1, 11, '', 'Bu görev tarafımdan kapatıldı.', '0', 0, 0, '2017-02-09 13:45:22', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(45, '2017-02-10 09:35:10', 1, 'task-reply', 33, 11, 1, '', 'bu görevi bitirdiğinizi mi zannediyorsunuz.', '0', 0, 0, '2017-02-10 09:35:10', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(46, '2017-02-10 09:38:34', 1, 'task-reply', 33, 1, 11, '', '\\\"<small class=\\\"text-muted italic\\\">muhammetin sigortası</small>\\\" görevini \\\"<b>yapılmadı</b>\\\" olarak işaretledi.', '0', 0, 0, '2017-02-10 09:38:34', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(47, '2017-02-10 09:52:00', 1, 'task-reply', 33, 11, 1, '', '\\\"<small class=\\\"text-muted italic\\\">muhammetin sigortası</small>\\\" görevini \\\"<b>yapıldı</b>\\\" olarak işaretledi.', '0', 0, 0, '2017-02-10 09:52:00', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(48, '2017-02-10 09:52:32', 1, 'task-reply', 42, 1, 11, '', '\\\"<small class=\\\"text-muted italic\\\">konuşsana bir tane</small>\\\" görevini \\\"<b>yapıldı</b>\\\" olarak işaretledi.', '0', 0, 0, '2017-02-10 09:52:32', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(49, '2017-02-10 09:52:36', 1, 'task-reply', 42, 1, 11, '', '\\\"<small class=\\\"text-muted italic\\\">susmak neyi halleder</small>\\\" görevini \\\"<b>yapıldı</b>\\\" olarak işaretledi.', '0', 0, 0, '2017-02-10 09:52:36', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(50, '2017-02-10 09:52:41', 1, 'task-reply', 42, 1, 11, '', '\\\"<small class=\\\"text-muted italic\\\">neden hep susuyorsun</small>\\\" görevini \\\"<b>yapıldı</b>\\\" olarak işaretledi.', '0', 0, 0, '2017-02-10 09:52:41', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(51, '2017-02-10 09:54:12', 1, 'task-reply', 33, 1, 11, '', 'Bu görev tarafımdan kapatıldı.', '0', 0, 0, '2017-02-10 09:54:12', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(52, '2017-02-10 10:15:39', 1, 'task', 0, 11, 1, 'talihsizler talihsizler', '<p>talihsizler talihsizlertalihsizler talihsizlertalihsizler talihsizlertalihsizler talihsizlertalihsizler talihsizlertalihsizler talihsizlertalihsizler talihsizlertalihsizler talihsizler</p>', '1', 1, 11, '2017-02-10 10:15:39', 0, 0, '2017-02-10 10:15:00', '2017-02-10 10:15:00', '{\"1\":{\"is_it_done\":0,\"text\":\"sdf\"},\"2\":{\"is_it_done\":0,\"text\":\"sdf\"},\"3\":{\"is_it_done\":0,\"text\":\"sdf\"}}', '0'),
+(53, '2017-02-10 15:05:31', 1, 'task', 0, 1, 11, 'Böyle görev olmaz olsun', '<p>Böyle görev olmaz olsun</p>', '0', 11, 1, '2017-02-10 15:05:31', 0, 0, '2017-02-10 15:05:00', '2017-02-10 15:05:00', '', '0'),
+(54, '2017-02-17 17:17:18', 1, 'mess-reply', 31, 1, 11, 'selam eşref', 'selam eşref', '0', 0, 0, '2017-02-17 17:17:18', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(55, '2017-02-17 17:18:07', 1, 'task-reply', 42, 1, 11, '', '\\\"<small class=\\\"text-muted italic\\\">konuşsana bir tane</small>\\\" görevini \\\"<b>yapılmadı</b>\\\" olarak işaretledi.', '0', 0, 0, '2017-02-17 17:18:07', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(56, '2017-03-06 09:25:14', 1, 'message', 0, 1, 1, 'Mesaj Eki - Form ID: #150', '<div class=\\\"row\\\"><div class=\\\"col-md-6\\\"><div class=\\\"panel panel-default\\\"><div class=\\\"panel-heading\\\"><h4 class=\\\"panel-title\\\"><i class=\\\"fa fa-paperclip fa-fw\\\"></i> Mesaj Eki - Form</h4></div><table class=\\\"table table-condensed table-hover table-striped\\\"><tbody><tr><td width=\\\"100\\\">Form ID</td><td width=\\\"1\\\">:</td><td><a href=\\\"http://localhost/github/tilpark/admin/form/detail.php?id=150\\\" target=\\\"_blank\\\">#<b>150</b> <i class=\\\"fa fa-external-link\\\"></i></td></tr><tr><td>Form Tarihi</td><td>:</td><td>2017-03-06 09:22</td></tr><tr><td>Form Durumu</td><td>:</td><td>Çıkış Formu / Teslim Edildi</td></tr><tr><td>Hesap Kartı</td><td>:</td><td>YILMAZ INAN</td></tr><tr><td>Ürün Sayısı</td><td>:</td><td>Ürün Çeşit \\\"<b>1</b>\\\" / Ürün Miktar \\\"<b>1</b>\\\"</td></tr><tr><td>Form Tutarı</td><td>:</td><td>35.00 TL</td></tr></tbody></table></div></div></div> <p>bu ürünü neden yanlış gönderdiniz.</p>', '1', 1, 1, '2017-03-06 09:25:14', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(57, '2017-03-06 09:26:09', 1, 'task', 0, 1, 1, 'taksitlearaba.com', '<p>rety rdthdfgh dfgjfhgj gfhjfghj ghj</p>', '0', 1, 1, '2017-03-06 10:57:45', 0, 0, '2017-03-06 09:25:00', '2017-03-06 09:25:00', '{\"1\":{\"is_it_done\":1,\"date\":\"2017-03-06 10:57:45\",\"user_id\":\"1\",\"text\":\"etiketler görünmüyor\"},\"2\":{\"is_it_done\":0,\"text\":\"başlığı kalın yap\"}}', '0'),
+(58, '2017-03-06 09:26:26', 1, 'task-reply', 57, 1, 1, '', '\\\"<small class=\\\"text-muted italic\\\">etiketler görünmüyor</small>\\\" görevini \\\"<b>yapıldı</b>\\\" olarak işaretledi.', '0', 0, 0, '2017-03-06 09:26:26', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(59, '2017-03-06 09:26:32', 1, 'task-reply', 57, 1, 1, '', '\\\"<small class=\\\"text-muted italic\\\">başlığı kalın yap</small>\\\" görevini \\\"<b>yapıldı</b>\\\" olarak işaretledi.', '0', 0, 0, '2017-03-06 09:26:32', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(60, '2017-03-06 09:26:36', 1, 'task-reply', 57, 1, 1, '', 'Bu görev tarafımdan kapatıldı.', '0', 0, 0, '2017-03-06 09:26:36', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', ''),
+(61, '2017-03-06 10:57:45', 1, 'task-reply', 57, 1, 1, '', '\\\"<small class=\\\"text-muted italic\\\">başlığı kalın yap</small>\\\" görevini \\\"<b>yapılmadı</b>\\\" olarak işaretledi.', '0', 0, 0, '2017-03-06 10:57:45', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `til_options`
+--
+
+CREATE TABLE `til_options` (
+  `id` int(11) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `val` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `til_questions`
+--
+
+CREATE TABLE `til_questions` (
+  `id` int(11) NOT NULL,
+  `status` int(1) NOT NULL DEFAULT '1',
+  `date` datetime NOT NULL,
+  `cat_id` int(11) NOT NULL,
+  `question` varchar(2000) NOT NULL,
+  `a` varchar(255) NOT NULL,
+  `b` varchar(255) NOT NULL,
+  `c` varchar(255) NOT NULL,
+  `d` varchar(255) NOT NULL,
+  `e` varchar(255) NOT NULL,
+  `answer` char(1) NOT NULL,
+  `description` text NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tablo döküm verisi `til_questions`
+--
+
+INSERT INTO `til_questions` (`id`, `status`, `date`, `cat_id`, `question`, `a`, `b`, `c`, `d`, `e`, `answer`, `description`, `user_id`) VALUES
+(1, 0, '2017-01-24 20:39:17', 23, 'sdfsdfs', 'dfsd', 'fsdfsd', 'fsdfsdf', 'sdfsd', 'fsdfsd', '', 'fsdfsdf', 0),
+(2, 0, '2017-01-24 20:40:24', 23, 'sdfsdf', 'sdfsdf', 'sdfsd', 'fsdfsd', 'fsdf', 'sdfsd', 'b', 'fsdfsdf', 0),
+(3, 1, '2017-01-24 20:41:27', 23, 'deneme sorusu güncellendisdfsdfsd', 'şjhjlhjlh', 'kjlhkjlhkjl', 'kjhkjhkjlh', 'kjhghfutrf', 'ıyosdgkjhlsbdjhfb', 'c', 'lsh lsdhs djhsdfg kjsdhfgsdfsdhdsgh', 1),
+(4, 1, '2017-01-24 20:52:55', 23, 'Aşağıdaki Tasavvuf şairlerinden hangisi aruz ölçüsünü kullanmamıştır?', 'Yunus Emre', 'Pir Sultan Abdal', 'Hoca Ahmet Yesevi', 'Kaygusuz Abdal', 'Eşrefoğlu Rumi', 'b', 'bu şu kullanamıştır.', 1),
+(5, 0, '2017-01-24 21:30:26', 23, 'sdfsdfsdf', 'sdfsdfs', 'dfsdf', 'dfsdf', 'dfsdf', 'fsdfsdf', 'b', 'sdfsdf sdfsd fsdf', 1),
+(6, 1, '2017-01-24 21:37:57', 23, 'Kahtalı miçe hangi türde müzik yapar?', 'Aşık Tarzı', 'Halk Müziği', 'Batı Müziği', 'Arap Müizği', 'Pop Müziği', 'b', 'Kahtali miçe halkında çıkmış araısnda sanatçıdır.', 1),
+(7, 1, '2017-01-25 10:29:07', 23, 'Damımıza damımıza kar yapdı şarkısını kim söylüyor', 'Kahtalı Miçe', 'Kahtasız Miçe', 'Kahtalı Hamo', 'Kahtalı Murat', 'Kara Murat', 'a', 'Anlatımı şöyle böyle', 1),
+(8, 1, '2017-01-25 10:30:08', 23, 'Yıkılasın Mahkum Evi şarkısını hangi halk sanatçımız söylemektedir?', 'Ankaralı Namık', 'Mardinli Hüseyin', 'Urfalı Abdi', 'Kahtalı Miçe', 'Antalya Belediye Başkanı', 'd', 'Doğru cevap Urfalı Abdi değildir, Kahtalı Miçe', 1),
+(9, 1, '2017-01-25 10:31:32', 23, '\\\"Eyvah Yine Ayrılık Göründü\\\" diye arabesk-fantezi şarkısını seslendiren sanatçımız hangisidir?', 'Abdurrahman Papur', 'İzonlu Mehmet', 'Küçük İbo', 'İbrahim Tatlıses', 'Kahtalı Miçe', 'd', 'Ha ha bunuda kahtalı miçe mi zannettiniz?', 1),
+(10, 1, '2017-01-25 12:07:52', 18, 'deneme e\\\'ermenler gelmelilier', 'sdfs sdfsd\\\'sdfsd ', 'sdfsdf ', 'sdfsdf', 'sdfsdf', 'sdfsdf', 'b', 'sdfsdfsd sd+sdfsdf sdğüşiöç', 1),
+(11, 1, '2017-01-26 09:40:30', 18, '<p>bu bir sorudur</p>', 'bir bir cevap', 'bir bir cevap', 'bir bir cevap', 'bir bir cevap', 'bir bir cevap', 'b', '', 1),
+(12, 1, '2017-01-26 09:44:21', 18, '<p>Aşağıdakilarden hangisi doğrudur?</p><p>A</p><p>B</p><p>B</p><p>C</p><p>C</p>', 'sdf', 'sdf', 'sdf', 'sdf', 'sdf', 'd', '<p>sdf sdfsdf</p><p>sdf</p><p>sdfdsf</p><p>helal</p><p>sdfsdfsf</p>', 1),
+(13, 1, '2017-01-26 09:45:26', 18, '<p>fsdfsdfsdf</p>', 'sdferer', 'sdfer', 'sdfer', 'ersdf', 'sdf', 'd', '<p>sssdfsd</p>', 1),
+(14, 1, '2017-01-26 09:49:51', 18, '<p>yeni bir soru</p><p>soruyorum arkadşalara</p>', 'd', 'd', 'd', 'd', 'd', 'e', '<p>Bu ise ders açıklaması ve anlatımı</p>', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `til_question_cat`
+--
+
+CREATE TABLE `til_question_cat` (
+  `id` int(11) NOT NULL,
+  `status` int(1) NOT NULL DEFAULT '1',
+  `date` datetime NOT NULL,
+  `top_id` int(11) NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `description` text NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tablo döküm verisi `til_question_cat`
+--
+
+INSERT INTO `til_question_cat` (`id`, `status`, `date`, `top_id`, `title`, `description`, `user_id`) VALUES
+(17, 0, '2017-01-24 18:36:36', 0, 'Türkçe', '', 1),
+(18, 1, '2017-01-24 18:36:41', 0, 'Matematik', '', 1),
+(19, 1, '2017-01-24 18:48:29', 17, 'İslamiyet Öncesi Türk Edebiyatı', 'Bu kategoride islamiyet öncesi türk edebiyatı soruları yer almaktadır.', 1),
+(20, 1, '2017-01-24 18:48:54', 17, 'Geçiş Dönemi Türk Edebiyatı', 'Bu kategoride geçiş dönemine ait türk edebiyatı soruları ve cevapları yer almaktadır.', 1),
+(21, 1, '2017-01-24 18:52:45', 17, 'Halk Edebiyatı', 'Bu kategoride halk edebiyatı yer almaktadır.', 1),
+(22, 1, '2017-01-24 18:56:49', 21, 'Anonim Halk Edebiyatı', 'Bu kategoride ananım halk edebiyatı soru ve cevapları yer almaktadır.', 1),
+(23, 1, '2017-01-24 18:57:13', 21, 'Aşık Edebiyatı', 'Bu kategoride aşık edebiyatı yer almaktadır.', 1),
+(24, 1, '2017-01-24 19:01:30', 23, 'Şairler', '', 1),
+(25, 1, '2017-01-24 19:01:36', 23, 'Nazım Biçimleri', '', 1),
+(26, 1, '2017-01-24 19:01:40', 23, 'Karma Sorular', '', 1),
+(27, 1, '2017-01-24 20:23:42', 0, 'Hayat Bilgisi', '', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `til_users`
+--
+
+CREATE TABLE `til_users` (
+  `id` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `status` int(1) NOT NULL DEFAULT '1',
+  `username` varchar(255) NOT NULL,
+  `password` char(32) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `surname` varchar(20) NOT NULL,
+  `gsm` varchar(10) NOT NULL,
+  `role` int(1) NOT NULL,
+  `avatar` varchar(255) NOT NULL,
+  `gender` enum('0','1') NOT NULL,
+  `citizenship_no` varchar(20) NOT NULL,
+  `til_login` tinyint(1) NOT NULL DEFAULT '0',
+  `account_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tablo döküm verisi `til_users`
+--
+
+INSERT INTO `til_users` (`id`, `date`, `status`, `username`, `password`, `name`, `surname`, `gsm`, `role`, `avatar`, `gender`, `citizenship_no`, `til_login`, `account_id`) VALUES
+(1, '2016-01-26 00:00:00', 1, 'mustafa@tilpark.com', '909090', 'MUSTAFA', 'TANRIVERDI', '5324564545', 1, '/content/upload/2017/02/10/til-uid-1-dt-20170210150349.jpg', '0', '12312312312', 2, 7),
+(20, '2017-02-27 18:25:25', 1, 'orhan@tilpark.com', '', 'ORHAN', 'GÜRBÜZ', '5322343434', 5, '', '0', '12312312323', 0, 9),
+(21, '2017-03-06 09:16:36', 1, 'muhammet@tilpark.com', '123456', 'MUHAMMET', 'INAN', '5350140011', 4, '', '1', '12312312345', 1, 10);
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `til_user_meta`
+--
+
+CREATE TABLE `til_user_meta` (
+  `id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `meta_key` varchar(32) NOT NULL,
+  `meta_value` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Tablo döküm verisi `til_user_meta`
+--
+
+INSERT INTO `til_user_meta` (`id`, `user_id`, `meta_key`, `meta_value`) VALUES
+(2, 19, '', ''),
+(3, 18, '', ''),
+(4, 18, '', ''),
+(5, 18, '', ''),
+(6, 2, 'citizenship_no', '23123121212'),
+(7, 2, 'father_name', '42342343'),
+(8, 2, 'mother_name', '234234'),
+(9, 2, 'date_birth', '2017-02-05'),
+(10, 2, 'birthplace', 'sdfsdf'),
+(11, 2, 'district', 'küçükçekmece'),
+(12, 2, 'city', 'sdfsdf'),
+(13, 2, 'address', 'kemal paşa cad. akarsu sk. no:26'),
+(14, 2, 'emergency_name_1', ''),
+(15, 2, 'emergency_relative_1', ''),
+(16, 2, 'emergency_phone_1', ''),
+(17, 2, 'emergency_name_2', ''),
+(18, 2, 'emergency_relative_2', ''),
+(19, 2, 'emergency_phone_2', ''),
+(20, 2, 'is_married', 'married'),
+(21, 2, 'humble_person_count', '23'),
+(22, 2, 'spouses_name', 'hatice'),
+(23, 2, 'children_count', '2'),
+(24, 2, 'military_status', 'postponed'),
+(25, 2, 'military_end_date', ''),
+(26, 2, 'military_postponed', '2017-02-22'),
+(27, 2, 'military_exempt', ''),
+(28, 2, 'school', '[{\"school_level\":\"high_school\",\"school_name\":\"tahsin bangıoğlu\",\"school_department\":\"\",\"school_graduation_year\":\"\",\"school_grade\":\"\"},{\"school_level\":\"university\",\"school_name\":\"aynen evet\",\"school_department\":\"\",\"school_graduation_year\":\"\",\"school_grade\":\"\"}]'),
+(29, 18, 'citizenship_no', ''),
+(30, 18, 'father_name', ''),
+(31, 18, 'mother_name', ''),
+(32, 18, 'date_birth', ''),
+(33, 18, 'birthplace', ''),
+(34, 18, 'district', ''),
+(35, 18, 'city', ''),
+(36, 18, 'address', ''),
+(37, 18, 'emergency_name_1', ''),
+(38, 18, 'emergency_relative_1', ''),
+(39, 18, 'emergency_phone_1', ''),
+(40, 18, 'emergency_name_2', ''),
+(41, 18, 'emergency_relative_2', ''),
+(42, 18, 'emergency_phone_2', ''),
+(43, 18, 'is_married', 'married'),
+(44, 18, 'humble_person_count', ''),
+(45, 18, 'spouses_name', ''),
+(46, 18, 'children_count', ''),
+(47, 18, 'military_status', ''),
+(48, 18, 'military_end_date', ''),
+(49, 18, 'military_postponed', ''),
+(50, 18, 'military_exempt', ''),
+(51, 18, 'school', '[{\"school_level\":\"college\",\"school_name\":\"sss\",\"school_department\":\"123\",\"school_graduation_year\":\"2323\",\"school_grade\":\"1\"}]'),
+(52, 2, 'work', '[{\"work_level\":\"full_time\",\"work_position\":\"position1\",\"work_company_name\":\"Tilpark\",\"work_start_date\":\"2012\",\"work_end_date\":\"2014\",\"work_description\":\"açıklamamamaaa\"},{\"work_level\":\"full_time\",\"work_position\":\"positon2\",\"work_company_name\":\"yazılım görevlisi olarak\",\"work_start_date\":\"2011\",\"work_end_date\":\"2012\",\"work_description\":\"açıklamamamaaa\"}]'),
+(53, 18, 'work', '[{\"work_level\":\"part_time\",\"work_position\":\"tam zamanlı çalışan\",\"work_company_name\":\"tilpark\",\"work_start_date\":\"2012\",\"work_end_date\":\"2014\",\"work_description\":\"denemene\"},{\"work_level\":\"seasonal\",\"work_position\":\"222\",\"work_company_name\":\"22222\",\"work_start_date\":\"2010\",\"work_end_date\":\"2012\",\"work_description\":\"222221111\"},{\"work_level\":\"student\",\"work_position\":\"444\",\"work_company_name\":\"44444\",\"work_start_date\":\"2009\",\"work_end_date\":\"2010\",\"work_description\":\"444441111\"}]'),
+(54, 18, 'language', '[{\"lang_lang\":\"\",\"lang_reading\":\"1\",\"lang_writing\":\"1\",\"lang_talk\":\"1\"}]'),
+(55, 2, 'language', '[{\"lang_lang\":\"İngilizce\",\"lang_reading\":\"2\",\"lang_writing\":\"1\",\"lang_talk\":\"1\"}]'),
+(56, 2, 'driving_license', '[\"A1\",\"A2\",\"B\",\"C\",\"D\",\"E\",\"F\",\"H\"]'),
+(57, 2, 'src', '[\"SRC1\",\"SRC2\",\"SRC3\",\"SRC4\",\"SRC5\"]'),
+(58, 2, 'smoking', 'true'),
+(59, 2, 'travel_ban', 'true'),
+(60, 2, 'work_overtime', 'true'),
+(61, 2, 'work_night', 'true'),
+(62, 2, 'blood_group', 'abrh+'),
+(63, 2, 'human_size', '12'),
+(64, 2, 'human_weigth', ''),
+(65, 2, 'human_weight', '300'),
+(66, 2, 'emergency', '[{\"emergency_name\":\"mervenur tanrıverdiggg\",\"emergency_relative\":\"eşimggg\",\"emergency_phone\":\"21290293155\"},{\"emergency_name\":\"bilal gürbüzgg\",\"emergency_relative\":\"tezzeoğlug\",\"emergency_phone\":\"21239023455\"}]'),
+(67, 2, 'reference', '[{\"ref_name_surname\":\"kralkral\",\"ref_company\":\"kral\",\"ref_phone\":\"\"},{\"ref_name_surname\":\"deneme\",\"ref_company\":\"tilpark\",\"ref_phone\":\"\"},{\"ref_name_surname\":\"merhaba mustafa\",\"ref_company\":\"\",\"ref_phone\":\"\"}]'),
+(68, 2, 'unhealthy', '1'),
+(69, 2, 'unhealthy_type', 'Deri Hastalıkları'),
+(70, 2, 'unhealthy_degree', '%100'),
+(71, 2, 'terror', '1'),
+(72, 2, 'terror_type', 'Şehit Çocuğu'),
+(73, 2, 'terror_desc', 'ddd'),
+(74, 2, 'prison', '1'),
+(75, 2, 'prison_year', '3'),
+(76, 2, 'prison_month', '5'),
+(77, 2, 'prison_desc', 'dfssss'),
+(78, 14, 'citizenship_no', ''),
+(79, 14, 'father_name', 'Kafer'),
+(80, 14, 'mother_name', 'havva'),
+(81, 14, 'date_birth', '1989-10-28'),
+(82, 14, 'birthplace', 'Eminönü'),
+(83, 14, 'district', 'merkez'),
+(84, 14, 'city', 'adıyaman'),
+(85, 14, 'address', 'Alitaşı mah. mimar kemalettin sk. no:1 kat:4'),
+(86, 14, 'is_married', 'married'),
+(87, 14, 'humble_person_count', '33'),
+(88, 14, 'spouses_name', 'mervenur'),
+(89, 14, 'children_count', '2'),
+(90, 14, 'military_status', 'exempt'),
+(91, 14, 'military_end_date', ''),
+(92, 14, 'military_postponed', ''),
+(93, 14, 'military_exempt', 'sdfsdfsd fsdf'),
+(94, 14, 'emergency', '[{\"emergency_name\":\"muhammet inan\",\"emergency_relative\":\"emmoğlu\",\"emergency_phone\":\"21290232323\"},{\"emergency_name\":\"kafer gürbüz\",\"emergency_relative\":\"babası\",\"emergency_phone\":\"5322342323\"}]'),
+(95, 14, 'school', '[{\"school_level\":\"primary_education\",\"school_name\":\"Tahsinbangıoğlu\",\"school_department\":\"\",\"school_graduation_year\":\"1999\",\"school_grade\":\"4\"},{\"school_level\":\"high_school\",\"school_name\":\"Açıköğretim\",\"school_department\":\"Yabancı dil\",\"school_graduation_year\":\"2012\",\"school_grade\":\"3.5\"},{\"school_level\":\"university\",\"school_name\":\"İTÜ bilişim fakültesi\",\"school_department\":\"yazılım\",\"school_graduation_year\":\"2016\",\"school_grade\":\"4.3\"}]'),
+(96, 14, 'work', '[{\"work_level\":\"full_time\",\"work_position\":\"Yazılımcı\",\"work_company_name\":\"Citroen Yedek Parça\",\"work_start_date\":\"2012\",\"work_end_date\":\"2014\",\"work_description\":\"deneme mah. deneme cad. deneme sk.deneme mah. deneme cad. deneme sk.deneme mah. deneme cad. deneme s\"},{\"work_level\":\"full_time\",\"work_position\":\"editör\",\"work_company_name\":\"tilpark\",\"work_start_date\":\"2016\",\"work_end_date\":\"2017\",\"work_description\":\"editörlük işlere baktım\"}]'),
+(97, 14, 'language', '[{\"lang_lang\":\"İngilizce\",\"lang_reading\":\"3\",\"lang_writing\":\"3\",\"lang_talk\":\"2\"},{\"lang_lang\":\"Almanca\",\"lang_reading\":\"1\",\"lang_writing\":\"1\",\"lang_talk\":\"4\"},{\"lang_lang\":\"Zazaca\",\"lang_reading\":\"4\",\"lang_writing\":\"4\",\"lang_talk\":\"4\"}]'),
+(98, 14, 'reference', '[{\"ref_name_surname\":\"Muhammet inan\",\"ref_company\":\"tilpark\",\"ref_phone\":\"05322650382\"},{\"ref_name_surname\":\"mustafa tanrıverdi\",\"ref_company\":\"tilpark yazılım hizmetleri\",\"ref_phone\":\"53226503822\"}]'),
+(99, 14, 'smoking', 'true'),
+(100, 14, 'travel_ban', 'true'),
+(101, 14, 'work_overtime', 'true'),
+(102, 14, 'work_night', ''),
+(103, 14, 'unhealthy', '1'),
+(104, 14, 'unhealthy_type', 'Damar Hastalıkları'),
+(105, 14, 'unhealthy_degree', '%40'),
+(106, 14, 'terror', '1'),
+(107, 14, 'terror_type', 'Şehit Eşi'),
+(108, 14, 'terror_desc', 'aeeee dsf sdf sdfaeeee dsf sdf sdfaeeee dsf sdf sdfaeeee dsf sdf sdf'),
+(109, 14, 'prison', '1'),
+(110, 14, 'prison_year', '1'),
+(111, 14, 'prison_month', '2'),
+(112, 14, 'prison_desc', 'adam bıçaklama'),
+(113, 14, 'blood_group', 'brh+'),
+(114, 14, 'human_size', '120'),
+(115, 14, 'human_weight', '39'),
+(116, 14, 'url_website', ''),
+(117, 14, 'url_facebook', ''),
+(118, 14, 'url_linkedin', ''),
+(119, 14, 'url_twitter', ''),
+(120, 14, 'driving_license', '[\"A1\",\"A2\",\"B\"]'),
+(121, 14, 'src', '[\"SRC2\",\"SRC4\"]'),
+(122, 19, 'date_start_work', '2016-08-01'),
+(123, 19, 'date_end_work', '2017-02-16'),
+(124, 19, 'net_salary', '2500.00'),
+(125, 18, 'date_start_work', '2017-02-14'),
+(126, 18, 'date_end_work', '2017-02-27'),
+(127, 18, 'net_salary', '900.00'),
+(128, 20, 'date_start_work', '2017-01-03'),
+(129, 20, 'date_end_work', ''),
+(130, 20, 'net_salary', '2000.00'),
+(131, 20, 'father_name', ''),
+(132, 20, 'mother_name', ''),
+(133, 20, 'date_birth', ''),
+(134, 20, 'birthplace', ''),
+(135, 20, 'district', 'merkez'),
+(136, 20, 'city', 'adıyaman'),
+(137, 20, 'address', 'deneme mah. deneme cad.'),
+(138, 20, 'is_married', ''),
+(139, 20, 'humble_person_count', ''),
+(140, 20, 'spouses_name', ''),
+(141, 20, 'children_count', ''),
+(142, 20, 'military_status', ''),
+(143, 20, 'military_end_date', ''),
+(144, 20, 'military_postponed', ''),
+(145, 20, 'military_exempt', ''),
+(146, 20, 'emergency', '[]'),
+(147, 20, 'school', '[]'),
+(148, 20, 'work', '[]'),
+(149, 20, 'language', '[]'),
+(150, 20, 'reference', '[]'),
+(151, 20, 'smoking', ''),
+(152, 20, 'travel_ban', ''),
+(153, 20, 'work_overtime', ''),
+(154, 20, 'work_night', ''),
+(155, 20, 'unhealthy', ''),
+(156, 20, 'unhealthy_type', ''),
+(157, 20, 'unhealthy_degree', ''),
+(158, 20, 'terror', ''),
+(159, 20, 'terror_type', ''),
+(160, 20, 'terror_desc', ''),
+(161, 20, 'prison', ''),
+(162, 20, 'prison_year', ''),
+(163, 20, 'prison_month', ''),
+(164, 20, 'prison_desc', ''),
+(165, 20, 'blood_group', ''),
+(166, 20, 'human_size', ''),
+(167, 20, 'human_weight', ''),
+(168, 20, 'url_website', ''),
+(169, 20, 'url_facebook', ''),
+(170, 20, 'url_linkedin', ''),
+(171, 20, 'url_twitter', ''),
+(172, 21, 'date_start_work', '2017-01-01'),
+(173, 21, 'date_end_work', ''),
+(174, 21, 'net_salary', '3000.00'),
+(175, 21, 'father_name', 'Noyfer Inan'),
+(176, 21, 'mother_name', 'Seniha'),
+(177, 21, 'date_birth', '2017-03-14'),
+(178, 21, 'birthplace', 'Adıyaman'),
+(179, 21, 'district', 'Ikitell'),
+(180, 21, 'city', 'ISTANBUL'),
+(181, 21, 'address', 'Deneme Mah Deneme Cad Deneme Apt Deneme Sk'),
+(182, 21, 'is_married', ''),
+(183, 21, 'humble_person_count', ''),
+(184, 21, 'spouses_name', ''),
+(185, 21, 'children_count', ''),
+(186, 21, 'military_status', ''),
+(187, 21, 'military_end_date', ''),
+(188, 21, 'military_postponed', ''),
+(189, 21, 'military_exempt', ''),
+(190, 21, 'emergency', '[]'),
+(191, 21, 'school', '[{\"school_level\":\"Primary_Education\",\"school_name\":\"Kral Miral Tanimam\",\"school_department\":\"Asdfsdf\",\"school_graduation_year\":\"2010\",\"school_grade\":\"22\"}]'),
+(192, 21, 'work', '[]'),
+(193, 21, 'language', '[{\"lang_lang\":\"Türkçe\",\"lang_reading\":\"1\",\"lang_writing\":\"1\",\"lang_talk\":\"1\"}]'),
+(194, 21, 'reference', '[]'),
+(195, 21, 'smoking', ''),
+(196, 21, 'travel_ban', ''),
+(197, 21, 'work_overtime', ''),
+(198, 21, 'work_night', ''),
+(199, 21, 'unhealthy', ''),
+(200, 21, 'unhealthy_type', ''),
+(201, 21, 'unhealthy_degree', ''),
+(202, 21, 'terror', ''),
+(203, 21, 'terror_type', ''),
+(204, 21, 'terror_desc', ''),
+(205, 21, 'prison', ''),
+(206, 21, 'prison_year', ''),
+(207, 21, 'prison_month', ''),
+(208, 21, 'prison_desc', ''),
+(209, 21, 'blood_group', ''),
+(210, 21, 'human_size', ''),
+(211, 21, 'human_weight', ''),
+(212, 21, 'url_website', ''),
+(213, 21, 'url_facebook', ''),
+(214, 21, 'url_linkedin', ''),
+(215, 21, 'url_twitter', '');
+
+--
+-- Dökümü yapılmış tablolar için indeksler
+--
+
+--
+-- Tablo için indeksler `til_accounts`
+--
+ALTER TABLE `til_accounts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `code` (`code`),
+  ADD KEY `name` (`name`),
+  ADD KEY `gsm` (`gsm`),
+  ADD KEY `name_2` (`name`),
+  ADD KEY `gsm_2` (`gsm`);
+
+--
+-- Tablo için indeksler `til_extra`
+--
+ALTER TABLE `til_extra`
+  ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Tablo için indeksler `til_forms`
+--
+ALTER TABLE `til_forms`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `til_form_items`
+--
+ALTER TABLE `til_form_items`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `til_form_meta`
+--
+ALTER TABLE `til_form_meta`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `til_items`
+--
+ALTER TABLE `til_items`
+  ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Tablo için indeksler `til_logs`
+--
+ALTER TABLE `til_logs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `til_log_meta`
+--
+ALTER TABLE `til_log_meta`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `til_messages`
+--
+ALTER TABLE `til_messages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `til_options`
+--
+ALTER TABLE `til_options`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `til_questions`
+--
+ALTER TABLE `til_questions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `til_question_cat`
+--
+ALTER TABLE `til_question_cat`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `til_users`
+--
+ALTER TABLE `til_users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Tablo için indeksler `til_user_meta`
+--
+ALTER TABLE `til_user_meta`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Dökümü yapılmış tablolar için AUTO_INCREMENT değeri
+--
+
+--
+-- Tablo için AUTO_INCREMENT değeri `til_accounts`
+--
+ALTER TABLE `til_accounts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- Tablo için AUTO_INCREMENT değeri `til_extra`
+--
+ALTER TABLE `til_extra`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- Tablo için AUTO_INCREMENT değeri `til_forms`
+--
+ALTER TABLE `til_forms`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
+--
+-- Tablo için AUTO_INCREMENT değeri `til_form_items`
+--
+ALTER TABLE `til_form_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=246;
+--
+-- Tablo için AUTO_INCREMENT değeri `til_form_meta`
+--
+ALTER TABLE `til_form_meta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
+--
+-- Tablo için AUTO_INCREMENT değeri `til_items`
+--
+ALTER TABLE `til_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- Tablo için AUTO_INCREMENT değeri `til_logs`
+--
+ALTER TABLE `til_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1185;
+--
+-- Tablo için AUTO_INCREMENT değeri `til_log_meta`
+--
+ALTER TABLE `til_log_meta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+--
+-- Tablo için AUTO_INCREMENT değeri `til_messages`
+--
+ALTER TABLE `til_messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+--
+-- Tablo için AUTO_INCREMENT değeri `til_options`
+--
+ALTER TABLE `til_options`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- Tablo için AUTO_INCREMENT değeri `til_questions`
+--
+ALTER TABLE `til_questions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+--
+-- Tablo için AUTO_INCREMENT değeri `til_question_cat`
+--
+ALTER TABLE `til_question_cat`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+--
+-- Tablo için AUTO_INCREMENT değeri `til_users`
+--
+ALTER TABLE `til_users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+--
+-- Tablo için AUTO_INCREMENT değeri `til_user_meta`
+--
+ALTER TABLE `til_user_meta`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=216;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
