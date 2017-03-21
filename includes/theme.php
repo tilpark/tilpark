@@ -307,6 +307,32 @@ function barcode_url($val, $args=array()) {
 
 
 
+
+
+/** 
+ * title: get_header()
+ * desc: header.php dosyasını include eder.
+ */
+function get_header_print($print=array())
+{
+	include get_root_path('content/pages/_helper/print_header.php');
+}
+
+/** 
+ * title: get_footer()
+ * desc: footer.php dosyasını include eder.
+ */
+function get_footer_print($print=array())
+{
+	include get_root_path('content/pages/_helper/print_footer.php');
+}
+
+
+
+
+
+
+
 /**
  * get_log_meta_for_table()
  * log metalarından gelen json kodlarını decode eder ve gosterir

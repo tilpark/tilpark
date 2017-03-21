@@ -44,6 +44,9 @@ function set_form($id, $args=array()) {
 	$args 	= _args_helper(input_check($args), 'set');
 	$set 	= $args['set'];
 
+
+
+
 	if(!have_log()) { // eger daha onceden eklenmemis ise log kaydi bulunmayacaktir.
 
 		
@@ -84,6 +87,7 @@ function set_form($id, $args=array()) {
 			$_form['account_city'] 		= @til_get_strtoupper($set['account_city']);
 			$_form['account_tax_home']	= @til_get_strtoupper($set['account_tax_home']);
 			$_form['account_tax_no'] 	= @$set['account_tax_no'];
+
 
 
 			$_form_meta['account_country'] 	= @til_get_strtoupper(@$set['account_country']);
@@ -180,7 +184,7 @@ function set_form($id, $args=array()) {
 			if($form and $operation == 'update' and !is_alert(__FUNCTION__, 'danger')) {
 
 				$old_form = get_form($form->id, array('get_user_access'=>false) );
-
+				print_r($_form);
 				if($q_update = db()->query("UPDATE ".dbname('forms')." SET ".sql_update_string($_form)." WHERE id='".$form->id."' ")) {
 					if(db()->affected_rows) {
 						$new_form = get_form($form->id, array('get_user_access'=>false) );
@@ -268,29 +272,15 @@ function update_form($id, $args=array()) {
  * get_form()
  * form kartini dondurur
  */
-function get_form($id_or_query, $opt=array() ) {
-	$id = 0;
-	if(is_array($id_or_query)) {
+function get_form($id_or_query, $args=array() ) {
+	if(is_array($id_or_query)) { $where = $id_or_query; } else { $where['id'] = $id_or_query; }
 
-	} else {
-		$id = $id_or_query;
-	}
-
-	// options
-	if(!isset($opt['get_user_access'])) { $opt['get_user_access'] = true; } // kullanıcılar için oge eririsim kontrolu yapilsin mi? true evet /false hayir
-
-	// input check
-	$id = input_check($id);
-
-
-
-	if($query = db()->query("SELECT * FROM ".dbname('forms')." WHERE id='".$id."' ")) {
+	if($query = db()->query("SELECT * FROM ".dbname('forms')." ".sql_where_string($where)." ")) {
 		if($query->num_rows) {
 			$return = $query->fetch_object();
-			$return = get_user_access($return, '', 'forms', $opt['get_user_access']);
 			return $return;
 		} else {
-			add_alert('Aradığınız kriterlere uygun form bulunamadı. Şu anda <b>"'.$id.'"</b> ID numaralı formu sorguluyorsunuz.', 'warning', __FUNCTION__);
+			add_alert('Aradığınız kriterlere uygun form bulunamadı. Şu anda <b>"'.$where['id'].'"</b> ID numaralı formu sorguluyorsunuz.', 'warning', __FUNCTION__);
 			return false;
 		}
 	} else { add_mysqli_error_log(__FUNCTION__); }
@@ -737,7 +727,7 @@ function update_form_meta($form_id, $meta_key, $meta_value) {
 		if($form = get_form($form_id)) {
 
 			// daha onceden eklenmis mi?
-			if($q_select = db()->query("SELECT * FROM ".dbname('form_meta')." WHERE form_id='".$form_id."' AND meta_key='".$meta_key."' AND meta_value='".$meta_value."'  ")) {
+			if($q_select = db()->query("SELECT * FROM ".dbname('form_meta')." WHERE form_id='".$form_id."' AND meta_key='".$meta_key."'")) {
 				if($q_select->num_rows) {
 					$found_meta_id = $q_select->fetch_object()->id;
 					if($q_insert = db()->query("UPDATE ".dbname('form_meta')." SET ".sql_update_string(array('meta_key'=>$meta_key, 'meta_value'=>$meta_value))." WHERE id='".$found_meta_id."'  ")) {

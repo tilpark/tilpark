@@ -90,14 +90,14 @@ if(isset($_POST['update_profile']) and user_access('admin')) {
 ## detay bilgilerini guncelleme
 if(isset($_POST['update_cv'])) {
 
-	update_user_meta($user->id, 'father_name', $_POST['father_name']);
-	update_user_meta($user->id, 'mother_name', $_POST['mother_name']);
-	update_user_meta($user->id, 'date_birth', $_POST['date_birth']);
-	update_user_meta($user->id, 'birthplace', $_POST['birthplace']);
+	update_user_meta($user->id, 'father_name', til_get_ucwords($_POST['father_name']));
+	update_user_meta($user->id, 'mother_name', til_get_ucwords($_POST['mother_name']));
+	update_user_meta($user->id, 'date_birth', til_get_ucwords($_POST['date_birth']));
+	update_user_meta($user->id, 'birthplace', til_get_ucwords($_POST['birthplace']));
 
-	update_user_meta($user->id, 'district', $_POST['district']);
-	update_user_meta($user->id, 'city', $_POST['city']);
-	update_user_meta($user->id, 'address', $_POST['address']);
+	update_user_meta($user->id, 'district', til_get_ucwords($_POST['district']));
+	update_user_meta($user->id, 'city', til_get_strtoupper($_POST['city']));
+	update_user_meta($user->id, 'address', til_get_ucwords($_POST['address']));
 
 
 
@@ -153,17 +153,18 @@ if(isset($_POST['update_cv'])) {
 		update_user_meta($user->id, 'emergency', $emergency);
 	}
 
+	// egitim bilgileri
 	if(isset($_POST['school_level'])) {
 		$arr = array();
 		
 		for($i=0; $i<count($_POST['school_level']); $i++) {
 
 			if(strlen($_POST['school_name'][$i]) OR strlen($_POST['school_department'][$i]) OR strlen($_POST['school_graduation_year'][$i]) OR strlen($_POST['school_grade'][$i]) )  {
-				$arr[$i]['school_level'] 		= $_POST['school_level'][$i];
-				$arr[$i]['school_name']			= $_POST['school_name'][$i];
-				$arr[$i]['school_department']	= $_POST['school_department'][$i];
-				$arr[$i]['school_graduation_year'] = $_POST['school_graduation_year'][$i];
-				$arr[$i]['school_grade'] 		= $_POST['school_grade'][$i];
+				$arr[$i]['school_level'] 		= til_get_ucwords($_POST['school_level'][$i]);
+				$arr[$i]['school_name']			= til_get_ucwords($_POST['school_name'][$i]);
+				$arr[$i]['school_department']	= til_get_ucwords($_POST['school_department'][$i]);
+				$arr[$i]['school_graduation_year'] = til_get_ucwords($_POST['school_graduation_year'][$i]);
+				$arr[$i]['school_grade'] 		= til_get_ucwords($_POST['school_grade'][$i]);
 			}
 		}
 
@@ -175,11 +176,11 @@ if(isset($_POST['update_cv'])) {
 		for($i=0; $i<count($_POST['work_level']); $i++) {
 			if(strlen($_POST['work_position'][$i]) OR strlen($_POST['work_company_name'][$i]) OR strlen($_POST['work_start_date'][$i]) OR strlen($_POST['work_end_date'][$i]) OR strlen($_POST['work_description'][$i]) )  {
 				$arr[$i]['work_level'] 		= $_POST['work_level'][$i];
-				$arr[$i]['work_position'] 		= $_POST['work_position'][$i];
-				$arr[$i]['work_company_name'] 	= $_POST['work_company_name'][$i];
-				$arr[$i]['work_start_date'] 	= $_POST['work_start_date'][$i];
-				$arr[$i]['work_end_date'] 		= $_POST['work_end_date'][$i];
-				$arr[$i]['work_description'] 	= $_POST['work_description'][$i];
+				$arr[$i]['work_position'] 		= til_get_ucwords($_POST['work_position'][$i]);
+				$arr[$i]['work_company_name'] 	= til_get_ucuwords($_POST['work_company_name'][$i]);
+				$arr[$i]['work_start_date'] 	= til_get_ucwords($_POST['work_start_date'][$i]);
+				$arr[$i]['work_end_date'] 		= til_get_ucwords($_POST['work_end_date'][$i]);
+				$arr[$i]['work_description'] 	= til_get_ucwords($_POST['work_description'][$i]);
 			}
 		}
 		update_user_meta($user->id, 'work', $arr);

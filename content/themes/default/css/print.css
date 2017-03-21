@@ -74,10 +74,12 @@ body {
   border-bottom: 1px solid #ccc;
 }
 
-table tr th {
+.print-page table tr th {
   font-size: 12px;
 }
-
+.print-page .table-condensed>tbody>tr>td, .print-page .table-condensed>tbody>tr>th, .print-page .table-condensed>tfoot>tr>td, .print-page  .table-condensed>tfoot>tr>th, .print-page .table-condensed>thead>tr>td, .print-page .table-condensed>thead>tr>th {
+    padding: 2px;
+}
 
 
 .print-tilpark-logo {

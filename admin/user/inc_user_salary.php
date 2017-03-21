@@ -84,6 +84,7 @@ if($q_select = db()->query("SELECT * FROM ".dbname('forms')." WHERE status='1' A
 				<th width="50">ID</th>
 				<th>Tarih</th>
 				<th>Açıklama</th>
+				<th>Aylık Maaş</th>
 				<th>Hakediş</th>
 				<th>Ödenen</th>
 			</tr>
@@ -99,13 +100,14 @@ if($q_select = db()->query("SELECT * FROM ".dbname('forms')." WHERE status='1' A
 						<?php echo til_get_date($monthly->date, 'str: F Y'); ?> dönem hakediş
 					<?php endif; ?>
 				</td>
-				<td class="text-right"><?php if($monthly->type != 'payment'): ?><?php echo get_set_money($monthly->total, 'icon'); ?><?php endif; ?></td>
+				<td class="text-right"><?php echo get_set_money($monthly->val_decimal, 'icon'); ?></td>
+				<td class="text-right"><?php if($monthly->type == 'salary'): ?><?php echo get_set_money($monthly->total, 'icon'); ?><?php endif; ?></td>
 				<td class="text-right"><?php if($monthly->type == 'payment'): ?><?php echo get_set_money($monthly->total, 'icon'); ?><?php endif; ?></td>
 			</tr>
 		<?php endforeach; ?>
 		<tfoot>
 			<tr>
-				<td colspan="5" class="text-right"><?php echo get_set_money($account->balance, 'icon'); ?></td>
+				<th colspan="6" class="text-right"><?php echo get_set_money($account->balance, 'icon'); ?></th>
 			</tr>
 		</tfoot>
 	</table> <!-- /.table -->

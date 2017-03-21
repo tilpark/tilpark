@@ -175,6 +175,17 @@ til_include('task');
 
 
 
+/* --------------------------------------------------- ADDSLASHES */
+if(!get_magic_quotes_gpc()) {
+	if (isset($_GET) OR isset($_POST) OR isset($_COOKIE) OR isset($_REQUEST) ) {
+	    $_GET 		= til_get_addslashes($_GET);
+	    $_POST 		= til_get_addslashes($_POST);
+	    $_COOKIE 	= til_get_addslashes($_COOKIE);
+	    $_REQUEST 	= til_get_addslashes($_REQUEST);
+
+	}
+}
+
 
 
 

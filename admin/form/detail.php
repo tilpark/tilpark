@@ -13,5 +13,6 @@ if(!isset($form->template)) {
 	}
 }
 
-include_content_page('detail', $form->template, 'form', array('form'=>$form));
+
+include_content_page('detail', @$form->template, 'form', array('form'=>$form));
 ?>

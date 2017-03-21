@@ -27,19 +27,19 @@ function db()
 
 
 // global ön ek
-$til = (object) array();
+$til = new stdclass;
 global $til;
 
 $til->fixed = '2';
-$til->company = array();
-$til->company['name'] = 'Tilpark!';
-$til->company['address'] = 'Hocaömer Mah. 206. SK. No:1 Kat:4';
-$til->company['district'] = 'Merkez';
-$til->company['city'] = 'Adıyaman';
-$til->company['country'] = 'TURKEY';
-$til->company['email'] = 'info@tilpark.com';
-$til->company['phone'] = '2129091212';
-$til->company['gsm'] = '2129091212';
+$til->company = new stdclass();
+$til->company->name = 'Tilpark!';
+$til->company->address = 'HOCA ÖMER MAH. GÖLEBATMAZ CAD. NO:1 KAT:4';
+$til->company->district = 'MERKEZ';
+$til->company->city = 'ADIYAMAN';
+$til->company->country = 'TURKEY';
+$til->company->email = 'info@tilpark.com';
+$til->company->phone = '2129091212';
+$til->company->gsm = '2129091212';
 
 function dbname($val)
 { global $til;

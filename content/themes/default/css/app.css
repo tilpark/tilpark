@@ -58,6 +58,13 @@ body {
   background-color: #f7f7f7;
   font-family: 'Roboto', sans-serif;
 }
+.container {
+  width: 1200px;
+}
+
+.container.wp {
+  position: relative;
+}
 
 .ff-1 {
   font-family: 'Roboto', sans-serif;

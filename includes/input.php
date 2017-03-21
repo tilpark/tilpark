@@ -69,6 +69,21 @@ function get_set_gsm($val) {
 }
 
 
+function get_set_show_phone($val) {
+	if(strlen($val) > 11) { return $val; }
+	if(strlen($val) < 10) { return $val; }
+
+	if(strlen($val) == 11) {
+		if(substr($val, 0,1) == 0) {
+			$val = substr($val, 1);
+		}
+	}
+
+
+	return '0 ('.substr($val, 0, 3).') '.substr($val,3,3).' '.substr($val,6);
+}
+
+
 
 
 

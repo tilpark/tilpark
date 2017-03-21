@@ -1,5 +1,15 @@
 <?php get_header(); ?>
 <?php
+// eger _GET ile ID degeri geliyorsa ve form bulunamiyorsa betik akisini duruduru ve hata mesajini ekrana bas
+if(isset($_GET['id'])) {
+	if(empty($form->id)) {
+		add_page_info('title', 'Form Bulunamadı');
+		echo get_alert(_b($_GET['id']).' ID numarali form bulunamadı.', 'warning', false);
+		get_footer(); exit;
+	}	
+}
+
+
 if(empty($form->id)) {
 	$form->id = 0;
 	$form->date = date('Y-m-d H:i:s');
@@ -40,7 +50,7 @@ add_page_info( 'nav', array('name'=>til()->page['title']) );
 
 /* form ekleme, guncelleme ve yeni form hareketi ekleme */
 if(isset($_POST['form'])) {
-	
+
 	if($form_id = set_form($form->id, $_POST)) {
 		// eger $form degeri bos ise empty($form->id) demek ki bu form ilk defa oluşuyor,
 		// set_form ile olusan "$form_id" degiskenindeki ID parametresine yonlendirelim.

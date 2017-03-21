@@ -125,6 +125,27 @@ function set_vat($vat) {
 
 
 
+/**
+ * til_get_addslashes()
+ * dizi halinde gelen tum degerlere addslashes ekler
+ */
+function til_get_addslashes($arr) {
+    $return = array();
+    foreach($arr as $k=>$v) {
+        if(is_array($v)) {
+            $return[$k] = til_get_addslashes($v);
+        } else {
+            $return[$k] = addslashes($v);
+        }
+        
+    }
+    return $return;
+} //.til_get_addslashes()
+
+
+
+
+
 /* --------------------------------------------------- HELPER - STRING - CONVERTING */
 
 
@@ -192,6 +213,7 @@ function til_get_date($date, $args=array()) {
         elseif($args == 'datetime') { $return = substr($date, 0, 16);    } 
         elseif($args == 'time')     { $return = substr($date, 11, 16);   }
         elseif($args == 'str: F Y')  { $return = date('F Y', strtotime($date));   }
+        else { $return = date($args, strtotime($date));   }
     }
 
     return til_get_date_lang($return);

@@ -8,36 +8,7 @@
  * gunvelik derken: mysqli_real_escape_string bundan bahsediyoruz.
  */
 function input_check($arr) {
-	if(is_array($arr)) {
-		$return = array();
-		foreach($arr as $key=>$value) {
-			// eger query degskeni var ise mysqli_real_escape_string yapmayalim cunku sorgu icinde cift tirnak ve tek tirnek gecebilir
-			if($key == 'query' or $key == 'q') { $return[$key] = $value; }
-			else {
-				if(is_array($value)) {
-					foreach($value as $key2=>$val2) {
-						if($key2 == 'query' or $key2 == 'q') { $return[$key][$key2] = $val2; }
-						else {
-							if(is_array($val2)) {
-                                foreach($val2 as $key3=>$val3) {
-                                    $return[$key][$key2][$key3] = mysqli_real_escape_string(db(), $val3);
-                                }
-							} else {
-								$return[$key][$key2] = mysqli_real_escape_string(db(), $val2);
-							}
-							
-						}
-					}
-				} else {
-					$return[$key] = mysqli_real_escape_string(db(), $value);
-				} // else
-			} // else
-		} // foreach
-		return $return;
-	} else {
-		$val = mysqli_real_escape_string(db(), $arr);
-		return $val;
-	}
+	return $arr;
 	
 }
 
@@ -106,8 +77,9 @@ function sql_update_string($arr=array(), $opt=array())
 	$return = 't_i_l_p_a_r_k_this_value_replace'; // bu deger silinecek
 	foreach($arr as $name=>$value)
 	{
-		$return = $return.', '.input_check($name)."='".input_check($value)."'";
+		$return = $return.', '.$name."='".$value."'";
 	}
+
 	return str_replace('t_i_l_p_a_r_k_this_value_replace, ', '', $return);
 } //.sql_update_string()
 

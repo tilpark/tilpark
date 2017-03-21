@@ -17,10 +17,7 @@
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script
-  src="http://code.jquery.com/ui/1.8.23/jquery-ui.js"
-  integrity="sha256-lFA8dPmfmR4AQorTbla7C2W0aborhztLt0IQFLAVBTQ="
-  crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/ui/1.8.23/jquery-ui.js" integrity="sha256-lFA8dPmfmR4AQorTbla7C2W0aborhztLt0IQFLAVBTQ=" crossorigin="anonymous"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="<?php echo template_url('js/bootstrap.min.js'); ?>"></script>
     <script src="<?php echo template_url('js/jquery.validate.min.js'); ?>"></script>
@@ -181,11 +178,9 @@
           <!-- /message -->
           <li class="dropdown">
             <a href="#" class="dropdown-toggle profile-avatar" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              <?php if(get_active_user('avatar')): ?>
-                <img src="<?php site_url(get_active_user('avatar')); ?>" class="img-repsonsive img-avatar"> 
-              <?php else: ?>
-                <img src="<?php template_url('img/no-avatar.jpg'); ?>" class="img-repsonsive img-avatar"> 
-              <?php endif; ?>
+
+                <img src="<?php active_user('avatar'); ?>" class="img-repsonsive img-avatar"> 
+              
               <span class="user-name"><?php active_user('name'); ?> <span class="user-role"><?php echo get_user_role_text(get_active_user('role')); ?></span></span>
             </a>
             <ul class="dropdown-menu">
