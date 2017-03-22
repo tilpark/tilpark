@@ -4,8 +4,20 @@ if(isset($_POST['update_staff_salary'])) {
 	update_user_meta($user->id, 'date_start_work', $_POST['date_start_work']);
 	update_user_meta($user->id, 'date_end_work', $_POST['date_end_work']);
 	update_user_meta($user->id, 'net_salary', get_set_decimal_db($_POST['net_salary']));
-	echo get_alert('Guncelleme Başarılı.', 'success');
+	echo get_alert('Güncelleme Başarılı.', 'success');
+
+	// log kayitlari ekleyelim
+	if($user_meta['date_start_work'] != $_POST['date_start_work']) {
+		add_log( array('table_id'=>'users:'.$user->id, 'log_key'=>'update_user_meta', 'log_text'=>'İşe başlama tarihi güncellendi. '._b($_POST['date_start_work']) ) );
+	}
+	if($user_meta['date_end_work'] != $_POST['date_end_work']) {
+		add_log( array('table_id'=>'users:'.$user->id, 'log_key'=>'update_user_meta', 'log_text'=>'İşten ayrılma tarihi güncellendi. '._b($_POST['date_end_work']) ) );
+	}
+	if( get_set_decimal_db($user_meta['net_salary']) != get_set_decimal_db($_POST['net_salary']) ) {
+		add_log( array('table_id'=>'users:'.$user->id, 'log_key'=>'update_user_meta', 'log_text'=>'Aylık maaş güncellendi. '._b($_POST['net_salary']) ) );
+	}
 }
+
 
 
 
@@ -21,11 +33,13 @@ $account = get_account($user->account_id);
 <div class="row">
 	<div class="col-md-6">
 
-	Toplam Bakiye : <span class="<?php echo $account->balance < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo get_set_money($account->balance,true); ?></span>
-	<div class="h-20"></div>
-	<a href="<?php site_url('admin/payment/detail.php?out'); ?>&template=salary&account_id=<?php echo $user->account_id; ?>&user_type=user" target="_blank" class="btn btn-default"><i class="fa fa-paypal"></i> Ödeme Yap</a>
-
-		
+		<div class="panel panel-default">
+			<div class="panel-body">
+				Toplam Bakiye : <span class="<?php echo $account->balance < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo get_set_money($account->balance,true); ?></span>
+				<div class="h-20"></div>
+				<a href="<?php site_url('admin/payment/detail.php?out'); ?>&template=salary&account_id=<?php echo $user->account_id; ?>&user_type=user" target="_blank" class="btn btn-default"><i class="fa fa-paypal"></i> Ödeme Yap</a>
+			</div>  <!-- /.panel-body -->
+		</div> <!-- /.panel -->
 
 	</div> <!-- /.col-md-6 -->
 	<div class="col-md-6">
@@ -72,7 +86,7 @@ $account = get_account($user->account_id);
 
 <div class="h-20"></div>
 
-<h4 class="content-title title-line">Aylık/Çalışma/Maaş Geçmişi</h4>
+<h4 class="content-title title-line">Maaş/Hakediş ve Ödeme Hareketleri</h4>
 <?php
 $monthlys = false;
 if($q_select = db()->query("SELECT * FROM ".dbname('forms')." WHERE status='1' AND type IN ('salary', 'payment') AND account_id='".$user->account_id."' ORDER BY date ASC, val_1 ASC ")) {
@@ -127,6 +141,10 @@ if($q_select = db()->query("SELECT * FROM ".dbname('forms')." WHERE status='1' A
 			</tr>
 		</tfoot>
 	</table> <!-- /.table -->
+<?php else: ?>
+
+	<?php echo get_alert('Maaş hareketi bulunamadı.', 'warning', false); ?>
+
 <?php endif; ?>
 
 

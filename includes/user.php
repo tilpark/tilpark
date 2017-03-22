@@ -472,7 +472,7 @@ function get_user_meta($user_id, $meta_key=false, $args=array()) {
 | -------------------------------------------------------------------
 | STAFF SALARY
 | -------------------------------------------------------------------
-| Bir üyenin aylık maaş durumunu hesaplar
+| Üye olan kullanılarn maaş durumlaını hesaplatır
 |
 |
 | -------------------------------------------------------------------
@@ -493,8 +493,6 @@ function set_staff_salary($user_id) {
 
 	if(!$user = get_user($user_id)) { add_console_log('üye id bulunamadı', __FUNCTION__); return false; }
 	$user_meta = get_user_meta($user->id);
-
-
 
 	// eger hesap karti yok ise olusturalim
 	if($user->account_id == 0) {
@@ -522,18 +520,25 @@ function set_staff_salary($user_id) {
 	// ise baslama tarihini bulalim
 	if(!@$user_meta['date_start_work']) { add_console_log('işe başlama tarihi bulunamadı.', __FUNCTION__); return false; }
 
-	// tarihler degismis olabileceginden diger tarihlerin statuslerini degistirelim
-	db()->query("UPDATE ".dbname('forms')." SET status='0' WHERE type='salary' AND account_id='".$user->account_id."'");
-	db()->query("UPDATE ".dbname('form_items')." SET status='0' WHERE type='salary' AND item_name='monthly_day' AND account_id='".$user->account_id."'");
+
+		// ise baslama ve isi bırakma tarihlerı degısmıs olabılecegınden eskı kayıtların hepsını status "0" yapalım
+		// cunku asagı tarafta kontroller ve hesaplamalar yapıldıktan sonra tekrar aktıf olacaklar
+		db()->query("UPDATE ".dbname('forms')." SET status='0' WHERE type='salary' AND account_id='".$user->account_id."'");
+		db()->query("UPDATE ".dbname('form_items')." SET status='0' WHERE type='salary' AND item_name='monthly_day' AND account_id='".$user->account_id."'");
 
 
 	$str_start_date = strtotime($user_meta['date_start_work']);
-	while($str_start_date <= strtotime(date('Y-m-d')))
+	
+	// hesaplama yapilacak tarihler en fazla hangi zamana kadar olabilir
+	if( $user_meta['date_end_work'] ) { $calc_end_date = $user_meta['date_end_work']; } else { $calc_end_date = date('Y-m-d'); }
+		if( strtotime($calc_end_date) > time() ) { $calc_end_date = date('Y-m-d'); }
+
+	while($str_start_date <= strtotime($calc_end_date))
 	{
 	    $current_date 		= date('Y-m', $str_start_date);
      	$str_start_date 	= strtotime(date('Y-m', strtotime("+1 month", $str_start_date)).'-01'); // bir sonraki ayi hesaplamak icin 1 ay ileri atıyor ve  ay basini aliyoruz.
 
-     	# ise baslama tarihinin ay basi olmama ihtimali yuksek. Bu sebeble ise baslama tarihinin gun degerini ekleyelim
+     	// ise baslama tarihinin ay basi olmama ihtimali yuksek. Bu sebeble ise baslama tarihinin gun degerini ekleyelim
 		if( date('Y-m', strtotime($user_meta['date_start_work'])) == date('Y-m', strtotime($current_date)) ) {
 			$current_date 	.= '-'.date('d', strtotime($user_meta['date_start_work'])).' 00:00';
 		} else {
@@ -552,14 +557,23 @@ function set_staff_salary($user_id) {
 
 		# bu ay kac gun calisti
 		$monthly_active_days = '0';
-			$current_day = date("d", strtotime($current_date)) - 1;
-			$monthly_active_days = ( $monthly_how_days - $current_day );
+			$starting_work_day = date("d", strtotime($current_date)) - 1;
+			$monthly_active_days = ( $monthly_how_days - $starting_work_day );
+			
 			if($monthly_Ym == date('Y-m')) {
 				$monthly_active_days = $monthly_active_days - (date('t') - date('d'));
 			}
-		$monthly_active_days;
 
-		# bu ay bitis tarihi
+	
+		// eger isi birakma tarihi var ise onuda hesaba katalim ki fazla para yazilmasin
+		if( date('Y-m', strtotime($user_meta['date_end_work'])) == date('Y-m', strtotime($current_date)) ) {
+			if( strtotime(date('Y-m', strtotime($current_date)).'-'.date('d')) > strtotime($user_meta['date_end_work'])) {
+				$monthly_active_days = date('d', strtotime($user_meta['date_end_work'])) - $starting_work_day;
+			}
+		}
+
+
+		# bu ayki bitis tarihi
 		$monthly_end_date = date('Y-m-t', strtotime($current_date));
 
 
@@ -572,8 +586,6 @@ function set_staff_salary($user_id) {
 			echo $monthly_how_days;
 			echo '<br />';
 			echo $monthly_active_days;
-			echo '<br />';
-			echo $monthly_end_date;
 			echo '<br />';
 			echo '<br />';
 		}
