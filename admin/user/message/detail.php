@@ -126,7 +126,7 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 									<div class="form-group">
 										<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
 										<textarea autofocus name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
-										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern pre_html code_html', toolbar: 'bold italic underline forecolor backcolor image pre_html code_html table', height: '160' });</script>
+										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '160' });</script>
 									</div> <!-- /.form-group -->
 
 									<div class="pull-right">
@@ -138,7 +138,7 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 							</div> <!-- /.row -->
 						</form>
 						<!--/ ADD MESSAGE REPLY /-->
-						
+
 					</div> <!-- /.col-md-12 -->
 				</div> <!-- /.row -->
 			</div><!--/ .panel-body /-->

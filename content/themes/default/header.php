@@ -191,7 +191,7 @@
               <li><a href="#"><i class="fa fa-cog"></i> Ayarlar</a></li>
               <li><a href="<?php site_url('admin/user/change_password.php'); ?>"><i class="fa fa-key"></i> Şifre Değiştir</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="#"><i class="fa fa-power-off"></i> Çıkış</a></li>
+              <li><a href="<?php site_url('logout.php'); ?>"><i class="fa fa-power-off"></i> Çıkış</a></li>
             </ul>
           </li>
         </ul>

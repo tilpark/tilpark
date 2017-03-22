@@ -193,16 +193,16 @@ if(isset($_POST['add_task'])) {
 
 					<div class="form-group">
 						<label for="title">Görev Konusu</label>
-						<input type="text" name="title" id="title" class="form-control required" value="">
+						<input type="text" name="title" id="title" class="form-control required" value="<?php echo @$_POST['title']; ?>">
 					</div> <!-- /.form-group -->
 
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
 								<label for="editor_message">Görev Açıklaması</label>
-								<textarea name="message" id="message" class="form-control required hidden" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
+								<textarea name="message" id="message" class="form-control required hidden" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"><?php echo @$_POST['message']; ?></textarea>
 
-								<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern pre_html code_html', toolbar: 'bold italic underline forecolor backcolor image pre_html code_html table', height: '160' });</script>
+								<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '160' });</script>
 							</div> <!-- /.form-group -->
 
 							<div class="row space-5">

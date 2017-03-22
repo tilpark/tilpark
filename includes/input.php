@@ -220,9 +220,9 @@ function form_validation($val, $input_name='', $name='', $options=array(), $aler
 function add_alert($message, $class='danger', $group='global', $input_name='') {
 	if(empty($input_name)) {
 		$input_name = 'null';
-	} 
-	
-	til()->alert[$group][$class][$input_name][] = $message; 
+	}
+
+	til()->alert[$group][$class][$input_name][] = $message;
 }
 
 
@@ -232,7 +232,7 @@ function add_alert($message, $class='danger', $group='global', $input_name='') {
  * bir hata mesajının var olup olmadigini kontrol eder
  */
 function is_alert($group='', $class='')
-{ 
+{
 	if(!empty($group)) {
 
 		if(isset(til()->alert[$group])) {
@@ -255,7 +255,7 @@ function is_alert($group='', $class='')
 			return false;
 		}
 	}
-	
+
 }
 
 
@@ -280,7 +280,7 @@ function print_alert($alert_name='', $options=array())
 						{
 							foreach($message as $msg) {
 								$one_message .= '<li>'.$msg.'</li>';
-							}							
+							}
 						}
 						$one_message .= '</ul>';
 						echo get_alert($one_message, $class.' FUNC_NAME_'.$func_name, $options);
@@ -291,10 +291,9 @@ function print_alert($alert_name='', $options=array())
 						{
 							echo get_alert($message[0], $class.' FUNC_NAME_'.$func_name, $options);
 						}
-						
+
 					}
 				}
-
 			}
 		}
 	}
@@ -309,7 +308,7 @@ function print_alert($alert_name='', $options=array())
 
 
 
-/** 
+/**
  * get_alert()
  * ozel bir hata mesajı olusturabilirsiniz.
  */
@@ -343,7 +342,7 @@ function get_alert($message, $class='danger', $options=array())
 
 
 
-/** 
+/**
  * alert_form_element()
  * bu fonksiyon form metotu ile gelen hata mesajlarını alır ve form elemenlerine has-error, has-warning tarzında stil ekler
  * bu sayede son kullanıcı hangi input verisinden hata geldigini gorebilecektir
@@ -403,7 +402,7 @@ function get_checked($val_1, $val_2) {
 			return '';
 		}
 	}
-	
+
 } //.get_checked()
 
 /**
@@ -459,7 +458,7 @@ function get_current_url($type='request_uri') {
 	} else {
 		return $_SERVER['SERVER_NAME'];
 	}
-	
+
 }
 
 
@@ -479,7 +478,7 @@ function get_set_url_parameters($arr=array()) {
 	}
 
 	foreach($_GET as $key=>$val) {
-		if(!isset($arr['add'][$key])) {
+		if(!isset($arr['add'][$key]) AND !isset($arr['remove'][$key])) {
 			$parameters .= '&'.$key.'='.$val;
 		}
 	}
@@ -501,7 +500,7 @@ function set_url_parameters($arr=array()) {
  * GET ile deger gonderilen formlara aktif olan GET parametrelerinide ekler ve siler
  */
 function get_url_parameters_for_form($arr=array()) {
-	
+
 	$url = get_current_url('script_name');
 	$parameters = '';
 

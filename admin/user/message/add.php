@@ -169,7 +169,7 @@ if(isset($_POST['send_message'])) {
 						<div class="col-md-11">
 							<div class="form-group">
 								<textarea name="message" id="message" class="form-control required hidden" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
-								<script>editor({selector: "#message", plugins: '', toolbar: 'bold italic underline forecolor backcolor image pre_html code_html table', height: '160' });</script>
+								<script>editor({selector: "#message", plugins: '', toolbar: 'bold italic underline forecolor backcolor image table', height: '160' });</script>
 							</div> <!-- /.form-group -->
 
 							<div class="row space-5">

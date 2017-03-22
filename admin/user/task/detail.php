@@ -54,13 +54,17 @@ if(isset($_POST['save_choice'])) {
 			$_choice[$id]['date'] 		= date('Y-m-d H:i:s');
 			$_choice[$id]['user_id']	= get_active_user('id');
 
+			if ( $is_choice = json_decode(get_task($_GET['id'])->choice) ) {
+				if ( $is_choice->$id->is_it_done == '1' ) { $_choice[$id]['date'] = $is_choice->$id->date; }
+			}
+
+
 			if(!$choice->$id->is_it_done) {
 				$_message['insert']['message']	= '"<small class="text-muted italic">'.$choice->$id->text.'</small>" görevini '._b('yapıldı').' olarak işaretledi.';
 				$_message['add_alert']	= false;
 				$_message['uniquetime'] = get_uniquetime();
 				add_task_message($task->id, $_message);
 			}
-
 		} else {
 			$_choice[$id]['is_it_done'] = 0;
 			if($choice->$id->is_it_done) {
@@ -149,7 +153,9 @@ if(isset($_GET['type_status'])) {
 				$_message['add_alert']	= false;
 				$_message['uniquetime'] = get_uniquetime();
 
-				add_task_message($task->id, $_message);
+				if ( add_task_message($task->id, $_message) ) {
+					header('Location: '. get_set_url_parameters(array('remove' => array('type_status' => ''))));
+				}
 			}
 		}
 	} else { add_alert('Görev durumu sadece "0" veya "1" değerlerine sahip olabilir.', 'warning', 'type_status'); }
@@ -238,8 +244,6 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 									<a href="?id=<?php echo $task->id; ?>&type_status=0" class="btn btn-default"><i class="fa fa-check-square-o"></i> Görevi Tekrar Aç</a>
 								<?php endif; ?>
 							</div> <!-- /.text-right -->
-
-
 						</div> <!-- /.panel-body -->
 					</div> <!-- /.panel -->
 				</form>
@@ -372,7 +376,7 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 									<div class="form-group">
 										<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
 										<textarea name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
-										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern pre_html code_html', toolbar: 'bold italic underline forecolor backcolor image pre_html code_html table', height: '160' });</script>
+										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '160' });</script>
 									</div> <!-- /.form-group -->
 
 									<div class="pull-right">

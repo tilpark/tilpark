@@ -81,14 +81,14 @@ $messages = get_messages($args);
 
 <div class="row">
 	<div class="col-md-3">
-		
+
 		<?php include('_sidebar.php'); ?>
 
 	</div> <!-- /.col-md-3 -->
 	<div class="col-md-9">
 		<?php print_alert(); ?>
 
-		<div class="panel panel-default panel-table panel-dataTable">	
+		<div class="panel panel-default panel-table panel-dataTable">
 
 			<?php if($messages): ?>
 				<table class="table table-hover table-condensed table-striped dataTable">
@@ -153,7 +153,7 @@ $messages = get_messages($args);
 										if($q_select->num_rows) {
 											$sub_message = $q_select->fetch_object();
 											?>
-											<span class="text-muted"><b>-</b> <span class="underline"><?php echo _b(til_get_strtolower(get_user_info($sub_message->sen_u_id, 'surname')),false); ?></span>: <?php echo mb_substr($sub_message->message,0,80,'utf-8'); ?><?php if(strlen($sub_message->message) > 80): ?>...<?php endif; ?></span>
+											<span class="text-muted"><b>-</b> <span class="underline"><?php echo _b(til_get_strtolower(get_user_info($sub_message->sen_u_id, 'surname')),false); ?></span>: <?php echo mb_substr(strip_tags($sub_message->message),0,80,'utf-8'); ?><?php if(strlen($sub_message->message) > 80): ?>...<?php endif; ?></span>
 											<?php
 										}
 									}
@@ -171,7 +171,7 @@ $messages = get_messages($args);
 				</div>
 			<?php endif; ?>
 
-			
+
 
 		</div> <!-- /.panel -->
 	</div> <!-- /.col-md-9 -->

@@ -53,7 +53,6 @@ function add_task($rec_u_id, $args=array()) {
 			$insert['outbox_u_id'] 	= $insert['sen_u_id'];
 
 
-
 			if($q_insert = db()->query("INSERT INTO ".dbname('messages')." ".sql_insert_string($insert)." ")) {
 				if(db()->insert_id) {
 					$insert_id = db()->insert_id;

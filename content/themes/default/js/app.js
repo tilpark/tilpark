@@ -493,55 +493,6 @@ function get_site_url(val='') {
 
 
 
-/**
- * @func parent()
- * @desc verilen elementi ilk üst elementini bulur
- * @param element, selector
- * @return element
- */
-function parent(el, selector) {
-    var matchesFn;
-
-    // find vendor prefix
-    ['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn) {
-        if (typeof document.body[fn] == 'function') {
-            matchesFn = fn;
-            return true;
-        }
-        return false;
-    })
-
-    var parent;
-
-    // traverse parents
-    while (el) {
-        parent = el.parentElement;
-        if (parent && parent[matchesFn](selector)) {
-            return parent;
-        }
-        el = parent;
-    }
-
-    return null;
-} //.parent()
-
-
-
-
-/**
- * @func js_alert_location()
- * @desc mevcut alertlerin konumunu verir
- * @param empty
- * @return
- */
-function js_alert_location() {
-  var alerts = document.querySelectorAll(".js-alert.active");
-  if ( alerts.length ) {
-    for (var i = alerts.length - 1; i >= 0; i--) {
-      alerts[i].style.top = ((i * 80) + 50) + "px";
-    }
-  }
-} //.js_alert_location()
 
 
 /* -------------------------------------------------------------- IDE EDITOR */
@@ -615,7 +566,7 @@ function imageHandler(image, callback) {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
         if ( xhr.responseText == "") {
-          js_alert("Hata!", "Dosya izni veya resmin 5mb'den büyük olmadığından emin olun");
+					console.log("Dosya izni veya resmin 5mb'den büyük olmadığından emin olun");
         } else {
           callback(xhr.responseText);
         }
@@ -624,71 +575,3 @@ function imageHandler(image, callback) {
   }
   xhr.send(data);
 } // imageHandler()
-
-
-
-
-
-/**
- * @func js_alert()
- * @desc Dynamic uyarı kutusu
- * @param title, message, type['danger', 'info', 'primary', 'success', 'warning']
- * icon=all til-icon
- * @return
- */
-function js_alert(title, message, type='danger', icon='warning') {
-  var alert = document.createElement("div");
-  var body = document.querySelector("body");
-  alert.setAttribute("class", "js-alert active "+ type);
-
-  var alerts = document.querySelectorAll(".js-alert");
-  if ( alerts.length ) {
-    alert.style.top = ((alerts.length * 80) + 50) + "px";
-  }
-
-  alert.innerHTML =
-  '<div class="alert-container">'+
-    '<div class="alert-icon-content">'+
-      '<div class="alert-icon">'+
-        '<i class="fa fa-'+ icon +'"></i>'+
-      '</div>'+
-    '</div>'+
-
-    '<div class="alert-content-container">'+
-      '<div class="alert-title">'+
-        '<span class="fs16">'+ title +'</span>'+
-        '<span class="alert-close"><i class="fa fa-times"></i></span>'+
-      '</div>'+
-
-      '<div class="alert-content">'+ message +'</div>'+
-    '</div>'+
-  '</div>';
-
-  body.appendChild(alert);
-
-  setTimeout(function (){
-    var alert_close = document.querySelectorAll(".alert-close");
-    for (var i = alert_close.length - 1; i >= 0; i--) {
-      alert_close[i].onclick = function () {
-        var alert_div = parent(this, '.js-alert');
-        alert_div.classList.add("close-alert");
-        alert_div.classList.remove("active");
-        js_alert_location();
-
-        setTimeout(function() {
-          alert_div.remove();
-        }, 300);
-      }
-    }
-
-    setTimeout(function () {
-      alert.classList.add("close-alert");
-      alert.classList.remove("active");
-      js_alert_location();
-
-      setTimeout(function() {
-        alert.remove();
-      }, 300);
-    }, 10000);
-  }, 100);
-} // js_alert
