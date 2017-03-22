@@ -370,8 +370,10 @@ function js_til_select_div(div_name, item, effect) {
 	if(item.val().length > 0) {
 		if(effect == false) {
 			$('[data-div_selected="'+item.val()+'"]').show(effect);
+			$('.js_til_select-'+item.val()).show(effect);
 		} else {
 			$('[data-div_selected="'+item.val()+'"]').show('slide', { direction: 'up', mode: 'hide' }, 500);
+			$('.js_til_select-'+item.val()).show('slide', { direction: 'up', mode: 'hide' }, 500);
 		}
     }
 } //.til_select_div()

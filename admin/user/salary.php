@@ -174,7 +174,7 @@ $monthly = get_form($monthly->id);
 
 <div class="row">
 
-	<div class="col-lg-3 col-md-6">
+	<div class="col-lg-3 col-md-4">
 		<div class="panel panel-warning panel-heading-0">
 			<div class="panel-body">
 				<small class="text-muted"><?php echo til_get_date($monthly->date, 'F Y'); ?> ayına ait maaş tutarını değistir.</small>
@@ -200,7 +200,7 @@ $monthly = get_form($monthly->id);
 		
 	</div> <!-- /.col-md-6 -->
 
-	<div class="col-lg-9 col-md-12">
+	<div class="col-lg-9 col-md-8">
 
 		<?php $q_form_items = db()->query("SELECT * FROM ".dbname('form_items')." WHERE status='1' AND form_id='".$monthly->id."' ORDER BY val_date ASC, id ASC"); ?>
 
@@ -209,7 +209,7 @@ $monthly = get_form($monthly->id);
 
 			<div class="panel-body">
 				<form name="form_wage" id="form_wage" action="?id=<?php echo $monthly->id; ?>" method="POST">
-					<div class="row">
+					<div class="row space-5">
 						<div class="col-md-3">
 							<div class="form-group">
 								<label for="wage_type">Durum</label>

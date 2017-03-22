@@ -47,6 +47,24 @@ $user = get_user($_GET['id']);
 				<?php endif; ?>
 			</table>
 
+			<h4 class="content-title title-line text-danger">Aile Bilgileri</h4>
+			<table class="table table-condensed table-condensed">
+				<tr><td class="bold">Baba Adı</td><td><?php echo @$user_meta['father_name']; ?></td></tr>
+				<tr><td class="bold">Anne Adı</td><td><?php echo @$user_meta['mother_name']; ?></td></tr>
+				<?php if(@$user_meta['is_married']): ?>
+					<tr><td class="bold" width="100">Medeni Hali</td><td><?php echo _get_usermeta_is_married(@$user_meta['is_married']); ?></td></tr>
+				<?php endif; ?>
+				<?php if(@$user_meta['spouses_name']): ?>
+					<tr><td class="bold">Eşinin Adı</td><td><?php echo @$user_meta['spouses_name']; ?></td></tr>
+				<?php endif; ?>
+				<?php if(@$user_meta['children_count']): ?>
+					<tr><td class="bold">Çocuk Sayısı</td><td><?php echo @$user_meta['children_count']; ?></td></tr>
+				<?php endif; ?>
+				<?php if(@$user_meta['humble_person_count']): ?>
+					<tr><td colspan="2">Ailesi dışında <b><?php echo @$user_meta['humble_person_count']; ?></b> kişiye bakmakla yükümlü.</td></tr>
+				<?php endif; ?>
+			</table>
+
 
 			<?php if(@$user_meta['unhealthy']): ?>
 				<h4 class="content-title title-line text-danger">Engelli</h4>
@@ -73,23 +91,7 @@ $user = get_user($_GET['id']);
 				</table>
 			<?php endif; ?>
 
-			<h4 class="content-title title-line text-danger">Aile Bilgileri</h4>
-			<table class="table table-condensed table-condensed">
-				<tr><td class="bold">Baba Adı</td><td><?php echo @$user_meta['father_name']; ?></td></tr>
-				<tr><td class="bold">Anne Adı</td><td><?php echo @$user_meta['mother_name']; ?></td></tr>
-				<?php if(@$user_meta['is_married']): ?>
-					<tr><td class="bold" width="100">Medeni Hali</td><td><?php echo _get_usermeta_is_married(@$user_meta['is_married']); ?></td></tr>
-				<?php endif; ?>
-				<?php if(@$user_meta['spouses_name']): ?>
-					<tr><td class="bold">Eşinin Adı</td><td><?php echo @$user_meta['spouses_name']; ?></td></tr>
-				<?php endif; ?>
-				<?php if(@$user_meta['children_count']): ?>
-					<tr><td class="bold">Çocuk Sayısı</td><td><?php echo @$user_meta['children_count']; ?></td></tr>
-				<?php endif; ?>
-				<?php if(@$user_meta['humble_person_count']): ?>
-					<tr><td colspan="2">Ailesi dışında <b><?php echo @$user_meta['humble_person_count']; ?></b> kişiye bakmakla yükümlü.</td></tr>
-				<?php endif; ?>
-			</table>
+			
 			
 
 

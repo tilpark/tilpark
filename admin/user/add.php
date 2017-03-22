@@ -15,9 +15,9 @@ if(isset($_POST['add_user']) and user_access('admin')) {
 
 	$_user['date']		= date('Y-m-d H:i:s');
 	$_user['username'] 	= $_POST['username'];
-	$_user['name']		= $_POST['name'];
-	$_user['surname']	= $_POST['surname'];
-	$_user['gsm']		= $_POST['gsm'];
+	$_user['name']		= til_get_strtoupper($_POST['name']);
+	$_user['surname']	= til_get_strtoupper($_POST['surname']);
+	$_user['gsm']		= til_get_strtoupper($_POST['gsm']);
 	$_user['role']		= $_POST['role'];
 	$_user['gender']	= $_POST['gender'];
 	$_user['citizenship_no'] = $_POST['citizenship_no'];

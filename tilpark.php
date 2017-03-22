@@ -110,6 +110,8 @@ function site_url($val='', $val_2=false)
 function _helper_site_url($val) {
 	if($val == 'form') {
 		return 'admin/form/detail.php';
+	} else if($val == 'payment') {
+		return 'admin/payment/detail.php';
 	} else if($val == 'item') {
 		return 'admin/item/detail.php';
 	} else if($val == 'message') {

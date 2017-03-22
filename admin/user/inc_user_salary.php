@@ -1,14 +1,19 @@
 <?php
+// ise baslama veya isi bitirme tarihi degistir
 if(isset($_POST['update_staff_salary'])) {
 	update_user_meta($user->id, 'date_start_work', $_POST['date_start_work']);
 	update_user_meta($user->id, 'date_end_work', $_POST['date_end_work']);
 	update_user_meta($user->id, 'net_salary', get_set_decimal_db($_POST['net_salary']));
+	echo get_alert('Guncelleme Başarılı.', 'success');
 }
+
+
+
+# user_meta tekrar cagir
 $user_meta = get_user_meta($user->id);
-
-
-// maas hesaplamasi yapilsin ve personel hesap karti cagrilsin
+# maas hesaplamasini tekrar yap
 set_staff_salary($user->id);
+# hesap kartini tekrar cagir
 $account = get_account($user->account_id);
 ?>
 
@@ -16,7 +21,7 @@ $account = get_account($user->account_id);
 <div class="row">
 	<div class="col-md-6">
 
-	Toplam Bakiye : <span class="text-success"><?php echo get_set_money($account->balance,true); ?></span>
+	Toplam Bakiye : <span class="<?php echo $account->balance < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo get_set_money($account->balance,true); ?></span>
 	<div class="h-20"></div>
 	<a href="<?php site_url('admin/payment/detail.php?out'); ?>&template=salary&account_id=<?php echo $user->account_id; ?>&user_type=user" target="_blank" class="btn btn-default"><i class="fa fa-paypal"></i> Ödeme Yap</a>
 
@@ -30,7 +35,7 @@ $account = get_account($user->account_id);
 			<div class="panel-body">
 
 				<form name="form_staff_salary" id="form_staff_salary" action="" method="POST">
-					<div class="row">
+					<div class="row space-5">
 						<div class="col-md-3">
 							<div class="form-group">
 								<label for="date_start_work">İşe Başlama Tarihi</label>
@@ -84,30 +89,41 @@ if($q_select = db()->query("SELECT * FROM ".dbname('forms')." WHERE status='1' A
 				<th width="50">ID</th>
 				<th>Tarih</th>
 				<th>Açıklama</th>
-				<th>Aylık Maaş</th>
 				<th>Hakediş</th>
-				<th>Ödenen</th>
+				<th>Ödeme</th>
 			</tr>
 		</thead>
 		<?php foreach($monthlys as $monthly): ?>
-			<tr>
-				<td><a href="salary.php?id=<?php echo $monthly->id; ?>" target="_blank">#<?php echo $monthly->id; ?></a></td>
-				<td><?php echo til_get_date($monthly->date, 'datetime'); ?></td>
-				<td>
-					<?php if($monthly->type == 'payment'): ?>
-						Ödeme
-					<?php else: ?>
-						<?php echo til_get_date($monthly->date, 'str: F Y'); ?> dönem hakediş
-					<?php endif; ?>
-				</td>
-				<td class="text-right"><?php echo get_set_money($monthly->val_decimal, 'icon'); ?></td>
-				<td class="text-right"><?php if($monthly->type == 'salary'): ?><?php echo get_set_money($monthly->total, 'icon'); ?><?php endif; ?></td>
-				<td class="text-right"><?php if($monthly->type == 'payment'): ?><?php echo get_set_money($monthly->total, 'icon'); ?><?php endif; ?></td>
-			</tr>
+			<?php if($monthly->type == 'payment'): ?>
+				<tr>
+					<td><a href="<?php site_url('payment', $monthly->id); ?>" target="_blank">#<?php echo $monthly->id; ?></a></td>
+					<td><?php echo til_get_date($monthly->date, 'datetime'); ?></td>
+					<td>
+						<?php if($monthly->type == 'payment'): ?>
+							Ödeme
+						<?php else: ?>
+							<?php echo til_get_date($monthly->date, 'F Y'); ?> dönem hakediş
+						<?php endif; ?>
+					</td>
+					<td class="text-right"><?php if($monthly->type == 'salary'): ?><?php echo get_set_money($monthly->total, 'icon'); ?><?php endif; ?></td>
+					<td class="text-right"><?php if($monthly->type == 'payment'): ?><?php echo get_set_money($monthly->total, 'icon'); ?><?php endif; ?></td>
+				</tr>
+			<?php else: ?>
+				<tr>
+					<td><a href="salary.php?id=<?php echo $monthly->id; ?>" target="_blank">#<?php echo $monthly->id; ?></a></td>
+					<td><?php echo til_get_date($monthly->date, 'datetime'); ?></td>
+					<td>
+						<?php echo til_get_date($monthly->date, 'F Y'); ?> dönem hakediş, <?php echo get_set_money($monthly->val_decimal, 'icon'); ?> üzerinden
+					</td>
+					<td class="text-right"><?php if($monthly->type == 'salary'): ?><?php echo get_set_money($monthly->total, 'icon'); ?><?php endif; ?></td>
+					<td class="text-right"><?php if($monthly->type == 'payment'): ?><?php echo get_set_money($monthly->total, 'icon'); ?><?php endif; ?></td>
+				</tr>
+			<?php endif; ?>
+			
 		<?php endforeach; ?>
 		<tfoot>
 			<tr>
-				<th colspan="6" class="text-right"><?php echo get_set_money($account->balance, 'icon'); ?></th>
+				<th colspan="5" class="text-right"><?php echo get_set_money($account->balance, 'icon'); ?></th>
 			</tr>
 		</tfoot>
 	</table> <!-- /.table -->

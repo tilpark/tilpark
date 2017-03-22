@@ -1,4 +1,220 @@
+<?php 
+// CV guncelleme
+if(isset($_POST['update_cv'])) {
 
+	// genel bilgiler
+	update_user_meta($user->id, 'father_name', til_get_ucwords($_POST['father_name']));
+	update_user_meta($user->id, 'mother_name', til_get_ucwords($_POST['mother_name']));
+	update_user_meta($user->id, 'date_birth', til_get_ucwords($_POST['date_birth']));
+	update_user_meta($user->id, 'birthplace', til_get_ucwords($_POST['birthplace']));
+
+
+	// adres
+	update_user_meta($user->id, 'district', til_get_ucwords($_POST['district']));
+	update_user_meta($user->id, 'city', til_get_strtoupper($_POST['city']));
+	update_user_meta($user->id, 'address', til_get_ucwords($_POST['address']));
+
+
+	// egitim bilgileri
+	if(isset($_POST['school_level'])) {
+		$arr = array();
+		for($i=0; $i<count($_POST['school_level']); $i++) {
+
+			if(strlen($_POST['school_name'][$i]) OR strlen($_POST['school_department'][$i]) OR strlen($_POST['school_graduation_year'][$i]) OR strlen($_POST['school_grade'][$i]) )  {
+				$arr[$i]['school_level'] 		= $_POST['school_level'][$i];
+				$arr[$i]['school_name']			= til_get_ucwords($_POST['school_name'][$i]);
+				$arr[$i]['school_department']	= til_get_ucwords($_POST['school_department'][$i]);
+				$arr[$i]['school_graduation_year'] = til_get_ucwords($_POST['school_graduation_year'][$i]);
+				$arr[$i]['school_grade'] 		= til_get_ucwords($_POST['school_grade'][$i]);
+			}
+		}
+		update_user_meta($user->id, 'school', $arr);
+	}
+
+
+	// is bilgileri
+	if(isset($_POST['work_level'])) {
+		$arr = array();
+		for($i=0; $i<count($_POST['work_level']); $i++) {
+			if(strlen($_POST['work_position'][$i]) OR strlen($_POST['work_company_name'][$i]) OR strlen($_POST['work_start_date'][$i]) OR strlen($_POST['work_end_date'][$i]) OR strlen($_POST['work_description'][$i]) )  {
+				$arr[$i]['work_level'] 		= $_POST['work_level'][$i];
+				$arr[$i]['work_position'] 		= til_get_ucwords($_POST['work_position'][$i]);
+				$arr[$i]['work_company_name'] 	= til_get_ucwords($_POST['work_company_name'][$i]);
+				$arr[$i]['work_start_date'] 	= til_get_ucwords($_POST['work_start_date'][$i]);
+				$arr[$i]['work_end_date'] 		= til_get_ucwords($_POST['work_end_date'][$i]);
+				$arr[$i]['work_description'] 	= til_get_ucwords($_POST['work_description'][$i]);
+			}
+		}
+		update_user_meta($user->id, 'work', $arr);
+	}
+
+
+	// language 
+	if(isset($_POST['lang_lang'])) {
+		$arr = array();
+		for($i=0; $i<count($_POST['lang_lang']); $i++) {
+			if(strlen($_POST['lang_lang'][$i]))  {
+				$arr[$i]['lang_lang'] 		= $_POST['lang_lang'][$i];
+				$arr[$i]['lang_reading'] 	= $_POST['lang_reading'][$i];
+				$arr[$i]['lang_writing'] 	= $_POST['lang_writing'][$i];
+				$arr[$i]['lang_talk'] 		= $_POST['lang_talk'][$i];
+			}
+		}
+		update_user_meta($user->id, 'language', $arr);
+	}
+
+
+	// reference 
+	if(isset($_POST['ref_name_surname'])) {
+		$arr = array();
+		for($i=0; $i<count($_POST['ref_name_surname']); $i++) {
+			if(strlen($_POST['ref_name_surname'][$i]) OR strlen($_POST['ref_company'][$i]) OR strlen($_POST['ref_phone'][$i])) {
+				$arr[$i]['ref_name_surname'] 	= til_get_ucwords($_POST['ref_name_surname'][$i]);
+				$arr[$i]['ref_company'] 		= til_get_ucwords($_POST['ref_company'][$i]);
+				$arr[$i]['ref_phone'] 			= get_set_gsm($_POST['ref_phone'][$i]);
+			}
+		}
+		update_user_meta($user->id, 'reference', $arr);
+	}
+
+
+	// driving license
+	if(isset($_POST['driving_license'])) {
+		$arr = array();
+		for($i=0; $i<count($_POST['driving_license']); $i++) {
+			$arr[$i] = $_POST['driving_license'][$i];
+		}
+		update_user_meta($user->id, 'driving_license', $arr);
+	}
+
+
+	// SRC
+	if(isset($_POST['src'])) {
+		$arr = array();
+		for($i=0; $i<count($_POST['src']); $i++) {
+			$arr[$i] = $_POST['src'][$i];
+		}
+		update_user_meta($user->id, 'src', $arr);
+	}
+
+
+	if(isset($_POST['smoking'])) { update_user_meta($user->id, 'smoking', 'true'); } else { update_user_meta($user->id, 'smoking', ''); }
+	if(isset($_POST['travel_ban'])) { update_user_meta($user->id, 'travel_ban', 'true'); } else { update_user_meta($user->id, 'travel_ban', ''); }
+	if(isset($_POST['work_overtime'])) { update_user_meta($user->id, 'work_overtime', 'true'); } else { update_user_meta($user->id, 'work_overtime', ''); }
+	if(isset($_POST['work_night'])) { update_user_meta($user->id, 'work_night', 'true'); } else { update_user_meta($user->id, 'work_night', ''); }
+
+
+
+	// unhealthy
+	if(isset($_POST['unhealthy'])) {
+		update_user_meta($user->id, 'unhealthy', true);
+		update_user_meta($user->id, 'unhealthy_type', $_POST['unhealthy_type']);
+		update_user_meta($user->id, 'unhealthy_degree', $_POST['unhealthy_degree']);
+	} else {
+		update_user_meta($user->id, 'unhealthy', false);
+		update_user_meta($user->id, 'unhealthy_type', false);
+		update_user_meta($user->id, 'unhealthy_degree', false);
+	}
+
+
+	// prison
+	if(isset($_POST['prison'])) {
+		update_user_meta($user->id, 'prison', true);
+		update_user_meta($user->id, 'prison_year', $_POST['prison_year']);
+		update_user_meta($user->id, 'prison_month', $_POST['prison_month']);
+		update_user_meta($user->id, 'prison_desc', $_POST['prison_desc']);
+	} else {
+		update_user_meta($user->id, 'prison', false);
+		update_user_meta($user->id, 'prison_year', false);
+		update_user_meta($user->id, 'prison_month', false);
+		update_user_meta($user->id, 'prison_desc', false);
+	}
+
+
+	// terror
+	if(isset($_POST['terror'])) {
+		update_user_meta($user->id, 'terror', true);
+		update_user_meta($user->id, 'terror_type', $_POST['terror_type']);
+		update_user_meta($user->id, 'terror_desc', $_POST['terror_desc']);
+	} else {
+		update_user_meta($user->id, 'terror', false);
+		update_user_meta($user->id, 'terror_type', false);
+		update_user_meta($user->id, 'terror_desc', false);
+	}
+
+
+	// acil durumlarda
+	if(isset($_POST['emergency_name'])) {
+		$emergency = array();
+		for($i=0; $i<count($_POST['emergency_name']); $i++) {
+			if(strlen($_POST['emergency_name'][$i]) OR strlen($_POST['emergency_relative'][$i]) OR $_POST['emergency_phone'][$i]) {
+				$emergency[$i]['emergency_name'] 		= til_get_ucwords($_POST['emergency_name'][$i]);
+				$emergency[$i]['emergency_relative']	= til_get_ucwords($_POST['emergency_relative'][$i]);
+				$emergency[$i]['emergency_phone']		= $_POST['emergency_phone'][$i];
+			}
+		}
+		update_user_meta($user->id, 'emergency', $emergency);
+	}
+
+
+	// bekar, evli, dul
+	if($_POST['is_married'] == 'not_married') {
+		$_POST['spouses_name']  	= '';
+		$_POST['children_count'] 	= '';
+	} elseif($_POST['is_married'] == 'married') {
+
+	} elseif($_POST['is_married'] == 'widow') {
+		$_POST['spouses_name']  	= '';
+	} else {
+		$_POST['spouses_name']  	= '';
+		$_POST['children_count'] 	= '';
+	}
+
+	update_user_meta($user->id, 'is_married', $_POST['is_married']);
+	update_user_meta($user->id, 'humble_person_count', $_POST['humble_person_count']);
+	update_user_meta($user->id, 'spouses_name', til_get_ucwords($_POST['spouses_name']) );
+	update_user_meta($user->id, 'children_count', $_POST['children_count']);
+
+
+	// military_statu
+	if($_POST['military_status'] == 'done') {
+		$_POST['military_postponed']  	= '';
+		$_POST['military_exempt'] 		= '';
+	} elseif($_POST['military_status'] == 'postponed') {
+		$_POST['military_end_date']  	= '';
+		$_POST['military_exempt'] 		= '';
+	} elseif($_POST['military_status'] == 'exempt') {
+		$_POST['military_end_date']  	= '';
+		$_POST['military_postponed'] 	= '';
+	} else {
+		$_POST['military_end_date']  	= '';
+		$_POST['military_postponed'] 	= '';
+		$_POST['military_exempt'] 		= '';
+	}
+	update_user_meta($user->id, 'military_status', $_POST['military_status']);
+	update_user_meta($user->id, 'military_end_date', $_POST['military_end_date']);
+	update_user_meta($user->id, 'military_postponed', $_POST['military_postponed']);
+	update_user_meta($user->id, 'military_exempt', $_POST['military_exempt']);
+	
+	
+	
+	// kan grubu, boy, kilo
+	update_user_meta($user->id, 'blood_group', $_POST['blood_group']);
+	update_user_meta($user->id, 'human_size', $_POST['human_size']);
+	update_user_meta($user->id, 'human_weight', $_POST['human_weight']);
+
+	// social media
+	update_user_meta($user->id, 'url_website', $_POST['url_website']);
+	update_user_meta($user->id, 'url_facebook', $_POST['url_facebook']);
+	update_user_meta($user->id, 'url_linkedin', $_POST['url_linkedin']);
+	update_user_meta($user->id, 'url_twitter', $_POST['url_twitter']);
+
+
+	echo get_alert('Personel bilgileri güncellendi', 'success');
+}
+
+$user_meta = get_user_meta($user->id);
+?>
 
 
 		<form name="form_contact" id="form_contact" action="?id=<?php echo $user->id; ?>#cv" method="POST" class="validate_1">
@@ -136,7 +352,7 @@
 											<div class="col-md-1">
 												<div class="form-gorup">
 													<label for="school_grade">Not</label>
-													<input type="text" name="school_grade[]" id="school_grade" class="form-control input-sm digits" minlength="1" maxlength="3" value="<?php echo @$school->school_grade; ?>">
+													<input type="text" name="school_grade[]" id="school_grade" class="form-control input-sm number" minlength="1" maxlength="3" value="<?php echo @$school->school_grade; ?>">
 												</div> <!-- /.form-group -->
 											</div> <!-- /.col-md-1 -->
 											<div class="col-md-1 text-right">
@@ -818,12 +1034,12 @@
 								</div> <!-- /.col-md-6 -->
 								<div class="col-md-6">
 
-									<div class="form-group div_is_married div_is_married_married">
+									<div class="form-group div_is_married" data-div_selected="married">
 										<label for="spouses_name">Eşinin adı?</label>
 										<input type="text" name="spouses_name" id="spouses_name" class="form-control" maxlength="10" value="<?php echo @$user_meta['spouses_name']; ?>">
 									</div> <!-- /.form-group -->
 
-									<div class="form-group div_is_married div_is_married_married div_is_married_widow">
+									<div class="form-group div_is_married js_til_select-married js_til_select-widow">
 										<label for="children_count">Var ise çocuk sayısı?</label>
 										<input type="text" name="children_count" id="children_count" class="form-control digits" maxlength="2" value="<?php echo @$user_meta['children_count']; ?>">
 									</div> <!-- /.form-group -->
@@ -849,17 +1065,17 @@
 								</div> <!-- /.col-md-6 -->
 								<div class="col-md-6">
 
-									<div class="form-group div_military div_military_done">
+									<div class="form-group div_military js_til_select-done">
 										<label for="military_end_date">Terhis Tarihi</label>
 										<input type="text" name="military_end_date" id="military_end_date" class="form-control date" value="<?php echo @$user_meta['military_end_date']; ?>">
 									</div> <!-- /.form-group -->
 
-									<div class="form-group div_military div_military_postponed">
+									<div class="form-group div_military js_til_select-postponed">
 										<label for="military_postponed">Tescil Tarihi</label>
 										<input type="text" name="military_postponed" id="military_postponed" class="form-control date" value="<?php echo @$user_meta['military_postponed']; ?>">
 									</div> <!-- /.form-group -->
 
-									<div class="form-group div_military div_military_exempt">
+									<div class="form-group div_military js_til_select-exempt">
 										<label for="military_exempt">Muaf ise Nedeni?</label>
 										<input type="text" name="military_exempt" id="military_exempt" class="form-control" maxlength="32" value="<?php echo @$user_meta['military_exempt']; ?>">
 									</div> <!-- /.form-group -->
@@ -889,11 +1105,11 @@
 									<div class="row space-5">
 										<div class="col-md-3">
 											<label for="human_size">Boy</label>
-											<input type="text" name="human_size" id="human_size" class="form-control" value="<?php echo @$user_meta['human_size']; ?>">
+											<input type="text" name="human_size" id="human_size" class="form-control digits" value="<?php echo @$user_meta['human_size']; ?>">
 										</div> <!-- /.col-md-3 -->
 										<div class="col-md-3">
 											<label for="human_weight">Kilo</label>
-											<input type="text" name="human_weight" id="human_weight" class="form-control" value="<?php echo @$user_meta['human_weight']; ?>">
+											<input type="text" name="human_weight" id="human_weight" class="form-control digits" value="<?php echo @$user_meta['human_weight']; ?>">
 										</div> <!-- /.col-md-3 -->
 									</div> <!-- /.row -->
 								</div> <!-- /.col-md-6 -->
