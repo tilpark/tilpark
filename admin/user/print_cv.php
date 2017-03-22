@@ -13,7 +13,7 @@ $user = get_user($_GET['id']);
 
 ?>
 
-
+example
 <title>CV - <?php echo $user->display_name; ?></title>
 
 <div class="print-page" size="A4">
