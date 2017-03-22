@@ -19,7 +19,7 @@ function get_convert_str_export($val) {
 }
 
 
-/** 
+/**
  * export_pdf()
  * bir sayfayı pdf formatına cevir
  */
@@ -27,7 +27,7 @@ function export_pdf($filename='', $ops=array()) {
 	$filename = 'tilpark_'.$filename;
 	if( !isset($ops['paper']) ) { $ops['paper']='A4'; }
 	if( !isset($ops['landscape']) ) { $ops['landscape']=''; }
-	
+
 	require_once root_path('includes/lib/dompdf/export_pdf.php');
 }
 
@@ -58,7 +58,7 @@ function export_excel($filename='') {
  */
 function get_set_money($val, $arr=array()) {
     $val = str_replace(',', '', $val);
-    
+
     if(!is_array($arr)) {
         if($arr == 'str') { $arr = array('str'=>true); }
         elseif($arr == 'icon') { $arr = array('icon'=>true); }
@@ -74,7 +74,7 @@ function get_set_money($val, $arr=array()) {
     if( isset($arr['icon']) ) { $icon = ' <i class="fa fa-try icon-money"></i>'; }
     if( isset($arr['str']) ) { $icon = ' TL'; }
 
-    
+
     if(is_numeric($val)) {
         return number_format($val, 2, '.', $arr['digit_separator']).$icon;
     } else {
@@ -137,7 +137,7 @@ function til_get_addslashes($arr) {
         } else {
             $return[$k] = addslashes($v);
         }
-        
+
     }
     return $return;
 } //.til_get_addslashes()
@@ -159,9 +159,9 @@ function get_time_late($date)
 {
 	date_default_timezone_set('Europe/Istanbul');
     $date1 = strtotime(date('Y-m-d H:i:s'));
-    $date2 = strtotime($date); 
+    $date2 = strtotime($date);
     $day = (($date1-$date2)/3600)/24 ;
-    
+
     if($day < 1)
     {
         $hours = $day * 24;
@@ -170,22 +170,22 @@ function get_time_late($date)
             $second = $hours * 3600;
             if($second < 60)
             {
-                return str_replace('', '', $second). ' saniye'; 
+                return str_replace('', '', $second). ' saniye';
             }
             else
             {
-                return str_replace('', '', round($second / 60)). ' dakika'; 
+                return str_replace('', '', round($second / 60)). ' dakika';
             }
         }
         else
         {
-            return str_replace('', '', round($hours)). ' saat';     
+            return str_replace('', '', round($hours)). ' saat';
         }
     }
     else
     {
-        return str_replace('', '', round($day)). ' gün'; 
-    } 
+        return str_replace('', '', round($day)). ' gün';
+    }
 } //.get_time_late()
 
 
@@ -210,7 +210,7 @@ function til_get_date($date, $args=array()) {
     }
     if(!is_array($args)) {
         if($args == 'date')         { $return = substr($date, 0, 10);    }
-        elseif($args == 'datetime') { $return = substr($date, 0, 16);    } 
+        elseif($args == 'datetime') { $return = substr($date, 0, 16);    }
         elseif($args == 'time')     { $return = substr($date, 11, 16);   }
         elseif($args == 'str: F Y')  { $return = date('F Y', strtotime($date));   }
         else { $return = date($args, strtotime($date));   }
@@ -239,7 +239,7 @@ function til_exit($line_no) {
 
 
 
-/** 
+/**
  * json_encode_utf8()
  * json_encode fonksiyonu UTF8 karakterlerini eksik gostermektedir. Bu fonksiyon tum sunucularda sorunsuz calismaktadir.
  */
@@ -262,7 +262,7 @@ function json_encode_utf8($input, $flags = 0) {
 
 
 
-/** 
+/**
  * is_json()
  * bir degerin json olup olmadigini kontrol eder
  */
@@ -319,11 +319,11 @@ function _args_helper($args, $default='') {
                 if(!isset($args[$def])) { add_alert('Parametre ile gelen "<b>'.$def.'</b>" dizisi/verisi eksik yada hatalı.', 'warning', __FUNCTION__); }
             }
         } else {
-            if($default != '') { 
-                if(!isset($args[$default])) { $args2[$default] = $args; unset($args); $args = $args2; unset($args2); } 
+            if($default != '') {
+                if(!isset($args[$default])) { $args2[$default] = $args; unset($args); $args = $args2; unset($args2); }
                 elseif($args[$default] == '') { $args2[$default] = $args; unset($args); $args = $args2; unset($args2); }
             }
-            
+
         }
 
         // eger hata var ise betik akisin duraruralim
@@ -331,7 +331,7 @@ function _args_helper($args, $default='') {
 
         // default degerler icin $args dizisine genel parametreleri atayalim
         if(empty($args) AND !empty($default)) { $args[$default] = array(); }
-        
+
         if(!isset($args['add_alert']))  { $args['add_alert'] = true; }
         if(!isset($args['add_log']))    { $args['add_log'] = true; }
         if(!isset($args['add_new']))    { $args['add_new'] = true; }
@@ -339,7 +339,7 @@ function _args_helper($args, $default='') {
     } else {
         if(!empty($default)) {
             return $args[$default] = array();
-        } 
+        }
     }
 
     return $args;
@@ -390,7 +390,7 @@ function _return_helper($type, $result) {
 
 
 
-/** 
+/**
  * _b()
  * parametrede aldığı sonuca "<b>" ekler
  */
@@ -407,13 +407,13 @@ function _b($val, $ops='"') {
  * til_get_ucfirst()
  * bir dizgenin ilk harflerini buyuk yapar
  */
-function til_get_ucwords($string, $e ='utf-8') { 
-    if (function_exists('mb_convert_case') && !empty($string)) { 
+function til_get_ucwords($string, $e ='utf-8') {
+    if (function_exists('mb_convert_case') && !empty($string)) {
         $string = mb_convert_case($string, MB_CASE_TITLE, $e);
-    } else { 
-        $string = ucwords($string); 
-    } 
-    return $string; 
+    } else {
+        $string = ucwords($string);
+    }
+    return $string;
 } //.til_get_ucfirst()
 
 
@@ -427,13 +427,13 @@ function til_get_ucwords($string, $e ='utf-8') {
  * til_get_strtoupper()
  * bir dizgeyi komple buyuk harf yapar
  */
-function til_get_strtoupper($string, $e ='utf-8') { 
-    if (function_exists('mb_strtoupper') && !empty($string)) { 
+function til_get_strtoupper($string, $e ='utf-8') {
+    if (function_exists('mb_strtoupper') && !empty($string)) {
         $string = mb_strtoupper($string);
-    } else { 
-        $string = strtoupper($string); 
-    } 
-    return $string; 
+    } else {
+        $string = strtoupper($string);
+    }
+    return $string;
 } //.til_get_strtoupper()
 
 
@@ -445,13 +445,13 @@ function til_get_strtoupper($string, $e ='utf-8') {
  * til_get_strtolower()
  * bir dizgeyi komple kucuk harf yapar
  */
-function til_get_strtolower($string, $e ='utf-8') { 
-    if (function_exists('mb_strtolower') && !empty($string)) { 
+function til_get_strtolower($string, $e ='utf-8') {
+    if (function_exists('mb_strtolower') && !empty($string)) {
         $string = mb_strtolower($string);
-    } else { 
-        $string = strtolower($string); 
-    } 
-    return $string; 
+    } else {
+        $string = strtolower($string);
+    }
+    return $string;
 } //.til_get_strtolower()
 
 
@@ -706,8 +706,8 @@ function get_country_array() {
 
 
 /**
- * list_selectbox_array() 
- *  
+ * list_selectbox_array()
+ *
  */
 function list_selectbox($array=array(), $opt=array()) {
     ob_start();
@@ -733,9 +733,9 @@ function list_selectbox($array=array(), $opt=array()) {
 
 
             echo '<option val="'.$key.'" '.$selected.'>'.$val.'</option>';
-  
 
-            
+
+
         }
 
     ?></select> <?php
@@ -746,6 +746,20 @@ function list_selectbox($array=array(), $opt=array()) {
 }
 
 
+
+
+/**
+ * @func editor_strip_tags()
+ * @desc içerikte istenilmeyen html'leri siler $strip ile gelen değerler hariç
+ * @param string, string
+ * @return string
+ */
+function editor_strip_tags($val, $strip="") {
+  if ( empty($strip) ) { $strip = '<h1><h2><h3><h4><h5><a><div><span><p><b><br><pre><li><ol><ul><strong><img><blockquote><em><s><u><code><i><table><thead><body><tr><td><th>'; }
+	$val = strip_tags($val, $strip);
+	
+	return $val;
+} //.editor_strin_tags()
 
 
 

@@ -18,7 +18,7 @@ if(isset($_GET['id'])) {
 	} else {
 		echo get_alert(_b($_GET['id']).' Mesaj ID veritabanında <u>bulunamadı</u>.', 'danger', false); get_footer(); exit;
 	}
-	
+
 
 	if($message->sen_u_id == get_active_user('id')) {
 		$_GET['rec_u_id'] = $message->rec_u_id;
@@ -70,19 +70,17 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 
 <div class="row">
 	<div class="col-md-3">
-		
+
 		<?php include('_sidebar.php'); ?>
 
 	</div> <!-- /.col-md-3 -->
 	<div class="col-md-9">
-
 		<?php print_alert(); ?>
 
 		<div class="panel">
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-md-12">
-
 						<?php if(@$messages): ?>
 							<?php foreach($messages as $message): ?>
 								<div class="row space-5">
@@ -91,16 +89,17 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 											<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
 										</div> <!-- /.col-md-1 -->
 									<?php endif; ?>
+
 									<div class="col-md-11">
-										
 										<div class="well padding-10 br-3">
 											<div class="text-muted fs-11 italic">
-												<span class="bold"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> tarafından <span class="bold" data-toggle="tooltip" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> önce gönderildi. 
+												<span class="bold"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> tarafından <span class="bold" data-toggle="tooltip" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> önce gönderildi.
 											</div>
 											<?php echo $message->message; ?>
-										</div>
+										</div><!--/ .well /-->
 										<div class="h-10"></div>
 									</div> <!-- /.col-md-11 -->
+
 									<?php if(get_active_user('id') == $message->sen_u_id): ?>
 										<div class="col-md-1">
 											<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-left" width="48">
@@ -110,15 +109,14 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 							<?php endforeach; ?>
 						<?php endif; ?>
 
-
+						<!--/ ADD MESSAGE REPLY /-->
 						<form name="form_message" id="form_message" action="" method="POST">
-
 							<div class="row space-5">
 								<div class="col-md-1">
 									<label>&nbsp;</label>
 									<div class="clearfix"></div>
 									<?php if(get_active_user('avatar')): ?>
-										<img src="<?php site_url(get_active_user('avatar')); ?>" class="img-responsive br-3 pull-right" width="64">
+										<img src="<?php echo get_active_user('avatar'); ?>" class="img-responsive br-3 pull-right" width="64">
 									<?php else: ?>
 										<img src="<?php template_url('img/no-avatar.jpg'); ?>" class="img-responsive br-3 pull-right" width="64">
 									<?php endif; ?>
@@ -127,7 +125,8 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 
 									<div class="form-group">
 										<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
-										<textarea name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
+										<textarea autofocus name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
+										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern pre_html code_html', toolbar: 'bold italic underline forecolor backcolor image pre_html code_html table', height: '160' });</script>
 									</div> <!-- /.form-group -->
 
 									<div class="pull-right">
@@ -137,14 +136,13 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 									</div> <!-- /.pull-right -->
 								</div> <!-- /.col-md-11 -->
 							</div> <!-- /.row -->
-
 						</form>
-
+						<!--/ ADD MESSAGE REPLY /-->
+						
 					</div> <!-- /.col-md-12 -->
 				</div> <!-- /.row -->
-			</div>
-		</div>
-
+			</div><!--/ .panel-body /-->
+		</div><!--/ .panel /-->
 	</div> <!-- /.col-md-9 -->
 </div> <!-- /.row -->
 

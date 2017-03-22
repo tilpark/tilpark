@@ -19,7 +19,7 @@ $(document).ready( function() {
 	$(".number").keyup(function (){
 		if(this.value.match(/[^0-9.]/g)){
 	    	this.value = this.value.replace(/[^0-9.]/g,'');
-	  	} 
+	  	}
 	});
 
 	$('.money').number( true, 2, '.', ',', true);
@@ -47,7 +47,7 @@ $(document).ready( function() {
 		"bLengthChange": false,
 		"info":     false
 	});
-	
+
 	/* dataTable for log : log kayitlari icin kulanılır */
 	$('.dataTable-logs').DataTable({
         "paging":   true,
@@ -80,9 +80,9 @@ $(document).ready( function() {
 	        }
 	    }
     } );
-	
 
-	
+
+
 	/* datetimepicker */
 	$(".datetime").datetimepicker({
 		format: 'YYYY-MM-DD HH:mm',
@@ -166,7 +166,7 @@ $(document).ready( function() {
 	var url = document.location.toString();
 	if (url.match('#')) {
 	    $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
-	} 
+	}
 
 	// Change hash for page-reload
 	$('.nav-tabs a').on('shown.bs.tab', function (e) {
@@ -224,18 +224,18 @@ function input_getJSON_account(input, div_class, item, json_url, db_s_where)
 	var open_div_name = '.liveData.'+div_class+'';
 
 	// eger div menusu eklenmemis ise ekleyelim
-	if ($(input).parent().find(open_div_name).length < 1){ 
+	if ($(input).parent().find(open_div_name).length < 1){
 		$(input).after('<div class="dropdown liveData '+div_class+'"><ul class="dropdown-menu inner"></ul></div>');
 	}
 
 	// body keydown
 	$('body').keydown(function() {
 		if ($(input).parent().find(open_div_name+'.open ul li:first-child a').is(":focus")) {
-			if(event.which == 38) {				
+			if(event.which == 38) {
 				setTimeout(function(){$(input).focus();}, 1);
 			}
 		} else if ($(input).parent().find(open_div_name+'.open ul li:last-child a').is(":focus")) {
-			if(event.which == 40) {				
+			if(event.which == 40) {
 				setTimeout(function(){$(input).focus();}, 1);
 			}
 		}
@@ -248,7 +248,7 @@ function input_getJSON_account(input, div_class, item, json_url, db_s_where)
 	});
 
 
-	// input keyup 
+	// input keyup
 	$(input).keydown(function() {
 		if(event.which == 40) { // eger asagi butonuna basilmis ise ilk eleman secilsin
 			$(input).parent().find(open_div_name+' ul li:first-child a').focus();
@@ -274,7 +274,7 @@ function input_getJSON_account(input, div_class, item, json_url, db_s_where)
 
 					// JSON ile donen degerler
 				  	$.each( data, function( i, list ){
-			
+
 				  		// attr icine eklenecek deger icin string olustur
 				  		var attr_str = '';
 
@@ -290,13 +290,13 @@ function input_getJSON_account(input, div_class, item, json_url, db_s_where)
 							text_str = text_str + val.replace('[TEXT]', data[i][key]);
 						});
 
-				  		
+
 				  		// listeleme kutusuna elemanları ekle
 						$(input).parent().find(open_div_name+' ul').append('<li><a href="javascript:;" class="item getJSON_'+div_class+'" onclick="'+div_class+'_getJSON_click(this);" '+attr_str+'>'+text_str+'</a></li>');
 					});
 					$(input).focus();
 				})
-				.done(function() {  
+				.done(function() {
 					// listeleme kutusunu tekrar aktif et
 				  	$(input).parent().find(open_div_name).addClass('open');
 				})
@@ -305,7 +305,7 @@ function input_getJSON_account(input, div_class, item, json_url, db_s_where)
 					$(open_div_name+' ul').html('');
 				})
 				.always(function() {
-				    
+
 				});
 			}
 	    }, 200 );
@@ -386,7 +386,7 @@ $(document).ready(function() {
 		var div_name = $(this).attr('data-div');
 		js_til_select_div(div_name, $(this), false);
 	});
-});	
+});
 /* /.js_til_select_div() */
 
 
@@ -450,7 +450,7 @@ $(document).ready(function() {
 			});
 
 		}
-	});	
+	});
 
 
 	$(document).on('click', '.clone_item [data-function="remove_div_item"]', function() {
@@ -467,5 +467,226 @@ $(document).ready(function() {
 
 
 
+/* --------------------------------------------------------- WINDOW */
 
 
+
+
+
+/**
+ * @func get_site_url()
+ * @desc Sayfanın adresini veriri
+ * @param string
+ * @return string
+ */
+function get_site_url(val='') {
+  if ( val != "" ) {
+    return window.site_url+val;
+  } else {
+    return window.site_url;
+  }
+} //.get_site_url
+
+
+
+
+
+/**
+ * @func parent()
+ * @desc verilen elementi ilk üst elementini bulur
+ * @param element, selector
+ * @return element
+ */
+function parent(el, selector) {
+    var matchesFn;
+
+    // find vendor prefix
+    ['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn) {
+        if (typeof document.body[fn] == 'function') {
+            matchesFn = fn;
+            return true;
+        }
+        return false;
+    })
+
+    var parent;
+
+    // traverse parents
+    while (el) {
+        parent = el.parentElement;
+        if (parent && parent[matchesFn](selector)) {
+            return parent;
+        }
+        el = parent;
+    }
+
+    return null;
+} //.parent()
+
+
+
+
+/**
+ * @func js_alert_location()
+ * @desc mevcut alertlerin konumunu verir
+ * @param empty
+ * @return
+ */
+function js_alert_location() {
+  var alerts = document.querySelectorAll(".js-alert.active");
+  if ( alerts.length ) {
+    for (var i = alerts.length - 1; i >= 0; i--) {
+      alerts[i].style.top = ((i * 80) + 50) + "px";
+    }
+  }
+} //.js_alert_location()
+
+
+/* -------------------------------------------------------------- IDE EDITOR */
+/**
+ * @func editor()
+ * @desc textarea#content elementine tinymce editorünü etkinleştirir
+ * @param selector, plugins, toolbar
+ * @return
+ */
+function editor(param = {selector: "", plugins:"", toolbar:"", height: "500", menubar: false}) {
+  var editor  = document.getElementById("content");
+  var input   = document.createElement("INPUT");
+  input.type  = "file";
+  input.id    = "editor_file_input";
+  input.style = "display: none";
+
+	if ( param.selector == "" || param.selector == undefined ) { param.selector = '#content'; }
+	if ( param.menubar == "" || param.menubar == undefined ) { param.menubar = false; }
+  if ( param.plugins == "" || param.plugins == undefined ) param.plugins = ['advlist autolink lists link image print preview', 'searchreplace wordcount code fullscreen pre_lines', 'insertdatetime nonbreaking save table contextmenu directionality', 'paste textcolor colorpicker textpattern imagetools codesample codemirror pre_html code_html'];
+  if ( param.toolbar == "" || param.toolbar == undefined ) param.toolbar = 'styleselect | bold italic underline forecolor backcolor | alignleft aligncenter alignright | bullist numlist | link image print preview media codesample pre_html code_html code';
+
+  tinymce.init({
+		selector: param.selector,
+		plugins: param.plugins,
+		menubar : param.menubar,
+		toolbar1: param.toolbar,
+		theme: 'modern',
+		height: param.height,
+		nonbreaking_force_tab: true,
+    language: 'tr_TR',
+    external_plugins: { codemirror: get_site_url('includes/lib/tinymce/plugins/codemirror/plugin.js') },
+    content_css: [ get_site_url('content/themes/default/css/bootstrap.min.css'), get_site_url('content/themes/default/css/app.css')],
+    codemirror: { indentOnInit: true, fullscreen: true, path: 'CodeMirror', config: { lineNumbers: true }, theme: "monokai"},
+		table_default_attributes: { class: 'table-bordered'},
+    // image upload
+    file_browser_callback: function (field_name, url, type, win) {
+      input.click();
+
+      input.onchange = function () {
+        imageHandler(this.files[0], function(src){
+           win.document.getElementById(field_name).value = src;
+        });
+      }
+    }
+  });
+} //. editor()
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------ HELPER */
+
+/**
+ * @func imageHandler()
+ * @desc FILE ile image verisi gelir ise callback ile resim url'leri geri verilir
+ * @param empty
+ * @return callback
+ */
+function imageHandler(image, callback) {
+  var data = new FormData();
+  data.append('image', image);
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', get_site_url('includes/upload.php?session_id='+window.session_id), true);
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        if ( xhr.responseText == "") {
+          js_alert("Hata!", "Dosya izni veya resmin 5mb'den büyük olmadığından emin olun");
+        } else {
+          callback(xhr.responseText);
+        }
+      }
+    }
+  }
+  xhr.send(data);
+} // imageHandler()
+
+
+
+
+
+/**
+ * @func js_alert()
+ * @desc Dynamic uyarı kutusu
+ * @param title, message, type['danger', 'info', 'primary', 'success', 'warning']
+ * icon=all til-icon
+ * @return
+ */
+function js_alert(title, message, type='danger', icon='warning') {
+  var alert = document.createElement("div");
+  var body = document.querySelector("body");
+  alert.setAttribute("class", "js-alert active "+ type);
+
+  var alerts = document.querySelectorAll(".js-alert");
+  if ( alerts.length ) {
+    alert.style.top = ((alerts.length * 80) + 50) + "px";
+  }
+
+  alert.innerHTML =
+  '<div class="alert-container">'+
+    '<div class="alert-icon-content">'+
+      '<div class="alert-icon">'+
+        '<i class="fa fa-'+ icon +'"></i>'+
+      '</div>'+
+    '</div>'+
+
+    '<div class="alert-content-container">'+
+      '<div class="alert-title">'+
+        '<span class="fs16">'+ title +'</span>'+
+        '<span class="alert-close"><i class="fa fa-times"></i></span>'+
+      '</div>'+
+
+      '<div class="alert-content">'+ message +'</div>'+
+    '</div>'+
+  '</div>';
+
+  body.appendChild(alert);
+
+  setTimeout(function (){
+    var alert_close = document.querySelectorAll(".alert-close");
+    for (var i = alert_close.length - 1; i >= 0; i--) {
+      alert_close[i].onclick = function () {
+        var alert_div = parent(this, '.js-alert');
+        alert_div.classList.add("close-alert");
+        alert_div.classList.remove("active");
+        js_alert_location();
+
+        setTimeout(function() {
+          alert_div.remove();
+        }, 300);
+      }
+    }
+
+    setTimeout(function () {
+      alert.classList.add("close-alert");
+      alert.classList.remove("active");
+      js_alert_location();
+
+      setTimeout(function() {
+        alert.remove();
+      }, 300);
+    }, 10000);
+  }, 100);
+} // js_alert

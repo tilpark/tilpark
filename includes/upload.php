@@ -1,7 +1,16 @@
 <?php
 /* --------------------------------------------------- IMAGE UPLOAD */
 
+if ( isset($_FILES['image']) AND isset($_GET['session_id']) ) {
+	include '../tilpark.php';
 
+	session_id($_GET['session_id']);
+	is_login();
+
+	if ( $image_url = upload_image($_FILES['image']) ) {
+		echo get_site_url($image_url);
+	}
+}
 
 
 /**
@@ -56,13 +65,13 @@ function upload_image($file, $args=array()) {
 				$old_img_			= imagecreatefromjpeg($file_to_upload); 	// Yüklenen resimden oluşacak yeni bir JPEG resmi oluşturuyoruz..
 				$old_img_size		= getimagesize($file_to_upload); 		// bir onceki resmimizin boyutlarini ogrenelim
 				$new_img_blank		= imagecreatetruecolor($args['sizing']['width'], $args['sizing']['height']); // Oluşturulan boş resmi istediğimiz boyutlara getiriyoruz..
-		 
+
 				imagecopyresampled($new_img_blank, $old_img_, 0, 0, 0, 0, $args['sizing']['width'], $args['sizing']['height'], $old_img_size[0], $old_img_size[1]);
 				imagejpeg($new_img_blank, $file_to_upload, 100); // boyutlandirilan resmi kayit edelim
- 			}	
+ 			}
 
 
-		    
+
 		    if($args['add_alert']) 	{ add_alert('Resim dosyası başarı ile yüklendi.', 'success', __FUNCTION__); }
 			if($args['add_log']) 	{ add_log(array('uniquetime'=>@$args['uniquetime'], 'table_id'=>'users:'.get_active_user('id'), 'log_key'=>'image_upload', 'log_text'=>'Bir resim dosyası yükledi.')); }
 

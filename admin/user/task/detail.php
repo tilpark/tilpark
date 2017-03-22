@@ -10,7 +10,7 @@ if(isset($_GET['id'])) {
 	if($task = get_task($_GET['id'])) {
 		// secenekleri degiskene atayalim
 		$choice = json_decode($task->choice);
-		
+
 
 
 
@@ -19,7 +19,7 @@ if(isset($_GET['id'])) {
 			db()->query("UPDATE ".dbname('messages')." SET read_it='1' WHERE id='".$task->id."' ");
 		}
 	} else { echo get_alert('Görev ID veritabanında bulunamadı.', 'danger', false); get_footer(); exit; }
-	
+
 
 	if($task->sen_u_id == get_active_user('id')) {
 		$_GET['rec_u_id'] = $task->rec_u_id;
@@ -109,7 +109,7 @@ if(isset($_POST['update_detail']) and $task->sen_u_id == get_active_user('id')) 
 	$_task['date_start'] 	= $_POST['date_start'];
 	$_task['date_end']		= $_POST['date_end'];
 
-	# guncelleme islemine baslayalim 
+	# guncelleme islemine baslayalim
 	if(update_task($task->id, $_task)) {
 
 		if($_task['date_end'].':00' != $task->date_end) {
@@ -133,7 +133,7 @@ if(isset($_GET['type_status'])) {
 
 		if($_GET['type_status'] == '1' and $task->choice_open)	{ // gorev kapatiliyor ve acikta gorev secenegi var ise
  			add_alert('Kapatılmamış görev seçenekleri olduğundan, bu görevi kapatılamaz.', 'warning', 'type_status');
-		} else { 
+		} else {
 			$_task = array();
 			$_task['type_status'] = $_GET['type_status'];
 			if(update_task($task->id, $_task)) {
@@ -183,7 +183,7 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 
 <div class="row">
 	<div class="col-md-3">
-		
+
 		<?php include('_sidebar.php'); ?>
 
 	</div> <!-- /.col-md-3 -->
@@ -245,7 +245,7 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 				</form>
 			</div> <!-- /.col-md-4 -->
 			<div class="col-md-8">
-				
+
 				<div class="panel panel-default">
 					<div class="panel-heading"><h4 class="panel-title">Görev Seçenekleri</h4></div>
 					<div class="panel-body">
@@ -256,7 +256,7 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 								foreach($choice as $id=>$arr) {
 									if($arr->is_it_done) {
 										$choice_completed++;
-									} 
+									}
 								} // foreach
 
 								$choice_count 	= count((array)$choice);
@@ -289,12 +289,12 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 
 											<?php echo $arr->text; ?>
 											<div class="h-10"></div>
-											
+
 											<div class="text-right">
 												<?php if($arr->is_it_done): ?>
 													<i class="fa fa-check text-warning"></i> <small class="text-muted italic"><span data-toggle="tooltip" title="<?php echo substr($arr->date,0,16); ?>"><?php echo get_time_late($arr->date); ?> önce</span> <?php user_info($arr->user_id, 'display_name'); ?> tarafından tamamlandı.</small>
 												<?php endif; ?>
-												<input type="checkbox" name="choice_<?php echo $id; ?>" id="choice_<?php echo $id; ?>" <?php if($arr->is_it_done): ?>checked<?php endif; ?> class="toogle" data-size="mini" data-on-text="Evet" data-off-text="Hayır"> 
+												<input type="checkbox" name="choice_<?php echo $id; ?>" id="choice_<?php echo $id; ?>" <?php if($arr->is_it_done): ?>checked<?php endif; ?> class="toogle" data-size="mini" data-on-text="Evet" data-off-text="Hayır">
 											</div>
 
 										</li>
@@ -310,11 +310,11 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 						<?php endif; ?>
 					</div> <!-- /.panel-body -->
 				</div> <!-- /.panel -->
-				
+
 			</div> <!-- /.col-md-8 -->
 		</div> <!-- /.row -->
 
-		
+
 
 		<div class="panel">
 			<div class="panel-body">
@@ -335,10 +335,10 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 										</div> <!-- /.col-md-1 -->
 									<?php endif; ?>
 									<div class="col-md-11">
-										
+
 										<div class="well padding-10 br-3">
 											<div class="text-muted fs-11 italic">
-												<span class="bold"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> tarafından <span class="bold"><?php echo get_time_late($message->date); ?></span> önce gönderildi. 
+												<span class="bold"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> tarafından <span class="bold"><?php echo get_time_late($message->date); ?></span> önce gönderildi.
 											</div>
 											<?php echo stripslashes($message->message); ?>
 										</div>
@@ -354,14 +354,15 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 						<?php endif; ?>
 
 
-						<form name="form_message" id="form_message" action="" method="POST">
 
+						<!--/ TASK REPLY /-->
+						<form name="form_message" id="form_message" action="" method="POST">
 							<div class="row space-5">
 								<div class="col-md-1">
 									<label>&nbsp;</label>
 									<div class="clearfix"></div>
 									<?php if(get_active_user('avatar')): ?>
-										<img src="<?php site_url(get_active_user('avatar')); ?>" class="img-responsive br-3 pull-right" width="64">
+										<img src="<?php echo get_active_user('avatar'); ?>" class="img-responsive br-3 pull-right" width="64">
 									<?php else: ?>
 										<img src="<?php template_url('img/no-avatar.jpg'); ?>" class="img-responsive br-3 pull-right" width="64">
 									<?php endif; ?>
@@ -371,6 +372,7 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 									<div class="form-group">
 										<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
 										<textarea name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
+										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern pre_html code_html', toolbar: 'bold italic underline forecolor backcolor image pre_html code_html table', height: '160' });</script>
 									</div> <!-- /.form-group -->
 
 									<div class="pull-right">
@@ -380,8 +382,8 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 									</div> <!-- /.pull-right -->
 								</div> <!-- /.col-md-11 -->
 							</div> <!-- /.row -->
-
 						</form>
+						<!--/ TASK REPLY /-->
 
 					</div> <!-- /.col-md-12 -->
 				</div> <!-- /.row -->

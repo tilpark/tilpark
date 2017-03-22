@@ -77,26 +77,26 @@ add_page_info( 'title', 'Yönetim Paneli' );
 		</div> <!-- /.col-md-3 -->
 	</div> <!-- /.row -->
 
-		
 
-		
 
-		
+
+
+
 
 
 	</div> <!-- /.col-md-6 -->
 	<div class="col-md-6">
-		
-		
-		
-		
+
+
+
+
 		<div class="panel panel-default">
 			<div class="panel-heading"><h3 class="panel-title">Son 1 Hafta Grafik Özeti</h3></div>
 			<div class="panel-body">
 				<?php include root_path('content/themes/default/widgets/dashboard_chart_in_out.php'); ?>
 			</div> <!-- /.panel-body -->
 		</div> <!-- /.panel -->
-		
+
 
 	</div>
 </div> <!-- /.row -->

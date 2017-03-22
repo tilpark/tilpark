@@ -1,5 +1,5 @@
 <?php include('../../tilpark.php'); ?>
-<?php 
+<?php
 if($form = get_form(@$_GET['id'])) {
 
 } else {

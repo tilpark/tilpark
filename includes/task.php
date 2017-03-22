@@ -11,7 +11,8 @@ function add_task($rec_u_id, $args=array()) {
 	$args 	= _args_helper(input_check($args), 'insert');
 	$insert = $args['insert'];
 
-	@form_validation($insert['message'], 'message', 'Mesaj', 'required|min_length[3]', __FUNCTION__);
+	$insert['message'] = editor_strip_tags($insert['message']);
+	@form_validation(strip_tags($insert['message']), 'message', 'Mesaj', 'required|min_length[3]', __FUNCTION__);
 	@form_validation($insert['date_start'], 'date_start', 'Başlama Tarihi', 'required|datetime', __FUNCTION__);
 	@form_validation($insert['date_end'], 'date_end', 'Bitirme Tarihi', 'required|datetime', __FUNCTION__);
 	if(!$rec_user = get_user($rec_u_id)) { add_alert('Görev atanacak kullanıcı bulunamadı.', 'danger', __FUNCTION__); }
@@ -26,7 +27,7 @@ function add_task($rec_u_id, $args=array()) {
 			$insert['rec_u_id'] 	= $rec_user->id;
 			$insert['date']			= date('Y-m-d H:i:s');
 			$insert['date_update'] 	= date('Y-m-d H:i:s');
-			
+
 
 			# secenekler
 			if(isset($insert['choice'])) {
@@ -50,7 +51,7 @@ function add_task($rec_u_id, $args=array()) {
 			# kullanicin ve giden kutulari icin deger atayalim
 			$insert['inbox_u_id'] 	= $insert['rec_u_id'];
 			$insert['outbox_u_id'] 	= $insert['sen_u_id'];
-			
+
 
 
 			if($q_insert = db()->query("INSERT INTO ".dbname('messages')." ".sql_insert_string($insert)." ")) {
@@ -74,7 +75,7 @@ function add_task($rec_u_id, $args=array()) {
  * update_task()
  * gorevi gunceller
  */
-function update_task($task_id, $args) {	
+function update_task($task_id, $args) {
 	$task_id 	= input_check($task_id);
 	$args 		= _args_helper(input_check($args), 'update');
 	$update 	= $args['update'];
@@ -121,8 +122,8 @@ function get_task($task_id, $args=array()) {
 			$return->choice_closed	= 0;
 			$return->choice_count	= 0;
 			if($return->choice) {
-				foreach(json_decode($return->choice) as $ch) { 
-					if($ch->is_it_done) { $return->choice_closed++; } else { $return->choice_open++; } 
+				foreach(json_decode($return->choice) as $ch) {
+					if($ch->is_it_done) { $return->choice_closed++; } else { $return->choice_open++; }
 					$return->choice_count++;
 				}
 			}
@@ -139,7 +140,7 @@ function get_task($task_id, $args=array()) {
 
 /**
  * get_tasks()
- * 
+ *
  */
 function get_tasks($args=array()) {
 	$args 	= _args_helper(input_check($args), 'where');
@@ -174,12 +175,14 @@ function add_task_message($task_id, $args) {
 	$args 		= _args_helper(input_check($args), 'insert');
 	$insert 	= $args['insert'];
 
+	$insert['message'] = editor_strip_tags($insert['message']);
+
 	# form control
 	@form_validation($insert['message'], 'message', 'Mesaj', 'required|min_lenght[3]', __FUNCTION__);
 	# task_id var mi?
 	if(!$task = get_task($task_id)) { add_alert('Görev ID bulunamadı.', 'danger', __FUNCTION__); }
 
-	
+
 	if(!have_log(@$args['uniquetime'])) {
 		if(!is_alert(__FUNCTION__)) {
 
@@ -190,14 +193,14 @@ function add_task_message($task_id, $args) {
 			$insert['date_update'] = date('Y-m-d H:i:s');
 			$insert['sen_u_id'] = get_active_user('id');
 			if(get_active_user('id') == $task->sen_u_id) { $insert['rec_u_id'] = $task->rec_u_id; } else { $insert['rec_u_id'] = $task->sen_u_id; }
-			
+
 
 			if($q_insert = db()->query("INSERT INTO ".dbname('messages')." ".sql_insert_string($insert)." ")) {
 				if(db()->insert_id) {
 					$insert_id = db()->insert_id;
 					if($args['add_alert']) 	{ add_alert('Görev için cevap mesajı ekledi.', 'success', __FUNCTION__); }
 					if($args['add_log']) 	{ add_log(array('table_id'=>'messages:'.$task_id, 'log_key'=>__FUNCTION__, 'log_text'=>'Görev için cevap mesajı gönderdi. '._b('ID: '.$task->id))); }
-					
+
 					## yeni mesaj eklendigi icin gorevi tekrar okunmadi yapacagiz ve guncelleme tarihini degistirecehiz
 					$_task['add_log'] 		= false;
 					$_task['add_alert']		= false;
@@ -206,9 +209,9 @@ function add_task_message($task_id, $args) {
 					$_task['update']['read_it']			= 0;
 					$_task['update']['outbox_u_id'] 	= get_active_user('id');
 					if(get_active_user('id') == $task->sen_u_id) { $_task['update']['inbox_u_id'] = $task->rec_u_id; } else { $_task['update']['inbox_u_id'] = $task->sen_u_id; }
-					
+
 					update_task($task->id, $_task);
-					
+
 					return $insert_id;
 				} else { return false; }
 			} else { add_mysqli_error_log(__FUNCTION__); }
@@ -301,7 +304,7 @@ function _get_query_task($args) {
 
 	if($args['type'] == 'inbox' OR $args['type'] == 'inbox-open' OR $args['type'] == 'inbox-close') {
 		$return .= "rec_u_id='".get_active_user('id')."' AND sen_trash_u_id != '".get_active_user('id')."' AND rec_trash_u_id != '".get_active_user('id')."'";
-		
+
 		if($args['type'] == 'inbox-open') {
 			$return .= " AND type_status='0'";
 		} elseif($args['type'] == 'inbox-close') {
@@ -311,7 +314,7 @@ function _get_query_task($args) {
 
 	if($args['type'] == 'outbox' OR $args['type'] == 'outbox-open' OR $args['type'] == 'outbox-close') {
 		$return .= "sen_u_id='".get_active_user('id')."' AND sen_trash_u_id != '".get_active_user('id')."' AND rec_trash_u_id != '".get_active_user('id')."'";
-		
+
 		if($args['type'] == 'outbox-open') {
 			$return .= " AND type_status='0'";
 		} elseif($args['type'] == 'outbox-close') {

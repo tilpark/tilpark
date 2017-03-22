@@ -1,3 +1,7 @@
+<script type="text/javascript">
+  window.site_url   = '<?php echo get_site_url(); ?>';
+  window.session_id = '<?php echo session_id(); ?>';
+</script>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,12 +12,12 @@
     <title>Tilpark!</title>
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.css"/>
- 
+
 
     <!-- CSS -->
     <link href="<?php echo template_url('css/bootstrap.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo template_url('css/font-awesome.min.css'); ?>" rel="stylesheet">
-    
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -26,7 +30,7 @@
 
      <!-- chartjs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-    
+
     <!-- datepicker -->
     <script src="http://momentjs.com/downloads/moment.min.js"></script>
     <link href="<?php echo template_url('css/bootstrap-datetimepicker.min.css'); ?>" rel="stylesheet">
@@ -42,8 +46,7 @@
 
 
     <!-- Rich Text Editor -->
-    <link href="https://cdn.quilljs.com/1.2.0/quill.snow.css" rel="stylesheet">
-    <script src="https://cdn.quilljs.com/1.2.0/quill.js"></script>
+    <script src="<?php echo get_site_url('includes/lib/tinymce/tinymce.min.js'); ?>"></script>
 
 
     <link href="<?php echo template_url('css/tilpark.css'); ?>" rel="stylesheet">
@@ -179,8 +182,8 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle profile-avatar" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 
-                <img src="<?php active_user('avatar'); ?>" class="img-repsonsive img-avatar"> 
-              
+                <img src="<?php active_user('avatar'); ?>" class="img-repsonsive img-avatar">
+
               <span class="user-name"><?php active_user('name'); ?> <span class="user-role"><?php echo get_user_role_text(get_active_user('role')); ?></span></span>
             </a>
             <ul class="dropdown-menu">
@@ -208,8 +211,7 @@
 </div>
 
 <div class="clearfix"></div>
-    
+
 
 
 <?php get_sidebar(); ?>
-

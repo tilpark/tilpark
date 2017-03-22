@@ -10,7 +10,7 @@
 
 if(isset($_GET['rec_u_id'])) {
 	$rec_user = get_user($_GET['rec_u_id']);
-} 
+}
 
 if(isset($_POST['rec_u_id'])) {
 	$rec_user = get_user($_POST['rec_u_id']);
@@ -25,7 +25,7 @@ add_page_info( 'nav', array('name'=>@$rec_user->name.' '.@$rec_user->surname) );
 /* mesaj ekleri var ise olusturalim */
 $str_attachment = '';
 if(isset($_GET['attachment'])) {
-	
+
 	// gerekli degiskenler
 	$str_attachment_title 	= 'NULL';
 	$str_attachment 		= '<div class="row"><div class="col-md-6"><div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><i class="fa fa-paperclip fa-fw"></i> Mesaj Eki - {TITLE}</h4></div>';
@@ -107,10 +107,12 @@ if(isset($_POST['send_message'])) {
 	if($str_attachment) {
 		$_message['message'] = $str_attachment.' '.$_message['message'];
 	}
-	
-	if($id = add_message($rec_user->id, $_message)) {
-		if(!isset($_GET['message_id'])) {
-			header("Location: ".get_site_url('admin/user/message/detail.php?id='.$id));
+
+	if ( is_array($rec_user) OR is_object($rec_user) ) {
+		if($id = add_message($rec_user->id, $_message)) {
+			if(!isset($_GET['message_id'])) {
+				header("Location: ".get_site_url('admin/user/message/detail.php?id='.$id));
+			}
 		}
 	}
 } //.isset($_POST)
@@ -132,18 +134,16 @@ if(isset($_POST['send_message'])) {
 
 <div class="row">
 	<div class="col-md-3">
-		
+
 		<?php include('_sidebar.php'); ?>
 
 	</div> <!-- /.col-md-3 -->
 	<div class="col-md-9">
-
 		<div class="row">
 			<div class="col-md-12">
 
-
-				<form name="form_message" id="form_message" action="" method="POST" class="validate">
-
+				<!--/ ADD MESSAGE /-->
+				<form name="form_message" id="form_message" action="" method="POST" class="validate" autocomplete="off">
 					<div class="row space-5">
 						<div class="col-md-1"></div>
 						<div class="col-md-4">
@@ -155,40 +155,22 @@ if(isset($_POST['send_message'])) {
 						</div> <!-- /.col-md-4 -->
 					</div> <!-- /.row -->
 
-					
-
 					<div class="row space-5">
 						<div class="col-md-1">
 							<label>&nbsp;</label>
 							<div class="clearfix"></div>
 							<?php if(get_active_user('avatar')): ?>
-								<img src="<?php site_url(get_active_user('avatar')); ?>" class="img-responsive br-5 pull-right" width="64">
+								<img src="<?php echo get_active_user('avatar'); ?>" class="img-responsive br-5 pull-right" width="64">
 							<?php else: ?>
 								<img src="<?php template_url('img/no-avatar.jpg'); ?>" class="img-responsive br-5 pull-right" width="64">
 							<?php endif; ?>
 						</div> <!-- /.col-md-1 -->
+
 						<div class="col-md-11">
-
 							<div class="form-group">
-								<div class="editor_message" data-textarea="message" style="height:140px;">
-								</div> <!-- /.editor_message -->
 								<textarea name="message" id="message" class="form-control required hidden" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
-
-								<script>
-									var toolbarOptions = ['bold', 'italic', 'underline', 'strike', 'background', 'color', 'link', 'code-block', 'image', 'video'];
-								  	var quill = new Quill('.editor_message', {
-								    	modules: {
-										    toolbar: toolbarOptions
-										},
-										theme: 'snow'
-								  	});
-								  	quill.on('text-change', function(delta, oldDelta, source) {
-								  		var editor_content = document.querySelector(".ql-editor");
-								  		document.getElementById("message").innerHTML = editor_content.innerHTML;
-									});
-								</script>
+								<script>editor({selector: "#message", plugins: '', toolbar: 'bold italic underline forecolor backcolor image pre_html code_html table', height: '160' });</script>
 							</div> <!-- /.form-group -->
-
 
 							<div class="row space-5">
 								<div class="col-md-12">
@@ -205,12 +187,11 @@ if(isset($_POST['send_message'])) {
 							</div> <!-- /.pull-right -->
 						</div> <!-- /.col-md-10 -->
 					</div> <!-- /.row -->
-
 				</form>
+				<!--/ ADD MESSAGE /-->
 
 			</div> <!-- /.col-md-12 -->
 		</div> <!-- /.row -->
-
 	</div> <!-- /.col-md-9 -->
 </div> <!-- /.row -->
 
@@ -220,7 +201,7 @@ if(isset($_POST['send_message'])) {
 $(document).ready(function() {
 
 	var json_url = '<?php site_url("admin/user/getJSON.php"); ?>';
-	var item = { 
+	var item = {
 		name:'<span class="item_name">[TEXT]</span>',
 		surname:' <span class="item_name">[TEXT]</span>'
 	}
@@ -230,14 +211,14 @@ $(document).ready(function() {
 	$('#username').change(function() {
 		$('#rec_u_id').val('');
 	});
-});	
+});
 
 
 function user_getJSON_click(param) {
 	var id 			= $(param).attr('data-id');
 	var name 		= $(param).attr('data-name');
 	var surname 	= $(param).attr('data-surname');
-	
+
 	$('#rec_u_id').val(id);
 	$('#username').val(name+' '+surname);
 }

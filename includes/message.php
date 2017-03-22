@@ -11,7 +11,8 @@ function add_message($rec_u_id, $args=array()) {
 	$args 	= _args_helper(input_check($args), 'insert');
 	$insert = $args['insert'];
 
-	@form_validation($insert['message'], 'message', 'Mesaj', 'required|min_lenght[3]', __FUNCTION__);
+	$insert['message'] = editor_strip_tags($insert['message']);
+	@form_validation(strip_tags($insert['message']), 'message', 'Mesaj', 'required|min_lenght[3]', __FUNCTION__);
 	if(!$rec_user = get_user($rec_u_id)) { add_alert('Mesaj gönderilecek kullanıcı bulunamadı.', 'danger', __FUNCTION__); }
 
 	if(!have_log()) {
@@ -44,7 +45,7 @@ function add_message($rec_u_id, $args=array()) {
 					$insert_id = db()->insert_id;
 					if($args['add_alert']) 	{ add_alert('<i class="fa fa-paper-plane-o"></i> Mesaj gönderildi.', 'success', __FUNCTION__); }
 					if($args['add_log'])	{ add_log(array('table_id'=>'messages:'.$insert_id, 'log_key'=>__FUNCTION__, 'log_text'=>'Yeni bir mesaj gönderildi. '._b(get_user_info($rec_user->id, 'name').' '.get_user_info($rec_user->id, 'surname')))); }
-					
+
 					## gercek mesaji guncelle
 					# eger cevap mesajı ise gercek mesajın gelen-giden kutusu ve okundu-okunmadı gibi durumlarını guncelleyelim, ayrıca mesaj cop kutusunda ise cikartalim
 					if($insert['top_id']) {

@@ -1,8 +1,5 @@
 <?php include('../../../tilpark.php'); ?>
 <?php get_header(); ?>
-
-
-
 <?php
 // gerekli degiskenler
 @$message->title = 'Yeni Görev :';
@@ -10,7 +7,7 @@
 
 if(isset($_GET['rec_u_id'])) {
 	$rec_user = get_user($_GET['rec_u_id']);
-} 
+}
 
 if(isset($_POST['rec_u_id'])) {
 	$rec_user = get_user($_POST['rec_u_id']);
@@ -25,7 +22,7 @@ add_page_info( 'nav', array('name'=>@$rec_user->name.' '.@$rec_user->surname) );
 /* mesaj ekleri var ise olusturalim */
 $str_attachment = '';
 if(isset($_GET['attachment'])) {
-	
+
 	// gerekli degiskenler
 	$str_attachment_title 	= 'NULL';
 	$str_attachment 		= '<div class="row"><div class="col-md-6"><div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><i class="fa fa-paperclip fa-fw"></i> Mesaj Eki - {TITLE}</h4></div>';
@@ -120,25 +117,20 @@ if(isset($_POST['add_task'])) {
 <?php print_alert(); ?>
 
 
-
-
 <div class="row">
 	<div class="col-md-3">
-		
+
 		<?php include('_sidebar.php'); ?>
 
 	</div> <!-- /.col-md-3 -->
 	<div class="col-md-9">
-
 		<div class="row">
 			<div class="col-md-12">
 
-
-				<form name="form_message" id="form_message" action="" method="POST" class="validate">
-
+				<!--/ ADD TASK /-->
+				<form name="form_message" id="form_message" action="" method="POST" class="validate" autocomplete="off">
 					<div class="row">
 						<div class="col-md-6">
-
 							<div class="panel panel-default">
 								<div class="panel-heading"><h4 class="panel-title">Görev Detayları</h4></div>
 								<div class="panel-body">
@@ -171,28 +163,17 @@ if(isset($_POST['add_task'])) {
 							<div class="panel panel-primary">
 								<div class="panel-heading"><h4 class="panel-title">Görev Seçenekleri</h4></div>
 								<div class="panel-body">
-								<div class="choice">
+									<div class="choice">
 
-									<div class="form-group">
-										<label for="choice-1">Seçenek 1</label>
-										<input type="text" name="choice[]" id="choice-1" class="form-control" value="">
-									</div> <!-- /.form-group -->
+										<div class="form-group">
+											<label for="choice-1">Seçenek 1</label>
+											<input type="text" name="choice[]" id="choice-1" class="form-control" value="">
+										</div> <!-- /.form-group -->
+									</div> <!-- /.choice -->
 
-								</div> <!-- /.choice -->
-
-								<div class="text-right"><button type="button" class="btn btn-default btn-xs" id="addChoice"><i class="fa fa-plus"></i> Seçenek Ekle</button></div>
-								</div>
+									<div class="text-right"><button type="button" class="btn btn-default btn-xs" id="addChoice"><i class="fa fa-plus"></i> Seçenek Ekle</button></div>
+								</div><!--/ .panel-body /-->
 							</div> <!-- /.panel-default -->
-						</div> <!-- /.col-md-6 -->
-					
-					</div> <!-- /.row -->
-
-
-					<div class="row">
-						<div class="col-md-6">
-
-							
-
 						</div> <!-- /.col-md-6 -->
 					</div> <!-- /.row -->
 
@@ -210,43 +191,19 @@ if(isset($_POST['add_task'])) {
 					});
 					</script>
 
-
-
-
-
-
 					<div class="form-group">
 						<label for="title">Görev Konusu</label>
 						<input type="text" name="title" id="title" class="form-control required" value="">
 					</div> <!-- /.form-group -->
-						
-
-					
 
 					<div class="row">
 						<div class="col-md-12">
-
 							<div class="form-group">
 								<label for="editor_message">Görev Açıklaması</label>
-								<div class="editor_message" id="editor_message" data-textarea="message" style="height:140px;">
-								</div> <!-- /.editor_message -->
 								<textarea name="message" id="message" class="form-control required hidden" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
 
-								<script>
-									var toolbarOptions = ['bold', 'italic', 'underline', 'strike', 'background', 'color', 'link', 'code-block', 'image', 'video'];
-								  	var quill = new Quill('.editor_message', {
-								    	modules: {
-										    toolbar: toolbarOptions
-										},
-										theme: 'snow'
-								  	});
-								  	quill.on('text-change', function(delta, oldDelta, source) {
-								  		var editor_content = document.querySelector(".ql-editor");
-								  		document.getElementById("message").innerHTML = editor_content.innerHTML;
-									});
-								</script>
+								<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern pre_html code_html', toolbar: 'bold italic underline forecolor backcolor image pre_html code_html table', height: '160' });</script>
 							</div> <!-- /.form-group -->
-
 
 							<div class="row space-5">
 								<div class="col-md-12">
@@ -263,12 +220,11 @@ if(isset($_POST['add_task'])) {
 							</div> <!-- /.pull-right -->
 						</div> <!-- /.col-md-10 -->
 					</div> <!-- /.row -->
-
 				</form>
+				<!--/ ADD TASK /-->
 
 			</div> <!-- /.col-md-12 -->
 		</div> <!-- /.row -->
-
 	</div> <!-- /.col-md-9 -->
 </div> <!-- /.row -->
 
@@ -278,7 +234,7 @@ if(isset($_POST['add_task'])) {
 $(document).ready(function() {
 
 	var json_url = '<?php site_url("admin/user/getJSON.php"); ?>';
-	var item = { 
+	var item = {
 		name:'<span class="item_name">[TEXT]</span>',
 		surname:' <span class="item_name">[TEXT]</span>'
 	}
@@ -288,14 +244,14 @@ $(document).ready(function() {
 	$('#username').change(function() {
 		$('#rec_u_id').val('');
 	});
-});	
+});
 
 
 function user_getJSON_click(param) {
 	var id 			= $(param).attr('data-id');
 	var name 		= $(param).attr('data-name');
 	var surname 	= $(param).attr('data-surname');
-	
+
 	$('#rec_u_id').val(id);
 	$('#username').val(name+' '+surname);
 }
