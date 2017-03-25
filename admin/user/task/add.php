@@ -200,7 +200,7 @@ if(isset($_POST['add_task'])) {
 						<div class="col-md-12">
 							<div class="form-group">
 								<label for="editor_message">Görev Açıklaması</label>
-								<textarea name="message" id="message" class="form-control required hidden" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"><?php echo @$_POST['message']; ?></textarea>
+								<textarea name="message" id="message" class="form-control required hidden" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"><?php echo stripcslashes(@$_POST['message']); ?></textarea>
 
 								<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '160' });</script>
 							</div> <!-- /.form-group -->

@@ -755,9 +755,9 @@ function list_selectbox($array=array(), $opt=array()) {
  * @return string
  */
 function editor_strip_tags($val, $strip="") {
-  if ( empty($strip) ) { $strip = '<h1><h2><h3><h4><h5><a><div><span><p><b><br><pre><li><ol><ul><strong><img><blockquote><em><s><u><code><i><table><thead><body><tr><td><th>'; }
+  if ( empty($strip) ) { $strip = '<h1><h2><h3><h4><h5><a><div><span><p><b><br><li><ol><ul><strong><img><blockquote><em><s><u><i><table><thead><body><tr><td><th>'; }
 	$val = strip_tags($val, $strip);
-	
+
 	return $val;
 } //.editor_strin_tags()
 

@@ -96,7 +96,6 @@ if(isset($_GET['attachment'])) {
 
 	$str_attachment .= $str_attachment_end;
 	$str_attachment = str_replace('{TITLE}', $str_attachment_title, $str_attachment);
-
 } //.isset($_GET['attachment'])
 
 
@@ -116,21 +115,9 @@ if(isset($_POST['send_message'])) {
 		}
 	}
 } //.isset($_POST)
-
-
-
-
-
-
 ?>
 
 <?php print_alert(); ?>
-
-
-
-
-
-
 
 <div class="row">
 	<div class="col-md-3">
@@ -150,7 +137,7 @@ if(isset($_POST['send_message'])) {
 							<div class="form-group">
 								<input type="hidden" name="rec_u_id" id="rec_u_id" value="<?php echo @$rec_user->id; ?>" class="required">
 								<label for="username">Alıcı</label>
-								<input type="text" name="username" id="username" class="form-control required" value="<?php echo @$rec_user->display_name; ?>">
+								<input type="text" name="username" onkeypress) id="username" class="form-control required" value="<?php echo @$rec_user->display_name; ?>">
 							</div> <!-- /.form-group -->
 						</div> <!-- /.col-md-4 -->
 					</div> <!-- /.row -->
@@ -168,8 +155,8 @@ if(isset($_POST['send_message'])) {
 
 						<div class="col-md-11">
 							<div class="form-group">
-								<textarea name="message" id="message" class="form-control required hidden" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
-								<script>editor({selector: "#message", plugins: '', toolbar: 'bold italic underline forecolor backcolor image table', height: '160' });</script>
+								<textarea name="message" id="message" class="form-control required hidden" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"><?php echo stripcslashes(@$_POST['message']); ?></textarea>
+								<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern lists', toolbar: 'bold italic underline forecolor backcolor image table bullist', height: '160' });</script>
 							</div> <!-- /.form-group -->
 
 							<div class="row space-5">
@@ -194,7 +181,6 @@ if(isset($_POST['send_message'])) {
 		</div> <!-- /.row -->
 	</div> <!-- /.col-md-9 -->
 </div> <!-- /.row -->
-
 
 
 <script>

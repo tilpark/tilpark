@@ -27,7 +27,7 @@ if(isset($_GET['type_status'])) {
 if(isset($_GET['move'])) {
 	if($task = get_task($_GET['id'])) {
 		$_args = array();
-			
+
 		# cop kutusuna tasi
 		if($_GET['move'] == 'trash') { // cop kutusuna tasi
 			if($task->sen_u_id == get_active_user('id')) {
@@ -111,9 +111,9 @@ $tasks = get_tasks($_args);
 							<td width="10">
 								<?php if($task->type_status == '1'): ?>
 									<?php if($task->sen_trash_u_id == get_active_user('id') OR $task->rec_trash_u_id == get_active_user('id')): ?>
-										<a href="?id=<?php echo $task->id; ?>&move=null&box=trash" class="btn btn-default btn-xs" data-toggle="tooltip" title="Çöp kutusundan çıkar"><i class="fa fa-undo text-warning"></i></a>																			
+										<a href="?id=<?php echo $task->id; ?>&move=null&box=trash" class="btn btn-default btn-xs" data-toggle="tooltip" title="Çöp kutusundan çıkar"><i class="fa fa-undo text-warning"></i></a>
 									<?php else: ?>
-										<a href="?id=<?php echo $task->id; ?>&move=trash" class="btn btn-default btn-xs" data-toggle="tooltip" title="Çöp kutusuna taşı"><i class="fa fa-trash-o text-danger"></i></a>									
+										<a href="?id=<?php echo $task->id; ?>&move=trash" class="btn btn-default btn-xs" data-toggle="tooltip" title="Çöp kutusuna taşı"><i class="fa fa-trash-o text-danger"></i></a>
 									<?php endif; ?>
 								<?php else: ?>
 									<a href="#" class="btn btn-default btn-xs disabled" title=""><i class="fa fa-trash text-muted"></i></a>

@@ -140,21 +140,24 @@ function update_user($user_id, $args) {
  * bir kulanici bilgisini dondurur
  */
 function get_user($args) {
-	if(!is_array($args)) { $args = array('where'=>array('id'=>$args)); }	
+	if(!is_array($args)) { $args = array('where'=>array('id'=>$args)); }
 	$args = _args_helper(input_check($args), 'where');
 	$where = $args['where'];
 
-	if($query = db()->query("SELECT * FROM ".dbname('users')." ".sql_where_string($where)." ")) {
-		if($query->num_rows) {
-			$return = _return_helper($args['return'], $query);
-			if(!$return->avatar) { $return->avatar = get_template_url('img/no-avatar-'.$return->gender.'.jpg'); } else { $return->avatar = get_site_url($return->avatar); }
-			if(!isset($return->display_name)) { $return->display_name = $return->name.' '.$return->surname; }
-			return $return;
-		} else {
-			if($args['add_alert']) { add_alert('Aradığınız kriterlere uygun kullanıcı hesabı bulunamadı.', 'warning', __FUNCTION__); }
-			return false;
-		}
-	} else { add_mysqli_error_log(__FUNCTION__); }
+	if ( !isset(til()->user[$where['id']]) ) {
+		if($query = db()->query("SELECT * FROM ".dbname('users')." ".sql_where_string($where)." ")) {
+			if($query->num_rows) {
+				$return = _return_helper($args['return'], $query);
+				if(!$return->avatar) { $return->avatar = get_template_url('img/no-avatar-'.$return->gender.'.jpg'); } else { $return->avatar = get_site_url($return->avatar); }
+				if(!isset($return->display_name)) { $return->display_name = $return->name.' '.$return->surname; }
+				til()->user[$return->id] = $return;
+				return $return;
+			} else {
+				if($args['add_alert']) { add_alert('Aradığınız kriterlere uygun kullanıcı hesabı bulunamadı.', 'warning', __FUNCTION__); }
+				return false;
+			}
+		} else { add_mysqli_error_log(__FUNCTION__); }
+	} else { return til()->user[$where['id']]; }
 }
 
 
@@ -171,7 +174,7 @@ function get_users($args=array()) {
 
 
 
-	if(empty($where)) { 
+	if(empty($where)) {
 		$where['status'] = '1';
 	}
 
@@ -203,7 +206,7 @@ function get_user_info($id, $return) {
 
 		if(isset($user->$return)) {
 			return $user->$return;
-		} 
+		}
 	} else { return false; }
 }
 /**
@@ -237,7 +240,7 @@ function user_info($id, $return) {
 /**
  * get_active_user()
  * su anda aktif olan, uye girisi yapmis kullanici bilgisini dondurur
- * eger parametre bos birakilirsa tablodaki tum degerleri dondurur 
+ * eger parametre bos birakilirsa tablodaki tum degerleri dondurur
  * sadece kullanıcının gerçek adının almak icin get_active_user('name') veya get_active_user()->name seklinde kullanabilirsiniz.
  */
 function get_active_user($val='') {
@@ -384,7 +387,7 @@ function update_user_meta($user_id, $meta_key, $meta_value, $args=array()) {
 			if($q_update = db()->query("UPDATE ".dbname('user_meta')." SET ".sql_update_string($update)." ".sql_where_string($where)." ")) {
 				if(db()->affected_rows) {
 					return true;
-				} else { return false; }			
+				} else { return false; }
 			} else { add_mysqli_error_log(__FUNCTION__); }
 		} else {
 			add_user_meta($user_id, $meta_key, $meta_value);
@@ -438,7 +441,7 @@ function get_user_meta($user_id, $meta_key=false, $args=array()) {
 				}
 				return $return;
 			}
-			
+
 		} else {
 			return false;
 		}
@@ -510,7 +513,7 @@ function set_staff_salary($user_id) {
 			if( update_user($user->id, array('account_id'=>$account_id)) ) {
 
 			}
-		}	
+		}
 	} //. hesap karti yok ise olustur
 
 
@@ -528,7 +531,7 @@ function set_staff_salary($user_id) {
 
 
 	$str_start_date = strtotime($user_meta['date_start_work']);
-	
+
 	// hesaplama yapilacak tarihler en fazla hangi zamana kadar olabilir
 	if( $user_meta['date_end_work'] ) { $calc_end_date = $user_meta['date_end_work']; } else { $calc_end_date = date('Y-m-d'); }
 		if( strtotime($calc_end_date) > time() ) { $calc_end_date = date('Y-m-d'); }
@@ -559,12 +562,12 @@ function set_staff_salary($user_id) {
 		$monthly_active_days = '0';
 			$starting_work_day = date("d", strtotime($current_date)) - 1;
 			$monthly_active_days = ( $monthly_how_days - $starting_work_day );
-			
+
 			if($monthly_Ym == date('Y-m')) {
 				$monthly_active_days = $monthly_active_days - (date('t') - date('d'));
 			}
 
-	
+
 		// eger isi birakma tarihi var ise onuda hesaba katalim ki fazla para yazilmasin
 		if( date('Y-m', strtotime($user_meta['date_end_work'])) == date('Y-m', strtotime($current_date)) ) {
 			if( strtotime(date('Y-m', strtotime($current_date)).'-'.date('d')) > strtotime($user_meta['date_end_work'])) {
@@ -659,7 +662,7 @@ function set_staff_salary($user_id) {
 				}
 
 				set_staff_salary($user_id);
-			}	
+			}
 		} //.query
 	} //.while strtotime
 
@@ -752,7 +755,7 @@ function get_user_role_text($val) {
  * bir yetkinin numara formatını dondurur
  */
 function get_user_role_no($val) {
-	
+
 	// 1
 	$arr['superadmin'] = '1';
 	$arr['Süper Admin'] = '1';
@@ -767,12 +770,12 @@ function get_user_role_no($val) {
 	$arr['Unit Manager'] = '3';
 	$arr['birimamiri'] = '3';
 	$arr['Birim Amiri'] = '3';
-	// 4	
+	// 4
 	$arr['authorizedpersonnel'] = '4';
 	$arr['Authorized Personnel'] = '4';
 	$arr['yetkilipersonel'] = '4';
 	$arr['Yetkili Personel'] = '4';
-	// 5	
+	// 5
 	$arr['staff'] = '5';
 	$arr['Staff'] = '5';
 	$arr['Personel'] = '5';
@@ -801,7 +804,7 @@ function get_user_access($val, $key, $prefix='', $opt=array() ) {
 	// options required
 	if(!is_array($opt)) { $opt = array('get_user_access'=>$opt); }
 	if(!isset($opt['get_user_access'])) { $opt['get_user_access'] = true; } // get_user_access() fonksiyonu calissin
-	
+
 
 	if($opt['get_user_access']) {
 		$array['items-p_purc_out_vat'] = false;

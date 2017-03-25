@@ -13,11 +13,9 @@
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.css"/>
 
-
     <!-- CSS -->
     <link href="<?php echo template_url('css/bootstrap.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo template_url('css/font-awesome.min.css'); ?>" rel="stylesheet">
-
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -44,14 +42,15 @@
     <link href="<?php echo template_url('css/bootstrap-colorpicker.min.css'); ?>" rel="stylesheet">
     <script src="<?php echo template_url('js/bootstrap-colorpicker.min.js'); ?>"></script>
 
-
-    <!-- Rich Text Editor -->
+    <!-- TinyMCE -->
     <script src="<?php echo get_site_url('includes/lib/tinymce/tinymce.min.js'); ?>"></script>
 
-
+    <!-- Custom CSS -->
     <link href="<?php echo template_url('css/tilpark.css'); ?>" rel="stylesheet">
     <link href="<?php echo template_url('css/app.css'); ?>" rel="stylesheet">
 
+    <!-- Custom JS -->
+    <script src="<?php echo template_url('js/functions.js'); ?>"></script>
     <script src="<?php echo template_url('js/app.js'); ?>"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -60,9 +59,6 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-
-
 
   </head>
 
@@ -87,13 +83,13 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse bs-example-masthead-collapse-1">
 
-
-
         <ul class="nav navbar-nav navbar-right">
+
+
           <!-- task -->
           <li class="icon-badge dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-tasks"></i> <span class="badge"><?php echo $task_unread = get_calc_task(); ?></span>
+            <a href="#" class="dropdown-toggle" onclick="get_notification(getNextSiblings(this)[0], 'task')" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-tasks"></i> <span class="badge" id="task_badge" js-onload="get_notification_count({elem: '#task_badge', box: 'task'})"><?php echo $task_unread = get_calc_task(); ?></span>
             </a>
             <ul class="dropdown-menu dropdown-message-list effect-1">
               <li class="message-header"><?php echo $task_unread; ?> okunmamış görev</li>
@@ -110,15 +106,7 @@
                       <div class="col-md-10">
                         <span class="message-name"><?php echo get_user_info($message->outbox_u_id, 'name'); ?> <?php echo get_user_info($message->outbox_u_id, 'surname'); ?></span>
                         <span class="message-time"><i class="fa fa-clock-o"></i> <?php echo get_time_late($message->date_update); ?> önce</span>
-                        <?php
-                        // eger cevap mesaji ise cevap mesajini bulalim
-                        if($q_select = db()->query("SELECT * FROM ".dbname('messages')." WHERE top_id='".$message->id."' ORDER BY date_update DESC LIMIT 1")) {
-                          if($q_select->num_rows) {
-                            $sub_message    = $q_select->fetch_object();
-                            $message->title = '-'.$sub_message->message;
-                          }
-                        }
-                        ?>
+                        <?php if($q_select = db()->query("SELECT * FROM ".dbname('messages')." WHERE top_id='".$message->id."' ORDER BY date_update DESC LIMIT 1")) { if($q_select->num_rows) { $message->title = '-'.$q_select->fetch_object()->message; } } ?>
                         <span class="message-title text-muted"><?php echo mb_substr(strip_tags(stripslashes($message->title)),0,40,'utf-8'); ?><?php if(strlen(strip_tags(stripslashes($message->title))) > 40) { echo '...'; } ?></span>
                       </div> <!-- /.col-md-10 -->
                     </div> <!-- /.row -->
@@ -127,7 +115,7 @@
                 <?php endforeach; ?>
               <?php else: ?>
                 <div class="p-5">
-                  <?php echo get_alert('Mesaj kutusu boş.', 'warning', false); ?>
+                  <?php echo get_alert('Görev kutusu boş.', 'warning', false); ?>
                 </div>
               <?php endif; ?>
               <li class="message-footer"><a href="<?php site_url('admin/user/task/list.php'); ?>">Tüm görevler</a></li>
@@ -135,11 +123,13 @@
           </li>
           <!-- /task -->
 
+
           <!-- message -->
           <li class="icon-badge dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-envelope-o"></i> <span class="badge"><?php echo $message_unread = get_calc_message(); ?></span>
+            <a href="#" class="dropdown-toggle" onclick="get_notification(getNextSiblings(this)[0], 'message')" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-envelope-o"></i> <span class="badge" id="message_badge" js-onload="get_notification_count({elem: '#message_badge', box: 'message'})"><?php echo $message_unread = get_calc_message(); ?></span>
             </a>
+
             <ul class="dropdown-menu dropdown-message-list effect-1">
               <li class="message-header"><?php echo $message_unread; ?> okunmamış mesaj</li>
               <?php if($messages = get_messages(array('query'=>_get_query_message('inbox').' LIMIT 5'))): ?>
@@ -155,15 +145,7 @@
                       <div class="col-md-10">
                         <span class="message-name"><?php echo get_user_info($message->outbox_u_id, 'name'); ?> <?php echo get_user_info($message->outbox_u_id, 'surname'); ?></span>
                         <span class="message-time"><i class="fa fa-clock-o"></i> <?php echo get_time_late($message->date_update); ?> önce</span>
-                        <?php
-                        // eger cevap mesaji ise cevap mesajini bulalim
-                        if($q_select = db()->query("SELECT * FROM ".dbname('messages')." WHERE top_id='".$message->id."' ORDER BY date_update DESC LIMIT 1")) {
-                          if($q_select->num_rows) {
-                            $sub_message    = $q_select->fetch_object();
-                            $message->title = '-'.$sub_message->message;
-                          }
-                        }
-                        ?>
+                        <?php if($q_select = db()->query("SELECT * FROM ".dbname('messages')." WHERE top_id='".$message->id."' ORDER BY date_update DESC LIMIT 1")) { if($q_select->num_rows) { $message->title = '-'.$q_select->fetch_object()->message; } } ?>
                         <span class="message-title text-muted"><?php echo mb_substr(strip_tags(stripslashes($message->title)),0,40,'utf-8'); ?><?php if(strlen(strip_tags(stripslashes($message->title))) > 40) { echo '...'; } ?></span>
                       </div> <!-- /.col-md-10 -->
                     </div> <!-- /.row -->
@@ -179,13 +161,14 @@
             </ul>
           </li>
           <!-- /message -->
+
+
           <li class="dropdown">
             <a href="#" class="dropdown-toggle profile-avatar" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-
-                <img src="<?php active_user('avatar'); ?>" class="img-repsonsive img-avatar">
-
+              <img src="<?php active_user('avatar'); ?>" class="img-repsonsive img-avatar">
               <span class="user-name"><?php active_user('name'); ?> <span class="user-role"><?php echo get_user_role_text(get_active_user('role')); ?></span></span>
             </a>
+
             <ul class="dropdown-menu">
               <li><a href="<?php site_url('admin/user/profile.php'); ?>"><i class="fa fa-meh-o"></i> Profilim</a></li>
               <li><a href="#"><i class="fa fa-cog"></i> Ayarlar</a></li>
@@ -193,8 +176,8 @@
               <li role="separator" class="divider"></li>
               <li><a href="<?php site_url('logout.php'); ?>"><i class="fa fa-power-off"></i> Çıkış</a></li>
             </ul>
-          </li>
-        </ul>
+          </li><!--/ .dropdown /-->
+        </ul><!--/ .nav.navbar-nav.navbar-right /-->
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
@@ -211,7 +194,5 @@
 </div>
 
 <div class="clearfix"></div>
-
-
 
 <?php get_sidebar(); ?>

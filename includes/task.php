@@ -1,18 +1,45 @@
 <?php
-/* --------------------------------------------------- TASK */
+/*
+| -----------------------------------------------------------------------------
+| TASK
+| -----------------------------------------------------------------------------
+| Görev işlemleri icin gerekli fonksiyonlar
+|
+| -----------------------------------------------------------------------------
+| Fonksiyonlar
+| -----------------------------------------------------------------------------
+|
+| * add_task()
+| * update_task()
+| * get_task()
+| * get_tasks()
+| * add_task_message()
+| * get_task_detail()
+| * get_calc_task()
+| * _get_query_task()
+|
+*/
 
 
-/**
- * add_task()
- * yeni bir görev olusturur
- */
+
+
+
+
+
+
+ /**
+  * @func add_task()
+  * @desc yeni bir görev olusturur
+  * @param string, array()
+  * @return string(insert_id) / false
+  */
 function add_task($rec_u_id, $args=array()) {
 	$rec_u_id = input_check($rec_u_id);
 	$args 	= _args_helper(input_check($args), 'insert');
 	$insert = $args['insert'];
 
 	$insert['message'] = editor_strip_tags($insert['message']);
-	@form_validation(strip_tags($insert['message']), 'message', 'Mesaj', 'required|min_length[3]', __FUNCTION__);
+	@form_validation(strip_tags($insert['message'], '<img>'), 'message', 'Mesaj', 'required|min_length[3]', __FUNCTION__);
 	@form_validation($insert['date_start'], 'date_start', 'Başlama Tarihi', 'required|datetime', __FUNCTION__);
 	@form_validation($insert['date_end'], 'date_end', 'Bitirme Tarihi', 'required|datetime', __FUNCTION__);
 	if(!$rec_user = get_user($rec_u_id)) { add_alert('Görev atanacak kullanıcı bulunamadı.', 'danger', __FUNCTION__); }
@@ -35,8 +62,10 @@ function add_task($rec_u_id, $args=array()) {
 				$i = 0;
 				foreach($insert['choice'] as $text) {
 					if($text) {
-						$i++;
-						$choice[$i] = array('is_it_done'=>0, 'text'=>$text);
+            if ( $i < 10 ) {
+              $i++;
+  						$choice[$i] = array('is_it_done'=>0, 'text'=>$text);
+            } else { break; }
 					}
 				}
 			}
@@ -70,10 +99,14 @@ function add_task($rec_u_id, $args=array()) {
 
 
 
-/**
- * update_task()
- * gorevi gunceller
- */
+
+
+ /**
+  * @func update_task()
+  * @desc gorevi gunceller
+	* @param string, array()
+	* @return true / false
+  */
 function update_task($task_id, $args) {
 	$task_id 	= input_check($task_id);
 	$args 		= _args_helper(input_check($args), 'update');
@@ -92,7 +125,6 @@ function update_task($task_id, $args) {
 					return true;
 				} else { return false; }
 			} else { add_mysqli_error_log(__FUNCTION__); }
-
 		} else { return false; }
 	} else { repetitive_operation(__FUNCTION__); }
 } //.update_task()
@@ -102,10 +134,14 @@ function update_task($task_id, $args) {
 
 
 
-/**
- * get_tasks()
- * bir görev bilgisini döndürür
- */
+
+
+ /**
+  * @func get_tasks()
+  * @desc bir görev bilgisini döndürür
+  * @param string, array()
+  * @return array / false
+  */
 function get_task($task_id, $args=array()) {
 	$args 	= _args_helper(input_check($args), 'where');
 	$where 	= $args['where'];
@@ -137,10 +173,14 @@ function get_task($task_id, $args=array()) {
 
 
 
-/**
- * get_tasks()
- *
- */
+
+
+ /**
+  * @func get_tasks()
+  * @desc parametdeki değerlere göre görev listesi döndürür
+  * @param array()
+  * @return array / false
+  */
 function get_tasks($args=array()) {
 	$args 	= _args_helper(input_check($args), 'where');
 	$where 	= $args['where'];
@@ -165,10 +205,14 @@ function get_tasks($args=array()) {
 
 
 
-/**
- * add_task_message()
- * bir gorev icin mesaj ekler
- */
+
+
+ /**
+  * @func add_task_message()
+  * @desc bir gorev icin mesaj ekler
+	* @param string, array()
+	* @return string(insert_id) / false
+  */
 function add_task_message($task_id, $args) {
 	$task_id 	= input_check($task_id);
 	$args 		= _args_helper(input_check($args), 'insert');
@@ -214,7 +258,6 @@ function add_task_message($task_id, $args) {
 					return $insert_id;
 				} else { return false; }
 			} else { add_mysqli_error_log(__FUNCTION__); }
-
 		} else { return false; }
 	} else { repetitive_operation(__FUNCTION__); }
 } //.add_task_message()
@@ -224,10 +267,14 @@ function add_task_message($task_id, $args) {
 
 
 
-/**
- * get_task_detail()
- * bir mesaj listesini dondurur
- */
+
+
+ /**
+  * @func get_task_detail()
+  * @desc bir mesaj listesini dondurur
+  * @param string, array()
+  * @return array => array() / false
+  */
 function get_task_detail($message_id, $args=array()) {
 	$message_id	= input_check($message_id);
 	$args 	= _args_helper(input_check($args), 'where');
@@ -252,10 +299,14 @@ function get_task_detail($message_id, $args=array()) {
 
 
 
-/**
- * get_calc_task()
- * görevlerin toplamını hesaplar
- */
+
+
+ /**
+  * @func get_calc_task()
+  * @desc görevlerin toplamını hesaplar
+  * @param array()
+  * @return string
+  */
 function get_calc_task($args=array()) {
 	$args 	= _args_helper(input_check($args), 'where');
 	$where 	= $args['where'];
@@ -264,6 +315,7 @@ function get_calc_task($args=array()) {
 	// eger herhangi bir deger yok ise gelen kutusunun sayisini hesaplayalim
 	if(empty($where)) {
 		$where['inbox_u_id'] = get_active_user('id');
+    $where['q'] = "sen_u_id != '".get_active_user('id')."'";
 	}
 
 	// gerekli
@@ -280,7 +332,6 @@ function get_calc_task($args=array()) {
 		unset($where['all']);
 	}
 
-
 	if($q_select = db()->query("SELECT * FROM ".dbname('messages')." ".sql_where_string($where)." ")) {
 		return $q_select->num_rows;
 	} else { add_mysqli_error_log(__FUNCTION__); }
@@ -292,10 +343,13 @@ function get_calc_task($args=array()) {
 
 
 
-/**
- * _get_query_task()
- * hazır task sorguları
- */
+
+ /**
+  * @func _get_query_task()
+  * @desc hazır task sorguları
+  * @param array()
+  * @return string
+  */
 function _get_query_task($args) {
 	$return = "type='task' AND top_id='0' AND ";
 
@@ -326,11 +380,5 @@ function _get_query_task($args) {
 	}
 
 	return $return." ORDER BY type_status ASC, read_it ASC, date_update DESC, id DESC";
-}
-
-
-
-
-
-
+} //._get_query_task()
 ?>

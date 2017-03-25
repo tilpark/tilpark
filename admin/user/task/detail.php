@@ -314,23 +314,15 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 						<?php endif; ?>
 					</div> <!-- /.panel-body -->
 				</div> <!-- /.panel -->
-
 			</div> <!-- /.col-md-8 -->
 		</div> <!-- /.row -->
-
 
 
 		<div class="panel">
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-md-12">
-
-
-
 						<?php if(@$messages): ?>
-
-
-
 							<?php foreach($messages as $message): ?>
 								<div class="row space-5">
 									<?php if(get_active_user('id') != $message->sen_u_id): ?>
@@ -356,8 +348,6 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 								</div> <!-- /.row -->
 							<?php endforeach; ?>
 						<?php endif; ?>
-
-
 
 						<!--/ TASK REPLY /-->
 						<form name="form_message" id="form_message" action="" method="POST">
@@ -391,11 +381,9 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 
 					</div> <!-- /.col-md-12 -->
 				</div> <!-- /.row -->
-			</div>
-		</div>
-
+			</div><!--/ .panel-body /-->
+		</div><!--/ .panel /-->
 	</div> <!-- /.col-md-9 -->
 </div> <!-- /.row -->
-
 
 <?php get_footer(); ?>

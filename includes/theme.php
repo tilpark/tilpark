@@ -19,7 +19,7 @@ function add_page_info($name='', $value) {
 
 
 
-/** 
+/**
  * get_page_info()
  * bir sayfa bilgisini dondurur
  */
@@ -46,7 +46,8 @@ function set_page_info($arr='')
 	if(isset(til()->page)) {
 		$arr = til()->page;
 
-		?><script>$(document).ready(function(){ <?php
+		?>
+		<script>$(document).ready(function(){ <?php
 		if(is_array(@$arr['nav'])) {
 			foreach($arr['nav'] as $nav)
 			{
@@ -63,8 +64,8 @@ function set_page_info($arr='')
 		if(isset($arr['title'])) {
 			if(strlen($arr['title']) < 1) { $arr['title'] = 'Tilpark!'; }
 			?>
-				$('h3.page-title').html('<?php echo $arr["title"]; ?>'); 
-				document.title = "<?php echo $arr["title"]; ?> | Tilpark!";
+				$('h3.page-title').html('<?php echo $arr["title"]; ?>');
+				document.title = '<?php echo $arr["title"]; ?>';
 			<?php
 		}
 
@@ -116,18 +117,18 @@ $tilpark['cumhali'] = 'example';
 
 
 function include_content_page($name='', $attachment=false, $folder=false, $extract=false) {
-	
+
 	// eger include edilecek sayfaya herhangi bir deger gonderilecek ise
 	if($extract) { extract($extract); }
 
 	$path = 'content/pages/';
 
-	if( $folder ) { 
-		$path .= $folder.'/'; 
+	if( $folder ) {
+		$path .= $folder.'/';
 	}
 
 	if( $attachment ) {
-		$name .= '-'.$attachment; 
+		$name .= '-'.$attachment;
 	}
 
 	if(substr($name, -4, 4) != '.php') {
@@ -159,7 +160,7 @@ function include_content_page($name='', $attachment=false, $folder=false, $extra
  */
 function pagination($count) {
 
-	$paged = ceil($count / til()->pg->list_limit); 
+	$paged = ceil($count / til()->pg->list_limit);
 	if(isset($_GET['page'])) {
 		$page = $_GET['page'];
 	} else {
@@ -207,7 +208,7 @@ function pagination($count) {
 	        <span aria-hidden="true"><i class="fa fa-angle-double-left" aria-hidden="true"></i></span>
 	      </a>
 	    </li>
-	    
+
 	    <?php if(($page-3) > 0): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page-3))); ?>"><?php echo $page-3; ?></a></li> <?php endif; ?>
 	    <?php if(($page-2) > 0): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page-2))); ?>"><?php echo $page-2; ?></a></li> <?php endif; ?>
 	    <?php if(($page-1) > 0): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page-1))); ?>"><?php echo $page-1; ?></a></li> <?php endif; ?>
@@ -215,7 +216,7 @@ function pagination($count) {
 	    <?php if(($page+1) <= $paged): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page+1))); ?>"><?php echo $page+1; ?></a></li> <?php endif; ?>
 	    <?php if(($page+2) <= $paged): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page+2))); ?>"><?php echo $page+2; ?></a></li> <?php endif; ?>
 	    <?php if(($page+3) <= $paged): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page+3))); ?>"><?php echo $page+3; ?></a></li> <?php endif; ?>
-	    
+
 	    <li class="<?php if($btn_back == '#'): ?>disabled<?php endif; ?>">
 	      <a href="<?php echo $btn_back; ?>" aria-label="Previous">
 	        <span aria-hidden="true"><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
@@ -262,12 +263,12 @@ function search_form_for_panel($arr=array()) {
 		  </div><!-- /btn-group -->
 		  <input type="text" name="s" id="panel_s_<?php echo $arr['s_name']; ?>" class="form-control" placeholder="arama yapın" value="<?php echo @$_GET['s']; ?>">
 		  <div class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-search"></i></span></button></div>
-		  
+
 		</div><!-- /input-group -->
 
 		<script>
 		$(document).ready(function() {
-			$('#form_panel_search_<?php echo $arr["s_name"]; ?> [data-click="db-search"]').click(function() {	
+			$('#form_panel_search_<?php echo $arr["s_name"]; ?> [data-click="db-search"]').click(function() {
 				$(this).parent().parent().parent().find('.btn span.btn-text').html($(this).html());
 				var db_table_name = $(this).attr('data-db-table-name');
 				$(this).parent().parent().parent().parent().parent().parent().find('[name="db-s-where"]').val(db_table_name);
@@ -309,7 +310,7 @@ function barcode_url($val, $args=array()) {
 
 
 
-/** 
+/**
  * title: get_header()
  * desc: header.php dosyasını include eder.
  */
@@ -318,7 +319,7 @@ function get_header_print($print=array())
 	include get_root_path('content/pages/_helper/print_header.php');
 }
 
-/** 
+/**
  * title: get_footer()
  * desc: footer.php dosyasını include eder.
  */
@@ -388,7 +389,7 @@ function theme_get_logs($query=array()) {
 				</tr>
 			<?php endforeach; ?>
 			</tbody>
-		</table> 
+		</table>
 	<?php else: ?>
 		<?php print_alert('get_logs'); ?>
 	<?php endif;

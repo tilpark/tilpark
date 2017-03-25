@@ -170,20 +170,8 @@ $messages = get_messages($args);
 					<?php echo get_alert('Mesaj kutusu boş.', 'warning', false); ?>
 				</div>
 			<?php endif; ?>
-
-
-
 		</div> <!-- /.panel -->
 	</div> <!-- /.col-md-9 -->
 </div> <!-- /.row -->
-
-
-
-
-
-
-
-
-
 
 <?php get_footer(); ?>

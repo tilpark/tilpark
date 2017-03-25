@@ -5,11 +5,11 @@ if ( isset($_FILES['image']) AND isset($_GET['session_id']) ) {
 	include '../tilpark.php';
 
 	session_id($_GET['session_id']);
-	is_login();
-
-	if ( $image_url = upload_image($_FILES['image']) ) {
-		echo get_site_url($image_url);
-	}
+	if ( is_login() ) {
+		if ( $image_url = upload_image($_FILES['image']) ) {
+			echo get_site_url($image_url);
+		} else { return false; }
+	} else { return false; }
 }
 
 
