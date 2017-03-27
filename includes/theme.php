@@ -167,6 +167,16 @@ function pagination($count) {
 		$page = 1;
 	}
 
+	// sayfalama yapilirken linklere tiklandiginda sag ve sol tarafta kac tane ekstra link gozuksun
+	$show_left_right_limit = 3;
+	if(til_is_mobile()) { 
+		$show_left_right_limit = 2; 
+		if(strlen($page) > 2) {
+			$show_left_right_limit = 1; 
+		}
+	}
+
+
 
 	$btn_back = '#';
 	$btn_next = '#';
@@ -182,11 +192,11 @@ function pagination($count) {
 		$btn_next = get_set_url_parameters( array('add'=> array('page'=>$page+1) ) );
 	}
 
-	if($page > 4) {
+	if($page > ($show_left_right_limit+1) ) {
 		$btn_after = get_set_url_parameters( array('add'=> array('page'=>1) ) );
 	}
 
-	if($paged > 4 and $page < ($paged - 3) ) {
+	if($paged > ($show_left_right_limit+1) AND $page < ($paged - $show_left_right_limit) ) {
 		$btn_before = get_set_url_parameters( array('add'=> array('page'=>$paged) ) );
 	}
 
@@ -199,33 +209,33 @@ function pagination($count) {
 	  	<?php if($btn_after != '#'): ?>
 	  		<li class="<?php if($btn_after == '#'): ?>disabled<?php endif; ?>">
 	      		<a href="<?php echo $btn_after; ?>" aria-label="Previous">
-	        		<span aria-hidden="true"><i class="fa fa-angle-double-left" aria-hidden="true"></i> İlk Sayfa</span>
+	        		<span aria-hidden="true"><i class="fa fa-angle-double-left" aria-hidden="true"></i> <span class="hidden-xs">İlk Sayfa</span></span>
 	     		</a>
 	    	</li>
 	    <?php endif; ?>
 	    <li class="<?php if($btn_back == '#'): ?>disabled<?php endif; ?>">
 	      <a href="<?php echo $btn_back; ?>" aria-label="Previous">
-	        <span aria-hidden="true"><i class="fa fa-angle-double-left" aria-hidden="true"></i></span>
+	        <span aria-hidden="true"><i class="fa fa-angle-left" aria-hidden="true"></i></span>
 	      </a>
 	    </li>
 
-	    <?php if(($page-3) > 0): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page-3))); ?>"><?php echo $page-3; ?></a></li> <?php endif; ?>
-	    <?php if(($page-2) > 0): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page-2))); ?>"><?php echo $page-2; ?></a></li> <?php endif; ?>
+	    <?php if(($page-3) > 0 AND $show_left_right_limit >= 3): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page-3))); ?>"><?php echo $page-3; ?></a></li> <?php endif; ?>
+	    <?php if(($page-2) > 0 AND $show_left_right_limit >= 2): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page-2))); ?>"><?php echo $page-2; ?></a></li> <?php endif; ?>
 	    <?php if(($page-1) > 0): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page-1))); ?>"><?php echo $page-1; ?></a></li> <?php endif; ?>
 	    <li class="active"><a href="#"><?php echo $page; ?></a></li>
 	    <?php if(($page+1) <= $paged): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page+1))); ?>"><?php echo $page+1; ?></a></li> <?php endif; ?>
-	    <?php if(($page+2) <= $paged): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page+2))); ?>"><?php echo $page+2; ?></a></li> <?php endif; ?>
-	    <?php if(($page+3) <= $paged): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page+3))); ?>"><?php echo $page+3; ?></a></li> <?php endif; ?>
+	    <?php if(($page+2) <= $paged AND $show_left_right_limit >= 2): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page+2))); ?>"><?php echo $page+2; ?></a></li> <?php endif; ?>
+	    <?php if(($page+3) <= $paged AND $show_left_right_limit >= 3): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page+3))); ?>"><?php echo $page+3; ?></a></li> <?php endif; ?>
 
-	    <li class="<?php if($btn_back == '#'): ?>disabled<?php endif; ?>">
-	      <a href="<?php echo $btn_back; ?>" aria-label="Previous">
-	        <span aria-hidden="true"><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+	    <li class="<?php if($btn_next == '#'): ?>disabled<?php endif; ?>">
+	      <a href="<?php echo $btn_next; ?>" aria-label="Previous">
+	        <span aria-hidden="true"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
 	      </a>
 	    </li>
 	    <?php if($btn_before != '#'): ?>
 	    	<li class="<?php if($btn_before == '#'): ?>disabled<?php endif; ?>">
 	      		<a href="<?php echo $btn_before; ?>" aria-label="Previous">
-	        	<span aria-hidden="true">Son Sayfa <i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+	        	<span aria-hidden="true"><span class="hidden-xs">Son Sayfa</span> <i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
 	      		</a>
 	    	</li>
 	    <?php endif; ?>

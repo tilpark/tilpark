@@ -132,8 +132,8 @@ label.error {
 $login_form_error = false;
 if(isset($_POST['username']))
 {
-  $username = trim(mysql_real_escape_string($_POST['username']));
-  $password = trim(mysql_real_escape_string($_POST['password']));
+  $username = trim(addslashes($_POST['username']));
+  $password = trim(addslashes($_POST['password']));
 
   $q_login = db()->query("SELECT * FROM ".dbname('users')." WHERE username='$username' AND password='$password'");
 

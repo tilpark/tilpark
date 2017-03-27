@@ -141,7 +141,7 @@ print_alert('set_payment');
 						<label for="account_name">Hesap Adı <?php if(@$payment->account_id):?><a href="../account/detail.php?id=<?php echo $payment->account_id; ?>" target="_blank"><i class="fa fa-external-link"></i></a><?php endif; ?> </label>
 						
 							<!-- yeni hesap karti olusturulsun mu? -->
-							<label id="new_account" class="pull-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="Yeni bir hesap kartı oluşturulsun mu?"><input type="checkbox" name="new_account" id="new_account" value="true" class="toogle" data-size="extramini" data-on-text="Evet" data-off-text="Hayır" tabindex="-1"></label>
+							<label id="new_account" class="pull-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="Yeni bir hesap kartı oluşturulsun mu?"><input type="checkbox" name="new_account" id="new_account" value="true" data-toggle="switch" data-size="xs" on-text="Evet" off-text="Hayır" tabindex="-1"></label>
 
 						<input type="text" name="account_name" id="account_name" value="<?php echo @$payment->account_name; ?>" class="form-control input-sm" minlength="3" maxlength="32">
 						
