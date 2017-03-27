@@ -48,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
 
-  
 });
 
 
@@ -110,6 +109,18 @@ function editor(param = {selector: "", plugins:"", toolbar:"", height: "500", me
            win.document.getElementById(field_name).value = src;
         });
       }
+    },
+    init_instance_callback: function (editor) {
+      editor.on('keyDown', function (e) {
+
+        if ( e.keyCode == 13 && !e.shiftKey ) {
+          var event = new Event('keydown', {
+            keyCode: e.keyCode,
+          });
+
+          document.querySelector(param.selector).dispatchEvent(event);
+        }
+      });
     }
   });
 } //. editor()
@@ -207,7 +218,13 @@ function playSound(filename){
 
 
 
-function chat_list(list) {
+/**
+ * @func chat_list()
+ * @desc message/detail.php sayfasındaki chat'i dinamic olarak günceller
+ * @param string
+ * @return html 
+ */
+function chat_list() {
   var chat_list = document.querySelector(".chat-list");
   if ( chat_list ) {
     elem_scroll_bottom(chat_list);
@@ -233,7 +250,6 @@ function chat_list(list) {
               div.setAttribute("class", 'message-elem');
               div.innerHTML = data;
               chat_list.insertBefore(div, chat_list.firstChild);
-
               chat_list.scrollTop = 100;
             } else { parent(chat_list, '.chat-container').classList.remove("loader"); }
           });
@@ -241,24 +257,9 @@ function chat_list(list) {
       }
     }
     // OLD Message
-
-
-
-
+    
     // NEW Message
-    setInterval(function() {
-      if ( query_message = chat_list.getAttribute('id') ) {
-        getXHR({ 'method': 'get', 'url': get_site_url('admin/user/getMessage.php?query_message='+ query_message +'&get_message=new&session_id='+window.session_id)}, function(data) {
-          if ( data != "empty" && data != false ) {
-            var div = document.createElement("div");
-
-            div.innerHTML = data;
-            chat_list.appendChild(div);
-            elem_scroll_bottom(chat_list);
-          }
-        });
-      }
-    }, 1500);
+    window.getMessage = setInterval("get_new_message('new')", 1000);
     // NEW Message    
   } else { return false; }
 } //.chat_list()
@@ -266,6 +267,48 @@ function chat_list(list) {
 
 
 
+
+/**
+ * @func get_new_message()
+ * @desc son mesajı chat-list içerisine ekler
+ * @param string
+ * @return html 
+ */
+function get_new_message(add_class) {
+  var chat_list = document.querySelector(".chat-list");
+  var last_view_message = chat_list.lastElementChild.children[0].getAttribute('id');
+  getXHR({ 'method': 'get', 'url': get_site_url('admin/user/getMessage.php?query_message='+ chat_list.getAttribute('id') +'&last_view_message='+ last_view_message +'&get_message=new&session_id='+window.session_id)}, function(data) {
+    if ( data != "empty" && data != false ) {
+      var matches = data.match(/<til>([\s\S]*?)<\/til>/gmi);
+      var chat_list = document.querySelector(".chat-list");
+      for (var i = matches.length - 1; i >= 0; i--) {
+        var div = document.createElement("div");
+        div.innerHTML = matches[i].replace("<til>", '');
+        div.setAttribute("class", "message-elem "+add_class);
+        chat_list.appendChild(div);
+        elem_scroll_bottom(chat_list);
+        
+        if ( i == 0) div.setAttribute("class", "message-elem "+add_class);
+        setTimeout(function() {
+         div.classList.remove(add_class); 
+         for (var i = chat_list.children.length - 1; i >= 0; i--) { chat_list.children[i].classList.remove(add_class); }
+        }, 2500);
+        document.title = "(1) " + chat_list.lastElementChild.children[0].getAttribute("title") + " - " + chat_list.lastElementChild.children[0].getAttribute("username");
+      } 
+    }
+  });
+} //.get_new_message
+
+
+
+
+
+/**
+ * @func elem_scroll_bottom()
+ * @desc bir listenin liste elemanlarına göre scroll bottom'unu hesaplar
+ * @param elem
+ * @return elem.scrolTop 
+ */
 function elem_scroll_bottom(chat_list) {
   // scrollBottom
   var height = 0;
@@ -274,7 +317,62 @@ function elem_scroll_bottom(chat_list) {
   }
   chat_list.scrollTop = height;
   // scrollBottom
-}
+} //.elem_scroll_bottom()
+
+
+
+
+
+
+
+
+/**
+ * @func send_message()
+ * @desc message gönderir
+ * @param empty
+ * @return  
+ */
+function send_message($this, type) {
+  var message   = $this.querySelector('textarea');
+  if ( !message ) $this.querySelector('input[type="text"]');
+
+  // fast send kontrol
+  var date = new Date();
+  var cookie_date = new Date(getCookie('last_send_date'));
+  if ( cookie_date > date.addSecond(-1) ) {
+    tinyMCE.get(message.getAttribute('id')).setContent('');
+    return false;
+  }
+
+  document.cookie = "last_send_date="+Date()+";";
+  // fast send kontrol
+
+  if ( message ) {
+    var content   = tinyMCE.get(message.getAttribute('id')).getContent();
+    tinyMCE.get(message.getAttribute('id')).setContent('');
+    tinymce.execCommand('mceFocus', false, message.getAttribute('id'));
+
+    var top_id    = $this.querySelector('#top_id');
+    var receiver  = $this.querySelector('#receiver');
+
+    if ( content.length > 3 ) {
+      var form = new FormData();
+      form.append("message", content);
+      form.append("top_id", top_id.value);
+      form.append("receiver", receiver.value);
+
+      getXHR({ 'method': 'POST', 'url' : get_site_url('admin/user/sendMessage.php?session_id='+window.session_id), 'send': form  }, function(data) {
+        if ( data != "empty" && data != false ) {
+          get_new_message('send');
+          
+          clearInterval(window.getMessage);
+          window.getMessage = setInterval("get_new_message('new')", 1000);
+        } else { return false; }
+      });
+    } else { alert('en az 3 kelime'); }
+  } else { return false; }
+  return false;
+} //.send_message()
 
 
 
@@ -633,27 +731,39 @@ function name_to_url(name) {
 
 
 
-/**
- * @func addHours()
- * @desc verilen zamana saat ekler
- * @param string
- * @return string
- */
-Date.prototype.addHours = function(h) {
-  this.setTime(this.getTime() + (h*60*60*1000));
-  return this;
-} //.addHours()
+  /**
+   * @func addHours()
+   * @desc verilen zamana saat ekler
+   * @param string
+   * @return string
+   */
+  Date.prototype.addHours = function(h) {
+    this.setTime(this.getTime() + (h*60*60*1000));
+    return this;
+  } //.addHours()
 
 
+  /**
+   * @func addSecond()
+   * @desc verilen zamana saniye ekler
+   * @param string
+   * @return string
+   */
+  Date.prototype.addSecond = function(h) {
+    this.setTime(this.getTime() + (h*1000));
+    return this;
+  } //.addSecond()
 
 
-/**
- * @func replaceAll()
- * @desc replace all
- * @param string
- * @return string
- */
-String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
-    return target.replace(new RegExp(search, 'g'), replacement);
-};//.replaceAll
+  /**
+   * @func replaceAll()
+   * @desc replace all
+   * @param string
+   * @return string
+   */
+  String.prototype.replaceAll = function(search, replacement) {
+      var target = this;
+      return target.replace(new RegExp(search, 'g'), replacement);
+  };//.replaceAll
+
+

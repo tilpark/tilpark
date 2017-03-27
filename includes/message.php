@@ -42,9 +42,9 @@ function add_message($rec_u_id, $args=array()) {
 	@form_validation(strip_tags($insert['message'], '<img>'), 'message', 'Mesaj', 'required|min_lenght[3]', __FUNCTION__);
 	if(!$rec_user = get_user($rec_u_id)) { add_alert('Mesaj gönderilecek kullanıcı bulunamadı.', 'danger', __FUNCTION__); }
 
+
 	if(!have_log()) {
 		if(!is_alert(__FUNCTION__)) {
-
 			# gerekli degerler
 			$insert['type']		= 'message';
 			$insert['sen_u_id'] = get_active_user('id');
@@ -68,6 +68,7 @@ function add_message($rec_u_id, $args=array()) {
 
 
 			if($q_insert = db()->query("INSERT INTO ".dbname('messages')." ".sql_insert_string($insert)." ")) {
+
 				if(db()->insert_id) {
 					$insert_id = db()->insert_id;
 					if($args['add_alert']) 	{ add_alert('<i class="fa fa-paper-plane-o"></i> Mesaj gönderildi.', 'success', __FUNCTION__); }
@@ -115,7 +116,6 @@ function get_message($message_id, $args=array()) {
 
 	if(!is_alert(__FUNCTION__)) {
 		if ( !isset($where['type']) ) { $where['type'] = 'message'; }
-
 		if($q_select = db()->query("SELECT * FROM ".dbname('messages')." ".sql_where_string($where)." ")) {
 			if($q_select->num_rows) {
 				return _return_helper($args['return'], $q_select);

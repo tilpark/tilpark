@@ -86,7 +86,7 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 								<?php if(@$messages): ?>
 									<?php foreach($messages as $message): ?>
 										<div class="message-elem">
-											<div class="row space-5" id="<?php echo $message->id; ?>">
+											<div class="row space-5 message-<?php echo $message->id; ?>" id="<?php echo $message->id; ?>">
 												<?php if(get_active_user('id') != $message->sen_u_id): ?>
 													<div class="col-md-1">
 														<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
@@ -116,7 +116,7 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 						</div><!--/ .chat-container /-->
 
 						<!--/ ADD MESSAGE REPLY /-->
-						<form name="form_message" id="form_message" action="" method="POST">
+						<form name="form_message" id="form_message" onsubmit="return send_message(this)" action="" method="POST">
 							<div class="h-20"></div>
 
 							<div class="row space-5">
@@ -130,21 +130,19 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 									<?php endif; ?>
 								</div> <!-- /.col-md-1 -->
 								<div class="col-md-11">
+									<div class="form-group message-area">
+										<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
+										<textarea autofocus onkeydown="parent(this, 'form').dispatchEvent(new Event('submit', { 'bubbles' : true, 'cancelable' : true}));" name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
+										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '130' });</script>
+									</div> <!-- /.form-group -->
 
 									<div class="form-group">
-										<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
-										<div class="chat-add-input">
-											<input type="text" name="message" class="form-control" placeholder="message...">
-											<button type="submit" class="btn btn-default"><i class="fa fa-send-o"></i></button>
-											<input type="hidden" name="uniquetime" value="<?php uniquetime(); ?>">
-											<input type="hidden" name="reply_message">
-										</div><!--/ .chat-add-input /-->
-
-										<?php /*
-										<textarea autofocus name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
-										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '130' });</script>
-										*/ ?>
-									</div> <!-- /.form-group -->
+										<button type="submit" class="btn btn-default pull-right"><i class="fa fa-send-o"></i> Gönder</button>
+										<input type="hidden" name="uniquetime" value="<?php uniquetime(); ?>">
+										<input type="hidden" name="reply_message">
+										<input type="hidden" name="receiver" id="receiver" value="<?php echo $rec_user->id; ?>">
+										<input type="hidden" name="top_id" id="top_id" value="<?php echo @$_GET['id']; ?>">
+									</div><!--/ .from-group/-->
 								</div> <!-- /.col-md-11 -->
 							</div> <!-- /.row -->
 						</form>

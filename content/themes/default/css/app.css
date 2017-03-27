@@ -1572,7 +1572,7 @@ ul.sidebar-menu li ul li a i.fa {
 .chat-container .chat-list{
   overflow-x: hidden;
   position: relative;
-  height: calc(100vh - 350px);
+  height: calc(100vh - 460px);
 }
 
 .chat-container{
@@ -1598,40 +1598,48 @@ ul.sidebar-menu li ul li a i.fa {
   100%{ transform: rotate(360deg); }
 }
 
-.chat-add-input input{
-  padding: 13px;
-  padding-right: 80px;
-  height: auto;
-  box-shadow: none;
-  border: 2px solid #ddd;
+.message-area .mce-toolbar-grp {
+  border-bottom: 0;
 }
 
-.chat-add-input button[type="submit"] {
-  position: relative;
-  float: right;
-  top: -50px;
-  padding: 13px 20px;
-  border: 2px solid #ddd;
+.message-area iframe{
+  border: 1px solid #ddd;
+  border-bottom: 0;
+}
+
+div.mce-edit-area,
+.mce-tinymce{
+  border: 0 !important;
+}
+
+.chat-container .chat-list .message-elem{
   transition: all 200ms ease;
-  font-size: 20px;
-  color: #777;
+  border: 2px solid transparent;
 }
 
-.chat-add-input button[type="submit"]:hover{
-  color: #111;
+.chat-container .chat-list .message-elem.send{
+  animation: send ease-in-out 200ms forwards;
+  position: relative;
+  right: -100%;
 }
 
-.chat-add-input input:focus{
-  box-shadow: none;
-  border: 2px solid #66afe9;
-}
-
-.chat-add-input input:focus + button[type="submit"] {
-  border: 2px solid #66afe9;
-  color: #66afe9;
+@keyframes send {
+  0%{ right: -100%; }
+  100%{ right: 0; }
 }
 
 
+.chat-container .chat-list .message-elem.new{
+  animation: new ease-in-out 200ms forwards;
+  position: relative;
+  left: -100%;
+  border-top: 2px solid #34a853;
+}
+
+@keyframes new {
+  0%{ left: -100%; }
+  100%{ left: 0; }
+}
 
 
 
