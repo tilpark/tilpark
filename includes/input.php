@@ -388,7 +388,7 @@ function alert_form_element($group='form') {
  * get_checked()
  * input[checked] ve input[radio] formlari icin checked="checked" ekler
  */
-function get_checked($val_1, $val_2) {
+function get_checked($val_1, $val_2 = 'deneme') {
 	if(is_array($val_2)) {
 		if(in_array($val_1, $val_2)) {
 			return 'checked';
@@ -396,11 +396,20 @@ function get_checked($val_1, $val_2) {
 			return '';
 		}
 	} else {
-		if($val_1 == $val_2) {
-			return 'checked';
+		if(empty($val_2)) {
+			if($val_1) {
+				return 'checked';
+			} else {
+				return '';
+			}
 		} else {
-			return '';
+			if($val_1 == $val_2) {
+				return 'checked';
+			} else {
+				return '';
+			}
 		}
+		
 	}
 
 } //.get_checked()

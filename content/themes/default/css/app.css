@@ -42,7 +42,8 @@
  *    16.5 -
  *    16.6 -
  *    16.7 -
- * 17.0 -
+ * 17.0 - Helper
+ *    17.1 Switch
  */
 
 
@@ -322,6 +323,19 @@ table thead tr th a.orderby.text-muted {
 }
 
 
+
+
+/* bootstrap hack: fix content width inside hidden tabs */
+.tab-content > .tab-pane:not(.active),
+.pill-content > .pill-pane:not(.active) {
+    display: block;
+    height: 0;
+    overflow-y: hidden;
+} 
+/* bootstrap hack end */
+
+
+
 /* .label-text */
 .label {
   display: inline;
@@ -359,7 +373,6 @@ table thead tr th a.orderby.text-muted {
   top: -3px;
   font-size: 75%;
 }
-
 
 
 /* 2.2 */
@@ -1641,3 +1654,117 @@ footer {
   margin-right: auto;
   text-align: center;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * 17.0 Helper
+ */
+
+
+
+/* switch */
+.til-switch {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  height: 20px;
+  background: transparent;
+}
+/* xs */
+.til-switch.til-switch-xs {
+  height: 16px;
+}
+.til-switch.til-switch-xs .switch-text:before, .til-switch.til-switch-xs .switch-text:after {
+  padding: 1px 5px;
+  font-size: 10px;
+}
+/* sm */
+.til-switch.til-switch-sm {
+  height: 18px;
+}
+.til-switch.til-switch-sm .switch-text:before, .til-switch.til-switch-sm .switch-text:after {
+  padding: 1px 5px;
+  font-size: 11px;
+}
+/* md */
+.til-switch.til-switch-md {
+  height: 20px;
+}
+.til-switch.til-switch-md .switch-text:before, .til-switch.til-switch-md .switch-text:after {
+  padding: 2px 10px;
+  font-size: 12px;
+}
+/* lg */
+.til-switch.til-switch-lg {
+  height: 26px;
+}
+.til-switch.til-switch-lg .switch-text:before, .til-switch.til-switch-lg .switch-text:after {
+  padding: 4px 10px;
+  font-size: 13px;
+}
+.til-switch span {
+  position:relative;
+  left: calc(100% + 10px);
+  top: -100%;
+}
+.til-switch input[type="checkbox"] {
+  display: none;
+}
+.til-switch .switch-text{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-size:12px;
+  cursor: pointer;
+}
+.til-switch .switch-text:before,
+.til-switch .switch-text:after{
+  padding: 2px 10px;
+  content: attr(on-text);
+  position: relative;
+  width: auto;
+  height: 100%;
+  top: 0;
+  left: 100%;
+  background: #fdc430;
+  border: 1px solid #000;
+  color: #000;
+  box-sizing: border-box;
+  white-space: nowrap;
+  display: block;
+  transition: all 200ms ease;
+  text-align: center;
+  vertical-align: middle;
+}
+.til-switch .switch-text:after{
+  content: attr(off-text);
+  background: #f7f7f7;
+  color: #000;
+  border: 1px solid #000;
+  left: 0;
+  top: -100%;
+}
+.til-switch input[type="checkbox"]:checked ~ .switch-text:before { left: 0;}
+.til-switch input[type="checkbox"]:checked ~ .switch-text:after {left: 100%;}
+.til-switch-label span {
+
+}
+
+
+
+
+
+
+
+

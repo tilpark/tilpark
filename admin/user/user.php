@@ -325,18 +325,12 @@ add_page_info( 'nav', array('name'=>$user->name.' '.$user->surname) );
 
 	<!-- tab:cv -->
 	<div class="tab-pane" role="tabpanel" id="cv" aria-labelledy="cv-tab">
-		<?php print_alert(); ?>
-
 		<?php include('inc_user_cv.php'); ?>
-
 	</div>
 	<!-- /tab:cv -->
 
-
 	<!-- tab:cv -->
 	<div class="tab-pane" role="tabpanel" id="salary" aria-labelledy="salary-tab">
-		<?php print_alert(); ?>
-
 		<?php include('inc_user_salary.php'); ?>
 	</div>
 	<!-- /tab:cv -->

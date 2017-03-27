@@ -643,7 +643,6 @@ $user_meta = get_user_meta($user->id);
 										</div> <!-- /.row -->
 									</div> <!-- /.clone_item -->
 								<?php endforeach; ?>
-
 							</div>
 
 

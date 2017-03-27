@@ -6,6 +6,26 @@ add_page_info( 'title', 'Yönetim Paneli' );
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="h-20"></div>
+
 <div class="row">
 	<div class="col-md-6">
 

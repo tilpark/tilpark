@@ -121,7 +121,7 @@ if(@empty($_POST['code'])) {
 
 <div class="h-20"></div>
 <div class="form-group pull-left">
-	<label class="veritical-center text-muted">Kayıttan sonra yeni hesap kartı ekleyecek misiniz? &nbsp; <input type="checkbox" name="again" id="again" value="true" <?php if(isset($_POST['again']) or isset($_GET['again'])): ?>checked<?php endif; ?> class="toogle" data-size="mini" data-on-text="Evet" data-off-text="Hayır"></label>
+	<label class="veritical-center text-muted">Kayıttan sonra yeni hesap kartı ekleyecek misiniz? &nbsp; <input type="checkbox" name="again" id="again" value="true" <?php if(isset($_POST['again']) or isset($_GET['again'])): ?>checked<?php endif; ?> data-toggle="switch" switch-size="lg" on-text="Evet" off-text="Hayır"></label>
 </div> <!-- /.form-group -->
 <div class="clearfix"></div>
 

@@ -12,7 +12,7 @@ add_page_info( 'nav', array('name'=>'Tüm Kullanıcılar') );
 <table class="table table-hover table-condensed dataTable">
 	<thead>
 		<tr>
-			<th width="10"></th>
+			<th width="30"></th>
 			<th>E-Posta</th>
 			<th>Ad Soyad</th>
 			<th>Cep Telefonu</th>

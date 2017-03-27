@@ -497,21 +497,24 @@ function set_staff_salary($user_id) {
 	if(!$user = get_user($user_id)) { add_console_log('üye id bulunamadı', __FUNCTION__); return false; }
 	$user_meta = get_user_meta($user->id);
 
+
+
 	// eger hesap karti yok ise olusturalim
 	if($user->account_id == 0) {
 		$_account['insert']['type'] = 'user';
 		$_account['insert']['code'] = 'TILUA-'.$user->id;
 		$_account['insert']['name'] = $user->display_name;
 		$_account['insert']['gsm']  = $user->gsm;
-		$_account['insert']['email'] = $user->username;
-		$_account['insert']['tax_no'] = $user->citizenship_no;
+		$_account['insert']['email'] 	= $user->username;
+		$_account['insert']['tax_no'] 	= $user->citizenship_no;
+		$_account['insert']['val_int'] 	= $user->id;
 
 		$_account['add_log'] = false;
 		$_account['add_alert'] = false;
 
 		if( $account_id = add_account($_account) ) {
 			if( update_user($user->id, array('account_id'=>$account_id)) ) {
-
+				$user->account_id = $user->id;
 			}
 		}
 	} //. hesap karti yok ise olustur
@@ -528,6 +531,17 @@ function set_staff_salary($user_id) {
 		// cunku asagı tarafta kontroller ve hesaplamalar yapıldıktan sonra tekrar aktıf olacaklar
 		db()->query("UPDATE ".dbname('forms')." SET status='0' WHERE type='salary' AND account_id='".$user->account_id."'");
 		db()->query("UPDATE ".dbname('form_items')." SET status='0' WHERE type='salary' AND item_name='monthly_day' AND account_id='".$user->account_id."'");
+
+	
+	// eger maas hesaplamasi yapilmayacka ise betigi fonksiyonu buradan sonlandiralim
+	if(!$user_meta['is_salary']) { 
+		// hesap kartini pasif edelim
+		db()->query("UPDATE ".dbname('accounts')." SET status='0' WHERE type='user' AND id='".$user->account_id."' ");
+		return false; 
+	} else {
+		// hesap kartinin aktif olma olasiligina karsin tekrar aktif edelim
+		db()->query("UPDATE ".dbname('accounts')." SET status='1', val_int='".$user->id."' WHERE type='user' AND id='".$user->account_id."' ");
+	}
 
 
 	$str_start_date = strtotime($user_meta['date_start_work']);

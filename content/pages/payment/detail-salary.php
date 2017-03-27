@@ -62,6 +62,10 @@ print_alert('set_payment');
 	<?php
 	if(isset($_GET['account_id'])) {
 		if( $account = get_account($_GET['account_id']) ) {
+			# maas hesaplamasini tekrar yap
+			set_staff_salary($account->val_int);
+			$account = get_account($_GET['account_id']);
+
 			$payment->account_id 	= $account->id;
 			$payment->account_tax_no = $account->tax_no;
 			$payment->account_tax_home = $account->tax_home;
@@ -73,6 +77,9 @@ print_alert('set_payment');
 			$payment->account_district 	= $account->district;
 			$payment->account_city 		= $account->city;
 			$payment->account_country 	= $account->country;
+
+			
+
 		} else { add_alert('Hesap kartı bulunamadı.', 'warning'); }
 	}
 	?>
