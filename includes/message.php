@@ -53,7 +53,7 @@ function add_message($rec_u_id, $args=array()) {
 			$insert['date_update'] = date('Y-m-d H:i:s');
 
 			# eger mesaj basligi yok ise otomatik olustur
-			if(!isset($insert['title'])) { $insert['title'] = preg_replace("/[^ \w]+/", "", mb_substr(strip_tags(html_entity_decode($insert['message'])),0,50,'utf-8')); }
+			if(!isset($insert['title'])) { $insert['title'] = preg_replace("/[^\d\pL\p{Zs}]+/u", "", mb_substr(strip_tags(html_entity_decode($insert['message'])),0,50,'utf-8')); }
 			if(!strlen($insert['title'])) { $insert['title'] = 'Konu yok'; }
 			$insert['title'] = input_check($insert['title']); // ne olur ne olmaz diye guvenlik onelini tekrar alalim
 

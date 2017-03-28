@@ -167,16 +167,6 @@ function pagination($count) {
 		$page = 1;
 	}
 
-	// sayfalama yapilirken linklere tiklandiginda sag ve sol tarafta kac tane ekstra link gozuksun
-	$show_left_right_limit = 3;
-	if(til_is_mobile()) { 
-		$show_left_right_limit = 2; 
-		if(strlen($page) > 2) {
-			$show_left_right_limit = 1; 
-		}
-	}
-
-
 
 	$btn_back = '#';
 	$btn_next = '#';
@@ -192,11 +182,11 @@ function pagination($count) {
 		$btn_next = get_set_url_parameters( array('add'=> array('page'=>$page+1) ) );
 	}
 
-	if($page > ($show_left_right_limit+1) ) {
+	if($page > 4) {
 		$btn_after = get_set_url_parameters( array('add'=> array('page'=>1) ) );
 	}
 
-	if($paged > ($show_left_right_limit+1) AND $page < ($paged - $show_left_right_limit) ) {
+	if($paged > 4 and $page < ($paged - 3) ) {
 		$btn_before = get_set_url_parameters( array('add'=> array('page'=>$paged) ) );
 	}
 
@@ -209,33 +199,33 @@ function pagination($count) {
 	  	<?php if($btn_after != '#'): ?>
 	  		<li class="<?php if($btn_after == '#'): ?>disabled<?php endif; ?>">
 	      		<a href="<?php echo $btn_after; ?>" aria-label="Previous">
-	        		<span aria-hidden="true"><i class="fa fa-angle-double-left" aria-hidden="true"></i> <span class="hidden-xs">İlk Sayfa</span></span>
+	        		<span aria-hidden="true"><i class="fa fa-angle-double-left" aria-hidden="true"></i> İlk Sayfa</span>
 	     		</a>
 	    	</li>
 	    <?php endif; ?>
 	    <li class="<?php if($btn_back == '#'): ?>disabled<?php endif; ?>">
 	      <a href="<?php echo $btn_back; ?>" aria-label="Previous">
-	        <span aria-hidden="true"><i class="fa fa-angle-left" aria-hidden="true"></i></span>
+	        <span aria-hidden="true"><i class="fa fa-angle-double-left" aria-hidden="true"></i></span>
 	      </a>
 	    </li>
 
-	    <?php if(($page-3) > 0 AND $show_left_right_limit >= 3): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page-3))); ?>"><?php echo $page-3; ?></a></li> <?php endif; ?>
-	    <?php if(($page-2) > 0 AND $show_left_right_limit >= 2): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page-2))); ?>"><?php echo $page-2; ?></a></li> <?php endif; ?>
+	    <?php if(($page-3) > 0): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page-3))); ?>"><?php echo $page-3; ?></a></li> <?php endif; ?>
+	    <?php if(($page-2) > 0): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page-2))); ?>"><?php echo $page-2; ?></a></li> <?php endif; ?>
 	    <?php if(($page-1) > 0): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page-1))); ?>"><?php echo $page-1; ?></a></li> <?php endif; ?>
 	    <li class="active"><a href="#"><?php echo $page; ?></a></li>
 	    <?php if(($page+1) <= $paged): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page+1))); ?>"><?php echo $page+1; ?></a></li> <?php endif; ?>
-	    <?php if(($page+2) <= $paged AND $show_left_right_limit >= 2): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page+2))); ?>"><?php echo $page+2; ?></a></li> <?php endif; ?>
-	    <?php if(($page+3) <= $paged AND $show_left_right_limit >= 3): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page+3))); ?>"><?php echo $page+3; ?></a></li> <?php endif; ?>
+	    <?php if(($page+2) <= $paged): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page+2))); ?>"><?php echo $page+2; ?></a></li> <?php endif; ?>
+	    <?php if(($page+3) <= $paged): ?> <li><a href="<?php echo get_set_url_parameters(array('add'=> array('page'=>$page+3))); ?>"><?php echo $page+3; ?></a></li> <?php endif; ?>
 
-	    <li class="<?php if($btn_next == '#'): ?>disabled<?php endif; ?>">
-	      <a href="<?php echo $btn_next; ?>" aria-label="Previous">
-	        <span aria-hidden="true"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
+	    <li class="<?php if($btn_back == '#'): ?>disabled<?php endif; ?>">
+	      <a href="<?php echo $btn_back; ?>" aria-label="Previous">
+	        <span aria-hidden="true"><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
 	      </a>
 	    </li>
 	    <?php if($btn_before != '#'): ?>
 	    	<li class="<?php if($btn_before == '#'): ?>disabled<?php endif; ?>">
 	      		<a href="<?php echo $btn_before; ?>" aria-label="Previous">
-	        	<span aria-hidden="true"><span class="hidden-xs">Son Sayfa</span> <i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+	        	<span aria-hidden="true">Son Sayfa <i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
 	      		</a>
 	    	</li>
 	    <?php endif; ?>
@@ -369,59 +359,33 @@ function theme_get_logs($query=array()) {
 		<table class="table table-hover table-condensed table-striped dataTable-logs">
 			<thead>
 				<tr>
-					<?php if(til_is_mobile()): ?>
-						<th class="none"></th>
-						<th width="100">Tarih</th>
-						<th>Açıklama</th>
-					<?php else: ?>
-						<th class="none"></th>
-						<th width="120" class="">Tarih</th>
-						<th width="200">Kullanıcı</th>
-						<th>Açıklama</th>
-					<?php endif; ?>
+					<th class="none"></th>
+					<th width="120">Tarih</th>
+					<th width="200">Kullanıcı</th>
+					<th>Açıklama</th>
 				</tr>
 			</thead>
 			<tbody>
 			<?php foreach($logs as $log): ?>
 				<tr>
-					<?php if(til_is_mobile()): ?>
-						<td class="none"></td>
-						<td>
-							<?php echo get_time_late($log->date); ?> önce
-							<br />
-							<small class="text-muted"><?php echo $log->name_surname; ?></small>
-						</td>
-						<td>
-							<span class="hidden"><?php echo $log->log_key; ?></span>
-							<?php echo $log->log_text; ?>
-							<?php if(isset($log->meta)): ?>
+					<td class="none"></td>
+					<td>
+						<?php echo get_time_late($log->date); ?> önce
+						<br />
+						<small class="text-muted"><?php echo $log->date; ?></small>
+					</td>
+					<td><span class="fs-12"><?php echo $log->name_surname; ?></span></td>
+					<td>
+						<span class="hidden"><?php echo $log->log_key; ?></span>
+						<?php echo $log->log_text; ?>
+						<?php if(isset($log->meta)): ?>
 
-								<?php foreach($log->meta as $meta): ?>
-									<?php echo get_log_meta_for_table($meta); ?>
-								<?php endforeach; ?>
+							<?php foreach($log->meta as $meta): ?>
+								<?php echo get_log_meta_for_table($meta); ?>
+							<?php endforeach; ?>
 
-							<?php endif; ?>
-						</td>
-					<?php else: ?>
-						<td class="none"></td>
-						<td>
-							<?php echo get_time_late($log->date); ?> önce
-							<br />
-							<small class="text-muted"><?php echo $log->date; ?></small>
-						</td>
-						<td><span class="fs-12"><?php echo $log->name_surname; ?></span></td>
-						<td>
-							<span class="hidden"><?php echo $log->log_key; ?></span>
-							<?php echo $log->log_text; ?>
-							<?php if(isset($log->meta)): ?>
-
-								<?php foreach($log->meta as $meta): ?>
-									<?php echo get_log_meta_for_table($meta); ?>
-								<?php endforeach; ?>
-
-							<?php endif; ?>
-						</td>
-					<?php endif; ?>
+						<?php endif; ?>
+					</td>
 				</tr>
 			<?php endforeach; ?>
 			</tbody>
