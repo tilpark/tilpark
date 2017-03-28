@@ -11,7 +11,7 @@ add_page_info( 'nav', array('name'=>'Ürün Ekle') );
 
 
 
-
+asdasdasdas
 <?php
 if(isset($_POST['add'])) {
 
