@@ -1,4 +1,6 @@
 <?php
+
+exit;
   global $baslangic;
      function sure_baslat()  
     {  
