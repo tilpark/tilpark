@@ -2,7 +2,7 @@
 
 exit;
 exit;
-exit;
+
   global $baslangic;
      function sure_baslat()  
     {  
