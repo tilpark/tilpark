@@ -3,6 +3,10 @@
 
 
 
+function til_is_mobile() {
+    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+}
+
 
 
 
@@ -131,16 +135,52 @@ function set_vat($vat) {
  */
 function til_get_addslashes($arr) {
     $return = array();
-    foreach($arr as $k=>$v) {
-        if(is_array($v)) {
-            $return[$k] = til_get_addslashes($v);
-        } else {
-            $return[$k] = addslashes($v);
+    if( !is_array($arr) ) {
+        $return = addslashes($arr);
+    } else {
+         foreach($arr as $k=>$v) {
+            if(is_array($v)) {
+                $return[$k] = til_get_addslashes($v);
+            } else {
+                $return[$k] = addslashes($v);
+            }
         }
-
     }
+    
+   
     return $return;
 } //.til_get_addslashes()
+
+
+
+
+
+
+/**
+ * til_get_substr()
+ *
+ */
+function til_get_substr($val, $start, $end, $args='...') {
+    if(!is_array($args)) {
+        $dot3 = $args;
+        $args = array();
+        if($dot3) {
+            if(empty($dot3)) {
+                $args['dot3'] = '';
+            } else {
+                $args['dot3'] = $dot3;
+            }
+        } else {
+            $args['dot3'] = false;
+        }
+    }
+
+    $return = trim(mb_substr($val, $start, $end, 'utf-8'));
+    if( strlen($val) > ($end - $start) ) {
+        $return .= $args['dot3'];
+    }
+    return $return;
+}
 
 
 

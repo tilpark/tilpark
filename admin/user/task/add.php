@@ -105,9 +105,10 @@ if(isset($_POST['add_task'])) {
 	$_task['date_end']	= $_POST['date_end'];
 	$_task['choice']	= $_POST['choice'];
 
-	if ( $insert_id = add_task($_POST['rec_u_id'], $_task) ) {
-		header("Location: " . get_site_url('admin/user/task/detail.php?id='. $insert_id ));
-	}
+	add_task($_POST['rec_u_id'], $_task);
+
+
+
 } //.isset($_POST)
 
 
@@ -197,7 +198,7 @@ if(isset($_POST['add_task'])) {
 
 					<div class="row">
 						<div class="col-md-12">
-							<div class="form-group message-area">
+							<div class="form-group">
 								<label for="editor_message">Görev Açıklaması</label>
 								<textarea name="message" id="message" class="form-control required hidden" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"><?php echo stripcslashes(@$_POST['message']); ?></textarea>
 

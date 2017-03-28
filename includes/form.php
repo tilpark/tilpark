@@ -184,7 +184,6 @@ function set_form($id, $args=array()) {
 			if($form and $operation == 'update' and !is_alert(__FUNCTION__, 'danger')) {
 
 				$old_form = get_form($form->id, array('get_user_access'=>false) );
-				print_r($_form);
 				if($q_update = db()->query("UPDATE ".dbname('forms')." SET ".sql_update_string($_form)." WHERE id='".$form->id."' ")) {
 					if(db()->affected_rows) {
 						$new_form = get_form($form->id, array('get_user_access'=>false) );
@@ -514,7 +513,8 @@ function add_form_item($form_id, $args=array(), $opt=array()) {
 			return false;
 		}
 
-		$args = input_check($args);
+		if(!isset($args['date'])) { $args['date'] = date('Y-m-d H:i:s'); }
+
 
 		if(empty($args['item_name']) and empty($args['item_code'])) {
 			@form_validation($args['item_name'], 'item_name', 'Ürün Adı', 'required|min_length[3]|max_length[32]', __FUNCTION__);
@@ -547,13 +547,13 @@ function add_form_item($form_id, $args=array(), $opt=array()) {
 
 		if(!is_alert(__FUNCTION__)) {
 
-			$args['price'] = get_set_decimal_db($args['price']);
+			$args['price'] 		= get_set_decimal_db($args['price']);
 
 			$args['total'] 		= $args['price'] * $args['quantity'];
 			$args['vat_total'] 	= $args['total'] - ($args['total'] / get_set_vat($args['vat']) );
 
 
-
+			
 			if($q_insert = db()->query("INSERT INTO ".dbname('form_items')." ".sql_insert_string($args)." ")) {
 				if(db()->affected_rows) {
 					$insert_id = db()->insert_id;

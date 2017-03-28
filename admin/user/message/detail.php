@@ -52,7 +52,7 @@ add_page_info( 'nav', array('name'=>$rec_user->name.' '.$rec_user->surname) );
 // tum mesajlari cevaplari ile birlikte cekelim
 if(isset($_GET['id'])) {
 	if(!empty($_GET['id'])) {
-		$messages = array_reverse(get_message_detail($_GET['id'], array('limit' => 4)));
+		$messages = array_reverse(get_message_detail($_GET['id'], array('limit' => 10)));
 	}
 }
 
@@ -82,46 +82,45 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 				<div class="row">
 					<div class="col-md-12">
 						<div class="chat-container">
-							<div class="chat-list" id="<?php echo @$_GET['id'] ?>" js-onload="chat_list('message')">
+							<div class="chat-list" id="<?php echo @$_GET['id'] ?>" js-onload="chat_list()">
 								<?php if(@$messages): ?>
 									<?php foreach($messages as $message): ?>
-										<div class="message-elem  message-<?php echo $message->id; ?>" id="<?php echo $message->id; ?>" title="<?php echo $message->title; ?>" username="<?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?>">
-											<div class="row space-5">
+										<div class="message-elem">
+											<div class="row space-5 message-<?php echo $message->id; ?>" id="<?php echo $message->id; ?>">
 												<?php if(get_active_user('id') != $message->sen_u_id): ?>
-													<div class="col-md-1 col-xs-3">
+													<div class="col-md-1">
 														<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
-													</div> <!-- /.col-md-1.col-xs-3 /-->
+													</div> <!-- /.col-md-1 -->
 												<?php endif; ?>
 
-												<div class="col-md-11 col-xs-9">
+												<div class="col-md-11">
 													<div class="well padding-10 br-3">
 														<div class="text-muted fs-11 italic">
-															<span class="bold"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> tarafından <span class="bold" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> önce gönderildi.
-														</div><!--/ .text-muted /-->
-
+															<span class="bold"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> tarafından <span class="bold" data-toggle="tooltip" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> önce gönderildi.
+														</div>
 														<?php echo $message->message; ?>
 													</div><!--/ .well /-->
 													<div class="h-10"></div>
-												</div><!-- /.col-md-11.col-xs-9 /-->
+												</div> <!-- /.col-md-11 -->
 
 												<?php if(get_active_user('id') == $message->sen_u_id): ?>
-													<div class="col-md-1 col-xs-3">
+													<div class="col-md-1">
 														<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-left" width="48">
-													</div><!-- /.col-md-1 /-->
+													</div> <!-- /.col-md-1 -->
 												<?php endif; ?>
-											</div><!-- /.row.space-5 /-->
-										</div><!--/ .message-elem /-->
+											</div> <!-- /.row -->
+										</div>
 									<?php endforeach; ?>
 								<?php endif; ?>
 							</div><!--/ .chat-list /-->
 						</div><!--/ .chat-container /-->
 
-
 						<!--/ ADD MESSAGE REPLY /-->
-						<form name="form_message" id="form_message" onsubmit="return send_message(this, 'message')" action="" method="POST">
+						<form name="form_message" id="form_message" onsubmit="return send_message(this)" action="" method="POST">
 							<div class="h-20"></div>
+
 							<div class="row space-5">
-								<div class="col-md-1 hidden">
+								<div class="col-md-1">
 									<label>&nbsp;</label>
 									<div class="clearfix"></div>
 									<?php if(get_active_user('avatar')): ?>
@@ -130,11 +129,11 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 										<img src="<?php template_url('img/no-avatar.jpg'); ?>" class="img-responsive br-3 pull-right" width="64">
 									<?php endif; ?>
 								</div> <!-- /.col-md-1 -->
-								<div class="col-md-11 col-xs-12">
+								<div class="col-md-11">
 									<div class="form-group message-area">
 										<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
 										<textarea autofocus onkeydown="parent(this, 'form').dispatchEvent(new Event('submit', { 'bubbles' : true, 'cancelable' : true}));" name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
-										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '100' });</script>
+										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '130' });</script>
 									</div> <!-- /.form-group -->
 
 									<div class="form-group">
@@ -148,12 +147,13 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 							</div> <!-- /.row -->
 						</form>
 						<!--/ ADD MESSAGE REPLY /-->
-					</div> <!-- /.col-md-12 /-->
-				</div> <!-- /.row /-->
+
+					</div> <!-- /.col-md-12 -->
+				</div> <!-- /.row -->
 			</div><!--/ .panel-body /-->
 		</div><!--/ .panel /-->
-	</div> <!-- /.col-md-9 /-->
-</div> <!-- /.row /-->
+	</div> <!-- /.col-md-9 -->
+</div> <!-- /.row -->
 
 
 <?php get_footer(); ?>

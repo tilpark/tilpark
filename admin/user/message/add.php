@@ -109,7 +109,7 @@ if(isset($_POST['send_message'])) {
 
 	if ( is_array($rec_user) OR is_object($rec_user) ) {
 		if($id = add_message($rec_user->id, $_message)) {
-			if( !isset($_GET['message_id']) ) {
+			if(!isset($_GET['message_id'])) {
 				header("Location: ".get_site_url('admin/user/message/detail.php?id='.$id));
 			}
 		}
@@ -154,7 +154,7 @@ if(isset($_POST['send_message'])) {
 						</div> <!-- /.col-md-1 -->
 
 						<div class="col-md-11">
-							<div class="form-group message-area">
+							<div class="form-group">
 								<textarea name="message" id="message" class="form-control required hidden" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"><?php echo stripcslashes(@$_POST['message']); ?></textarea>
 								<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern lists', toolbar: 'bold italic underline forecolor backcolor image table bullist', height: '160' });</script>
 							</div> <!-- /.form-group -->

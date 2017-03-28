@@ -42,11 +42,11 @@ if(isset($_GET['status'])) {
 
 
 	<ul class="nav nav-tabs" role="tablist"> 
-		<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-id-card-o"></i> Ürün Kartı</a></li> 
-		<li role="presentation" class=""><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false"><i class="fa fa-list"></i> Formlar</a></li> 
-		<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i> Geçmiş</a></li> 
+		<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-id-card-o"></i><span class="hidden-xs"> Ürün Kartı</span></a></li> 
+		<li role="presentation" class=""><a href="#forms" role="tab" id="forms-tab" data-toggle="tab" aria-controls="forms" aria-expanded="false"><i class="fa fa-list"></i><span class="hidden-xs"> Formlar</span></a></li> 
+		<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i><span class="hidden-xs"> Geçmiş</span></a></li> 
 		
-		<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-cogs"></i> Seçenekler <span class="caret"></span></a> 
+		<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-cogs"></i><span class="hidden-xs"> Seçenekler </span><span class="caret"></span></a> 
 			<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
 				<li><a href="<?php site_url('admin/user/task/add.php?attachment&item_id='.$item->id); ?>" target="_blank"><i class="fa fa-tasks fa-fw"></i> Görev Ekine Ekle</a></li> 
 				<li><a href="<?php site_url('admin/user/message/add.php?attachment&item_id='.$item->id); ?>" target="_blank"><i class="fa fa-envelope-o fa-fw"></i> Mesaj Ekine Ekle</a></li> 
@@ -59,7 +59,7 @@ if(isset($_GET['status'])) {
 			</ul> 
 		</li>
 
-		<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-print"></i> Yazdır <span class="caret"></span></a> 
+		<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-print"></i><span class="hidden-xs"> Yazdır </span><span class="caret"></span></a> 
 			<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
 				<li><a href="print_barcode.php?id=<?php echo $item->id; ?>&print" target="_blank"><i class="fa fa-fw fa-barcode"></i> Barkod Yazdır</a></li> 
 			</ul> 
@@ -68,108 +68,153 @@ if(isset($_GET['status'])) {
 
 
 	<div class="tab-content"> 
+
+		<!-- tab:home -->
 		<div class="tab-pane fade active in" role="tabpanel" id="home" aria-labelledby="home-tab"> 
+			
 			<div class="row">
-				<div class="col-md-8">
+				<div class="col-md-6">
 					<?php print_alert('update_item'); ?>
 					
 					<form name="form_add_accout" id="form_add_account" action="" method="POST" class="validate">
+						<div class="form-group">
+							<label for="code">Ürün Kodu <sup><i class="fa fa-barcode"></i> barkod kodu</sup> </label>
+							<input type="text" name="code" id="code" value="<?php echo $item->code; ?>" class="form-control" minlength="3" maxlength="32">
+						</div> <!-- /.form-group -->
+
+						<div class="form-group">
+							<label for="name">Ürün Adı <sup class="text-muted">ürün-hizmet-stok adı</sup></label>
+							<input type="text" name="name" id="name" value="<?php echo $item->name; ?>" class="form-control required focus" minlength="3" maxlength="50">
+						</div> <!-- /.form-group -->
+
 
 						<div class="row">
-							<div class="col-md-6">
-
-								<div class="form-group">
-									<label for="code">Ürün Kodu <sup><i class="fa fa-barcode"></i> barkod kodu</sup> </label>
-									<input type="text" name="code" id="code" value="<?php echo $item->code; ?>" class="form-control" minlength="3" maxlength="32">
-								</div> <!-- /.form-group -->
-
-								<div class="form-group">
-									<label for="name">Ürün Adı <sup class="text-muted">ürün-hizmet-stok adı</sup></label>
-									<input type="text" name="name" id="name" value="<?php echo $item->name; ?>" class="form-control required focus" minlength="3" maxlength="50">
-								</div> <!-- /.form-group -->
-
-
-								<div class="row">
-									<div class="col-md-2">
-										
-									</div> <!-- /.col-md-2 -->
-									<div class="col-md-5">
-										<div class="form-group">
-											<label for="p_purc_out_vat">Maliyet Fiyatı <sup class="text-muted"><u>KDV Hariç</u></sup></label>
-											<input type="text" name="p_purc_out_vat" id="p_purc_out_vat" value="<?php echo get_set_money($item->p_purc_out_vat); ?>" class="form-control money" maxlength="15" disabled>
-										</div> <!-- /.form-group -->
-									</div> <!-- /.col-md-5 -->
-									<div class="col-md-5">
-										<div class="form-group">
-											<label for="p_sale_out_vat">Satış Fiyatı <sup class="text-muted"><u>KDV Hariç</u></sup></label>
-											<input type="text" name="p_sale_out_vat" id="p_sale_out_vat" value="<?php echo get_set_money($item->p_sale_out_vat); ?>" class="form-control money" maxlength="11" disabled>
-										</div> <!-- /.form-group -->
-									</div> <!-- /.col-md-5 -->
-								</div> <!-- /.row -->
-
-
-								<div class="row">
-									<div class="col-md-2">
-										<div class="form-group">
-											<label for="vat">KDV <small class="text-muted">%</small>
-											<input type="text" name="vat" id="vat" value="<?php echo $item->vat; ?>" class="form-control digits" maxlength="2" onkeyup="calc_vat();">
-										</div> <!-- /.form-group -->
-									</div> <!-- /.col-md-2 -->
-									<div class="col-md-5">
-										<div class="form-group">
-											<label for="p_purc">Maliyet Fiyatı</label>
-											<input type="text" name="p_purc" id="p_purc" value="<?php echo get_set_money($item->p_purc); ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();">
-										</div> <!-- /.form-group -->
-									</div> <!-- /.col-md-5 -->
-									<div class="col-md-5">
-										<div class="form-group">
-											<label for="p_sale">Satış Fiyatı</label>
-											<input type="text" name="p_sale" id="p_sale" value="<?php echo get_set_money($item->p_sale); ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();">
-										</div> <!-- /.form-group -->
-									</div> <!-- /.col-md-5 -->
-								</div> <!-- /.row -->
-
-
-								<div class="text-right">
-									<input type="hidden" name="update">
-									<input type="hidden" name="uniquetime" value="<?php uniquetime(); ?>">
-
-									<button class="btn btn-default btn-insert"><i class="fa fa-floppy-o"></i> Kaydet</button>
-								</div>
-
-							</div> <!-- /.col-md-6 -->
-							<div class="col-md-6">
-
+							<div class="col-md-2">
 								
-							</div> <!-- /.col-md-6 -->
+							</div> <!-- /.col-md-2 -->
+							<div class="col-xs-6 col-md-5">
+								<div class="form-group">
+									<label for="p_purc_out_vat">Maliyet Fiyatı <sup class="text-muted"><u>KDV Hariç</u></sup></label>
+									<input type="text" name="p_purc_out_vat" id="p_purc_out_vat" value="<?php echo get_set_money($item->p_purc_out_vat); ?>" class="form-control money" maxlength="15" disabled>
+								</div> <!-- /.form-group -->
+							</div> <!-- /.col -->
+							<div class="col-xs-6 col-md-5">
+								<div class="form-group">
+									<label for="p_sale_out_vat">Satış Fiyatı <sup class="text-muted"><u>KDV Hariç</u></sup></label>
+									<input type="text" name="p_sale_out_vat" id="p_sale_out_vat" value="<?php echo get_set_money($item->p_sale_out_vat); ?>" class="form-control money" maxlength="11" disabled>
+								</div> <!-- /.form-group -->
+							</div> <!-- /.col-md-5 -->
 						</div> <!-- /.row -->
+
+
+						<div class="row">
+							<div class="col-xs-6 col-md-2">
+								<div class="form-group">
+									<label for="vat">KDV <sup class="text-muted">(%)</sup></label>
+									<input type="text" name="vat" id="vat" value="<?php echo $item->vat; ?>" class="form-control digits" maxlength="2" onkeyup="calc_vat();">
+								</div> <!-- /.form-group -->
+							</div> <!-- /.col -->
+							<div class="clearfix visible-xs"></div>
+							<div class="col-xs-6 col-md-5">
+								<div class="form-group">
+									<label for="p_purc">Maliyet Fiyatı</label>
+									<input type="text" name="p_purc" id="p_purc" value="<?php echo get_set_money($item->p_purc); ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();">
+								</div> <!-- /.form-group -->
+							</div> <!-- /.col -->
+							<div class="col-xs-6 col-md-5">
+								<div class="form-group">
+									<label for="p_sale">Satış Fiyatı</label>
+									<input type="text" name="p_sale" id="p_sale" value="<?php echo get_set_money($item->p_sale); ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();">
+								</div> <!-- /.form-group -->
+							</div> <!-- /.col -->
+						</div> <!-- /.row -->
+
+
+						<div class="text-right">
+							<input type="hidden" name="update">
+							<input type="hidden" name="uniquetime" value="<?php uniquetime(); ?>">
+
+							<button class="btn btn-default btn-insert"><i class="fa fa-floppy-o"></i> Kaydet</button>
+						</div>
 					</form>
-				</div> <!-- /.col-md-8 -->
-				<div class="col-md-4">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h3 class="panel-title">Deneme</h3>
-						</div> <!-- /.panel-heading -->
-						<div class="panel-body">
-							<img alt="testing" src="<?php barcode_url($item->code); ?>" />
-						</div> <!-- /.panel-body -->
-					</div> <!-- /.panel-default -->
-				</div> <!-- /.col-md-4 -->
+				</div> <!-- /.col -->
 			</div> <!-- /.row -->
 
-		</div> 
-		<div class="tab-pane fade" role="tabpanel" id="profile" aria-labelledby="profile-tab"> 
-			<p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p> 
-		</div> 
+		</div>
+		<!-- /tab:home -->
+
+
+
+<script>
+$(window).on("orientationchange",function(){
+  if(window.orientation == 0) // Portrait
+  {
+    $("p").css({"background-color":"yellow","font-size":"300%"});
+  }
+  else // Landscape
+  {
+    $("p").css({"background-color":"pink","font-size":"200%"});
+  }
+});
+</script>
+
+
+
+
+
+
+		<!-- tab:forms -->
+		<div class="tab-pane fade" role="tabpanel" id="forms" aria-labelledby="forms-tab"> 
+			<?php $q_form_items = db()->query("SELECT * FROM ".dbname('form_items')." WHERE status='1' AND item_id='".$item->id."' ORDER BY date DESC"); ?>
+			<?php if($q_form_items->num_rows): ?>
+				<table class="table table-striped table-hover table-condensed table-bordered dataTable">
+					<thead>
+						<tr>
+							<th width="120" class="hidden-portrait">Tarih</th>
+							<th width="100">Form ID</th>
+							<th class="hidden-portrait">Hesap Kartı</th>
+							<th width="60" class="text-center">Adet</th>
+							<th width="100" class="text-center">B. Fiyatı</th>
+							<th width="100" class="text-center">Giriş</th>
+							<th width="100" class="text-center">Çıkış</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php while($item = $q_form_items->fetch_object()): ?>
+							<tr>
+								<td class="hidden-portrait"><?php echo til_get_date($item->date, 'Y-m-d H:i'); ?></td>
+								<td><a href="<?php site_url('form', $item->form_id); ?>" target="_blank">#<?php echo $item->form_id; ?></a></td>
+								<td class="hidden-portrait">
+									<?php if($item->account_id): ?>
+										<?php echo get_account($item->account_id)->name; ?> <a href="<?php site_url('account', $item->account_id); ?>" target="_blank" class="fs-12"><i class="fa fa-external-link"></i></a>
+									<?php endif; ?>
+								</td>
+								<td class="text-center"><?php echo $item->quantity; ?></td>
+								<td class="text-right"><?php echo get_set_money($item->price, true); ?></td>
+								<td class="text-right"><?php echo $item->in_out == '0' ? get_set_money($item->total, true) : ''; ?></td>
+								<td class="text-right"><?php echo $item->in_out == '1' ? get_set_money($item->total, true) : ''; ?></td>
+							</tr>
+						<?php endwhile; ?>
+					</tbody>
+				</table>
+			<?php else: ?>
+				<?php echo get_alert(array('title'=>'Form Hareketi Yok', 'description'=>'Bu ürün kartı için henüz bir form hareketi eklenmemiş.'), 'warning', false); ?>
+			<?php endif; ?>
+		</div>
+		<!-- /tab:forms -->
+
+
+
+
+
+
+
+		<!-- tab:logs -->
 		<div class="tab-pane fade" role="tabpanel" id="logs" aria-labelledby="logs-tab"> 
 			<?php theme_get_logs(" table_id='items:".$item->id."' "); ?>
 		</div> 
-		<div class="tab-pane fade" role="tabpanel" id="dropdown1" aria-labelledby="dropdown1-tab"> 
-			<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p> 
-		</div> 
-		<div class="tab-pane fade" role="tabpanel" id="dropdown2" aria-labelledby="dropdown2-tab"> 
-			<p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.</p> 
-		</div> 
+		<!-- /tab:logs -->
+
 	</div> <!-- /.tab-content -->
 
 

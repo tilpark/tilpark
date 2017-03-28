@@ -1,3 +1,26 @@
+<?php
+  global $baslangic;
+     function sure_baslat()  
+    {  
+       global $baslangic;  
+        $msure = microtime ();  
+         $msure = explode (' ', $msure );  
+         $msure = $msure[1] + $msure[0];  
+         $baslangic = $msure;  
+    }  
+    function sure_bitir()  
+     {  
+         global $baslangic;  
+        $msure = microtime ();  
+        $msure = explode (' ', $msure);  
+        $msure = $msure[1] + $msure[0];  
+         $bitis = $msure;  
+         $toplam = round (($bitis - $baslangic), 5);  
+        return $toplam;  
+     }  
+  
+sure_baslat();  
+?>
 <script type="text/javascript">
   window.site_url   = '<?php echo get_site_url(); ?>';
   window.session_id = '<?php echo session_id(); ?>';
@@ -7,7 +30,8 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Tilpark!</title>
 
@@ -192,7 +216,7 @@
 <div class="breadcrumb-header">
   <h3 class="page-title"></h3>
 
-  <ol class="breadcrumb">
+  <ol class="breadcrumb hidden-xs">
     <li><a href="<?php site_url(); ?>"><i class="fa fa-home"></i> Yönetim Paneli</a></li>
   </ol>
 </div>

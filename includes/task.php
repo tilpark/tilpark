@@ -47,7 +47,6 @@ function add_task($rec_u_id, $args=array()) {
 	if(!have_log()) {
 		if(!is_alert(__FUNCTION__)) {
 
-
 			# gerekli degerler
 			$insert['type']			= 'task';
 			$insert['type_status']	= '0';
@@ -74,7 +73,7 @@ function add_task($rec_u_id, $args=array()) {
 
 
 			# eger mesaj basligi yok ise otomatik olustur
-			if(!isset($insert['title'])) { $insert['title'] = preg_replace("/[^\d\pL\p{Zs}]+/u", "", mb_substr(strip_tags(html_entity_decode($insert['message'])),0,50,'utf-8')); }
+			if(!isset($insert['title'])) { $insert['title'] = mb_substr(strip_tags($insert['message']),0,50,'utf-8'); }
 			if(!strlen($insert['title'])) { $insert['title'] = 'Konu yok'; }
 			$insert['title'] = input_check($insert['title']); // ne olur ne olmaz diye guvenlik onelini tekrar alalim
 

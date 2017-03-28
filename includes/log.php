@@ -31,20 +31,18 @@ function add_log($arr=array()) {
 	if( !isset($arr['log_key']) ) 		{ $arr['log_key'] = ''; }
 	if( !isset($arr['log_text']) ) 		{ $arr['log_text'] = ''; }
 
-	// input_check
-	$arr = input_check($arr);
-
 
 	$q_insert = db()->query("INSERT INTO ".dbname('logs')."  (date, uniquetime, table_id, user_id, log_url, log_key, log_text) VALUES 
 		(
-		'".input_check($arr['date'])."', 
-		'".input_check($arr['uniquetime'])."', 
-		'".input_check($arr['table_id'])."', 
-		'".input_check($arr['user_id'])."', 
-		'".input_check($arr['log_url'])."',
-		'".input_check($arr['log_key'])."', 
-		'".input_check($arr['log_text'])."'
+		'".til_get_addslashes($arr['date'])."', 
+		'".til_get_addslashes($arr['uniquetime'])."', 
+		'".til_get_addslashes($arr['table_id'])."', 
+		'".til_get_addslashes($arr['user_id'])."', 
+		'".til_get_addslashes($arr['log_url'])."',
+		'".til_get_addslashes($arr['log_key'])."', 
+		'".til_get_addslashes($arr['log_text'])."'
 		) ");
+
 
 	if(isset($arr['meta'])) {
 		if($arr['meta'] != false) {
