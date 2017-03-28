@@ -1,3 +1,26 @@
+<?php
+  global $baslangic;
+     function sure_baslat()  
+    {  
+       global $baslangic;  
+        $msure = microtime ();  
+         $msure = explode (' ', $msure );  
+         $msure = $msure[1] + $msure[0];  
+         $baslangic = $msure;  
+    }  
+    function sure_bitir()  
+     {  
+         global $baslangic;  
+        $msure = microtime ();  
+        $msure = explode (' ', $msure);  
+        $msure = $msure[1] + $msure[0];  
+         $bitis = $msure;  
+         $toplam = round (($bitis - $baslangic), 5);  
+        return $toplam;  
+     }  
+  
+sure_baslat();  
+?>
 <script type="text/javascript">
   window.site_url   = '<?php echo get_site_url(); ?>';
   window.session_id = '<?php echo session_id(); ?>';
@@ -193,7 +216,7 @@
 <div class="breadcrumb-header">
   <h3 class="page-title"></h3>
 
-  <ol class="breadcrumb hidden-xs hidden-sm hidden-md">
+  <ol class="breadcrumb hidden-xs">
     <li><a href="<?php site_url(); ?>"><i class="fa fa-home"></i> Yönetim Paneli</a></li>
   </ol>
 </div>

@@ -106,7 +106,6 @@ function rastgeleYazi($uzunluk = 10) {
 
 if(isset($_GET['add_account'])) {
 
-
 	for($i=0; $i<=100000; $i++) {
 		$array=array();
 		$array['type'] = 'account';
@@ -120,6 +119,20 @@ if(isset($_GET['add_account'])) {
 		$array['tax_no'] = rand(1111111111,9999999999);
 		add_account($array);
 	}
+}
 
+
+if( isset($_GET['add_item'])) {
+
+	for($i=0; $i<=100000; $i++) {
+		$array=array();
+		$array['type'] = 'product';
+		$array['name'] = rastgeleYazi(20);
+		$array['vat'] = '18';
+		$array['p_purc'] = rand(1,9999);
+		$array['p_sale'] = rand($array['p_purc'],99999);
+			
+		add_item($array);
+	}
 }
 ?>

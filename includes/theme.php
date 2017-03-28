@@ -369,33 +369,59 @@ function theme_get_logs($query=array()) {
 		<table class="table table-hover table-condensed table-striped dataTable-logs">
 			<thead>
 				<tr>
-					<th class="none"></th>
-					<th width="120">Tarih</th>
-					<th width="200">Kullanıcı</th>
-					<th>Açıklama</th>
+					<?php if(til_is_mobile()): ?>
+						<th class="none"></th>
+						<th width="100">Tarih</th>
+						<th>Açıklama</th>
+					<?php else: ?>
+						<th class="none"></th>
+						<th width="120" class="">Tarih</th>
+						<th width="200">Kullanıcı</th>
+						<th>Açıklama</th>
+					<?php endif; ?>
 				</tr>
 			</thead>
 			<tbody>
 			<?php foreach($logs as $log): ?>
 				<tr>
-					<td class="none"></td>
-					<td>
-						<?php echo get_time_late($log->date); ?> önce
-						<br />
-						<small class="text-muted"><?php echo $log->date; ?></small>
-					</td>
-					<td><span class="fs-12"><?php echo $log->name_surname; ?></span></td>
-					<td>
-						<span class="hidden"><?php echo $log->log_key; ?></span>
-						<?php echo $log->log_text; ?>
-						<?php if(isset($log->meta)): ?>
+					<?php if(til_is_mobile()): ?>
+						<td class="none"></td>
+						<td>
+							<?php echo get_time_late($log->date); ?> önce
+							<br />
+							<small class="text-muted"><?php echo $log->name_surname; ?></small>
+						</td>
+						<td>
+							<span class="hidden"><?php echo $log->log_key; ?></span>
+							<?php echo $log->log_text; ?>
+							<?php if(isset($log->meta)): ?>
 
-							<?php foreach($log->meta as $meta): ?>
-								<?php echo get_log_meta_for_table($meta); ?>
-							<?php endforeach; ?>
+								<?php foreach($log->meta as $meta): ?>
+									<?php echo get_log_meta_for_table($meta); ?>
+								<?php endforeach; ?>
 
-						<?php endif; ?>
-					</td>
+							<?php endif; ?>
+						</td>
+					<?php else: ?>
+						<td class="none"></td>
+						<td>
+							<?php echo get_time_late($log->date); ?> önce
+							<br />
+							<small class="text-muted"><?php echo $log->date; ?></small>
+						</td>
+						<td><span class="fs-12"><?php echo $log->name_surname; ?></span></td>
+						<td>
+							<span class="hidden"><?php echo $log->log_key; ?></span>
+							<?php echo $log->log_text; ?>
+							<?php if(isset($log->meta)): ?>
+
+								<?php foreach($log->meta as $meta): ?>
+									<?php echo get_log_meta_for_table($meta); ?>
+								<?php endforeach; ?>
+
+							<?php endif; ?>
+						</td>
+					<?php endif; ?>
 				</tr>
 			<?php endforeach; ?>
 			</tbody>

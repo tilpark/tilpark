@@ -43,9 +43,9 @@ if(isset($_GET['status'])) {
 
 
 	<ul class="nav nav-tabs" role="tablist"> 
-		<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-id-card-o"></i> Hesap Kartı</a></li> 
-		<li role="presentation" class=""><a href="#forms" role="tab" id="forms-tab" data-toggle="tab" aria-controls="forms" aria-expanded="false"><i class="fa fa-list"></i> <span class="hidden-xs">Formlar</span></a></li> 
-		<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i> <span class="hidden-xs">Geçmiş</span></a></li> 
+		<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-id-card-o"></i><span class="hidden-xs"> Hesap Kartı</span></a></li> 
+		<li role="presentation" class=""><a href="#forms" role="tab" id="forms-tab" data-toggle="tab" aria-controls="forms" aria-expanded="false"><i class="fa fa-list"></i><span class="hidden-xs"> Formlar</span></a></li> 
+		<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i><span class="hidden-xs"> Geçmiş</span></a></li> 
 		<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-cogs"></i> <span class="hidden-xs">Seçenekler</span> <span class="caret"></span></a> 
 			<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
 				<li><a href="<?php site_url('admin/user/message/add.php?attachment&account_id='.$account->id); ?>" target="_blank"><i class="fa fa-tasks fa-fw"></i> Görev Ekine Ekle</a></li>
@@ -68,6 +68,8 @@ if(isset($_GET['status'])) {
 
 
 	<div class="tab-content"> 
+
+		<!-- tab:home -->
 		<div class="tab-pane fade active in" role="tabpanel" id="home" aria-labelledby="home-tab"> 
 			<div class="row">
 				<div class="col-md-8">
@@ -169,7 +171,7 @@ if(isset($_GET['status'])) {
 				</div> <!-- /.col-md-4 -->
 			</div> <!-- /.row -->
 		</div> 
-
+		<!-- /tab:home -->
 
 
 
@@ -184,58 +186,80 @@ if(isset($_GET['status'])) {
 			$args_form['where']['account_id'] = $account->id;
 			$args_form['where']['order_by'] = array('id'=>'DESC', 'date'=>'DESC');
 			if($forms = get_forms($args_form)): ?>
-
 				<table class="table table-hover table-bordered table-condensed table-striped dataTable">
 					<thead>
-						<tr>
-							<th width="80"><span class="hidden-xs">Form</span> ID</th>
-							<th width="80">Tarih</th>
-							<th width="80" class="hidden-xs">Giriş/Çıkış</th>
-							<th width="150" class="hidden-xs">Form Durumu</th>
-							<th class="hidden-xs">Personel</th>
-							<th class="hidden-xs">Açıklama</th>
-							<th width="80">Giriş</th>
-							<th width="80">Çıkış</th>
-							<th width="100">Bakiye</th>
-						</tr>
+						<?php if(til_is_mobile()): ?>
+							<tr>
+								<th width="80">ID</th>
+								<th width="80">Giriş</th>
+								<th width="80">Çıkış</th>
+								<th width="100">Bakiye</th>
+							</tr>
+						<?php else: ?>
+							<tr>
+								<th width="80"><span class="hidden-xs">Form</span> ID</th>
+								<th width="80">Tarih</th>
+								<th width="80" class="hidden-xs">Giriş/Çıkış</th>
+								<th width="150" class="hidden-xs">Form Durumu</th>
+								<th class="hidden-xs">Personel</th>
+								<th class="hidden-xs">Açıklama</th>
+								<th width="80">Giriş</th>
+								<th width="80">Çıkış</th>
+								<th width="100">Bakiye</th>
+							</tr>
+						<?php endif; ?>
 					</thead>
 					<tbody>
 					<?php $balance = 0; foreach($forms->list as $form): ?>
 						<?php $form_status = get_form_status($form->status_id); ?>
-						<tr>
-							<td>
-								<a href="../form/detail.php?id=<?php echo $form->id; ?>" target="_blank">#<?php echo $form->id; ?></a>								
-							</td>
-							<td><small class="text-muted hidden-xs"><?php echo substr($form->date,0,16); ?></small> <small class="text-muted visible-xs"><?php echo til_get_date($form->date, 'd F'); ?></small></td>
-							<td class="hidden-xs"><?php echo get_in_out_label($form->in_out); ?></td>
-							<?php if($form->type == 'form'): ?>
-								<td class="hidden-xs"><?php echo get_form_status_span($form_status); ?></td>
-							<?php else: ?>
-								<td class="hidden-xs"></td>
-							<?php endif; ?>
-							<td class="hidden-xs"><?php echo get_user_info($form->user_id, 'display_name'); ?></td>
-							<td class="text-muted hidden-xs">
-								<?php
-								if($form->type=='form') {
-									if($form->in_out == '0') { echo 'Giriş formu: '.$form->item_quantity.' adet ürün'; } else { echo 'Çıkış formu: '.$form->item_quantity.' adet ürün'; }
-								} elseif($form->type=='payment') {
-									if($form->in_out == '0') { echo 'Ödeme girişi'; } else { echo 'Ödeme çıkışı'; }	
-								}
-								?>
-							</td>
-							<td class="text-right"><?php if($form->in_out == 0) { echo get_set_money($form->total, true); $balance = $balance - $form->total; } else { echo ''; } ?></td>
-							<td class="text-right"><?php if($form->in_out == 1) { echo get_set_money($form->total, true); $balance = $balance + $form->total; } else { echo ''; } ?></td>
-							<td class="text-right"><?php echo get_set_money($balance, true); ?></td>
-						</tr>
+						<?php if(til_is_mobile()): ?>
+							<tr>
+								<td>
+									<a href="../form/detail.php?id=<?php echo $form->id; ?>" target="_blank">#<?php echo $form->id; ?></a>
+									<br />
+									<small class="text-muted visible-xs"><?php echo til_get_date($form->date, 'Y-m-d'); ?></small>								
+								</td>
+								<td class="text-right"><?php if($form->in_out == 0) { echo get_set_money($form->total, true); $balance = $balance - $form->total; } else { echo ''; } ?></td>
+								<td class="text-right"><?php if($form->in_out == 1) { echo get_set_money($form->total, true); $balance = $balance + $form->total; } else { echo ''; } ?></td>
+								<td class="text-right"><?php echo get_set_money($balance, true); ?></td>
+							</tr>
+						<?php else: ?>
+							<tr>
+								<td>
+									<a href="../form/detail.php?id=<?php echo $form->id; ?>" target="_blank">#<?php echo $form->id; ?></a>								
+								</td>
+								<td><small class="text-muted hidden-xs"><?php echo substr($form->date,0,16); ?></small> <small class="text-muted visible-xs"><?php echo til_get_date($form->date, 'd F'); ?></small></td>
+								<td class="hidden-xs"><?php echo get_in_out_label($form->in_out); ?></td>
+								<?php if($form->type == 'form'): ?>
+									<td class="hidden-xs"><?php echo get_form_status_span($form_status); ?></td>
+								<?php else: ?>
+									<td class="hidden-xs"></td>
+								<?php endif; ?>
+								<td class="hidden-xs"><?php echo get_user_info($form->user_id, 'display_name'); ?></td>
+								<td class="text-muted hidden-xs">
+									<?php
+									if($form->type=='form') {
+										if($form->in_out == '0') { echo 'Giriş formu: '.$form->item_quantity.' adet ürün'; } else { echo 'Çıkış formu: '.$form->item_quantity.' adet ürün'; }
+									} elseif($form->type=='payment') {
+										if($form->in_out == '0') { echo 'Ödeme girişi'; } else { echo 'Ödeme çıkışı'; }	
+									}
+									?>
+								</td>
+								<td class="text-right"><?php if($form->in_out == 0) { echo get_set_money($form->total, true); $balance = $balance - $form->total; } else { echo ''; } ?></td>
+								<td class="text-right"><?php if($form->in_out == 1) { echo get_set_money($form->total, true); $balance = $balance + $form->total; } else { echo ''; } ?></td>
+								<td class="text-right"><?php echo get_set_money($balance, true); ?></td>
+							</tr>
+						<?php endif; ?>
+						
 					<?php endforeach; ?>
 					</tbody>
 				</table>
 			<?php else: ?>
 				<?php echo get_alert(array('title'=>'Form Hareketi Yok', 'description'=>'Bu hesap kartı için henüz bir form hareketi eklenmemiş.'), 'warning', false); ?>
-
 			<?php endif; ?>
+		</div> <!-- #forms -->
+		<!-- /tab:forms -->
 
-		</div> 
 
 
 
@@ -247,12 +271,8 @@ if(isset($_GET['status'])) {
 		<div class="tab-pane fade" role="tabpanel" id="logs" aria-labelledby="logs-tab"> 
 			<?php theme_get_logs(" table_id='accounts:".$account->id."' "); ?>
 		</div> 
-		<div class="tab-pane fade" role="tabpanel" id="dropdown1" aria-labelledby="dropdown1-tab"> 
-			<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p> 
-		</div> 
-		<div class="tab-pane fade" role="tabpanel" id="dropdown2" aria-labelledby="dropdown2-tab"> 
-			<p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.</p> 
-		</div> 
+		<!-- /tab:logs -->
+
 	</div> <!-- /.tab-content -->
 
 

@@ -2,7 +2,7 @@
 <?php get_header(); ?>
 <?php
 add_page_info( 'title', 'Ürün Ekle' );
-add_page_info( 'nav', array('name'=>'Ürün Yönetimi', 'url'=>get_site_url('admin/product/') ) );
+add_page_info( 'nav', array('name'=>'Ürün Yönetimi', 'url'=>get_site_url('admin/item/') ) );
 add_page_info( 'nav', array('name'=>'Ürün Ekle') );
 ?>
 
@@ -58,45 +58,47 @@ if(empty(@$_POST['code'])) {
 			<div class="col-md-2">
 				
 			</div> <!-- /.col-md-2 -->
-			<div class="col-md-5">
+			<div class="col-xs-6 col-md-5">
 				<div class="form-group">
 					<label for="p_purc_out_vat">Maliyet Fiyatı <sup class="text-muted"><u>KDV Hariç</u></sup></label>
-					<input type="text" name="p_purc_out_vat" id="p_purc_out_vat" value="<?php echo get_set_money($item->p_purc_out_vat); ?>" class="form-control money" maxlength="15" disabled>
+					<input type="text" name="p_purc_out_vat" id="p_purc_out_vat" value="" class="form-control money" maxlength="15" disabled>
 				</div> <!-- /.form-group -->
 			</div> <!-- /.col-md-5 -->
-			<div class="col-md-5">
+			<div class="col-xs-6 col-md-5">
 				<div class="form-group">
 					<label for="p_sale_out_vat">Satış Fiyatı <sup class="text-muted"><u>KDV Hariç</u></sup></label>
-					<input type="text" name="p_sale_out_vat" id="p_sale_out_vat" value="<?php echo get_set_money($item->p_sale_out_vat); ?>" class="form-control money" maxlength="11" disabled>
+					<input type="text" name="p_sale_out_vat" id="p_sale_out_vat" value="" class="form-control money" maxlength="11" disabled>
 				</div> <!-- /.form-group -->
 			</div> <!-- /.col-md-5 -->
 		</div> <!-- /.row -->
 
 		<div class="row">
-			<div class="col-md-2">
+			<div class="col-xs-6 col-md-2">
 				<div class="form-group">
-					<label for="vat">KDV
-					<input type="text" name="vat" id="vat" value="<?php echo @$_POST['vat']; ?>" class="form-control digits" maxlength="2" onkeyup="calc_vat();">
+					<label for="vat">KDV <sup class="text-muted">(%)</sup></label>
+					<input type="tel" name="vat" id="vat" value="<?php echo @$_POST['vat']; ?>" class="form-control digits" maxlength="2" onkeyup="calc_vat();">
 				</div> <!-- /.form-group -->
-			</div> <!-- /.col-md-2 -->
-			<div class="col-md-5">
+			</div> <!-- /.col -->
+			<div class="clearfix visible-xs"></div>
+			<div class="col-xs-6 col-md-5">
 				<div class="form-group">
 					<label for="p_purc">Maliyet Fiyatı</label>
-					<input type="text" name="p_purc" id="p_purc" value="<?php echo @$_POST['p_purc']; ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();">
+					<input type="tel" name="p_purc" id="p_purc" value="<?php echo @$_POST['p_purc']; ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();">
 				</div> <!-- /.form-group -->
-			</div> <!-- /.col-md-5 -->
-			<div class="col-md-5">
+			</div> <!-- /.col -->
+			<div class="col-xs-6 col-md-5">
 				<div class="form-group">
 					<label for="p_sale">Satış Fiyatı</label>
-					<input type="text" name="p_sale" id="p_sale" value="<?php echo @$_POST['p_sale']; ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();">
+					<input type="tel" name="p_sale" id="p_sale" value="<?php echo @$_POST['p_sale']; ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();">
 				</div> <!-- /.form-group -->
-			</div> <!-- /.col-md-5 -->
+			</div> <!-- /.col -->
 		</div> <!-- /.row -->
+
 
 		<em class="text-muted">* Ürün kartını oluşturduktan sonra, ürün detaylarını ve resimlerini ekleyebilirsiniz.</em>
 		<div class="h-20"></div>
 		<div class="form-group">
-			<label class="veritical-center">Kayıttan sonra yeni ürün kartı ekleyecek misiniz? &nbsp; <input type="checkbox" name="again" id="again" value="true" <?php if(isset($_POST['again']) or isset($_GET['again'])): ?>checked<?php endif; ?> class="toogle" data-size="mini" data-on-text="Evet" data-off-text="Hayır"></label>
+			<label class="veritical-center"><input type="checkbox" name="again" id="again" value="1" <?php if(isset($_POST['again']) or isset($_GET['again'])): ?>checked<?php endif; ?> data-toggle="switch" switch-size="sm" on-text="Evet" off-text="Hayır"> &nbsp; Kayıttan sonra yeni ürün kartı ekleyecek misiniz?</label>
 		</div> <!-- /.form-group -->
 
 		<div class="text-right">

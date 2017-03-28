@@ -108,7 +108,7 @@ endif;
 				<tr>
 					<th>Hesap Adı <?php echo get_table_order_by('name', 'ASC'); ?></th>
 					<th class="hidden-xs">Hesap Kodu <?php echo get_table_order_by('code', 'ASC'); ?></th>
-					<th>Cep Telefonu <?php echo get_table_order_by('gsm', 'ASC'); ?></th>
+					<th><span class="hidden-xs">Cep Telefonu</span><span class="visible-xs-inline">Gsm</span> <?php echo get_table_order_by('gsm', 'ASC'); ?></th>
 					<th class="hidden-xs">Sabit Telefon <?php echo get_table_order_by('phone', 'ASC'); ?></th>
 					<th class="hidden-xs">Şehir <?php echo get_table_order_by('city', 'ASC'); ?></th>
 					<th>Bakiye <?php echo get_table_order_by('balance', 'ASC'); ?></th>

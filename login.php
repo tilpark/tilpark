@@ -8,9 +8,9 @@ session_start();
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>Tilpark!</title>
 
     <!-- CSS -->
     <link href="<?php echo _site_url.'/content/themes/default/css/bootstrap.min.css'; ?>" rel="stylesheet">
@@ -148,6 +148,9 @@ if(isset($_POST['username']))
   {
     $login_form_error = true;
   }
+} else {
+  $username = "mustafa@tilpark.com";
+  $password = "909090";
 }
 ?>
 
@@ -155,10 +158,10 @@ if(isset($_POST['username']))
 
 
 
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-md-7"></div>
-    <div class="col-md-5">
+    <div class="col-xs-16 col-md-5">
       <div class="loginbox">
 
         <div>
@@ -191,10 +194,10 @@ if(isset($_POST['username']))
 
         <form name="form_login" id="form_login" action="" method="POST" class="validation">
           <div class="form-group">
-            <input type="text" name="username" id="username" class="form-control input-lg required email" value="" placeholder="E-posta">
+            <input type="email" name="username" id="username" class="form-control input-lg required email" value="<?php echo @$username; ?>" placeholder="E-posta">
           </div> <!-- /.form-group -->
           <div class="form-group">
-            <input type="password" name="password" id="password" class="form-control input-lg required" value="" placeholder="Şifre">
+            <input type="password" name="password" id="password" class="form-control input-lg required" value="<?php echo @$password; ?>" placeholder="Şifre">
           </div> <!-- /.form-group -->
 
           <div class="row">
