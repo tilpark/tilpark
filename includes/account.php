@@ -83,23 +83,17 @@ function get_account($args) {
 	$args = _args_helper(input_check($args), 'where');
 	$where = $args['where'];
 
-	if( isset($where['id']) ) {
-		if( isset(til()->accounts[$where['id']]) ) {
-			return til()->accounts[$where['id']];
-		}
-	}
 
 	if($query = db()->query("SELECT * FROM ".dbname('accounts')." ".sql_where_string($where)." ")) {
 		if($query->num_rows) {
-			$return = _return_helper($args['return'], $query);
-			til()->accounts[$return->id] = $return;
-			return $return;
+			return _return_helper($args['return'], $query);
 		} else {
 			if($args['add_alert']) { add_alert('Aradığınız kriterlere uygun hesap kartı bulunamadı.', 'warning', __FUNCTION__); }
 			return false;
 		}
 	} else { add_mysqli_error_log(__FUNCTION__); }
 } //.get_account()
+
 
 
 
@@ -203,7 +197,7 @@ function get_accounts($args=array()) {
 	if(!isset($args['status'])) 	{ $args['status'] = '1'; } else { $args['status'] = input_check($args['status']); }
 
 	/// query string
-	$query_str = "SELECT id FROM ".dbname('accounts')." WHERE status='".$args['status']."' ";
+	$query_str = "SELECT * FROM ".dbname('accounts')." WHERE status='".$args['status']."' ";
 	
 		// %s% antarı var ise arama yapalim
 		if(isset($args['s'])) {
@@ -212,9 +206,9 @@ function get_accounts($args=array()) {
 				$query_str .= "OR code LIKE '%".$args['s']."%' ";
 				$query_str .= "OR gsm LIKE '%".$args['s']."%' ";
 				$query_str .= "OR phone LIKE '%".$args['s']."%' ";
-				$query_str .= ")";
+				$query_str .= " ) ";
 			} else {
-				$query_str .= "AND ( ".$args['db-s-where']." LIKE '%".$args['s']."%' ) ";
+				$query_str .= "AND ( ".$args['db-s-where']." LIKE '%".$args['s']."%' )";
 			}
 		}
 
@@ -229,16 +223,14 @@ function get_accounts($args=array()) {
 		if($args['limit'] > 1) {
 			$query_str_real .= " LIMIT ".$args['page'].",".$args['limit']." "; 
 		}
-		if(isset($args['select'])) {
-			$query_str_real = str_replace('SELECT id','SELECT '.$args['select'], $query_str_real);
-		} else {
-			$query_str_real = str_replace('SELECT id','SELECT *', $query_str_real);
-		}
 	
 
-	if($query = db()->query( $query_str )) { // sayfalama icin sorgu yapalim
-		if($return->num_rows = $query->num_rows) {
-			$query = db()->query( $query_str_real ); // listeleme icin sorgu yapalim
+
+	if($query = db()->query($query_str)) { // sayfalama icin sorgu yapalim
+		$return->num_rows = $query->num_rows; // toplam kayit sayisi
+
+		if($return->num_rows > 0) {
+			$query = db()->query($query_str_real); // listeleme icin sorgu yapalim
 			$return->display_num_rows = $query->num_rows; // gosterilen kayit sayisi
 			
 			while($account = $query->fetch_assoc())

@@ -103,8 +103,8 @@ $account = get_account($user->account_id);
 			</div> <!-- /.panel-body -->
 		</div> <!-- /.panel -->
 
-	</div> <!-- /.col-md-* -->
-	<div class="col-md-8">
+	</div> <!-- /.col-md-6 -->
+	<div class="col-md-6">
 
 		<div class="panel panel-default _is_salary">
 			<div class="panel-body">
@@ -183,7 +183,7 @@ $account = get_account($user->account_id);
 
 
 
-	</div> <!-- /.col-md-* -->
+	</div> <!-- /.col-md-6 -->
 </div> <!-- /.row -->
 
 

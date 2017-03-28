@@ -7,6 +7,38 @@ add_page_info( 'nav', array('name'=>'Hesap Kartları Listesi') );
 ?>
 
 
+<?php
+
+function rastgeleYazi($uzunluk = 10) {
+    $karakterler = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $karakterlerUzunlugu = strlen($karakterler);
+    $rastgele = '';
+    for ($i = 0; $i < $uzunluk; $i++) {
+        $rastgele .= $karakterler[mt_rand(0, $karakterlerUzunlugu - 1)];
+    }
+    return $rastgele;
+}
+
+
+
+
+for($i=0; $i<=-100000; $i++) {
+	$array=array();
+	$array['type'] = 'account';
+	$array['name'] = rastgeleYazi(20);
+	$array['code'] = rastgeleYazi(20);
+	$array['email'] = 'example@tilpark.com';
+	$array['gsm'] = '535'.rand(1111111,9999999);
+	$array['phone'] = rand(1111111111,9999999999);
+	$array['address'] = rastgeleYazi(250);
+	$array['tax_home'] = rastgeleYazi(20);
+	$array['tax_no'] = rand(1111111111,9999999999);
+	add_account($array);
+}
+
+
+
+?>
 
 
 
@@ -19,48 +51,31 @@ if(!isset($_GET['orderby_name'])) {
 
 $accounts = get_accounts(array('_GET'=>true)); ?>
 
-<?php
-if(til_is_mobile()) :
-	// panel arama
-	$arr_s = array();
-	$arr_s['s_name'] = 'accounts';
-	$arr_s['db-s-where'][] = array('name'=>'Hesap Adı', 'val'=>'name');
-	$arr_s['db-s-where'][] = array('name'=>'Hesap Kodu', 'val'=>'code');
-	$arr_s['db-s-where'][] = array('name'=>'Cep Telefonu', 'val'=>'gsm');
-	$arr_s['db-s-where'][] = array('name'=>'Sabit Telefon', 'val'=>'phone');
-	$arr_s['db-s-where'][] = array('name'=>'Şehir - İl', 'val'=>'city');
-	$arr_s['db-s-where'][] = array('name'=>'Vergi veya T.C. No', 'val'=>'tax_no');
-	search_form_for_panel($arr_s); 
-endif;
-?>
-
 <div class="panel panel-default panel-table">
-	<div class="panel-heading hidden-xs">
+	<div class="panel-heading">
 		<div class="row">
-			<div class="col-xs-6 col-md-6">
+			<div class="col-md-6">
 				<h3 class="panel-title">Hesap Kartları</h3>
 			</div> <!-- /.col-md-6 -->
-			<div class="col-xs-6 col-md-6">
+			<div class="col-md-6">
 				<div class="pull-right">
 					
 					<?php
-						if(!til_is_mobile()) :
-							// panel arama
-							$arr_s = array();
-							$arr_s['s_name'] = 'accounts';
-							$arr_s['db-s-where'][] = array('name'=>'Hesap Adı', 'val'=>'name');
-							$arr_s['db-s-where'][] = array('name'=>'Hesap Kodu', 'val'=>'code');
-							$arr_s['db-s-where'][] = array('name'=>'Cep Telefonu', 'val'=>'gsm');
-							$arr_s['db-s-where'][] = array('name'=>'Sabit Telefon', 'val'=>'phone');
-							$arr_s['db-s-where'][] = array('name'=>'Şehir - İl', 'val'=>'city');
-							$arr_s['db-s-where'][] = array('name'=>'Vergi veya T.C. No', 'val'=>'tax_no');
-							search_form_for_panel($arr_s); 
-						endif;
+						// panel arama
+						$arr_s = array();
+						$arr_s['s_name'] = 'accounts';
+						$arr_s['db-s-where'][] = array('name'=>'Hesap Adı', 'val'=>'name');
+						$arr_s['db-s-where'][] = array('name'=>'Hesap Kodu', 'val'=>'code');
+						$arr_s['db-s-where'][] = array('name'=>'Cep Telefonu', 'val'=>'gsm');
+						$arr_s['db-s-where'][] = array('name'=>'Sabit Telefon', 'val'=>'phone');
+						$arr_s['db-s-where'][] = array('name'=>'Şehir - İl', 'val'=>'city');
+						$arr_s['db-s-where'][] = array('name'=>'Vergi veya T.C. No', 'val'=>'tax_no');
+						search_form_for_panel($arr_s); 
 					?>
 				
 
 					<!-- Single button -->
-					<div class="btn-group btn-icon hidden-xs" data-toggle="tooltip" data-placement="top" title="Pdf">
+					<div class="btn-group btn-icon" data-toggle="tooltip" data-placement="top" title="Pdf">
 					  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					    <i class="fa fa-file-pdf-o"></i>
 					  </button>
@@ -73,7 +88,7 @@ endif;
 
 
 					<!-- Single button -->
-					<div class="btn-group btn-icon hidden-xs" data-toggle="tooltip" data-placement="top" title="Excel">
+					<div class="btn-group btn-icon" data-toggle="tooltip" data-placement="top" title="Excel">
 					  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					    <i class="fa fa-file-excel-o"></i>
 					  </button>
@@ -86,7 +101,7 @@ endif;
 
 
 					<!-- Single button -->
-					<div class="btn-group btn-icon hidden-xs" data-toggle="tooltip" data-placement="top" title="Yazdır">
+					<div class="btn-group btn-icon" data-toggle="tooltip" data-placement="top" title="Yazdır">
 					  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					    <i class="fa fa-print"></i>
 					  </button>
@@ -107,10 +122,10 @@ endif;
 			<thead>
 				<tr>
 					<th>Hesap Adı <?php echo get_table_order_by('name', 'ASC'); ?></th>
-					<th class="hidden-xs">Hesap Kodu <?php echo get_table_order_by('code', 'ASC'); ?></th>
-					<th><span class="hidden-xs">Cep Telefonu</span><span class="visible-xs-inline">Gsm</span> <?php echo get_table_order_by('gsm', 'ASC'); ?></th>
-					<th class="hidden-xs">Sabit Telefon <?php echo get_table_order_by('phone', 'ASC'); ?></th>
-					<th class="hidden-xs">Şehir <?php echo get_table_order_by('city', 'ASC'); ?></th>
+					<th>Hesap Kodu <?php echo get_table_order_by('code', 'ASC'); ?></th>
+					<th>Cep Telefonu <?php echo get_table_order_by('gsm', 'ASC'); ?></th>
+					<th>Sabit Telefon <?php echo get_table_order_by('phone', 'ASC'); ?></th>
+					<th>Şehir <?php echo get_table_order_by('city', 'ASC'); ?></th>
 					<th>Bakiye <?php echo get_table_order_by('balance', 'ASC'); ?></th>
 				</tr>
 			</thead>
@@ -118,10 +133,10 @@ endif;
 			<?php foreach($accounts->list as $account): ?>
 				<tr>
 					<td><a href="detail.php?id=<?php echo $account['id']; ?>"><?php echo $account['name']; ?></a></td>
-					<td class="hidden-xs"><?php echo $account['code']; ?></td>
+					<td><?php echo $account['code']; ?></td>
 					<td><?php echo $account['gsm']; ?></td>
-					<td class="hidden-xs"><?php echo $account['phone']; ?></td>
-					<td class="hidden-xs"><?php echo $account['city']; ?></td>
+					<td><?php echo $account['phone']; ?></td>
+					<td><?php echo $account['city']; ?></td>
 					<td class="text-right"><?php echo get_set_money($account['balance'], true); ?></td>
 				</tr>
 			<?php endforeach; ?>

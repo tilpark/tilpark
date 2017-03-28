@@ -174,7 +174,6 @@ function form_validation($val, $input_name='', $name='', $options=array(), $aler
 				@return: true/false değeri döner ve "$error" dizisine hata mesajını ekler. /; */
 			else if($exp == 'gsm' AND strlen($val) > 0) {
 				if(!preg_match('/0?(5(0|3|4|5)[0-9])[0-9]{7}/isU', $val, $match)){ add_alert('<b>'.$name.'</b> yazı alanı cep telefonu formatına uygun olmalıdır. <small>Örnek: "5351234567" veya "05341234567"</small>', 'danger', $alert_name, $input_name); }
-				if(substr($val,0,1) != '0' AND strlen($val) > 10 ) { add_alert('<b>'.$name.'</b> yazı alanı cep telefonu formatına uygun olmalıdır. <small>Örnek: "5351234567" veya "05341234567"</small>', 'danger', $alert_name, $input_name); }
 			}
 
 

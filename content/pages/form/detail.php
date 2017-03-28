@@ -184,8 +184,7 @@ if($form->id) {
 								<div class="form-group">
 									<label for="account_name">Hesap Adı <?php if(@$form->account_id):?><a href="../account/detail.php?id=<?php echo $form->account_id; ?>" target="_blank"><i class="fa fa-external-link"></i></a><?php endif; ?> </label>
 									
-										<!-- yeni hesap karti olusturulsun mu? -->
-										<label id="new_account" class="pull-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="Yeni bir hesap kartı oluşturulsun mu?"><input type="checkbox" name="new_account" id="new_account" value="true" data-toggle="switch" switch-size="xs" on-text="Evet" off-text="Hayır" tabindex="-1"></label>
+										<label id="new_account" class="pull-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="Yeni bir hesap kartı oluşturulsun mu?"><input type="checkbox" name="new_account" id="new_account" value="true" class="toogle" data-size="extramini" data-on-text="Evet" data-off-text="Hayır"></label>
 
 									<input type="text" name="account_name" id="account_name" value="<?php echo @$form->account_name; ?>" class="form-control input-sm" minlength="3" maxlength="32">
 									

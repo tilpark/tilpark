@@ -170,7 +170,7 @@ add_page_info( 'nav', array('name'=>$rec_user->name.' '.$rec_user->surname) );
 
 ## tum mesajlari cevaplari ile birlikte cekelim
 if(isset($_GET['id'])) {
-	$messages = get_task_detail($_GET['id']);
+	$messages = array_reverse(get_message_detail($_GET['id'], array('limit' => 10)));
 }
 
 
@@ -252,6 +252,7 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 
 				<div class="panel panel-default">
 					<div class="panel-heading"><h4 class="panel-title">Görev Seçenekleri</h4></div>
+
 					<div class="panel-body">
 						<?php if(!empty($choice) and is_object($choice)): ?>
 							<?php
@@ -285,72 +286,77 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 								</div> <!-- /.progess-bar -->
 							</div> <!-- /.progress -->
 
-
 							<form name="form" id="form" action="?id=<?php echo $task->id; ?>" method="POST">
 								<ul class="list-group">
 									<?php foreach($choice as $id=>$arr): ?>
 										<li class="list-group-item">
-
 											<?php echo $arr->text; ?>
 											<div class="h-10"></div>
 
 											<div class="text-right">
 												<?php if($arr->is_it_done): ?>
-													<i class="fa fa-check text-warning"></i> <small class="text-muted italic"><span data-toggle="tooltip" title="<?php echo substr($arr->date,0,16); ?>"><?php echo get_time_late($arr->date); ?> önce</span> <?php user_info($arr->user_id, 'display_name'); ?> tarafından tamamlandı.</small>
+													<i class="fa fa-check text-warning"></i> <small class="text-muted italic"><span data-wenk="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($arr->date); ?> önce</span> <?php user_info($arr->user_id, 'display_name'); ?> tarafından tamamlandı.</small>
 												<?php endif; ?>
-												<input type="checkbox" name="choice_<?php echo $id; ?>" id="choice_<?php echo $id; ?>" <?php if($arr->is_it_done): ?>checked<?php endif; ?> class="toogle" data-size="mini" data-on-text="Evet" data-off-text="Hayır">
-											</div>
 
-										</li>
+												<input type="checkbox" name="choice_<?php echo $id; ?>" id="choice_<?php echo $id; ?>" <?php if($arr->is_it_done): ?>checked<?php endif; ?> class="toogle" data-size="mini" data-on-text="Evet" data-off-text="Hayır">
+											</div><!--/ .text-right /-->
+										</li><!--/ .list-group-item /-->
 									<?php endforeach; ?>
 								</ul> <!-- /.list-group -->
-
 								<input type="hidden" name="uniquetime" value="<?php uniquetime(); ?>">
 								<input type="hidden" name="save_choice">
 								<div class="text-right"><button class="btn btn-default"><i class="fa fa-save"></i> Kaydet</button></div>
 							</form>
+
 						<?php else: ?>
 							<?php echo get_alert('Bu görev için seçenek bulunamadı. <br /> Görevi tamamlamak için lütfen gelen mesaj metnini okuyunuz.', 'info', false); ?>
 						<?php endif; ?>
-					</div> <!-- /.panel-body -->
-				</div> <!-- /.panel -->
-			</div> <!-- /.col-md-8 -->
-		</div> <!-- /.row -->
-
+					</div> <!-- /.panel-body /-->
+				</div> <!-- /.panel /-->
+			</div> <!-- /.col-md-8 /-->
+		</div> <!-- /.row /-->
 
 		<div class="panel">
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-md-12">
-						<?php if(@$messages): ?>
-							<?php foreach($messages as $message): ?>
-								<div class="row space-5">
-									<?php if(get_active_user('id') != $message->sen_u_id): ?>
-										<div class="col-md-1">
-											<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
-										</div> <!-- /.col-md-1 -->
-									<?php endif; ?>
-									<div class="col-md-11">
+						<div class="chat-container">
+							<div class="chat-list" id="<?php echo @$_GET['id'] ?>" js-onload="chat_list('task')">
+								<?php if(@$messages): ?>
+									<?php foreach($messages as $message): ?>
+										<div class="message-elem  message-<?php echo $message->id; ?>" id="<?php echo $message->id; ?>" title="<?php echo $message->title; ?>" username="<?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?>">
+											<div class="row space-5">
+												<?php if(get_active_user('id') != $message->sen_u_id): ?>
+													<div class="col-md-1 col-xs-3">
+														<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
+													</div> <!-- /.col-md-1.col-xs-3 /-->
+												<?php endif; ?>
 
-										<div class="well padding-10 br-3">
-											<div class="text-muted fs-11 italic">
-												<span class="bold"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> tarafından <span class="bold"><?php echo get_time_late($message->date); ?></span> önce gönderildi.
-											</div>
-											<?php echo stripslashes($message->message); ?>
-										</div>
-										<div class="h-10"></div>
-									</div> <!-- /.col-md-11 -->
-									<?php if(get_active_user('id') == $message->sen_u_id): ?>
-										<div class="col-md-1">
-											<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-left" width="48">
-										</div> <!-- /.col-md-1 -->
-									<?php endif; ?>
-								</div> <!-- /.row -->
-							<?php endforeach; ?>
-						<?php endif; ?>
+												<div class="col-md-11 col-xs-9">
+													<div class="well padding-10 br-3">
+														<div class="text-muted fs-11 italic">
+															<span class="bold"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> tarafından <span class="bold" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> önce gönderildi.
+														</div><!--/ .text-muted /-->
+
+														<?php echo $message->message; ?>
+													</div><!--/ .well /-->
+													<div class="h-10"></div>
+												</div><!-- /.col-md-11.col-xs-9 /-->
+
+												<?php if(get_active_user('id') == $message->sen_u_id): ?>
+													<div class="col-md-1 col-xs-3">
+														<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-left" width="48">
+													</div><!-- /.col-md-1 /-->
+												<?php endif; ?>
+											</div><!-- /.row.space-5 /-->
+										</div><!--/ .message-elem /-->
+									<?php endforeach; ?>
+								<?php endif; ?>
+							</div><!--/ .chat-list /-->
+						</div><!--/ .chat-container /-->
 
 						<!--/ TASK REPLY /-->
-						<form name="form_message" id="form_message" action="" method="POST">
+						<form name="form_message" id="form_message" onsubmit="return send_message(this, 'task')" action="" method="POST">
 							<div class="row space-5">
 								<div class="col-md-1">
 									<label>&nbsp;</label>
@@ -362,28 +368,28 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 									<?php endif; ?>
 								</div> <!-- /.col-md-1 -->
 								<div class="col-md-11">
-
-									<div class="form-group">
+									<div class="form-group message-area">
 										<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
-										<textarea name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
-										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '160' });</script>
+										<textarea autofocus onkeydown="parent(this, 'form').dispatchEvent(new Event('submit', { 'bubbles' : true, 'cancelable' : true}));" name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
+										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '130' });</script>
 									</div> <!-- /.form-group -->
 
 									<div class="pull-right">
+									<button type="submit" class="btn btn-default pull-right"><i class="fa fa-send-o"></i> Gönder</button>
 										<input type="hidden" name="uniquetime" value="<?php uniquetime(); ?>">
 										<input type="hidden" name="reply_message">
-										<button class="btn btn-default"><i class="fa fa-send-o"></i> Gönder</button>
-									</div> <!-- /.pull-right -->
-								</div> <!-- /.col-md-11 -->
-							</div> <!-- /.row -->
+										<input type="hidden" name="task_id" id="task_id" value="<?php echo @$_GET['id']; ?>">
+										<input type="hidden" name="top_id" id="top_id" value="<?php echo @$_GET['id']; ?>">
+									</div> <!-- /.pull-right /-->
+								</div> <!-- /.col-md-11 /-->
+							</div> <!-- /.row /-->
 						</form>
 						<!--/ TASK REPLY /-->
-
-					</div> <!-- /.col-md-12 -->
-				</div> <!-- /.row -->
+					</div> <!-- /.col-md-12 /-->
+				</div> <!-- /.row /-->
 			</div><!--/ .panel-body /-->
 		</div><!--/ .panel /-->
-	</div> <!-- /.col-md-9 -->
-</div> <!-- /.row -->
+	</div> <!-- /.col-md-9 /-->
+</div> <!-- /.row /-->
 
 <?php get_footer(); ?>

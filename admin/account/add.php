@@ -48,25 +48,25 @@ if(@empty($_POST['code'])) {
 
 		<div class="form-group">
 			<label for="name">Hesap Adı <sup class="text-muted">şahıs adı soyadı, firma adı, şirket adı vb.</sup></label>
-			<input type="text" name="name" id="name" value="<?php echo @$_POST['name']; ?>" class="form-control required" minlength="3" maxlength="50" autocomplate="off">
+			<input type="text" name="name" id="name" value="<?php echo @$_POST['name']; ?>" class="form-control required" minlength="3" maxlength="50">
 		</div> <!-- /.form-group -->
 
 		<div class="form-group">
 			<label for="email">E-Posta</label>
-			<input type="email" name="email" id="email" value="<?php echo @$_POST['email']; ?>" class="form-control" minlength="3" maxlength="50">
+			<input type="text" name="email" id="email" value="<?php echo @$_POST['email']; ?>" class="form-control" minlength="3" maxlength="50">
 		</div> <!-- /.form-group -->
 
 		<div class="row">
-			<div class="col-xs-6 col-md-6">
+			<div class="col-md-6">
 				<div class="form-group">
 					<label for="gsm">Cep Telefonu</label>
-					<input type="tel" name="gsm" id="gsm" value="<?php echo @$_POST['gsm']; ?>" class="form-control required digits" minlength="10" maxlength="11">
+					<input type="text" name="gsm" id="gsm" value="<?php echo @$_POST['gsm']; ?>" class="form-control required digits" minlength="10" maxlength="11">
 				</div> <!-- /.form-group -->
 			</div> <!-- /.col-md-6 -->
-			<div class="col-xs-6 col-md-6">
+			<div class="col-md-6">
 				<div class="form-group">
 					<label for="phone">Sabit Telefon</label>
-					<input type="tel" name="phone" id="phone" value="<?php echo @$_POST['phone']; ?>" class="form-control digits" minlength="10" maxlength="11">
+					<input type="text" name="phone" id="phone" value="<?php echo @$_POST['phone']; ?>" class="form-control digits" minlength="10" maxlength="11">
 				</div> <!-- /.form-group -->
 			</div> <!-- /.col-md-6 -->
 		</div> <!-- /.row -->
@@ -80,37 +80,37 @@ if(@empty($_POST['code'])) {
 		</div> <!-- /.form-group -->
 
 		<div class="row">
-			<div class="col-xs-6 col-md-4">
+			<div class="col-md-4">
 				<div class="form-group">
 					<label for="district">İlçe-Bölge</label>
 					<input type="text" name="district" id="district" value="<?php echo @$_POST['district']; ?>" class="form-control" maxlength="20">
 				</div> <!-- /.form-group -->
-			</div> <!-- /.col -->
-			<div class="col-xs-6 col-md-4">
+			</div> <!-- /.col-md-4 -->
+			<div class="col-md-4">
 				<div class="form-group">
 					<label for="city">Şehir-İl</label>
 					<input type="text" name="city" id="city" value="<?php echo @$_POST['city']; ?>" class="form-control" maxlength="20">
 				</div> <!-- /.form-group -->
-			</div> <!-- /.col -->
-			<div class="col-xs-6 col-md-4">
+			</div> <!-- /.col-md-4 -->
+			<div class="col-md-4">
 				<div class="form-group country_selected">
 					<label for="country">Ülke</label>
 					<?php echo list_selectbox(get_country_array(), array('name'=>'country', 'selected'=>'TURKEY', 'class'=>'form-control select select-account input-sm')); ?>
 				</div> <!-- /.form-group -->
-			</div> <!-- /.col -->
+			</div> <!-- /.col-md-4 -->
 		</div> <!-- /.row -->
 
 		<div class="row">
-			<div class="col-xs-6 col-md-4">
+			<div class="col-md-4">
 				<div class="form-group">
 					<label for="tax_home">Vergi Dairesi</label>
 					<input type="text" name="tax_home" id="tax_home" value="<?php echo @$_POST['tax_home']; ?>" class="form-control" maxlength="20">
 				</div> <!-- /.form-group -->
 			</div> <!-- /.col-md-4 -->
-			<div class="col-xs-6 col-md-4">
+			<div class="col-md-4">
 				<div class="form-group">
-					<label for="tax_no">Vergi No/T.C. No</label>
-					<input type="tel" name="tax_no" id="tax_no" value="<?php echo @$_POST['tax_no']; ?>" class="form-control digits" maxlength="20">
+					<label for="tax_no">Vergi No veya T.C. Kimlik No</label>
+					<input type="text" name="tax_no" id="tax_no" value="<?php echo @$_POST['tax_no']; ?>" class="form-control digits" maxlength="20">
 				</div> <!-- /.form-group -->
 			</div> <!-- /.col-md-4 -->
 		</div> <!-- /.row -->
@@ -121,7 +121,7 @@ if(@empty($_POST['code'])) {
 
 <div class="h-20"></div>
 <div class="form-group pull-left">
-	<label class="veritical-center text-muted"><input type="checkbox" name="again" id="again" value="true" <?php if(isset($_POST['again']) or isset($_GET['again'])): ?>checked<?php endif; ?> data-toggle="switch" switch-size="lg" on-text="Evet" off-text="Hayır"> &nbsp; <div class="visible-xs"></div> Kayıttan sonra yeni hesap kartı ekleyecek misiniz?</label>
+	<label class="veritical-center text-muted">Kayıttan sonra yeni hesap kartı ekleyecek misiniz? &nbsp; <input type="checkbox" name="again" id="again" value="true" <?php if(isset($_POST['again']) or isset($_GET['again'])): ?>checked<?php endif; ?> data-toggle="switch" switch-size="lg" on-text="Evet" off-text="Hayır"></label>
 </div> <!-- /.form-group -->
 <div class="clearfix"></div>
 

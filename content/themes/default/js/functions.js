@@ -38,16 +38,12 @@
 
 
 document.addEventListener("DOMContentLoaded", function(event) {
-
   // js-onload attr'si içerisindeki string'i function olarak comvert edip çalıştırıyoruz
   var js_onload = document.querySelectorAll("[js-onload]");
   for (var i = js_onload.length - 1; i >= 0; i--) {
     var func_string = js_onload[i].getAttribute('js-onload');
     eval(func_string);
   }
-
-
-
 });
 
 
@@ -224,43 +220,45 @@ function playSound(filename){
  * @param string
  * @return html 
  */
-function chat_list() {
+function chat_list(type) {
+  if ( !type || (type != "task" && type != "message") ) { window.message_type = "message"; } else { window.message_type = type; }
+
+  get_new_message('get', window.message_type);
   var chat_list = document.querySelector(".chat-list");
   if ( chat_list ) {
-    elem_scroll_bottom(chat_list);
+    list_scroll_bottom(chat_list);
 
-    // OLD Message
     chat_list.onscroll = function() {
-      if ( chat_list.scrollTop == 0 ) {
+      if ( chat_list.scrollTop < 10 ) {
         parent(chat_list, '.chat-container').classList.add("loader");
+        if ( type == "message" ) { old_type = "mess-reply" } else { old_type = "task-reply"; }
 
         if ( chat_list.children[0] ) {
-          var query_message = chat_list.getAttribute("id");
-          var list_old_message = chat_list.children[0].getAttribute("id");
-
-          if ( !list_old_message ) {
-            var list_old_message = chat_list.children[0].children[0].getAttribute("id");
-          }
-
-          getXHR({ 'method': 'get', 'url': get_site_url('admin/user/getMessage.php?query_message='+ query_message +'&get_message=old&list_old_message='+ list_old_message +'&session_id='+window.session_id)}, function(data) {
+          getXHR({ 'method': 'get', 'url': get_site_url('admin/user/getMessage.php?type='+ old_type +'&query_message='+ chat_list.getAttribute("id") +'&get_message=old&list_old_message='+ chat_list.children[0].getAttribute("id") +'&session_id='+window.session_id)}, function(data) {
             if ( data != "empty" && data != false ) {
-              setTimeout(function() { parent(chat_list, '.chat-container').classList.remove("loader"); }, 500);
+              var matches = data.match(/<div class="message-elem *?([\s\S]*?)<\/div><!--\/ \.message-elem \/-->/gmi);
 
-              var div = document.createElement("div");
-              div.setAttribute("class", 'message-elem');
-              div.innerHTML = data;
-              chat_list.insertBefore(div, chat_list.firstChild);
-              chat_list.scrollTop = 100;
+              for (var i = 0; i < matches.length; i++) {
+                setTimeout(function() { parent(chat_list, '.chat-container').classList.remove("loader"); }, 500);
+
+                var div = document.createElement("DIV");
+                div.innerHTML = matches[i];
+                var is_elem = document.querySelector(".message-"+div.children[0].getAttribute('id'));
+
+                if ( !is_elem ) {
+                  chat_list.insertBefore(div.children[0], chat_list.firstChild);
+                  chat_list.scrollTop = 20;
+                }
+              } // end for
             } else { parent(chat_list, '.chat-container').classList.remove("loader"); }
           });
-        }
-      }
-    }
-    // OLD Message
-    
+        } else { return false; }
+      } // is scrollTop < 20
+    } // onscroll
+
     // NEW Message
-    window.getMessage = setInterval("get_new_message('new')", 1000);
-    // NEW Message    
+    window.getMessage = setInterval("get_new_message('get', '"+ window.message_type +"')", 1000);
+    // NEW Message
   } else { return false; }
 } //.chat_list()
 
@@ -274,42 +272,47 @@ function chat_list() {
  * @param string
  * @return html 
  */
-function get_new_message(add_class) {
+function get_new_message(class_name="", type="message") {
   var chat_list = document.querySelector(".chat-list");
-  var last_view_message = chat_list.lastElementChild.children[0].getAttribute('id');
-  getXHR({ 'method': 'get', 'url': get_site_url('admin/user/getMessage.php?query_message='+ chat_list.getAttribute('id') +'&last_view_message='+ last_view_message +'&get_message=new&session_id='+window.session_id)}, function(data) {
+  if ( type == "message" ) { get_type = "mess-reply" } else { get_type = "task-reply"; }
+  getXHR({ 'method': 'get', 'url': get_site_url('admin/user/getMessage.php?type='+ get_type +'&query_message='+ chat_list.getAttribute('id') +'&last_view_message='+ chat_list.lastElementChild.getAttribute('id') +'&get_message=new&session_id='+window.session_id)}, function(data) {
     if ( data != "empty" && data != false ) {
-      var matches = data.match(/<til>([\s\S]*?)<\/til>/gmi);
-      var chat_list = document.querySelector(".chat-list");
-      for (var i = matches.length - 1; i >= 0; i--) {
+      var matches = data.match(/<div class="message-elem *?([\s\S]*?)<\/div><!--\/ \.message-elem \/-->/gmi);
+
+      for (var i = 0; i < matches.length; i++) {
         var div = document.createElement("div");
-        div.innerHTML = matches[i].replace("<til>", '');
-        div.setAttribute("class", "message-elem "+add_class);
-        chat_list.appendChild(div);
-        elem_scroll_bottom(chat_list);
-        
-        if ( i == 0) div.setAttribute("class", "message-elem "+add_class);
-        setTimeout(function() {
-         div.classList.remove(add_class); 
-         for (var i = chat_list.children.length - 1; i >= 0; i--) { chat_list.children[i].classList.remove(add_class); }
-        }, 2500);
-        document.title = "(1) " + chat_list.lastElementChild.children[0].getAttribute("title") + " - " + chat_list.lastElementChild.children[0].getAttribute("username");
-      } 
-    }
+        div.innerHTML = data;
+        div = div.children[0];
+
+        if ( div.children[0].getAttribute('id') != chat_list.lastElementChild.getAttribute('id') ) {
+          chat_list.appendChild(div)
+          list_scroll_bottom(chat_list);
+          setTimeout(function() { for (var i = chat_list.children.length - 1; i >= 0; i--) { chat_list.children[i].classList.remove(class_name); } }, 2500);
+          if ( class_name == 'get' ) { document.title = "(1) " + chat_list.lastElementChild.getAttribute("title") + " - " + chat_list.lastElementChild.getAttribute("username"); }
+          
+          clearInterval(window.getMessage);
+          window.getMessage = setInterval("get_new_message('get', '"+ window.message_type +"')", 1000);
+
+          if ( document.querySelectorAll(".message-"+div.children[0].getAttribute('id')).length > 1 ) { document.querySelector(".message-"+div.children[0].getAttribute('id')).remove(); }
+        } else { return false; }
+      } // end for
+    } else { return false; }
   });
-} //.get_new_message
+} //.get_new_message()
+
+
 
 
 
 
 
 /**
- * @func elem_scroll_bottom()
+ * @func list_scroll_bottom()
  * @desc bir listenin liste elemanlarına göre scroll bottom'unu hesaplar
  * @param elem
  * @return elem.scrolTop 
  */
-function elem_scroll_bottom(chat_list) {
+function list_scroll_bottom(chat_list) {
   // scrollBottom
   var height = 0;
   for (var i = chat_list.children.length - 1; i >= 0; i--) {
@@ -317,7 +320,7 @@ function elem_scroll_bottom(chat_list) {
   }
   chat_list.scrollTop = height;
   // scrollBottom
-} //.elem_scroll_bottom()
+} //.list_scroll_bottom()
 
 
 
@@ -332,41 +335,40 @@ function elem_scroll_bottom(chat_list) {
  * @param empty
  * @return  
  */
-function send_message($this, type) {
+function send_message($this, type="message") {
   var message   = $this.querySelector('textarea');
   if ( !message ) $this.querySelector('input[type="text"]');
 
   // fast send kontrol
   var date = new Date();
   var cookie_date = new Date(getCookie('last_send_date'));
-  if ( cookie_date > date.addSecond(-1) ) {
-    tinyMCE.get(message.getAttribute('id')).setContent('');
-    return false;
+  if ( cookie_date > date.addSecond(-1) ) { 
+    tinyMCE.get(message.getAttribute('id')).setContent(''); 
+    return false; 
   }
-
   document.cookie = "last_send_date="+Date()+";";
   // fast send kontrol
 
   if ( message ) {
-    var content   = tinyMCE.get(message.getAttribute('id')).getContent();
+    var top_id  = $this.querySelector('#top_id');
+    var content = tinyMCE.get(message.getAttribute('id')).getContent();
     tinyMCE.get(message.getAttribute('id')).setContent('');
     tinymce.execCommand('mceFocus', false, message.getAttribute('id'));
-
-    var top_id    = $this.querySelector('#top_id');
-    var receiver  = $this.querySelector('#receiver');
-
+    
     if ( content.length > 3 ) {
       var form = new FormData();
       form.append("message", content);
       form.append("top_id", top_id.value);
-      form.append("receiver", receiver.value);
 
-      getXHR({ 'method': 'POST', 'url' : get_site_url('admin/user/sendMessage.php?session_id='+window.session_id), 'send': form  }, function(data) {
-        if ( data != "empty" && data != false ) {
-          get_new_message('send');
-          
-          clearInterval(window.getMessage);
-          window.getMessage = setInterval("get_new_message('new')", 1000);
+      if ( type == 'message' ) form.append("receiver", $this.querySelector('#receiver').value); 
+      if ( type == 'task' ) form.append("task_id", $this.querySelector('#task_id').value); 
+
+      clearInterval(window.getMessage);
+      getXHR({ 'method': 'POST', 'url' : get_site_url('admin/user/sendMessage.php?session_id='+window.session_id+'&type='+type), 'send': form  }, function(data) {
+        if ( data == 'true' ) {
+          if ( get_new_message('send', type) ) {
+            return true;
+          } else { return false; }
         } else { return false; }
       });
     } else { alert('en az 3 kelime'); }
@@ -766,4 +768,17 @@ function name_to_url(name) {
       return target.replace(new RegExp(search, 'g'), replacement);
   };//.replaceAll
 
+
+
+function HTMLParser(aHTMLString){
+  var html = document.implementation.createDocument("http://www.w3.org/1999/xhtml", "html", null),
+    body = document.createElementNS("http://www.w3.org/1999/xhtml", "body");
+  html.documentElement.appendChild(body);
+
+  body.appendChild(Components.classes["@mozilla.org/feed-unescapehtml;1"]
+    .getService(Components.interfaces.nsIScriptableUnescapeHTML)
+    .parseFragment(aHTMLString, false, null, body));
+
+  return body;
+}
 
