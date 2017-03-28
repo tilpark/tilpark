@@ -22,13 +22,32 @@ $(document).ready( function() {
 	  	}
 	});
 
-	$('.money').number( true, 2, '.', ',', true);
-
 	$(".digits").keyup(function (){
 		if(this.value.match(/[^0-9]/g)){
 	    	this.value = this.value.replace(/[^0-9]/g,'');
 	  	}
 	});
+
+	/** money format */
+	$('.money').number( true, 2, '.', ',', true);
+		// cep telefonlari icin money hack
+		$(".money").keypress(function () {
+			if($(this).attr('type') == 'tel') {
+				$(this).attr('data-type', 'tel');
+				if($(this).is(':focus')) {
+					$(this).attr('type', 'text');
+				} 
+			}
+		});
+		$(".money").focusout(function () {
+			if($(this).attr('data-type') == 'tel') {
+				if(!$(this).is(':focus')) {
+					$(this).removeAttr('data-type');
+					$(this).attr('type', 'tel');
+				}
+			}
+			
+		});
 
 
 	/** site acilir acilmaz bir input focus olsun */
@@ -45,7 +64,32 @@ $(document).ready( function() {
 	$('.dataTable').DataTable({
 		"order": [],
 		"bLengthChange": false,
-		"info":     false
+		"info":     false,
+		"language": {
+	        "sProcessing":    "Procesando...",
+	        "sLengthMenu":    "Mostrar _MENU_ registros",
+	        "sZeroRecords":   "Arama sonuçlarına göre <b>log</b> kaydı bulunamadı.",
+	        "sEmptyTable":    "Ningún dato disponible en esta tabla",
+	        "sInfo":          "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+	        "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
+	        "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
+	        "sInfoPostFix":   "",
+	        "sSearch":        "<i class='fa fa-search'></i>",
+	        "searchPlaceholder": "Tablo içinde ara...",
+	        "sUrl":           "",
+	        "sInfoThousands":  ",",
+	        "sLoadingRecords": "Cargando...",
+	        "oPaginate": {
+	            "sFirst":    "Primero",
+	            "sLast":    "Último",
+	            "sNext":    "Sonraki",
+	            "sPrevious": "Önceki"
+	        },
+	        "oAria": {
+	            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+	            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+	        }
+	    }
 	});
 
 	/* dataTable for log : log kayitlari icin kulanılır */
