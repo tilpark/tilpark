@@ -8,17 +8,17 @@ if ( $_GET['get_message'] == "old" AND isset($_GET['list_old_message']) ) {
   if( $messages = get_messages(array('query'=>$get_query)) ): ?>
     <?php foreach( $messages as $message ): ?>
       <div class="message-elem  message-<?php echo $message->id; ?> <?php if ( $message->rec_u_id == get_active_user('id') ) { echo 'get'; } else { echo 'send'; } ?>" id="<?php echo $message->id; ?>" title="<?php echo $message->title; ?>" username="<?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?>">
-        <div class="row space-5">
+        <div class="message-elem-container">
           <?php if(get_active_user('id') != $message->sen_u_id): ?>
-            <div class="col-md-1 col-xs-3">
-              <img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
-            </div> <!-- /.col-md-1.col-xs-3 /-->
+              <div class="message-elem-avatar pull-right">
+                <img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
+              </div><!--/ .message-elem-avatar /-->
           <?php endif; ?>
 
-          <div class="col-md-11 col-xs-9">
+          <div class="message-elem-content">
             <div class="well padding-10 br-3">
               <div class="text-muted fs-11 italic">
-                <span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
+                <span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date-tooltip" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
               </div><!--/ .text-muted /-->
 
               <?php echo $message->message; ?>
@@ -27,11 +27,11 @@ if ( $_GET['get_message'] == "old" AND isset($_GET['list_old_message']) ) {
           </div><!-- /.col-md-11.col-xs-9 /-->
 
           <?php if(get_active_user('id') == $message->sen_u_id): ?>
-            <div class="col-md-1 col-xs-3">
-              <img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-left" width="48">
-            </div><!-- /.col-md-1 /-->
+            <div class="message-elem-avatar pull-right">
+              <img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
+            </div><!--/ .message-elem-avatar /-->
           <?php endif; ?>
-        </div><!-- /.row.space-5 /-->
+        </div><!-- /.message-elem-container /-->
       </div><!--/ .message-elem /-->
     <?php endforeach; ?>
   <?php endif; ?>
@@ -42,17 +42,17 @@ if ( $_GET['get_message'] == "old" AND isset($_GET['list_old_message']) ) {
     <?php foreach($messages as $message): ?>
       <?php if ( $message->rec_u_id == get_active_user('id') ) { db()->query("UPDATE ".dbname('messages')." SET read_it='1' WHERE id='".$message->top_id."' "); } ?>
       <div class="message-elem  message-<?php echo $message->id; ?> <?php if ( $message->sen_u_id == get_active_user('id') ) { echo 'send'; } else { echo 'get'; } ?>" id="<?php echo $message->id; ?>" title="<?php echo $message->title; ?>" username="<?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?>">
-        <div class="row space-5">
+        <div class="message-elem-container">
           <?php if(get_active_user('id') != $message->sen_u_id): ?>
-            <div class="col-md-1 col-xs-3">
-              <img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
-            </div> <!-- /.col-md-1.col-xs-3 /-->
+              <div class="message-elem-avatar pull-right">
+                <img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
+              </div><!--/ .message-elem-avatar /-->
           <?php endif; ?>
 
-          <div class="col-md-11 col-xs-9">
+          <div class="message-elem-content">
             <div class="well padding-10 br-3">
               <div class="text-muted fs-11 italic">
-                <span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
+                <span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date-tooltip" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
               </div><!--/ .text-muted /-->
 
               <?php echo $message->message; ?>
@@ -61,11 +61,11 @@ if ( $_GET['get_message'] == "old" AND isset($_GET['list_old_message']) ) {
           </div><!-- /.col-md-11.col-xs-9 /-->
 
           <?php if(get_active_user('id') == $message->sen_u_id): ?>
-            <div class="col-md-1 col-xs-3">
-              <img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-left" width="48">
-            </div><!-- /.col-md-1 /-->
+            <div class="message-elem-avatar pull-right">
+              <img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
+            </div><!--/ .message-elem-avatar /-->
           <?php endif; ?>
-        </div><!-- /.row.space-5 /-->
+        </div><!-- /.message-elem-container /-->
       </div><!--/ .message-elem /-->
     <?php endforeach; ?>
   <?php endif;

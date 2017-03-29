@@ -87,17 +87,17 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 								<?php if(@$messages): ?>
 									<?php foreach($messages as $message): ?>
 										<div class="message-elem  message-<?php echo $message->id; ?>" id="<?php echo $message->id; ?>" title="<?php echo $message->title; ?>" username="<?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?>">
-											<div class="row space-5">
+											<div class="message-elem-container">
 												<?php if(get_active_user('id') != $message->sen_u_id): ?>
-													<div class="col-md-1 col-xs-3">
-														<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
-													</div> <!-- /.col-md-1.col-xs-3 /-->
+														<div class="message-elem-avatar pull-right">
+															<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
+														</div><!--/ .message-elem-avatar /-->
 												<?php endif; ?>
 
-												<div class="col-md-11 col-xs-9">
+												<div class="message-elem-content">
 													<div class="well padding-10 br-3">
 														<div class="text-muted fs-11 italic">
-															<span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
+															<span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date-tooltip" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
 														</div><!--/ .text-muted /-->
 
 														<?php echo $message->message; ?>
@@ -106,9 +106,9 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 												</div><!-- /.col-md-11.col-xs-9 /-->
 
 												<?php if(get_active_user('id') == $message->sen_u_id): ?>
-													<div class="col-md-1 col-xs-3">
-														<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-left" width="48">
-													</div><!-- /.col-md-1 /-->
+													<div class="message-elem-avatar pull-right">
+														<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
+													</div><!--/ .message-elem-avatar /-->
 												<?php endif; ?>
 											</div><!-- /.row.space-5 /-->
 										</div><!--/ .message-elem /-->
@@ -119,7 +119,7 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 
 
 						<!--/ ADD MESSAGE REPLY /-->
-						<form name="form_message" id="form_message" onsubmit="return send_message(this, 'message')" action="" method="POST">
+						<form name="form_message" id="form_message" onsubmit="return send_message(this, 'message')" autocomplete="off" action="" method="POST">
 							<div class="h-20"></div>
 							<div class="row space-5">
 								<div class="col-md-1 hidden">
@@ -137,7 +137,7 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 											<input autofocus type="text" name="message" id="message" required class="form-control send-message-input" value="" placeholder="Birşeyler yazın...">
 											<button type="button" class="send-message-image" onclick="document.getElementById('send-message-file').click()"><i class="fa fa-image"></i></button>
 											<button type="submit" class="send-message-submit"><i class="fa fa-send"></i></button>
-											<input type="file" name="" id="send-message-file" onchange="var chat_list = document.querySelector('.chat-container'); chat_list.classList.add('loader'); imageHandler(this.files[0], function(data) { if ( document.getElementById('message').value = '<img src='+ data +' class=img-responsive>' ) { chat_list.classList.remove('loader'); document.querySelector('.send-message-submit').click(); } setTimeout(function() { list_scroll_bottom(document.querySelector('.chat-list')); }, 100) })" value="" class="hidden">
+											<input type="file" name="" id="send-message-file" onchange="var chat_list = document.querySelector('.chat-container'); chat_list.classList.add('loader'); imageHandler(this.files[0], function(data) { if ( data == false ) { chat_list.classList.remove('loader'); } else { if ( document.getElementById('message').value = '<img src='+ data +' class=img-responsive>' ) { chat_list.classList.remove('loader'); document.querySelector('.send-message-submit').click(); } setTimeout(function() { list_scroll_bottom(document.querySelector('.chat-list')); }, 100)} })" value="" class="hidden">
 										<?php else: ?>
 										<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
 										<textarea autofocus onkeydown="parent(this, 'form').dispatchEvent(new Event('submit', { 'bubbles' : true, 'cancelable' : true}));" name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:20px;"></textarea>

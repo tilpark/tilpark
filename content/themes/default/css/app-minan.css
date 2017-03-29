@@ -50,12 +50,23 @@ ol,ul{
   100%{ left: 0; }
 }
 
+
+.message-elem .message-elem-container .message-elem-content{
+  display: inline-block;
+  width: calc(100% - 60px);
+}
+
+.message-elem .message-elem-container .message-elem-avatar{
+  width: 50px;
+  display: inline-block;
+}
+
 .message-area iframe{
   border: 1px solid #ddd;
 }
 
-.message-area button{
-  position: absolute;
+.message-area button.send-message-submit,
+.message-area button.send-message-image{
   top: 0;
   left: 0;
   padding: 15px 10px;
@@ -64,6 +75,10 @@ ol,ul{
   border: 1px solid #ddd;
   z-index: 999;
   outline: none;
+  position: fixed;
+  bottom: 0;
+  top: auto;
+  z-index: 99999;
 }
 
 .message-area button.send-message-submit{
@@ -76,19 +91,6 @@ ol,ul{
   box-shadow: none;
   padding: 22px 48px;
   border: 1px solid #ddd;
-}
-
-.message-area .send-message-input:focus{
-  border-color: #66afe9;
-}
-
-.message-area input:focus ~ button{
-  border-color: #66afe9 !important;
-}
-
-/*
-.message-area .send-message-input:focus{
-  border-color: #66afe9;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -97,15 +99,13 @@ ol,ul{
   z-index: 9999;
 }
 
+.message-area .send-message-input:focus{
+  border-color: #66afe9;
+}
 
 .message-area input:focus ~ button{
   border-color: #66afe9 !important;
-  position: fixed;
-  bottom: 0;
-  top: auto;
-  z-index: 99999;
 }
-*/
 
 .mce-stack-layout-item.mce-statusbar{
   border: 0 !important;
@@ -113,6 +113,10 @@ ol,ul{
 
 .mce-stack-layout-item.mce-statusbar .mce-flow-layout {
   display: none;
+}
+
+.chat-container:after{
+  position: absolute !important;
 }
 
 .chat-container .chat-list{
@@ -125,7 +129,8 @@ ol,ul{
 
 @media(max-width: 767px) {
   .chat-container .chat-list{
-    height: calc(100vh - 180px);
+    height: calc(100vh - 50px);
+    margin: 0 -15px;
   }
 
   .message-elem .well{

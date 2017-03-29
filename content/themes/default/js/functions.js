@@ -286,6 +286,7 @@ function get_new_message(class_name="", type="message") {
 
         if ( div.children[0].getAttribute('id') != chat_list.lastElementChild.getAttribute('id') ) {
           chat_list.appendChild(div);
+          document.querySelector("body").scrollTop = getOffset(chat_list).top;
           list_scroll_bottom(chat_list);
           setTimeout(function() { for (var i = chat_list.children.length - 1; i >= 0; i--) { chat_list.children[i].classList.remove(class_name); } }, 2500);
           if ( class_name == 'get' ) { document.title = "(1) " + chat_list.lastElementChild.getAttribute("title") + " - " + chat_list.lastElementChild.getAttribute("username"); }
@@ -359,7 +360,7 @@ function send_message($this, type="message") {
       tinymce.execCommand('mceFocus', false, message.getAttribute('id'));
     } else { var content = message.value; message.value = ""; }
 
-    if ( content.length > 3 ) {
+    if ( content.length >= 3 ) {
       var form = new FormData();
       form.append("message", content);
       form.append("top_id", top_id.value);
@@ -401,6 +402,7 @@ function imageHandler(image, callback) {
       if (xhr.status === 200) {
         if ( xhr.responseText == "") {
           console.log("Dosya izni veya resmin 5mb'den büyük olmadığından emin olun");
+          callback(false);
         } else {
           callback(xhr.responseText);
         }
