@@ -120,7 +120,7 @@ if(isset($_POST['send_message'])) {
 <?php print_alert(); ?>
 
 <div class="row">
-	<div class="col-md-3">
+	<div class="col-md-3 hidden-xs">
 
 		<?php include('_sidebar.php'); ?>
 
@@ -143,7 +143,7 @@ if(isset($_POST['send_message'])) {
 					</div> <!-- /.row -->
 
 					<div class="row space-5">
-						<div class="col-md-1">
+						<div class="col-md-1 hidden-xs">
 							<label>&nbsp;</label>
 							<div class="clearfix"></div>
 							<?php if(get_active_user('avatar')): ?>
