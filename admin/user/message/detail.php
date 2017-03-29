@@ -52,7 +52,7 @@ add_page_info( 'nav', array('name'=>$rec_user->name.' '.$rec_user->surname) );
 // tum mesajlari cevaplari ile birlikte cekelim
 if(isset($_GET['id'])) {
 	if(!empty($_GET['id'])) {
-		$messages = array_reverse(get_message_detail($_GET['id'], array('limit' => 4)));
+		$messages = array_reverse(get_message_detail($_GET['id'], array('limit' => 10)));
 	}
 }
 
@@ -133,13 +133,20 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 								</div> <!-- /.col-md-1 -->
 								<div class="col-md-11 col-xs-12">
 									<div class="form-group message-area">
-										<label for="message" class="text-muted hidden-xs"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
+										<?php if ( til_is_mobile() ) : ?>
+											<input autofocus type="text" name="message" id="message" required class="form-control send-message-input" value="" placeholder="Birşeyler yazın...">
+											<button type="button" class="send-message-image" onclick="document.getElementById('send-message-file').click()"><i class="fa fa-image"></i></button>
+											<button type="submit" class="send-message-submit"><i class="fa fa-send"></i></button>
+											<input type="file" name="" id="send-message-file" onchange="var chat_list = document.querySelector('.chat-container'); chat_list.classList.add('loader'); imageHandler(this.files[0], function(data) { if ( document.getElementById('message').value = '<img src='+ data +' class=img-responsive>' ) { chat_list.classList.remove('loader'); document.querySelector('.send-message-submit').click(); } setTimeout(function() { list_scroll_bottom(document.querySelector('.chat-list')); }, 100) })" value="" class="hidden">
+										<?php else: ?>
+										<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
 										<textarea autofocus onkeydown="parent(this, 'form').dispatchEvent(new Event('submit', { 'bubbles' : true, 'cancelable' : true}));" name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:20px;"></textarea>
 										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '100' });</script>
+										<?php endif; ?>
 									</div> <!-- /.form-group -->
 
 									<div class="form-group">
-										<button type="submit" class="btn btn-default pull-right"><i class="fa fa-send-o"></i> Gönder</button>
+										<button type="submit" class="btn btn-default pull-right hidden-xs"><i class="fa fa-send-o"></i> Gönder</button>
 										<input type="hidden" name="uniquetime" value="<?php uniquetime(); ?>">
 										<input type="hidden" name="reply_message">
 										<input type="hidden" name="receiver" id="receiver" value="<?php echo $rec_user->id; ?>">

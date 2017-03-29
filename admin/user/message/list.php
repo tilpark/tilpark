@@ -87,78 +87,72 @@ $messages = get_messages($args);
 		<?php print_alert(); ?>
 
 		<div class="panel panel-default panel-table panel-dataTable">
-
 			<?php if($messages): ?>
 				<table class="table table-hover table-condensed table-striped dataTable">
 					<thead class="none">
 						<tr>
 							<th width="10"></th>
 							<th width="180"><?php echo $box == 'inbox' ? 'Gönderen' : 'Alıcı'; ?></th>
-							<th>Konu</th>
+							<th class="hidden-portrait">Konu</th>
 							<th width="100">Tarih</th>
 						</tr>
 					</thead>
 					<tbody>
 					<?php foreach($messages as $list): ?>
 						<?php
-						$sub_message_count = false;
-						$args = array();
-						$args['top_id'] = $list->id;
-							if($sub_messages = db()->query("SELECT * FROM ".dbname('messages')." ".sql_where_string($args)." ")) {
-								if($sub_messages->num_rows) {
-									$sub_message_count = $sub_messages->num_rows;
-								}
-							}
+							$sub_message_count = false;
+							$args = array();
+							$args['top_id'] = $list->id;
 
+							if($sub_messages = db()->query("SELECT * FROM ".dbname('messages')." ".sql_where_string($args)." ")) {
+								if($sub_messages->num_rows) { $sub_message_count = $sub_messages->num_rows; }
+							}
 						?>
 						<tr class="<?php if(!$list->read_it AND $list->inbox_u_id == get_active_user('id') AND $box != 'outbox'): ?>bold<?php endif; ?> pointer" onclick="location.href='<?php site_url('message', $list->id); ?>';">
-							<td width="10">
+							<td width="10" class="hidden-xs">
 								<?php if($box == 'trash'): ?>
 									<a href="?id=<?php echo $list->id; ?>&move=null&box=trash" class="btn btn-default btn-xs" data-toggle="tooltip" title="Çöp kutusundan çıkar"><i class="fa fa-undo"></i></a>
 								<?php else: ?>
 									<a href="?id=<?php echo $list->id; ?>&move=trash" class="btn btn-default btn-xs" data-toggle="tooltip" title="Çöp kutusuna taşı"><i class="fa fa-trash-o text-danger"></i></a>
 								<?php endif; ?>
 							</td>
-							<td width="220">
+
+							<td width="220" class="">
 								<?php if($list->inbox_u_id == get_active_user('id')): ?>
 									<div class="pull-left" style="margin-right:5px;">
-										<img src="<?php echo get_user_info($list->outbox_u_id, 'avatar'); ?>" class="img-responsive br-2 pull-right" width="21">
+										<img src="<?php echo get_user_info($list->outbox_u_id, 'avatar'); ?>" class="img-responsive br-2 pull-right" width="25">
 									</div>
 									<?php echo get_user_info($list->outbox_u_id, 'display_name'); ?>
 									<?php if($sub_message_count): ?>(<?php echo $sub_message_count; ?>)<?php endif; ?>
 								<?php else: ?>
 									<div class="pull-left" style="margin-right:5px;">
-										<img src="<?php echo get_user_info($list->inbox_u_id, 'avatar'); ?>" class="img-responsive br-2 pull-right" width="21">
+										<img src="<?php echo get_user_info($list->inbox_u_id, 'avatar'); ?>" class="img-responsive br-2 pull-right" width="25">
 									</div>
 									<?php echo get_user_info($list->inbox_u_id, 'display_name'); ?>
 									<?php if($sub_message_count): ?>(<?php echo $sub_message_count; ?>)<?php endif; ?>
 								<?php endif; ?>
-							</td>
-							<td>
 
+								<div class="visible-portrait hidden-md hidden-landscape small"><?php echo get_time_late($list->date_update); ?></div>
+							</td>
+
+							<td >
 								<?php if(!$list->read_it): ?>
 									<i class="fa fa-envelope-o mr-3" data-toggle="tooltip" title="Okunmadı!"></i>
 								<?php else: ?>
 									<i class="fa fa-envelope-open-o mr-3 text-muted" data-toggle="tooltip" title="Okundu"></i>
 								<?php endif; ?>
 
-
-
 								<a href="detail.php?id=<?php echo $list->id; ?>">
 									<span class="text-black"><?php echo $list->title; ?> <?php if(!strlen($list->title)): ?>#<?php echo $list->id; ?><?php endif; ?></span>
-									<?php
-									if($q_select = db()->query("SELECT * FROM ".dbname('messages')." WHERE top_id='".$list->id."' ORDER BY date_update DESC LIMIT 1")) {
-										if($q_select->num_rows) {
-											$sub_message = $q_select->fetch_object();
-											?>
-											<span class="text-muted"><b>-</b> <span class="underline"><?php echo _b(til_get_strtolower(get_user_info($sub_message->sen_u_id, 'surname')),false); ?></span>: <?php echo mb_substr(strip_tags($sub_message->message),0,80,'utf-8'); ?><?php if(strlen($sub_message->message) > 80): ?>...<?php endif; ?></span>
-											<?php
-										}
-									}
-									?>
+									<?php if($q_select = db()->query("SELECT * FROM ".dbname('messages')." WHERE top_id='".$list->id."' ORDER BY date_update DESC LIMIT 1")) : ?>
+										<?php if($q_select->num_rows) : $sub_message = $q_select->fetch_object(); ?>
+											<span class="text-muted hidden-portrait"><b>-</b> <span class="underline"><?php echo _b(til_get_strtolower(get_user_info($sub_message->sen_u_id, 'surname')),false); ?></span>: <?php echo mb_substr(strip_tags($sub_message->message),0,80,'utf-8'); ?><?php if(strlen($sub_message->message) > 80): ?>...<?php endif; ?></span>
+										<?php endif; ?>
+									<?php endif; ?>
 								</a>
 							</td>
-							<td width="100" class="text-right"><?php echo get_time_late($list->date_update); ?> önce</td>
+
+							<td width="100" class="text-right hidden-portrait"><?php echo get_time_late($list->date_update); ?> önce</td>
 						</tr>
 					<?php endforeach; ?>
 					</tbody>

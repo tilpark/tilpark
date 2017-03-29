@@ -54,6 +54,58 @@ ol,ul{
   border: 1px solid #ddd;
 }
 
+.message-area button{
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 15px 10px;
+  width: 45px;
+  background: #fff;
+  border: 1px solid #ddd;
+  z-index: 999;
+  outline: none;
+}
+
+.message-area button.send-message-submit{
+  right: 0;
+  left: auto;
+}
+
+.message-area .send-message-input{
+  border-radius: 3px;
+  box-shadow: none;
+  padding: 22px 48px;
+  border: 1px solid #ddd;
+}
+
+.message-area .send-message-input:focus{
+  border-color: #66afe9;
+}
+
+.message-area input:focus ~ button{
+  border-color: #66afe9 !important;
+}
+
+/*
+.message-area .send-message-input:focus{
+  border-color: #66afe9;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 22px 55px;
+  z-index: 9999;
+}
+
+
+.message-area input:focus ~ button{
+  border-color: #66afe9 !important;
+  position: fixed;
+  bottom: 0;
+  top: auto;
+  z-index: 99999;
+}
+*/
 
 .mce-stack-layout-item.mce-statusbar{
   border: 0 !important;
@@ -70,7 +122,12 @@ ol,ul{
 
 
 
+
 @media(max-width: 767px) {
+  .chat-container .chat-list{
+    height: calc(100vh - 180px);
+  }
+
   .message-elem .well{
     padding: 5px 10px;
   }

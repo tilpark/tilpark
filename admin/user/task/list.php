@@ -1,7 +1,6 @@
 <?php include('../../../tilpark.php'); ?>
 <?php get_header(); ?>
 
-
 <?php
 add_page_info('title', 'Görev Yöneticisi');
 add_page_info('nav', array('name'=>'Görev Yöneticisi'));
@@ -84,9 +83,12 @@ $tasks = get_tasks($_args);
 
 
 <div class="row">
-	<div class="col-md-3">
+	<div class="col-md-3 hidden-xs">
+
 		<?php include('_sidebar.php'); ?>
+
 	</div> <!-- /.col-md-3 -->
+
 	<div class="col-md-9">
 		<?php print_alert(); ?>
 		<div class="panel panel-default panel-table panel-dataTable">
@@ -108,7 +110,7 @@ $tasks = get_tasks($_args);
 					<?php foreach($tasks as $task): ?>
 						<?php $task = get_task($task->id); ?>
 						<tr class="<?php if(!$task->read_it and $task->inbox_u_id == get_active_user('id')): ?>bold<?php endif; ?> pointer" onclick="location.href='<?php site_url('task', $task->id); ?>';">
-							<td width="10">
+							<td width="10" class="hiddden-xs">
 								<?php if($task->type_status == '1'): ?>
 									<?php if($task->sen_trash_u_id == get_active_user('id') OR $task->rec_trash_u_id == get_active_user('id')): ?>
 										<a href="?id=<?php echo $task->id; ?>&move=null&box=trash" class="btn btn-default btn-xs" data-toggle="tooltip" title="Çöp kutusundan çıkar"><i class="fa fa-undo text-warning"></i></a>
@@ -132,10 +134,10 @@ $tasks = get_tasks($_args);
 								</div>
 								<?php user_info($task->rec_u_id,'surname'); ?>
 							</td>
-							<td><a href="<?php site_url('task', $task->id); ?>"><?php echo $task->title; ?></td>
-							<td><?php echo til_get_date($task->date_start,'datetime'); ?></td>
-							<td><?php echo til_get_date($task->date_end,'datetime'); ?></td>
-							<td>
+							<td class="hidden-portrait"><a href="<?php site_url('task', $task->id); ?>"><?php echo $task->title; ?></td>
+							<td class="hidden-xs"><?php echo til_get_date($task->date_start,'datetime'); ?></td>
+							<td class="hidden-xs"><?php echo til_get_date($task->date_end,'datetime'); ?></td>
+							<td class="hidden-xs">
 								<?php if($task->choice_count): ?>
 									<?php
 										$part 			= (100 / $task->choice_count);
@@ -171,7 +173,6 @@ $tasks = get_tasks($_args);
 				</div>
 			<?php endif; ?>
 		</div> <!-- /.panel -->
-
 	</div> <!-- /.col-md-9 -->
 </div> <!-- /.row -->
 

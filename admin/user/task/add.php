@@ -117,7 +117,7 @@ if(isset($_POST['add_task'])) {
 
 
 <div class="row">
-	<div class="col-md-3">
+	<div class="col-md-3 hidden-xs">
 
 		<?php include('_sidebar.php'); ?>
 

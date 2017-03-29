@@ -1781,6 +1781,16 @@ ul.sidebar-menu li ul li a i.fa {
   animation: 500ms rotate ease-in-out infinite;
 }
 
+.chat-container.loader:after{
+  content: '';
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  background: rgba(255, 255, 255, 0.5);
+}
+
 @keyframes rotate{
   0%{ transform: rotate(0deg); }
   100%{ transform: rotate(360deg); }
