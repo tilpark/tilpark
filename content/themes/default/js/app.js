@@ -7,6 +7,13 @@ $(document).ready( function() {
 	$(".validate_4").validate();
 
 
+	$('a, .btn, input').on('touchstart', function () {
+        $(this).trigger('hover');
+    }).on('touchend', function () {
+        $(this).trigger('hover');
+    });
+
+
 	function get_set_money(val) {
 		val = parseFloat(val).toFixed(2).replace(/./g, function(c, i, a) {
 		    return i && c !== "." && ((a.length - i) % 3 === 0) ? ',' + c : c;

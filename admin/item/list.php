@@ -1,13 +1,11 @@
 <?php include('../../tilpark.php'); ?>
+<?php include_content_page('list', false, 'item'); ?>	
 <?php get_header(); ?>
 <?php
 add_page_info( 'title', 'Ürün Kartları Listesi' );
 add_page_info( 'nav', array('name'=>'Ürün Yönetimi', 'url'=>get_site_url('admin/item/') ) );
 add_page_info( 'nav', array('name'=>'Ürün Kartları Listesi') );
-?>
 
-
-<?php 
 // ilk liste acilisinde sıralama yapilmasi icin
 if(!isset($_GET['orderby_name'])) {
 	$_GET['orderby_name'] = 'name';

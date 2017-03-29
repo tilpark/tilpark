@@ -1,7 +1,7 @@
 <?php require_once('../../tilpark.php'); ?>
 <?php 
 if(!$account = get_account($_GET['id'])) {
-	add_console_log('Hesap karti bulunamadi.', 'print-address.php');
+	add_console_log('Hesap kartı bulunamadı.', 'print-statement.php');
 }
 ?>
 <?php include_content_page('print', 'statement', 'account', array('account'=>@$account)); ?>

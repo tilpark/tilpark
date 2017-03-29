@@ -748,14 +748,14 @@ table.dataTable thead.none {
 
 
 @media (max-width: 768px) and (orientation: portrait) {
-    .hidden-portrait { display: none!important; }
-    .visible-portrait { display: block!important; }
-    td.visible-portrait, th.visible-portrait {  display: table-cell!important; }
+    .hidden-xs-portrait { display: none!important; }
+    .visible-xs-portrait { display: block!important; }
+    td.visible-xs-portrait, th.visible-xs-portrait {  display: table-cell!important; }
 }
 @media (max-width: 768px)) and (orientation: landscape) {
-    .hidden-landscape { display: none!important; }
-    .visible-landscape { display: block!important; }
-    td.visible-landscape, th.visible-landscape {  display: table-cell!important; }
+    .hidden-xs-landscape { display: none!important; }
+    .visible-xs-landscape { display: block!important; }
+    td.visible-xs-landscape, th.visible-xs-landscape {  display: table-cell!important; }
 }
 
 
@@ -1487,6 +1487,8 @@ form.panel-search .input-group .input-group-btn .btn i.fa {
   text-align: right;
 }
 @media (max-width: 768px) {
+  .row.box-row .til-col:after {  }
+  .row.box-row .til-col:nth-child(3n):after { display: block; content: "\00a0"; clear: both; }
   .box-menu {
     padding: 0px;
     height: auto;

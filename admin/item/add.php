@@ -1,4 +1,5 @@
 <?php include('../../tilpark.php'); ?>
+<?php include_content_page('add', false, 'item'); ?>
 <?php get_header(); ?>
 <?php
 add_page_info( 'title', 'Ürün Ekle' );

@@ -3,16 +3,24 @@
 <link href="<?php echo template_url('css/app.css'); ?>" rel="stylesheet">
 <link href="<?php echo template_url('css/print.css'); ?>" rel="stylesheet">
 
-<?php if(!isset($print['size'])) { $print['size'] = 'A4'; } ?>
+<?php 
+if(!isset($print['size'])) { $print['size'] = 'A4'; } 
+if(!isset($print['logo'])) { $print['logo'] = true; } 
+if(!isset($print['footer'])) { $print['footer'] = true; } 
+
+?>
 <div class="print-page" size="<?php echo $print['size']; ?>">
 
-	<div class="print-tilpark-logo">
-		<img src="<?php site_url('content/themes/default/img/logo_blank.png'); ?>" class="img-responsive">
-	</div>
+	<?php if($print['logo']): ?>
+		<div class="print-tilpark-logo">
+			<img src="<?php site_url('content/themes/default/img/logo_blank.png'); ?>" class="img-responsive">
+		</div>
+	<?php endif; ?>
 
 	<?php if(@$print['title']): ?>
 		<div class="text-center absolute full-width">
-			<h3 class="content-title ff-2 text-center"><?php echo $print['title']; ?></h3>
+			<h3 class="content-title text-center m-0"><?php echo $print['title']; ?></h3>
+			<h4 class="content-title text-center m-0"><?php echo $print['sub-title']; ?></h4>
 		</div> <!-- /.text-center -->
 	<?php endif; ?>
 

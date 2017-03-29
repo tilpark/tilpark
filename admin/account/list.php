@@ -1,6 +1,5 @@
 <?php include('../../tilpark.php'); ?>
-<?php include_content_page('list', '', 'account'); ?>	
-
+<?php include_content_page('list', '', 'account'); ?>
 <?php get_header(); ?>
 <?php
 add_page_info( 'title', 'Hesap Kartları Listesi' );

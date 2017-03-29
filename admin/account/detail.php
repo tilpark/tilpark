@@ -205,21 +205,21 @@ add_page_info( 'nav', array('name'=>$account->name) );
 				<thead>
 					<?php if(til_is_mobile()): ?>
 						<tr>
-							<th width="80">ID</th>
-							<th class="hidden-portrait">Tarih</th>
-							<th class="hidden-portrait">Personel</th>
+							<th width="60">ID</th>
+							<th class="hidden-xs-portrait">Tarih</th>
+							<th class="hidden-xs-portrait">Personel</th>
 							<th width="80">Giriş</th>
 							<th width="80">Çıkış</th>
 							<th width="100">Bakiye</th>
 						</tr>
 					<?php else: ?>
 						<tr>
-							<th>Form ID</th>
+							<th width="60">Form ID</th>
 							<th width="80">Tarih</th>
-							<th class="hidden-xs">G/Ç</th>
-							<th class="hidden-xs">Form Durumu</th>
-							<th class="hidden-xs">Personel</th>
-							<th class="hidden-xs">Açıklama</th>
+							<th width="30">G/Ç</th>
+							<th width="100">Form Durumu</th>
+							<th width="120">Personel</th>
+							<th>Açıklama</th>
 							<th width="80">Giriş</th>
 							<th width="80">Çıkış</th>
 							<th width="80">Bakiye</th>
@@ -234,8 +234,8 @@ add_page_info( 'nav', array('name'=>$account->name) );
 							<td>
 								<a href="../form/detail.php?id=<?php echo $form->id; ?>" target="_blank">#<?php echo $form->id; ?></a>
 							</td>
-							<td class="hidden-portrait"><small class="text-muted"><?php echo til_get_date($form->date, 'Y-m-d'); ?></small></td>
-							<td class="hidden-portrait"><small class="text-muted"><?php echo get_user_info($form->user_id, 'display_name'); ?></small></td>
+							<td class="hidden-xs-portrait"><small class="text-muted"><?php echo til_get_date($form->date, 'Y-m-d'); ?></small></td>
+							<td class="hidden-xs-portrait"><small class="text-muted"><?php echo get_user_info($form->user_id, 'display_name'); ?></small></td>
 							<td class="text-right"><?php if($form->in_out == 0) { echo get_set_money($form->total, true); $balance = $balance - $form->total; } else { echo ''; } ?></td>
 							<td class="text-right"><?php if($form->in_out == 1) { echo get_set_money($form->total, true); $balance = $balance + $form->total; } else { echo ''; } ?></td>
 							<td class="text-right"><?php echo get_set_money($balance, true); ?></td>
@@ -245,7 +245,7 @@ add_page_info( 'nav', array('name'=>$account->name) );
 							<td>
 								<a href="../form/detail.php?id=<?php echo $form->id; ?>" target="_blank">#<?php echo $form->id; ?></a>								
 							</td>
-							<td><small class="text-muted hidden-xs"><?php echo substr($form->date,0,16); ?></small> <small class="text-muted visible-xs"><?php echo til_get_date($form->date, 'd F'); ?></small></td>
+							<td><small class="text-muted hidden-xs"><?php echo substr($form->date,0,16); ?></small></td>
 							<td class="hidden-xs"><?php echo get_in_out_label($form->in_out); ?></td>
 							<?php if($form->type == 'form'): ?>
 								<td class="hidden-xs"><?php echo get_form_status_span($form_status); ?></td>
