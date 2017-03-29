@@ -1,0 +1,1 @@
+git update-index --skip-worktree -- wp-config.php
