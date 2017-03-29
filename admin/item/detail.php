@@ -145,18 +145,6 @@ if(isset($_GET['status'])) {
 
 
 
-<script>
-$(window).on("orientationchange",function(){
-  if(window.orientation == 0) // Portrait
-  {
-    $("p").css({"background-color":"yellow","font-size":"300%"});
-  }
-  else // Landscape
-  {
-    $("p").css({"background-color":"pink","font-size":"200%"});
-  }
-});
-</script>
 
 
 
@@ -169,31 +157,59 @@ $(window).on("orientationchange",function(){
 			<?php if($q_form_items->num_rows): ?>
 				<table class="table table-striped table-hover table-condensed table-bordered dataTable">
 					<thead>
-						<tr>
-							<th width="120" class="hidden-portrait">Tarih</th>
-							<th width="100">Form ID</th>
-							<th class="hidden-portrait">Hesap Kartı</th>
-							<th width="60" class="text-center">Adet</th>
-							<th width="100" class="text-center">B. Fiyatı</th>
-							<th width="100" class="text-center">Giriş</th>
-							<th width="100" class="text-center">Çıkış</th>
-						</tr>
+						<?php if(til_is_mobile()): ?>
+							<tr>
+								<th>Form ID</th>
+								<th width="" class="hidden-portrait">Tarih</th>
+								<th class="hidden-portrait">Hesap Kartı</th>
+								<th width="" class="text-center">Adet</th>
+								<th width="" class="text-center hidden-portrait">Fiyat</th>
+								<th width="" class="text-center">Giriş</th>
+								<th width="" class="text-center">Çıkış</th>
+							</tr>
+						<?php else: ?>
+							<tr>
+								<th width="100">Form ID</th>
+								<th width="120" class="hidden-portrait">Tarih</th>
+								<th class="hidden-portrait">Hesap Kartı</th>
+								<th width="60" class="text-center">Adet</th>
+								<th width="100" class="text-center hidden-portrait">B. Fiyatı</th>
+								<th width="100" class="text-center">Giriş</th>
+								<th width="100" class="text-center">Çıkış</th>
+							</tr>
+						<?php endif; ?>
 					</thead>
 					<tbody>
-						<?php while($item = $q_form_items->fetch_object()): ?>
-							<tr>
-								<td class="hidden-portrait"><?php echo til_get_date($item->date, 'Y-m-d H:i'); ?></td>
-								<td><a href="<?php site_url('form', $item->form_id); ?>" target="_blank">#<?php echo $item->form_id; ?></a></td>
-								<td class="hidden-portrait">
-									<?php if($item->account_id): ?>
-										<?php echo get_account($item->account_id)->name; ?> <a href="<?php site_url('account', $item->account_id); ?>" target="_blank" class="fs-12"><i class="fa fa-external-link"></i></a>
-									<?php endif; ?>
-								</td>
-								<td class="text-center"><?php echo $item->quantity; ?></td>
-								<td class="text-right"><?php echo get_set_money($item->price, true); ?></td>
-								<td class="text-right"><?php echo $item->in_out == '0' ? get_set_money($item->total, true) : ''; ?></td>
-								<td class="text-right"><?php echo $item->in_out == '1' ? get_set_money($item->total, true) : ''; ?></td>
-							</tr>
+						<?php while($list = $q_form_items->fetch_object()): ?>
+							<?php if(til_is_mobile()): ?>
+								<tr>
+									<td><a href="<?php site_url('form', $list->form_id); ?>" target="_blank">#<?php echo $list->form_id; ?></a></td>
+									<td class="hidden-portrait fs-11 text-muted"><?php echo til_get_date($list->date, 'Y-m-d'); ?></td>
+									<td class="hidden-portrait nowrap fs-11 text-muted">
+										<?php if($list->account_id): ?>
+											<?php echo get_account($list->account_id)->name; ?> <a href="<?php site_url('account', $list->account_id); ?>" target="_blank" class="fs-12"><i class="fa fa-external-link"></i></a>
+										<?php endif; ?>
+									</td>
+									<td class="text-center"><?php echo $list->quantity; ?></td>
+									<td class="text-right hidden-portrait"><?php echo get_set_money($list->price, true); ?></td>
+									<td class="text-right"><?php echo $list->in_out == '0' ? get_set_money($list->total, true) : ''; ?></td>
+									<td class="text-right"><?php echo $list->in_out == '1' ? get_set_money($list->total, true) : ''; ?></td>
+								</tr>
+							<?php else: ?>
+								<tr>
+									<td><a href="<?php site_url('form', $list->form_id); ?>" target="_blank">#<?php echo $list->form_id; ?></a></td>
+									<td class="hidden-portrait"><?php echo til_get_date($list->date, 'Y-m-d H:i'); ?></td>
+									<td class="hidden-portrait">
+										<?php if($list->account_id): ?>
+											<?php echo get_account($list->account_id)->name; ?> <a href="<?php site_url('account', $list->account_id); ?>" target="_blank" class="fs-12"><i class="fa fa-external-link"></i></a>
+										<?php endif; ?>
+									</td>
+									<td class="text-center"><?php echo $list->quantity; ?></td>
+									<td class="text-right hidden-portrait"><?php echo get_set_money($list->price, true); ?></td>
+									<td class="text-right"><?php echo $list->in_out == '0' ? get_set_money($list->total, true) : ''; ?></td>
+									<td class="text-right"><?php echo $list->in_out == '1' ? get_set_money($list->total, true) : ''; ?></td>
+								</tr>
+							<?php endif; ?>
 						<?php endwhile; ?>
 					</tbody>
 				</table>

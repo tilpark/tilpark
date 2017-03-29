@@ -66,6 +66,7 @@
 /* helper */
 .absolute { position: absolute !important; }
 .relative { position: relative !important; }
+.nowrap { word-wrap: nowrap!important; }
 .strong { font-weight: bold !important; }
 .bold { font-weight: bold !important; }
 .italic { font-style: italic !important; }

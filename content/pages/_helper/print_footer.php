@@ -3,3 +3,11 @@
 	</div>
 
 </div> <!-- page-print -->
+
+
+<?php if(isset($_GET['print'])): ?>
+	<script>
+		// setTimeout(function () { window.print(); }, 500);
+		// setTimeout(function () { window.close(); }, 500);
+	</script>
+<?php endif; ?>

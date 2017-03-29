@@ -77,13 +77,13 @@ function add_account($args) {
  * get_account()
  * bu fonksiyon tek bir hesap kartini dataları ile birlikte dondurur
  */
-function get_account($args) {
+function get_account($args, $_til=true) {
 
 	if(!is_array($args)) { $args = array('where'=>array('id'=>$args)); }	
 	$args = _args_helper(input_check($args), 'where');
 	$where = $args['where'];
 
-	if( isset($where['id']) ) {
+	if( isset($where['id']) and $_til ) {
 		if( isset(til()->accounts[$where['id']]) ) {
 			return til()->accounts[$where['id']];
 		}

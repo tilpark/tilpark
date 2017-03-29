@@ -111,8 +111,8 @@ if($form->id) {
 
 			<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-print"></i> Yazdır <span class="caret"></span></a> 
 				<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
-					<li><a href="print_form.php?id=<?php echo $form->id; ?>&print" target="_blank"><i class="fa fa-fw fa-file-text-o"></i> Form Yazdır</a></li> 
-					<li><a href="print_form.php?id=<?php echo $form->id; ?>&print&barcode" target="_blank"><i class="fa fa-fw fa-file-text-o"></i> Barkodlu Form Yazdır</a></li> 
+					<li><a href="print.php?id=<?php echo $form->id; ?>&print" target="_blank"><i class="fa fa-fw fa-file-text-o"></i> Form Yazdır</a></li> 
+					<li><a href="print.php?id=<?php echo $form->id; ?>&print&barcode" target="_blank"><i class="fa fa-fw fa-file-text-o"></i> Barkodlu Form Yazdır</a></li> 
 					<li><a href="print_invoice.php?id=<?php echo $form->id; ?>&print" target="_blank"><i class="fa fa-fw fa-file-archive-o"></i> Fatura Yazdır</a></li> 
 				</ul> 
 			</li>

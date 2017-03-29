@@ -57,9 +57,15 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i');
 @import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i');
 
+
+html {
+  overflow-x: hidden;
+}
+
 body {
   background-color: #f7f7f7;
   font-family: 'Roboto', sans-serif;
+  overflow-x: hidden;
 }
 .container {
   width: 1200px;
@@ -710,7 +716,6 @@ table.dataTable thead.none {
   display: none;
 }
 
-
 @media (max-width: 768px) {
   table {
     width: 100% !important;
@@ -723,7 +728,7 @@ table.dataTable thead.none {
       font-weight: normal;
       white-space: nowrap;
       text-align: left;
-      width: 96%;
+      width: 95%;
   }
   div.dataTables_wrapper div.dataTables_filter input {
       margin-left: 0.5em;
@@ -907,6 +912,7 @@ header .dropdown-message-list li a {
   .breadcrumb-header h3.page-title {
     font-size: 16px;
     text-align: center;
+    font-family: 'Lato', sans-serif;
   }
 }
 
@@ -1373,6 +1379,8 @@ form.panel-search .input-group .form-control {
   height: 26px;
   padding: 2px 10px;
   font-size: 12px;
+  border-radius: 0px!important;
+  border: 1px solid #ccc;
 }
 form.panel-search .input-group .input-group-btn .btn {
   height: 26px;
@@ -1392,18 +1400,20 @@ form.panel-search .input-group .input-group-btn .btn i.fa {
     width: 100%;
   }
   form.panel-search .input-group .form-control {
-  height: 32px;
-  padding: 2px 10px;
-  font-size: 12px;
-}
-  form.panel-search .input-group .input-group-btn .btn {
-  height: 32px;
-  padding: 0 10px;
-  margin-right: -2px;
-  z-index: 9;
-  font-size: 12px;
-  color: #848484;
-}
+    height: 32px;
+    padding: 2px 10px;
+    font-size: 12px;
+    border-radius: 0px!important;
+    border: 1px solid #ccc;
+  }
+    form.panel-search .input-group .input-group-btn .btn {
+    height: 32px;
+    padding: 0 10px;
+    margin-right: -2px;
+    z-index: 9;
+    font-size: 12px;
+    color: #848484;
+  }
 }
 
 
@@ -1430,8 +1440,9 @@ form.panel-search .input-group .input-group-btn .btn i.fa {
 
 .box-menu a {
   display: block;
-    vertical-align: middle;
-    width: 100%;
+  vertical-align: middle;
+  width: 100%;
+
 }
 .box-menu a:hover,.box-menu a:focus {
   text-decoration: none;
@@ -1836,7 +1847,6 @@ div.mce-edit-area,
  */
 footer {
   position: absolute;
-  bottom: 10px;
   display: block;
   left: 0;
   right:0;

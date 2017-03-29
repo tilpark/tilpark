@@ -116,7 +116,7 @@ $tilpark['cumhali'] = 'example';
 
 
 
-function include_content_page($name='', $attachment=false, $folder=false, $extract=false) {
+function include_content_page($name='', $attachment=false, $folder=false, $extract=false, $page404=false) {
 
 	// eger include edilecek sayfaya herhangi bir deger gonderilecek ise
 	if($extract) { extract($extract); }
@@ -141,11 +141,20 @@ function include_content_page($name='', $attachment=false, $folder=false, $extra
 
 	if( file_exists(get_root_path($path)) ) {
 		include get_root_path($path);
-		return true;
+		exit;
+	} elseif( file_exists( str_replace('-'.$attachment, '', get_root_path($path)) ) ) {
+		include str_replace('-'.$attachment, '', get_root_path($path));
+		exit;
 	} else {
-		add_console_log('not found: '.get_root_path($path), __FUNCTION__);
-		include get_root_path('admin/system/404.php');
-		return false;
+		if($page404) {
+			add_console_log('not found: '.get_root_path($path), __FUNCTION__);
+			include get_root_path('admin/system/404.php');
+			exit;
+		} else {
+			return false;
+		}
+		
+		
 	}
 }
 
@@ -271,8 +280,8 @@ function search_form_for_panel($arr=array()) {
 				    </ul>
 				<?php endif; ?>
 		  </div><!-- /btn-group -->
-		  <input type="text" name="s" id="panel_s_<?php echo $arr['s_name']; ?>" class="form-control" placeholder="arama yapın" value="<?php echo @$_GET['s']; ?>">
-		  <div class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-search"></i></span></button></div>
+		  <input type="search" name="s" id="panel_s_<?php echo $arr['s_name']; ?>" class="form-control" placeholder="arama yapın" value="<?php echo @$_GET['s']; ?>">
+		  <div class="input-group-btn"><button type="submit" class="btn btn-default"><i class="fa fa-search"></i></span></button></div>
 
 		</div><!-- /input-group -->
 
