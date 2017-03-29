@@ -1,6 +1,6 @@
 <?php
 // config
-define('_site_url', 'http://192.168.2.254d/github/tilpark');
+define('_site_url', 'http://localhost/github/tilpark');
 define('_prefix', 'til_');
 define('_root_path', $_SERVER['DOCUMENT_ROOT'].'/');
 define('_fixed', '2');
