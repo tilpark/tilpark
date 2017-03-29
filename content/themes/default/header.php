@@ -1,25 +1,25 @@
 <?php
   global $baslangic;
-     function sure_baslat()  
-    {  
-       global $baslangic;  
-        $msure = microtime ();  
-         $msure = explode (' ', $msure );  
-         $msure = $msure[1] + $msure[0];  
-         $baslangic = $msure;  
-    }  
-    function sure_bitir()  
-     {  
-         global $baslangic;  
-        $msure = microtime ();  
-        $msure = explode (' ', $msure);  
-        $msure = $msure[1] + $msure[0];  
-         $bitis = $msure;  
-         $toplam = round (($bitis - $baslangic), 5);  
-        return $toplam;  
-     }  
-  
-sure_baslat();  
+     function sure_baslat()
+    {
+       global $baslangic;
+        $msure = microtime ();
+         $msure = explode (' ', $msure );
+         $msure = $msure[1] + $msure[0];
+         $baslangic = $msure;
+    }
+    function sure_bitir()
+     {
+         global $baslangic;
+        $msure = microtime ();
+        $msure = explode (' ', $msure);
+        $msure = $msure[1] + $msure[0];
+         $bitis = $msure;
+         $toplam = round (($bitis - $baslangic), 5);
+        return $toplam;
+     }
+
+sure_baslat();
 ?>
 <script type="text/javascript">
   window.site_url   = '<?php echo get_site_url(); ?>';
@@ -71,6 +71,7 @@ sure_baslat();
     <!-- Custom CSS -->
     <link href="<?php echo template_url('css/tilpark.css'); ?>" rel="stylesheet">
     <link href="<?php echo template_url('css/app.css'); ?>" rel="stylesheet">
+    <link href="<?php echo template_url('css/app-minan.css'); ?>" rel="stylesheet">
 
     <!-- Custom JS -->
     <script src="<?php echo template_url('js/functions.js'); ?>"></script>

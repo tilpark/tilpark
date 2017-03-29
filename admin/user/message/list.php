@@ -2,8 +2,6 @@
 <?php get_header(); ?>
 
 
-
-
 <?php
 add_page_info('title', 'Mesaj Kutusu - Gelen');
 add_page_info('nav', array('name'=>'Mesaj Kutusu'));
@@ -80,7 +78,7 @@ $messages = get_messages($args);
 
 
 <div class="row">
-	<div class="col-md-3">
+	<div class="col-md-3 hidden-xs">
 
 		<?php include('_sidebar.php'); ?>
 

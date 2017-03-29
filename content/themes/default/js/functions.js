@@ -93,7 +93,7 @@ function editor(param = {selector: "", plugins:"", toolbar:"", height: "500", me
     nonbreaking_force_tab: true,
     language: 'tr_TR',
     external_plugins: { codemirror: get_site_url('includes/lib/tinymce/plugins/codemirror/plugin.js') },
-    content_css: [ get_site_url('content/themes/default/css/bootstrap.min.css'), get_site_url('content/themes/default/css/app.css')],
+    content_css: [ get_site_url('content/themes/default/css/bootstrap.min.css'), get_site_url('content/themes/default/css/app.css'), get_site_url('content/themes/default/css/app-minan.css')],
     codemirror: { indentOnInit: true, fullscreen: true, path: 'CodeMirror', config: { lineNumbers: true }, theme: "monokai"},
     table_default_attributes: { class: 'table-bordered'},
     // image upload
@@ -202,9 +202,9 @@ function get_notification(elem, box) {
  * @func playSound()
  * @desc content/themes/default/sound içerisindeki çağrılan sesi 1 keres sayfada çalar
  * @param string
- * @return sound 
+ * @return sound
  */
-function playSound(filename){   
+function playSound(filename){
   var body = document.querySelector('body');
   var audio = document.createElement("audio");
   audio.setAttribute("autoplay", "autoplay");
@@ -218,7 +218,7 @@ function playSound(filename){
  * @func chat_list()
  * @desc message/detail.php sayfasındaki chat'i dinamic olarak günceller
  * @param string
- * @return html 
+ * @return html
  */
 function chat_list(type) {
   if ( !type || (type != "task" && type != "message") ) { window.message_type = "message"; } else { window.message_type = type; }
@@ -270,7 +270,7 @@ function chat_list(type) {
  * @func get_new_message()
  * @desc son mesajı chat-list içerisine ekler
  * @param string
- * @return html 
+ * @return html
  */
 function get_new_message(class_name="", type="message") {
   var chat_list = document.querySelector(".chat-list");
@@ -289,7 +289,7 @@ function get_new_message(class_name="", type="message") {
           list_scroll_bottom(chat_list);
           setTimeout(function() { for (var i = chat_list.children.length - 1; i >= 0; i--) { chat_list.children[i].classList.remove(class_name); } }, 2500);
           if ( class_name == 'get' ) { document.title = "(1) " + chat_list.lastElementChild.getAttribute("title") + " - " + chat_list.lastElementChild.getAttribute("username"); }
-          
+
           clearInterval(window.getMessage);
           window.getMessage = setInterval("get_new_message('get', '"+ window.message_type +"')", 1000);
 
@@ -310,7 +310,7 @@ function get_new_message(class_name="", type="message") {
  * @func list_scroll_bottom()
  * @desc bir listenin liste elemanlarına göre scroll bottom'unu hesaplar
  * @param elem
- * @return elem.scrolTop 
+ * @return elem.scrolTop
  */
 function list_scroll_bottom(chat_list) {
   // scrollBottom
@@ -333,7 +333,7 @@ function list_scroll_bottom(chat_list) {
  * @func send_message()
  * @desc message gönderir
  * @param empty
- * @return  
+ * @return
  */
 function send_message($this, type="message") {
   var message   = $this.querySelector('textarea');
@@ -342,9 +342,9 @@ function send_message($this, type="message") {
   // fast send kontrol
   var date = new Date();
   var cookie_date = new Date(getCookie('last_send_date'));
-  if ( cookie_date > date.addSecond(-1) ) { 
-    tinyMCE.get(message.getAttribute('id')).setContent(''); 
-    return false; 
+  if ( cookie_date > date.addSecond(-1) ) {
+    tinyMCE.get(message.getAttribute('id')).setContent('');
+    return false;
   }
   document.cookie = "last_send_date="+Date()+";";
   // fast send kontrol
@@ -354,14 +354,14 @@ function send_message($this, type="message") {
     var content = tinyMCE.get(message.getAttribute('id')).getContent();
     tinyMCE.get(message.getAttribute('id')).setContent('');
     tinymce.execCommand('mceFocus', false, message.getAttribute('id'));
-    
+
     if ( content.length > 3 ) {
       var form = new FormData();
       form.append("message", content);
       form.append("top_id", top_id.value);
 
-      if ( type == 'message' ) form.append("receiver", $this.querySelector('#receiver').value); 
-      if ( type == 'task' ) form.append("task_id", $this.querySelector('#task_id').value); 
+      if ( type == 'message' ) form.append("receiver", $this.querySelector('#receiver').value);
+      if ( type == 'task' ) form.append("task_id", $this.querySelector('#task_id').value);
 
       clearInterval(window.getMessage);
       getXHR({ 'method': 'POST', 'url' : get_site_url('admin/user/sendMessage.php?session_id='+window.session_id+'&type='+type), 'send': form  }, function(data) {
@@ -781,4 +781,3 @@ function HTMLParser(aHTMLString){
 
   return body;
 }
-

@@ -188,7 +188,7 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 
 
 <div class="row">
-	<div class="col-md-3">
+	<div class="col-md-3 hidden-xs">
 
 		<?php include('_sidebar.php'); ?>
 
@@ -335,7 +335,7 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 												<div class="col-md-11 col-xs-9">
 													<div class="well padding-10 br-3">
 														<div class="text-muted fs-11 italic">
-															<span class="bold"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> tarafından <span class="bold" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> önce gönderildi.
+															<span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
 														</div><!--/ .text-muted /-->
 
 														<?php echo $message->message; ?>
@@ -369,7 +369,7 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 								</div> <!-- /.col-md-1 -->
 								<div class="col-md-11">
 									<div class="form-group message-area">
-										<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
+										<label for="message" class="text-muted hidden-xs"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
 										<textarea autofocus onkeydown="parent(this, 'form').dispatchEvent(new Event('submit', { 'bubbles' : true, 'cancelable' : true}));" name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"></textarea>
 										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '130' });</script>
 									</div> <!-- /.form-group -->

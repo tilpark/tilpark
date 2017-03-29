@@ -194,7 +194,7 @@ label.error {
     transition: inherit;
     -webkit-transition: inherit;
   }
-  
+
 }
 
 
@@ -203,7 +203,7 @@ label.error {
 
 /* table */
 table thead {
-  font-size: 13px;  
+  font-size: 13px;
   background-color: #f1f1f1;
 }
 table tbody tr td {
@@ -386,7 +386,7 @@ table thead tr th a.orderby.text-muted {
     display: block;
     height: 0;
     overflow-y: hidden;
-} 
+}
 /* bootstrap hack end */
 
 
@@ -757,7 +757,7 @@ table.dataTable thead.none {
 
 
 
-   
+
 
 .panel.panel-dataTable .dataTables_filter {
   margin-top: 10px;
@@ -1788,7 +1788,12 @@ ul.sidebar-menu li ul li a i.fa {
 .message-area iframe{
   border: 1px solid #ddd;
   border-bottom: 0;
-<<<<<<< Updated upstream
+}
+
+div.mce-edit-area,
+.mce-tinymce{
+  border: 0 !important;
+}
 }
 
 div.mce-edit-area,
@@ -1796,15 +1801,6 @@ div.mce-edit-area,
   border: 0 !important;
 }
 
-=======
-}
-
-div.mce-edit-area,
-.mce-tinymce{
-  border: 0 !important;
-}
-
->>>>>>> Stashed changes
 .chat-container .chat-list .message-elem{
   transition: all 200ms ease;
   border: 2px solid transparent;
@@ -1967,4 +1963,103 @@ footer {
 
 
 
+/* DATA-WENK */
+[data-wenk] {
+  position: relative
+}
 
+[data-wenk]:after {
+  position: absolute;
+  font-size: 11px;
+  border-radius: 3px;
+  content: attr(data-wenk);
+  padding: 3px 5px;
+  background-color: rgba(17, 17, 17, .8);
+  box-shadow: 0 0 14px rgba(0, 0, 0, .1);
+  color: #fff;
+  line-height: auto;
+  text-align: left;
+  z-index: 1;
+  pointer-events: none;
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: all 150ms;
+  transition: all 150ms;
+  bottom: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, 10px);
+  transform: translate(-50%, 10px);
+  white-space: pre;
+  width: auto;
+  font-weight: normal;
+}
+
+[data-wenk]:after {
+  opacity: 0
+}
+[data-wenk]:hover {
+  overflow: visible
+}
+
+[data-wenk]:hover:after {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  -webkit-transform: translate(-50%, -10px);
+  transform: translate(-50%, -10px)
+}
+
+/* bottom */
+[data-wenk][data-wenk-pos="bottom"]:after {
+  bottom: auto;
+  top: 100%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -10px);
+  transform: translate(-50%, -10px)
+}
+
+[data-wenk][data-wenk-pos="bottom"]:hover:after {
+  -webkit-transform: translate(-50%, 10px);
+  transform: translate(-50%, 10px)
+}
+
+
+/* left */
+[data-wenk][data-wenk-pos="left"]:after {
+  bottom: auto;
+  left: auto;
+  top: 50%;
+  right: 100%;
+  -webkit-transform: translate(10px, -50%);
+  transform: translate(10px, -50%)
+}
+[data-wenk][data-wenk-pos="left"]:hover:after {
+  -webkit-transform: translate(-10px, -50%);
+  transform: translate(-10px, -50%)
+}
+
+
+/* right */
+[data-wenk][data-wenk-pos="right"]:after {
+  bottom: auto;
+  top: 50%;
+  left: 100%;
+  -webkit-transform: translate(-10px, -50%);
+  transform: translate(-10px, -50%)
+}
+
+[data-wenk][data-wenk-pos="right"]:hover:after {
+  -webkit-transform: translate(10px, -50%);
+  transform: translate(10px, -50%)
+}
+
+
+/* size */
+[data-wenk][data-wenk-length="small"]:after{white-space: normal;width: 80px}
+[data-wenk][data-wenk-length="medium"]:after{white-space: normal;width: 150px }
+[data-wenk][data-wenk-length="large"]:after{white-space: normal;width: 260px}
+[data-wenk][data-wenk-length="fit"]:after{white-space: normal;width: 100% }
+[data-wenk][data-wenk-align="right"]:after{text-align: right }
+[data-wenk][data-wenk-align="center"]:after{ text-align: center }
+[data-wenk=""]:after { visibility: hidden !important; }

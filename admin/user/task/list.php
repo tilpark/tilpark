@@ -11,9 +11,9 @@ add_page_info('nav', array('name'=>'Görev Yöneticisi'));
 # gorev kutusu
 if(isset($_GET['box'])) {
 	$box = 'inbox';
-	if($_GET['box'] == 'inbox') { $box = 'inbox'; }
-	elseif($_GET['box'] == 'outbox') { $box = 'outbox'; }
-	elseif($_GET['box'] == 'trash') { $box = 'trash'; }
+	if($_GET['box'] == 'inbox') { $box = 'inbox'; add_page_info('title', 'Görev Kutusu - Gelen'); }
+	elseif($_GET['box'] == 'outbox') { $box = 'outbox'; add_page_info('title', 'Görev Kutusu - Giden'); }
+	elseif($_GET['box'] == 'trash') { $box = 'trash'; add_page_info('title', 'Görev Kutusu - Çöp'); }
 } else { $box = 'inbox'; }
 
 # durum bilgisi

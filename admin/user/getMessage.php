@@ -1,6 +1,6 @@
 <?php if ( isset($_GET['session_id']) AND isset($_GET['get_message']) AND isset($_GET['query_message']) AND isset($_GET['type']) ) { session_id($_GET['session_id']); } else { exit; } ?>
 <?php include ('../../tilpark.php'); ?>
-<?php if ( !is_login() AND empty($_GET['get_message']) AND empty($_GET['query_message']) AND empty($_GET['type']) ) { exit; } 
+<?php if ( !is_login() AND empty($_GET['get_message']) AND empty($_GET['query_message']) AND empty($_GET['type']) ) { exit; }
 if ( $_GET['get_message'] == "old" AND isset($_GET['list_old_message']) ) {
   if ( $get_message = get_message($_GET['list_old_message'], array('type' => $_GET['type'])) ) :
   if ( $_GET['type'] == 'mess-reply' ) { $or_type = 'message'; } elseif ( $_GET['type'] == 'task-reply' ) { $or_type = 'task'; }
@@ -18,7 +18,7 @@ if ( $_GET['get_message'] == "old" AND isset($_GET['list_old_message']) ) {
           <div class="col-md-11 col-xs-9">
             <div class="well padding-10 br-3">
               <div class="text-muted fs-11 italic">
-                <span class="bold"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> tarafından <span class="bold" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> önce gönderildi.
+                <span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
               </div><!--/ .text-muted /-->
 
               <?php echo $message->message; ?>
@@ -35,9 +35,9 @@ if ( $_GET['get_message'] == "old" AND isset($_GET['list_old_message']) ) {
       </div><!--/ .message-elem /-->
     <?php endforeach; ?>
   <?php endif; ?>
-<?php endif; 
+<?php endif;
 } elseif ( $_GET['get_message'] == "new" AND isset($_GET['last_view_message']) AND isset($_GET['type']) ) {
-  $get_query = "type='". $_GET['type'] ."' AND id > '". $_GET['last_view_message'] ."' AND top_id='". $_GET['query_message'] ."' ORDER BY date_update DESC, id DESC LIMIT 10"; 
+  $get_query = "type='". $_GET['type'] ."' AND id > '". $_GET['last_view_message'] ."' AND top_id='". $_GET['query_message'] ."' ORDER BY date_update DESC, id DESC LIMIT 10";
   if ( $messages = get_messages(array('query'=>$get_query))): ?>
     <?php foreach($messages as $message): ?>
       <?php if ( $message->rec_u_id == get_active_user('id') ) { db()->query("UPDATE ".dbname('messages')." SET read_it='1' WHERE id='".$message->top_id."' "); } ?>
@@ -52,7 +52,7 @@ if ( $_GET['get_message'] == "old" AND isset($_GET['list_old_message']) ) {
           <div class="col-md-11 col-xs-9">
             <div class="well padding-10 br-3">
               <div class="text-muted fs-11 italic">
-                <span class="bold"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> tarafından <span class="bold" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> önce gönderildi.
+                <span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
               </div><!--/ .text-muted /-->
 
               <?php echo $message->message; ?>
