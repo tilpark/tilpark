@@ -345,6 +345,11 @@ table thead tr th a.orderby.text-muted {
 }
 .bootstrap-select {
   width: 100% !important;
+  border: 1px solid #aaaaaa;
+}
+.bootstrap-select .btn {
+  border: 1px solid #aaaaaa;
+  border-radius: 3px;
 }
 
 
@@ -1444,22 +1449,22 @@ form.panel-search .input-group .input-group-btn .btn i.fa {
   width: 100%;
 
 }
-.box-menu a:hover,.box-menu a:focus {
+.box-menu a:hover, .box-menu a:focus, .box-menu a:active {
   text-decoration: none;
 }
-.box-menu a span.count {
+.box-menu a span.icon-box {
   padding-top: 10px;
-    display: block;
-    font-size: 36px;
-    line-height: 24px;
-    letter-spacing: -1px;
-    margin-bottom: 5px;
-    font-weight: 400;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 6px;
-    border: 1px solid #d2d2d2;
-    color: #6a6a6a;
+  display: block;
+  font-size: 36px;
+  line-height: 24px;
+  letter-spacing: -1px;
+  margin-bottom: 5px;
+  font-weight: 400;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid #d2d2d2;
+  color: #6a6a6a;
 }
 .box-menu h3 {
   font-size: 12px;
@@ -1469,13 +1474,13 @@ form.panel-search .input-group .input-group-btn .btn i.fa {
   padding: 0;
   color:#4e4e4e;
 }
-.box-menu:hover > a span.count, .box-menu:focus > a span.count, .box-menu:active > a span.count {
+.box-menu:hover > a span.icon-box, .box-menu:focus > a span.icon-box, .box-menu:active > a span.icon-box {
   background-color: #f1f1f1;
 }
 .box-menu:hover > a h3 {
   color: #000;
 }
-.box-menu .count {
+.box-menu .icon-box {
   font-size: 28px;
 }
 .box-menu.right {
@@ -1490,7 +1495,7 @@ form.panel-search .input-group .input-group-btn .btn i.fa {
     border: 1px solid transparent;
     box-shadow: none;
   }
-  .box-menu a span.count {
+  .box-menu a span.icon-box {
     padding-top: 10px;
     display: block;
     font-size: 36px;

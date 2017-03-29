@@ -65,7 +65,7 @@ function set_page_info($arr='')
 			if(strlen($arr['title']) < 1) { $arr['title'] = 'Tilpark!'; }
 			?>
 				$('h3.page-title').html('<?php echo $arr["title"]; ?>');
-				document.title = '<?php echo $arr["title"]; ?>';
+				document.title = '<?php echo $arr["title"]; if($arr["title"] != 'Tilpark!') { echo ' | Tilpark!';} ?>';
 			<?php
 		}
 
@@ -380,7 +380,7 @@ function theme_get_logs($query=array()) {
 				<tr>
 					<?php if(til_is_mobile()): ?>
 						<th class="none"></th>
-						<th width="100">Tarih</th>
+						<th width="130">Tarih</th>
 						<th>Açıklama</th>
 					<?php else: ?>
 						<th class="none"></th>

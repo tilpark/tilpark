@@ -15,7 +15,7 @@ add_page_info( 'title', 'Yönetim Paneli' );
 			<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
 				<div class="box-menu">
 					<a href="<?php site_url('admin/account/'); ?>">
-						<span class="count"><i class="fa fa-users"></i></span>
+						<span class="icon-box"><i class="fa fa-users"></i></span>
 						<h3>Hesap</h3>
 					</a>
 				</div> <!-- /.box-menu -->
@@ -23,7 +23,7 @@ add_page_info( 'title', 'Yönetim Paneli' );
 			<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
 				<div class="box-menu">
 					<a href="<?php site_url('admin/item/'); ?>">
-						<span class="count"><i class="fa fa-cubes"></i></span>
+						<span class="icon-box"><i class="fa fa-cubes"></i></span>
 						<h3>Ürün</h3>
 					</a>
 				</div> <!-- /.box-menu -->
@@ -31,7 +31,7 @@ add_page_info( 'title', 'Yönetim Paneli' );
 			<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
 				<div class="box-menu">
 					<a href="<?php site_url('admin/form/'); ?>">
-						<span class="count"><i class="fa fa-shopping-cart"></i></span>
+						<span class="icon-box"><i class="fa fa-shopping-cart"></i></span>
 						<h3>Giriş - Çıkış</h3>
 					</a>
 				</div> <!-- /.box-menu -->
@@ -39,7 +39,7 @@ add_page_info( 'title', 'Yönetim Paneli' );
 			<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
 				<div class="box-menu">
 					<a href="<?php site_url('admin/payment/'); ?>">
-						<span class="count"><i class="fa fa-bank"></i></span>
+						<span class="icon-box"><i class="fa fa-bank"></i></span>
 						<h3>Kasa</h3>
 					</a>
 				</div> <!-- /.box-menu -->
@@ -47,7 +47,7 @@ add_page_info( 'title', 'Yönetim Paneli' );
 			<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
 				<div class="box-menu">
 					<a href="<?php site_url('admin/user/'); ?>">
-						<span class="count"><i class="fa fa-user-o"></i></span>
+						<span class="icon-box"><i class="fa fa-user-o"></i></span>
 						<h3>Personel</h3>
 					</a>
 				</div> <!-- /.box-menu -->
@@ -55,7 +55,7 @@ add_page_info( 'title', 'Yönetim Paneli' );
 			<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
 				<div class="box-menu">
 					<a href="<?php site_url('admin/user/'); ?>">
-						<span class="count"><i class="fa fa-cogs"></i></span>
+						<span class="icon-box"><i class="fa fa-cogs"></i></span>
 						<h3>Sistem</h3>
 					</a>
 				</div> <!-- /.box-menu -->

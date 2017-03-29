@@ -1,7 +1,7 @@
 <?php include('../../tilpark.php'); ?>
 <?php get_header(); ?>
 <?php
-add_page_info( 'title', 'Ürün Kartları' );
+add_page_info( 'title', 'Ürün Kartları Listesi' );
 add_page_info( 'nav', array('name'=>'Ürün Yönetimi', 'url'=>get_site_url('admin/item/') ) );
 add_page_info( 'nav', array('name'=>'Ürün Kartları Listesi') );
 ?>
@@ -56,8 +56,8 @@ if( til_is_mobile() ) {
 					  </button>
 					  <ul class="dropdown-menu dropdown-menu-right">
 					  	<li class="dropdown-header"><i class="fa fa-download"></i> PDF AKTAR</li>
-					    <li><a href="<?php echo str_replace('list.php', 'export.php', set_url_parameters(array('add'=> array('export'=>'pdf')))); ?>">Aktif Listeyi Aktar</a></li>
-					    <li><a href="<?php echo str_replace('list.php', 'export.php', set_url_parameters(array('add'=> array('export'=>'pdf', 'limit'=>'false')))); ?>">Hepsini Aktar <sup class="text-muted">(<?php echo $accounts->num_rows; ?>)</sup></a></li>
+					    <li><a href="<?php echo str_replace('list.php', 'export.php', get_set_url_parameters(array('add'=> array('export'=>'pdf')))); ?>">Aktif Listeyi Aktar</a></li>
+					    <li><a href="<?php echo str_replace('list.php', 'export.php', get_set_url_parameters(array('add'=> array('export'=>'pdf', 'limit'=>'false')))); ?>">Hepsini Aktar <sup class="text-muted">(<?php echo $items->num_rows; ?>)</sup></a></li>
 					  </ul>
 					</div>
 
@@ -69,8 +69,8 @@ if( til_is_mobile() ) {
 					  </button>
 					  <ul class="dropdown-menu dropdown-menu-right">
 					  	<li class="dropdown-header"><i class="fa fa-download"></i> EXCEL AKTAR</li>
-					    <li><a href="<?php echo str_replace('list.php', 'export.php', set_url_parameters(array('add'=> array('export'=>'excel')))); ?>">Aktif Listeyi Aktar</a></li>
-					    <li><a href="<?php echo str_replace('list.php', 'export.php', set_url_parameters(array('add'=> array('export'=>'excel', 'limit'=>'false')))); ?>">Hepsini Aktar <sup class="text-muted">(<?php echo $accounts->num_rows; ?>)</sup></a></li>
+					    <li><a href="<?php echo str_replace('list.php', 'export.php', get_set_url_parameters(array('add'=> array('export'=>'excel')))); ?>">Aktif Listeyi Aktar</a></li>
+					    <li><a href="<?php echo str_replace('list.php', 'export.php', get_set_url_parameters(array('add'=> array('export'=>'excel', 'limit'=>'false')))); ?>">Hepsini Aktar <sup class="text-muted">(<?php echo $items->num_rows; ?>)</sup></a></li>
 					  </ul>
 					</div>
 
@@ -82,8 +82,11 @@ if( til_is_mobile() ) {
 					  </button>
 					  <ul class="dropdown-menu dropdown-menu-right">
 					  	<li class="dropdown-header"><i class="fa fa-file-o"></i> YAZDIR</li>
-					    <li><a href="<?php echo str_replace('list.php', 'export.php', set_url_parameters(array('add'=> array('export'=>'print')))); ?>" target="_blank">Aktif Listeyi Yazır</a></li>
-					    <li><a href="<?php echo str_replace('list.php', 'export.php', set_url_parameters(array('add'=> array('export'=>'print', 'limit'=>'false')))); ?>" target="_blank">Hepsini Yazdır <sup class="text-muted">(<?php echo $accounts->num_rows; ?>)</sup></a></li>
+					    <li><a href="<?php echo str_replace('list.php', 'export.php', get_set_url_parameters(array('add'=> array('export'=>'print')))); ?>" target="_blank">Aktif Listeyi Yazdır</a></li>
+					    <li><a href="<?php echo str_replace('list.php', 'export.php', get_set_url_parameters(array('add'=> array('export'=>'print', 'limit'=>'false')))); ?>" target="_blank">Hepsini Yazdır <sup class="text-muted">(<?php echo $items->num_rows; ?>)</sup></a></li>
+					    <li class="divider"></li>
+					    <li><a href="<?php echo str_replace('list.php', 'export.php', get_set_url_parameters( array('add'=> array('export'=>'print', 'addBarcode'=>true)) )); ?>" target="_blank">Barkodlu Aktif Listeyi Yazır</a></li>
+					    <li><a href="<?php echo str_replace('list.php', 'export.php', get_set_url_parameters( array('add'=> array('export'=>'print', 'limit'=>'false', 'addBarcode'=>true)) )); ?>" target="_blank">Barkodlu Hepsini Yazdır <sup class="text-muted">(<?php echo $items->num_rows; ?>)</sup></a></li>
 					  </ul>
 					</div>
 
@@ -105,8 +108,8 @@ if( til_is_mobile() ) {
 					</tr>
 				<?php else : ?>
 					<tr>
+						<th width="200">Ürün Kodu <?php echo get_table_order_by('code', 'ASC'); ?></th>
 						<th>Ürün Adı <?php echo get_table_order_by('name', 'ASC'); ?></th>
-						<th>Ürün Kodu <?php echo get_table_order_by('code', 'ASC'); ?></th>
 						<th width="100">Maliyet Fiyatı <?php echo get_table_order_by('p_purc', 'ASC'); ?></th>
 						<th width="100">Satış Fiyatı <?php echo get_table_order_by('p_sale', 'ASC'); ?></th>
 						<th width="100">Miktar <?php echo get_table_order_by('quantity', 'ASC'); ?></th>
@@ -124,8 +127,8 @@ if( til_is_mobile() ) {
 					</tr>
 				<?php else : ?>
 					<tr>
+						<td><a href="detail.php?id=<?php echo $item->id; ?>"><?php echo $item->code; ?></a></td>
 						<td><a href="detail.php?id=<?php echo $item->id; ?>"><?php echo $item->name; ?></a></td>
-						<td><?php echo $item->code; ?></td>
 						<td class="text-right"><?php set_money($item->p_purc, true); ?></td>
 						<td class="text-right"><?php set_money($item->p_sale, true); ?></td>
 						<td class="text-center"><?php echo $item->quantity; ?></td>

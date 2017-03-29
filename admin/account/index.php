@@ -13,7 +13,7 @@ add_page_info( 'nav', array('name'=>'Hesap Yönetimi') );
 			<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
 				<div class="box-menu">
 					<a href="<?php site_url('admin/account/add.php'); ?>">
-						<span class="count"><i class="fa fa-plus-square-o"></i></span>
+						<span class="icon-box"><i class="fa fa-plus-square-o"></i></span>
 						<h3>Yeni</h3>
 					</a>
 				</div> <!-- /.box-menu -->
@@ -21,7 +21,7 @@ add_page_info( 'nav', array('name'=>'Hesap Yönetimi') );
 			<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
 				<div class="box-menu">
 					<a href="<?php site_url('admin/account/list.php'); ?>">
-						<span class="count"><i class="fa fa-list"></i></span>
+						<span class="icon-box"><i class="fa fa-list"></i></span>
 						<h3>Hesap Kartları</h3>
 					</a>
 				</div> <!-- /.box-menu -->

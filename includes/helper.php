@@ -32,7 +32,7 @@ function export_pdf($filename='', $ops=array()) {
 	if( !isset($ops['paper']) ) { $ops['paper']='A4'; }
 	if( !isset($ops['landscape']) ) { $ops['landscape']=''; }
 
-	require_once root_path('includes/lib/dompdf/export_pdf.php');
+	require_once get_root_path('includes/lib/dompdf/export_pdf.php');
 }
 
 

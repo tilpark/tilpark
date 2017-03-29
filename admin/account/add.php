@@ -95,7 +95,7 @@ if(@empty($_POST['code'])) {
 			<div class="col-xs-6 col-md-4">
 				<div class="form-group country_selected">
 					<label for="country">Ülke</label>
-					<?php echo list_selectbox(get_country_array(), array('name'=>'country', 'selected'=>'TURKEY', 'class'=>'form-control select select-account input-sm')); ?>
+					<?php echo list_selectbox(get_country_array(), array('name'=>'country', 'selected'=>'TURKEY', 'class'=>'form-control select select-account')); ?>
 				</div> <!-- /.form-group -->
 			</div> <!-- /.col -->
 		</div> <!-- /.row -->

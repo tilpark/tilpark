@@ -75,7 +75,6 @@ add_page_info( 'nav', array('name'=>$account->name) );
 	<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-print"></i> <span class="hidden-xs">Yazdır</span> <span class="caret"></span></a> 
 		<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
 			<li><a href="print-statement.php?id=<?php echo $account->id; ?>&print" target="_blank"><i class="fa fa-file-text-o fa-fw"></i> Ekstre Yazdır</a></li>
-			<li><a href="print-statement-detail.php?id=<?php echo $account->id; ?>&print" target="_blank"><i class="fa fa-file-text-o fa-fw"></i> Detaylı Ekstre Yazdır</a></li>
 			<li class="divider"></li>
 			<li><a href="print-address.php?id=<?php echo $account->id; ?>&print" target="_blank"><i class="fa fa-address-book-o fa-fw"></i> Adres Kartı Yazdır</a></li>
 		</ul> 
@@ -150,7 +149,7 @@ add_page_info( 'nav', array('name'=>$account->name) );
 								<div class="col-xs-6 col-md-4">
 									<div class="form-group country_selected">
 										<label for="country">Ülke</label>
-										<?php echo list_selectbox(get_country_array(), array('name'=>'country', 'selected'=>$account->country, 'class'=>'form-control select select-account input-sm')); ?>
+										<?php echo list_selectbox(get_country_array(), array('name'=>'country', 'selected'=>$account->country, 'class'=>'form-control select select-account')); ?>
 									</div> <!-- /.form-group -->
 								</div> <!-- /.col-md-4 -->
 							</div> <!-- /.row -->

@@ -241,7 +241,7 @@ function get_accounts($args=array()) {
 			$query = db()->query( $query_str_real ); // listeleme icin sorgu yapalim
 			$return->display_num_rows = $query->num_rows; // gosterilen kayit sayisi
 			
-			while($account = $query->fetch_assoc())
+			while($account = $query->fetch_object())
 			{
 				$return->list[] = $account;
 			}
