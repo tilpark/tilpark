@@ -38,6 +38,13 @@ $(document).ready( function() {
 	/** money format */
 	$('.money').number( true, 2, '.', ',', true);
 		// cep telefonlari icin money hack
+		$("input[type=tel]").each(function() {
+			$(this).attr('type', 'text');
+			$('.money').number( true, 2, '.', ',', true);
+			$(this).attr('type', 'tel');
+		});
+		
+
 		$(".money").keypress(function () {
 			if($(this).attr('type') == 'tel') {
 				$(this).attr('data-type', 'tel');
@@ -235,10 +242,13 @@ $(document).ready( function() {
 	  size: 4,
 	  refresh:true
 	});
-
+	
 
 	/* colorpicker */
 	$('.colorpicker').colorpicker();
+
+
+	
 
 });
 

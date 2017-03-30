@@ -19,8 +19,8 @@ if(!isset($print['footer'])) { $print['footer'] = true; }
 
 	<?php if(@$print['title']): ?>
 		<div class="text-center absolute full-width">
-			<h3 class="content-title text-center m-0"><?php echo $print['title']; ?></h3>
-			<h4 class="content-title text-center m-0"><?php echo $print['sub-title']; ?></h4>
+			<h3 class="content-title text-center m-0"><?php echo @$print['title']; ?></h3>
+			<h4 class="content-title text-center m-0"><?php echo @$print['sub-title']; ?></h4>
 		</div> <!-- /.text-center -->
 	<?php endif; ?>
 

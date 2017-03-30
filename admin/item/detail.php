@@ -4,7 +4,7 @@
 	get_header();
 	add_page_info( 'title', 'Ürün Kartı Bulunamadı' );
 	add_page_info( 'nav', array('name'=>'Ürün Yönetimi', 'url'=>get_site_url('admin/item/') ) );
-	add_page_info( 'nav', array('name'=>'Ürün Kartları Listesi', 'url'=>get_site_url('admin/item/list.php') ) );
+	add_page_info( 'nav', array('name'=>'Liste', 'url'=>get_site_url('admin/item/list.php') ) );
 	add_page_info( 'nav', array('name'=>'Ürün Kartı Bulunamadı') );
 		print_alert(); 
 	get_footer();
@@ -35,7 +35,7 @@ if(isset($_GET['status'])) {
 <?php
 add_page_info( 'title', $item->name );
 add_page_info( 'nav', array('name'=>'Ürün Yönetimi', 'url'=>get_site_url('admin/item/') ) );
-add_page_info( 'nav', array('name'=>'Ürün Kartları Listesi', 'url'=>get_site_url('admin/item/list.php') ) );
+add_page_info( 'nav', array('name'=>'Ürün Listesi', 'url'=>get_site_url('admin/item/list.php') ) );
 add_page_info( 'nav', array('name'=>$item->name ) );
 ?>
 

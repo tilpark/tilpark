@@ -214,11 +214,20 @@ sure_baslat();
 <main>
 
 <div class="breadcrumb-header">
-  <h3 class="page-title"></h3>
+  
+  <?php if(til_is_mobile()): ?>
+    <?php if(!is_home()): ?>
+      <ol class="breadcrumb til-breadcrumb visible-xs">
+        <li><a href="<?php site_url(); ?>"><i class="fa fa-home"></i> Yönetim Paneli</a></li>
+      </ol>
+    <?php endif; ?>
+  <?php else: ?>
+    <ol class="breadcrumb til-breadcrumb hidden-xs">
+      <li><a href="<?php site_url(); ?>"><i class="fa fa-home"></i> Yönetim Paneli</a></li>
+    </ol>
+  <?php endif; ?>
+  <h3 class="page-title" substring-xs="26"></h3>
 
-  <ol class="breadcrumb hidden-xs">
-    <li><a href="<?php site_url(); ?>"><i class="fa fa-home"></i> Yönetim Paneli</a></li>
-  </ol>
 </div>
 
 <div class="clearfix"></div>

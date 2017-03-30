@@ -6,8 +6,6 @@ add_page_info( 'title', 'Yönetim Paneli' );
 
 
 
-
-
 <div class="row">
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 
@@ -40,7 +38,7 @@ add_page_info( 'title', 'Yönetim Paneli' );
 				<div class="box-menu">
 					<a href="<?php site_url('admin/payment/'); ?>">
 						<span class="icon-box"><i class="fa fa-bank"></i></span>
-						<h3>Kasa</h3>
+						<h3>Kasa/Banka</h3>
 					</a>
 				</div> <!-- /.box-menu -->
 			</div> <!-- /.col-* -->

@@ -10,7 +10,9 @@
  *    3.1 -
  *    3.2 - Dropdown Message List
  * 4.0 - Global
- * 5.0 -
+ * 5.0 - Dashboard Menu and Other
+ *    5.1 - Box Menu
+ *    5.2 - List Menu
  * 6.0 -
  *   6.1 -
  *   6.2 -
@@ -204,7 +206,12 @@ label.error {
 /* table */
 table thead {
   font-size: 13px;
-  background-color: #f1f1f1;
+  background-color: #f1f1f1 !important;
+  -webkit-print-color-adjust: exact !important;
+}
+table thead tr td, table thead tr th {
+  background-color: #f1f1f1 !important;
+  -webkit-print-color-adjust: exact !important;
 }
 table tbody tr td {
   font-size: 12px;
@@ -658,7 +665,11 @@ table thead tr th a.orderby.text-muted {
 .panel .panel-heading .panel-menu .btn-group .btn {
   text-align: center;
 }
-
+@media (max-width: 768px) {
+  .panel {
+    border-radius: 0px;
+  }
+}
 
 
 
@@ -748,14 +759,16 @@ table.dataTable thead.none {
 
 
 @media (max-width: 768px) and (orientation: portrait) {
-    .hidden-xs-portrait { display: none!important; }
-    .visible-xs-portrait { display: block!important; }
-    td.visible-xs-portrait, th.visible-xs-portrait {  display: table-cell!important; }
+  .hidden-xs-portrait { display: none!important; }
+  .visible-xs-portrait { display: block!important; }
+  td.visible-xs-portrait, th.visible-xs-portrait {  display: table-cell!important; }
+  .visible-xs-portrait-inline { display: inline-block!important; }
 }
-@media (max-width: 768px)) and (orientation: landscape) {
-    .hidden-xs-landscape { display: none!important; }
-    .visible-xs-landscape { display: block!important; }
-    td.visible-xs-landscape, th.visible-xs-landscape {  display: table-cell!important; }
+@media (max-width: 768px) and (orientation: landscape) {
+  .hidden-xs-landscape { display: none!important; }
+  .visible-xs-landscape { display: block!important; }
+  td.visible-xs-landscape, th.visible-xs-landscape {  display: table-cell!important; }
+  .visible-xs-landscape-inline { display: inline-block!important; }
 }
 
 
@@ -912,12 +925,15 @@ header .dropdown-message-list li a {
 @media (max-width: 768px) {
   .breadcrumb-header {
     margin-top: -15px;
-    text-align: center;
+    text-align:right;
   }
   .breadcrumb-header h3.page-title {
     font-size: 16px;
-    text-align: center;
-    font-family: 'Lato', sans-serif;
+    text-align: right;
+  }
+  .til-breadcrumb {
+    position: absolute;
+    top: 2px;
   }
 }
 
@@ -1399,6 +1415,10 @@ form.panel-search .input-group .input-group-btn .btn i.fa {
   font-size: 12px;
   top: -3px !important;
 }
+form.panel-search .input-group .input-group-btn .btn.panel-search-btn {
+  margin: 0px;
+  border-left:0px;
+}
 @media (max-width: 768px) {
   form.panel-search {
     float: none;
@@ -1411,7 +1431,7 @@ form.panel-search .input-group .input-group-btn .btn i.fa {
     border-radius: 0px!important;
     border: 1px solid #ccc;
   }
-    form.panel-search .input-group .input-group-btn .btn {
+  form.panel-search .input-group .input-group-btn .btn {
     height: 32px;
     padding: 0 10px;
     margin-right: -2px;
@@ -1419,6 +1439,11 @@ form.panel-search .input-group .input-group-btn .btn i.fa {
     font-size: 12px;
     color: #848484;
   }
+  form.panel-search .input-group .input-group-btn .btn.panel-search-btn {
+    margin: 0px;
+    border-left:0px;
+  }
+  
 }
 
 
@@ -1433,7 +1458,15 @@ form.panel-search .input-group .input-group-btn .btn i.fa {
 
 
 
-/* box-menu */
+
+
+
+
+/**
+ * 5.0 Dashboard Menu and Other
+ */
+
+/* 5.1 box menu */
 .box-menu {
   border-radius: 1px;
   text-align: center;
@@ -1512,6 +1545,23 @@ form.panel-search .input-group .input-group-btn .btn i.fa {
     color: #6a6a6a;
   }
 }
+
+
+/* 5.2 list menu */
+.list-menu.list-group {
+
+}
+.list-menu.list-group .list-group-item {
+  border-left:0px;
+  border-right: 0px;
+}
+.list-menu.list-group .list-group-item:first-child {
+  border-radius: 0px;
+}
+.list-menu.list-group .list-group-item:last-child {
+  border-radius: 0px;
+}
+
 
 
 
@@ -1744,6 +1794,8 @@ ul.sidebar-menu li ul li a i.fa {
   font-weight: bold;
 }
 
+
+
 /* liveData */
 .liveData .dropdown-menu {
   border-radius: 0px;
@@ -1884,8 +1936,18 @@ footer {
  */
 
 
+@media (max-width: 768px) {
+  .mobile-full {
+    margin: 0 -10px !important;
+    border-radius: 0px;
+    border-left:0px;
+    border-right: 0px;
+  }
+}
 
-/* switch */
+
+
+/* 17.1 switch */
 .til-switch {
   position: relative;
   display: inline-block;

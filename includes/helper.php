@@ -184,6 +184,31 @@ function til_get_substr($val, $start, $end, $args='...') {
 
 
 
+/**
+ * til_get_abbreviation()
+ *
+ */
+function til_get_abbreviation($str, $max_length=2) {
+
+    if(preg_match_all('/\b(\w)/',strtoupper($str),$m)) {
+        $v = implode('',$m[1]);
+         echo substr($v,0,$max_length);
+    }  else {
+        return false;
+    }
+
+   
+}
+
+
+
+
+
+function til_active_site_url() {
+    return 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
+}
+
+
 
 
 /* --------------------------------------------------- HELPER - STRING - CONVERTING */

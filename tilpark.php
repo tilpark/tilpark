@@ -148,6 +148,19 @@ function template_url($val='')
 
 
 
+function is_home() {
+	if(til_active_site_url() == get_site_url()) {
+		return true;
+		exit;
+	} elseif(str_replace('index.php', '', til_active_site_url()) == get_site_url()) {
+		return true;
+		exit;
+	} else { return false; }
+}
+
+
+
+
 /* --------------------------------------------------- INCLUDE FUNCTIONS */
 til_include('db');
 til_include('lang');
@@ -196,7 +209,6 @@ if(!get_magic_quotes_gpc()) {
 
 /* --------------------------------------------------- DEFAULT FUNCTIONS */
 is_login();
-
 
 
 

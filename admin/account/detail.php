@@ -3,7 +3,7 @@
 if(!$account = get_account($_GET['id'])) {
 	add_page_info( 'title', 'Hesap Kartı');
 	add_page_info( 'nav', array('name'=>'Hesap Yönetimi', 'url'=>get_site_url('admin/account/') ) );
-	add_page_info( 'nav', array('name'=>'Hesap Kartları Listesi', 'url'=>get_site_url('admin/account/list.php') ) );
+	add_page_info( 'nav', array('name'=>'Hesap Listesi', 'url'=>get_site_url('admin/account/list.php') ) );
 	add_page_info( 'nav', array('name'=>'Hesap Kartı') );
 	get_header();
 		print_alert();
@@ -40,7 +40,7 @@ $account = get_account($_GET['id'], false);
 # sayfa bilgilerini ekle
 add_page_info( 'title', $account->name );
 add_page_info( 'nav', array('name'=>'Hesap Yönetimi', 'url'=>get_site_url('admin/account/') ) );
-add_page_info( 'nav', array('name'=>'Hesap Kartları Listesi', 'url'=>get_site_url('admin/account/list.php') ) );
+add_page_info( 'nav', array('name'=>'Hesap Listesi', 'url'=>get_site_url('admin/account/list.php') ) );
 add_page_info( 'nav', array('name'=>$account->name) );
 ?>
 

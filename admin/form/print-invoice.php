@@ -1,144 +1,113 @@
-<?php include('../../tilpark.php'); ?>
-<link href="<?php echo template_url('css/print.css'); ?>" rel="stylesheet">
-<link href="<?php echo template_url('css/tilpark.css'); ?>" rel="stylesheet">
-<?php if(isset($_GET['id'])): ?>
-	<?php if(!$form = get_form($_GET['id'])) { exit('form bulunamadı.'); } ?>
-<?php else: exit('form id gerekli'); endif; ?>
+<?php require_once('../../tilpark.php'); ?>
+<?php 
+if(isset($_GET['id'])) {
+	if(!$form = get_form($_GET['id'])) {
 
-<?php $form_meta = get_form_metas($form->id); ?>
-
-<style>
-.you-company-address {
-	position: absolute;
-	left: 20px;
-	top: 20px;
+	}
 }
+?>
+<?php include_content_page('print-invoice', @$form->template, 'form', array('form'=>@$form)); ?>
 
-.document-detail {
-	position: absolute;
-	top: 140px;
-	width: 100%;
-}
+<?php $form_meta = get_form_meta($form->id); ?>
+ 
+<?php if($form->in_out != '1') { exit('Sadece çıkış formları yazdırılabilir.'); }; ?>
 
-</style>
-
-
-
-<title>Ödeme Formu - <?php echo $form->account_name; ?></title>
-
-<div class="print-page" size="A4">
-
-	<div class="document-info-right">
-		<div class="fs-12"><strong class="col-title">Tarih</strong> : <?php echo substr($form->date,0,16); ?></div>
-		<div class="h-10"></div>
-		<div><img src="<?php barcode_url('TILF-'.$form->id); ?>" /></div>
-		<div class="ml-15">TILF-<?php echo $form->id; ?></div>
-	</div> <!-- /.document-info-right -->
-
+	<?php
+	$print['title'] = 'FATURA';
+	$print['date']		= $form->date;
+	$print['logo'] = false;
+	?>
+	<?php get_header_print($print); ?>
 	
-		<div class="you-company-address">
-			<div style="background-color:#e8e8e8; padding:10px; border-radius:3px;">
-				<div class="fs-14 bold"><?php echo $form->account_name; ?></div>
-				<div class="fs-12"><?php echo $form_meta['address']->val; ?></div>
-				<div class="fs-12"><?php echo $form_meta['district']->val; ?> / <?php echo $form->account_city; ?> - <?php echo $form_meta['country']->val; ?></div>
-				<div class="fs-12"><?php echo $form->account_gsm; ?> / <?php echo $form->account_phone; ?></div>
+	<!-- asagidaki satiri siliniz -->
+	<?php echo get_alert('Bu fatura ciktisini kendi fatura duzeninize gore degistirebilirsiniz. <br /> <b>"/content/pages/form/print-invoice.php"</b> <br /><br /> Ayrintili bilgi icin tilpark.org forumlarini ve dokumanlarini ziyaret ediniz.'); ?>
+	<!-- yukaridaki satiri siliniz -->
+
+	<div class="clearfix"></div>	
+	<div class="h-20"></div>
+
+	<div class="row">
+		<div class="col-xs-6">
+
+			<div class="p-10 br-3">
+				<div class="fs-14 bold"><?php echo til()->company->name; ?></div>
+				<div class="fs-11"><?php echo til()->company->address; ?></div>
+				<div class="fs-11"><?php echo til()->company->district; ?><?php echo til()->company->city ? '/' : ''; ?><?php echo til()->company->city; ?><?php echo til()->company->country ? ' - ' : ''; ?><?php echo til()->company->country; ?></div>
+				<div class="fs-11"><?php echo get_set_show_phone(til()->company->phone); ?></div>
+				<div class="fs-11"><?php echo til()->company->email; ?></div>
 			</div>
-		</div> <!-- /.i-company-address -->
-
-
-
-	<div class="document-detail">
 		
+		</div> <!-- /.col-md-* -->
+		<div class="col-xs-6">
 
-		<?php $form_items = get_form_items($form->id); ?>
-		<div class="not-found"><?php print_alert('add_form_item'); ?></div>
-		<div class="not-found"><?php print_alert('delete_form_item'); ?></div>
-		<table >
-			<thead>
-				<tr class="border-none">
-					<th>Ürün Kodu</th>
-					<th>Ürün Adı</th>
-					<th>Adet</th>
-					<th>B. Fiyatı</th>
-					<th>Toplam</th>
-					<th>Kdv</th>
-					<th>Kdv Tutarı</th>
-					<th>Tutar</th>
-				</tr>
-			</thead>
+			<div class="bg-gray p-10 br-3">
+				<div class="fs-14 bold"><?php echo $form->account_name; ?></div>
+				<div class="fs-11"><?php echo $form_meta->address; ?></div>
+				<div class="fs-11"><?php echo $form_meta->district; ?><?php echo $form->account_city ? '/' : ''; ?><?php echo $form->account_city; ?><?php echo $form_meta->country ? ' - ' : ''; ?><?php echo $form_meta->country; ?></div>
+				<div class="fs-11"><?php echo get_set_show_phone($form->account_gsm); ?><?php echo $form->account_phone ? ' - ' : ''; ?><?php echo get_set_show_phone($form->account_phone); ?></div>
+				<div class="fs-11"><?php echo $form->account_tax_home ? 'V. Dairesi: '.$form->account_tax_home : ''; ?> <?php echo ($form->account_tax_home and $form->account_tax_no) ? ' - ': ''; ?> <?php echo $form->account_tax_no ? 'V. No: '.$form->account_tax_no : ''; ?></div>
+				<?php if($form->account_email): ?><div class="fs-11"><?php echo $form->account_email; ?></div><?php endif; ?>
+			</div>
+
+		</div> <!-- /.col-md-* -->
+	</div> <!-- /.row -->
+
+
+	<?php echo $form_meta->note; ?>
+
+	<div class="clearfix"></div>
+	<div class="h-20"></div>
+
+	<table class="table table-hover table-bordered table-condensed table-striped">
+		<thead>
+			<tr>
+				<th>Ürün Kodu</th>
+				<th>Ürün Adı</th>
+				<th>Adet</th>
+				<th>B. Fiyatı</th>
+				<th>Toplam</th>
+				<th>Kdv</th>
+				<th>Kdv Tutarı</th>
+				<th>Tutar</th>
+			</tr>
+		</thead>
+		<?php if($form_items = get_form_items($form->id)): ?>
 			<tbody>
-				<?php if($form_items): ?>
-					<?php
-					$total_vat = 0;
-					?>
-					<?php foreach($form_items->list as $item): ?>
-						<tr>
-							<td>
-								<?php if(isset($_GET['barcode'])): ?>
-									<img src="<?php barcode_url('TILI-'.$item->id); ?>" /><br />
-								<?php endif; ?>
-								<?php echo $item->item_code; ?>
-							</td>
-							<td><?php echo $item->item_name; ?></td>
-							<td style="text-align:center;"><?php echo $item->quantity; ?></td>
-							<td style="text-align:right;"><?php echo get_set_money($item->price, true); ?></td>
-							<td style="text-align:right;"><?php echo get_set_money($item->total, true); ?></td>
-							<td style="text-align:center;"><?php echo $item->vat; ?></td>
-							<td style="text-align:right;"><?php echo get_set_money($item->vat_total, true); ?></td>
-							<td style="text-align:right;"><?php echo get_set_money($item->total, true); ?></td>
-						</tr>
+				<?php 
+				$_total_quantity = 0;
 
-						<?php
-						$total_vat = $total_vat + $item->vat_total;
-						?>
-					<?php endforeach; ?>
-				<?php endif; ?>
+				?>
+				<?php foreach($form_items->list as $item): ?>
+					<?php $_total_quantity = $_total_quantity + $item->quantity; ?>
+					<tr>
+						<td>
+							<?php if( isset($_GET['showBarcode']) ): ?>
+								<img src="<?php echo get_barcode_url( $item->item_code, array('position'=>'left') ); ?>" /><br />
+							<?php endif; ?>
+							<?php echo $item->item_code; ?>	
+						</td>
+						<td><?php echo $item->item_name; ?></td>
+						<td class="text-center"><?php echo $item->quantity; ?></td>
+						<td class="text-right"><?php echo get_set_money($item->price,'str'); ?></td>
+						<td class="text-right"><?php echo get_set_money(($item->price * $item->quantity), 'str'); ?></td>
+						<td class="text-center">% <?php echo $item->vat; ?></td>
+						<td class="text-right"><?php echo get_set_money($item->vat_total,'str'); ?></td>
+						<td class="text-right"><?php echo get_set_money($item->total,'str'); ?></td>
+					</tr>
+				<?php endforeach; ?>
 			</tbody>
 			<tfoot>
 				<tr>
-					<th colspan="2"></th>
-					<th style="text-align:center;"><?php echo @$form->item_quantity; ?></th>
-					<th colspan="3"></th>
-					<th style="text-align:right;"><?php echo get_set_money(@$total_vat, true); ?></th>
-					<th style="text-align:right;"><?php echo get_set_money(@$form->total, true); ?></th>
+					<td colspan="2"></td>
+					<td class="text-center"><?php echo $form->item_quantity; ?></td>
+					<td colspan="3"></td>
+					<td></td>
+					<td class="text-right"><?php echo get_set_money($form->total,'str'); ?></td>
 				</tr>
 			</tfoot>
-		</table>
-	</div> <!-- /.panel -->
-		
+		<?php endif; ?>
+	</table>
 
 
 	
-	</div> <!-- /.document-detail -->
-
-
-
-
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-<?php if(isset($_GET['print'])): ?>
-	<script>
-		setTimeout(function () { window.print(); }, 500);
-		setTimeout(function () { window.close(); }, 500);
-	</script>
-<?php endif; ?>
-
-
-
-
-
-
-
-
-
+<?php get_footer_print(array('footer'=>false)); ?>	

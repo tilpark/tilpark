@@ -47,29 +47,51 @@ function set_page_info($arr='')
 		$arr = til()->page;
 
 		?>
-		<script>$(document).ready(function(){ <?php
-		if(is_array(@$arr['nav'])) {
-			foreach($arr['nav'] as $nav)
-			{
-				if(!isset($nav['url']) or $nav['url'] == ''):
-					?> $(".breadcrumb").append( '<li class="active"><?php echo $nav['name']; ?></li>' ); <?php
-				else:
-					?> $(".breadcrumb").append( '<li><a href="<?php echo $nav['url']; ?>"><?php echo $nav['name']; ?></a></li>' ); <?php
-				endif;
-			}
-		}
+		<script>
+		$(document).ready(function(){ 
 
-		if(!isset($arr['title'])) { $arr['title'] = 'Deneme'; }
+			<?php if(is_array(@$arr['nav'])) {
+					foreach($arr['nav'] as $nav)
+					{
+						if(!isset($nav['url']) or $nav['url'] == ''):
+							if(!til_is_mobile()) { 
+								?> $(".til-breadcrumb").append( '<li class="active"><?php echo $nav['name']; ?></li>' ); <?php
+							} else {}
+						else:
+							if(til_is_mobile()) {
+								?> $(".til-breadcrumb").html( '<li><a href="<?php echo $nav['url']; ?>"><i class="fa fa-chevron-left"></i> <?php echo $nav['name']; ?></a></li>' ); <?php
+							} else {
+								?> $(".til-breadcrumb").append( '<li><a href="<?php echo $nav['url']; ?>"><?php echo $nav['name']; ?></a></li>' ); <?php
+							}
+						endif;
+					}
+				}
 
-		if(isset($arr['title'])) {
-			if(strlen($arr['title']) < 1) { $arr['title'] = 'Tilpark!'; }
+				if(!isset($arr['title'])) { $arr['title'] = 'Deneme'; }
+
+				if(isset($arr['title'])) {
+					if(strlen($arr['title']) < 1) { $arr['title'] = 'Tilpark!'; }
+					?>
+						$('h3.page-title').html('<?php echo $arr["title"]; ?>');
+						document.title = '<?php echo $arr["title"]; if($arr["title"] != 'Tilpark!') { echo ' | Tilpark!';} ?>';
+					<?php
+				}
+
 			?>
-				$('h3.page-title').html('<?php echo $arr["title"]; ?>');
-				document.title = '<?php echo $arr["title"]; if($arr["title"] != 'Tilpark!') { echo ' | Tilpark!';} ?>';
-			<?php
-		}
 
-		?>}); </script> <?php
+			$('[substring]').each(function() {
+				$(this).text($(this).text().substring(0,$(this).attr('substring') ));
+			});
+
+			<?php if(til_is_mobile()): ?>
+				$('[substring-xs]').each(function() {
+					$(this).text($(this).text().substring(0,$(this).attr('substring-xs') ));
+				});
+			<?php endif; ?>
+
+
+
+		}); </script> <?php
 	} else {
 		return false;
 	}
@@ -281,7 +303,7 @@ function search_form_for_panel($arr=array()) {
 				<?php endif; ?>
 		  </div><!-- /btn-group -->
 		  <input type="search" name="s" id="panel_s_<?php echo $arr['s_name']; ?>" class="form-control" placeholder="arama yapın" value="<?php echo @$_GET['s']; ?>">
-		  <div class="input-group-btn"><button type="submit" class="btn btn-default"><i class="fa fa-search"></i></span></button></div>
+		  <div class="input-group-btn"><button type="submit" class="btn btn-default panel-search-btn"><i class="fa fa-search"></i></span></button></div>
 
 		</div><!-- /input-group -->
 
