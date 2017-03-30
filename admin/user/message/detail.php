@@ -10,6 +10,9 @@ if(isset($_GET['id'])) {
 	if($message = get_message($_GET['id'])) {
 
 		$_message['top_id'] = $message->id;
+		if ( $message->rec_u_id != get_active_user('id') ) { $receiver = $message->rec_u_id; } else { $receiver = $message->rec_u_id; }
+
+		echo '<script type="text/javascript">eval("window.set_writing.top_id = '. $message->id .'; window.set_writing.receiver = '. $receiver .'; ")</script>';
 
 		// mesajlari okundu yapalim
 		if(get_active_user('id') == $message->inbox_u_id) {
@@ -89,7 +92,7 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 										<div class="message-elem  message-<?php echo $message->id; ?>" id="<?php echo $message->id; ?>" title="<?php echo $message->title; ?>" username="<?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?>">
 											<div class="message-elem-container">
 												<?php if(get_active_user('id') != $message->sen_u_id): ?>
-														<div class="message-elem-avatar pull-right">
+														<div class="message-elem-avatar pull-left">
 															<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
 														</div><!--/ .message-elem-avatar /-->
 												<?php endif; ?>
@@ -110,7 +113,7 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 														<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
 													</div><!--/ .message-elem-avatar /-->
 												<?php endif; ?>
-											</div><!-- /.row.space-5 /-->
+											</div><!-- /.message-elem-container /-->
 										</div><!--/ .message-elem /-->
 									<?php endforeach; ?>
 								<?php endif; ?>
@@ -120,7 +123,7 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 
 						<!--/ ADD MESSAGE REPLY /-->
 						<form name="form_message" id="form_message" onsubmit="return send_message(this, 'message')" autocomplete="off" action="" method="POST">
-							<div class="h-20"></div>
+							<div class="h-20 hidden-xs"></div>
 							<div class="row space-5">
 								<div class="col-md-1 hidden">
 									<label>&nbsp;</label>
@@ -132,12 +135,20 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 									<?php endif; ?>
 								</div> <!-- /.col-md-1 -->
 								<div class="col-md-11 col-xs-12">
-									<div class="form-group message-area">
+									<div class="form-group message-area chat-input">
+										<div class="user-input-control" js-onload="get_writing('.user-input-control')">
+											<div class="user-input-control-animate-container">
+												<div class="circle"></div>
+												<div class="circle"></div>
+												<div class="circle"></div>
+											</div>
+										</div><!--/ .user-input-control /-->
+
 										<?php if ( til_is_mobile() ) : ?>
-											<input autofocus type="text" name="message" id="message" required class="form-control send-message-input" value="" placeholder="Birşeyler yazın...">
+											<input autofocus type="text" onkeyup="if ( this.value.length > 0 ) { set_writing({'set_value': '1'}); } if ( event.keyCode == 13 ) { set_writing({'set_value': '0'}); } if ( event.keyCode == 8 ) { set_writing({'set_value': '2'}); } if ( this.value.length == 0 ) { set_writing({'set_value': '0'}); }" onfocusout="set_writing({'set_value': '0'})" onfocus="set_writing({'set_value': '1'})" name="message" id="message" required class="form-control send-message-input" value="" placeholder="Birşeyler yazın...">
 											<button type="button" class="send-message-image" onclick="document.getElementById('send-message-file').click()"><i class="fa fa-image"></i></button>
 											<button type="submit" class="send-message-submit"><i class="fa fa-send"></i></button>
-											<input type="file" name="" id="send-message-file" onchange="var chat_list = document.querySelector('.chat-container'); chat_list.classList.add('loader'); imageHandler(this.files[0], function(data) { if ( data == false ) { chat_list.classList.remove('loader'); } else { if ( document.getElementById('message').value = '<img src='+ data +' class=img-responsive>' ) { chat_list.classList.remove('loader'); document.querySelector('.send-message-submit').click(); } setTimeout(function() { list_scroll_bottom(document.querySelector('.chat-list')); }, 100)} })" value="" class="hidden">
+											<input type="file" name="" id="send-message-file" onchange="var chat_list = document.querySelector('.chat-container'); chat_list.classList.add('loader'); imageHandler(this.files[0], function(data) { if ( data == false ) { chat_list.classList.remove('loader'); } else { if ( document.getElementById('message').value = '<img src='+ data +' class=img-responsive>' ) { chat_list.classList.remove('loader'); document.querySelector('.send-message-submit').click(); } } });" value="" class="hidden">
 										<?php else: ?>
 										<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
 										<textarea autofocus onkeydown="parent(this, 'form').dispatchEvent(new Event('submit', { 'bubbles' : true, 'cancelable' : true}));" name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:20px;"></textarea>

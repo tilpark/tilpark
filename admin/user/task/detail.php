@@ -327,7 +327,7 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 										<div class="message-elem  message-<?php echo $message->id; ?>" id="<?php echo $message->id; ?>" title="<?php echo $message->title; ?>" username="<?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?>">
 											<div class="message-elem-container">
 												<?php if(get_active_user('id') != $message->sen_u_id): ?>
-														<div class="message-elem-avatar pull-right">
+														<div class="message-elem-avatar pull-left">
 															<img src="<?php echo get_user_info($message->sen_u_id, 'avatar'); ?>" class="img-responsive br-3 pull-right" width="48">
 														</div><!--/ .message-elem-avatar /-->
 												<?php endif; ?>
@@ -370,11 +370,12 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 
 								<div class="col-md-11">
 									<div class="form-group message-area">
+
 										<?php if ( til_is_mobile() ) : ?>
 											<input autofocus type="text" name="message" id="message" required class="form-control send-message-input" value="" placeholder="Birşeyler yazın...">
 											<button type="button" class="send-message-image" onclick="document.getElementById('send-message-file').click()"><i class="fa fa-image"></i></button>
 											<button type="submit" class="send-message-submit"><i class="fa fa-send"></i></button>
-											<input type="file" name="" id="send-message-file" onchange="var chat_list = document.querySelector('.chat-container'); chat_list.classList.add('loader'); imageHandler(this.files[0], function(data) { if ( data == false ) { chat_list.classList.remove('loader'); } else { if ( document.getElementById('message').value = '<img src='+ data +' class=img-responsive>' ) { chat_list.classList.remove('loader'); document.querySelector('.send-message-submit').click(); } setTimeout(function() { list_scroll_bottom(document.querySelector('.chat-list')); }, 100)} })" value="" class="hidden">
+											<input type="file" name="" id="send-message-file" onchange="var chat_list = document.querySelector('.chat-container'); chat_list.classList.add('loader'); imageHandler(this.files[0], function(data) { if ( data == false ) { chat_list.classList.remove('loader'); } else { if ( document.getElementById('message').value = '<img src='+ data +' class=img-responsive>' ) { chat_list.classList.remove('loader'); document.querySelector('.send-message-submit').click(); } } });" value="" class="hidden">
 										<?php else: ?>
 										<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
 										<textarea autofocus onkeydown="parent(this, 'form').dispatchEvent(new Event('submit', { 'bubbles' : true, 'cancelable' : true}));" name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:20px;"></textarea>

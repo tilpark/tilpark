@@ -182,7 +182,7 @@ function get_message_detail($message_id, $args=array()) {
 			$where['top_id'] 	= $message_id;
 		}
 
-		if($q_select = db()->query("SELECT * FROM ".dbname('messages')." WHERE id='".$message_id."' OR top_id='".$message_id."' ORDER BY date DESC LIMIT ". $where['limit'] ." ")) {
+		if($q_select = db()->query("SELECT * FROM ".dbname('messages')." WHERE id='".$message_id."' OR top_id='".$message_id."' ORDER BY date DESC, id DESC LIMIT ". $where['limit'] ." ")) {
 			if($q_select->num_rows) {
 				return db_query_list_return($q_select, 'id');
 			} else { return false; }

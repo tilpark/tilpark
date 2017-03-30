@@ -9,11 +9,11 @@
 }
 
 /* box menu */
-.box-menu .count{
+.box-menu .icon-box{
   position: relative;
 }
 
-.box-menu .count .badge{
+.box-menu .icon-box .badge{
   position: absolute;
   top: 5px;
   right: 5px;
@@ -22,13 +22,12 @@
   border-radius: 3px;
 }
 
-.box-menu .count .info-icon{
+.box-menu .icon-box .info-icon{
   position: absolute;
   top: 5px;
   left: 5px;
   font-size: 15px;
 }
-
 
 ol,ul{
   -webkit-padding-start: 0px !important;
@@ -38,7 +37,6 @@ ol,ul{
 
 
 /* message */
-
 .chat-container .chat-list .message-elem.get{
   animation: get ease-in-out 200ms forwards;
   position: relative;
@@ -59,6 +57,19 @@ ol,ul{
 .message-elem .message-elem-container .message-elem-avatar{
   width: 50px;
   display: inline-block;
+}
+
+.message-elem .message-elem-container .message-elem-avatar.pull-right{
+  margin-left: 10px;
+}
+
+.message-elem .message-elem-container .message-elem-avatar.pull-left{
+  margin-right: 10px;
+}
+
+.message-elem img{
+  max-width: 100%;
+
 }
 
 .message-area iframe{
@@ -91,7 +102,7 @@ ol,ul{
   box-shadow: none;
   padding: 22px 48px;
   border: 1px solid #ddd;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -107,6 +118,16 @@ ol,ul{
   border-color: #66afe9 !important;
 }
 
+.message-area.chat-input {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  height: 80px;
+  padding: 5px 15px;
+}
+
 .mce-stack-layout-item.mce-statusbar{
   border: 0 !important;
 }
@@ -117,24 +138,93 @@ ol,ul{
 
 .chat-container:after{
   position: absolute !important;
+  width: calc(100% + 100px) !important;
+  margin: 0 -15px;
 }
 
 .chat-container .chat-list{
-  height: calc(100vh - 350px);
+  height: calc(100vh - 390px);
 }
 
+.user-input-control{
+  display: none;
+  animation: unwriting 500ms ease forwards;
+}
+
+.user-input-control.writing{
+  display: block;
+  animation: writing 500ms ease forwards;
+}
+
+
+.user-input-control-animate-container{
+  padding: 5px 0 10px 0;
+  display: inline-block;
+}
+
+.user-input-control-animate-container .circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: gray;
+  margin-top: 5px;
+  margin-right: 5px;
+  float: left;
+  animation: animate-writing 1000ms ease-in-out infinite;
+}
+
+.user-input-control-animate-container .circle:nth-child(2) {
+  animation-delay: 150ms;
+}
+
+.user-input-control-animate-container .circle:nth-child(3) {
+  animation-delay: 250ms;
+}
+
+@keyframes animate-writing {
+  0% { transform: translateY(0px); }
+  30% { transform: translateY(-10px); }
+  60% { transform: translateY(5px); }
+  80% { transform: translateY(0px); }
+  90% { transform: translateY(0px); }
+  100% { transform: translateY(0px); }
+}
+
+
+@keyframes writing{
+  0%{ position: absolute; bottom: -150px; }
+  100%{ position: relative; bottom: -0px; }
+}
+
+@keyframes unwriting{
+  100%{ position: absolute; bottom: -150px; }
+  0%{ position: relative; bottom: -0px; }
+}
 
 
 
 
 @media(max-width: 767px) {
+  .chat-container{
+    margin: 0 -15px;
+  }
+
   .chat-container .chat-list{
     height: calc(100vh - 50px);
-    margin: 0 -15px;
+  }
+
+  #form_message{
+    margin: 0;
+    padding: 0;
+  }
+
+  .message-area{
+    margin: 0;
   }
 
   .message-elem .well{
     padding: 5px 10px;
+    margin-bottom: 0;
   }
 
   .message-elem .text-muted span{
@@ -145,8 +235,47 @@ ol,ul{
     display: inline-block;
   }
 
-  .message-elem .text-muted span.date{
+  .message-elem .text-muted span.date-tooltip{
     display: inline-block;
     float: right;
+    font-weight: normal !important;
   }
+}
+
+
+
+
+
+/* task */
+
+
+
+@media (max-width: 767px) {
+  .table-task{
+    position: relative;
+  }
+
+  .table-task tr{
+    float: left;
+    clear: both;
+    width: 100%;
+    position: relative;
+  }
+
+  .table-task tr[mobile-progress-style]:before {
+    content: '';
+    height: 1px;
+    border-top: 2px solid red;
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    clear: both;
+    display: table;
+  }
+
+  .table-task tr[mobile-progress-style="progress-bar-danger"]:before { border-color: #d9534f; width: 15%; }
+  .table-task tr[mobile-progress-style="progress-bar-warning"]:before { border-color: #f0ad4e; width: 70%; }
+  .table-task tr[mobile-progress-style="progress-bar-success"]:before { border-color: #5cb85c; width: 100%; }
+
 }

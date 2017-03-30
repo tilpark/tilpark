@@ -93,7 +93,7 @@ $tasks = get_tasks($_args);
 		<?php print_alert(); ?>
 		<div class="panel panel-default panel-table panel-dataTable">
 			<?php if($tasks): ?>
-			<table class="table table-hover table-striped table-condensed dataTable">
+			<table class="table table-hover table-task table-striped table-condensed dataTable">
 				<thead class="hidden">
 					<tr>
 						<th></th>
@@ -108,8 +108,20 @@ $tasks = get_tasks($_args);
 				</thead>
 				<tbody>
 					<?php foreach($tasks as $task): ?>
-						<?php $task = get_task($task->id); ?>
-						<tr class="<?php if(!$task->read_it and $task->inbox_u_id == get_active_user('id')): ?>bold<?php endif; ?> pointer" onclick="location.href='<?php site_url('task', $task->id); ?>';">
+					<?php $task = get_task($task->id); ?>
+					<?php
+						if($task->choice_count) {
+								$part 			= (100 / $task->choice_count);
+								$part_completed = round($part * $task->choice_closed);
+
+								# progress-bar style
+								$progressbar_style = '';
+								if($part_completed < 30) { $progressbar_style = 'progress-bar-danger';
+								} elseif($part_completed < 70) { $progressbar_style = 'progress-bar-warning';
+								} else { $progressbar_style = 'progress-bar-success'; }
+							}
+						?>
+						<tr mobile-progress-width="100" mobile-progress-style="<?php echo $progressbar_style; ?>" class="<?php if(!$task->read_it and $task->inbox_u_id == get_active_user('id')): ?>bold<?php endif; ?> pointer" onclick="location.href='<?php site_url('task', $task->id); ?>';">
 							<td width="10" class="hiddden-xs">
 								<?php if($task->type_status == '1'): ?>
 									<?php if($task->sen_trash_u_id == get_active_user('id') OR $task->rec_trash_u_id == get_active_user('id')): ?>
@@ -134,26 +146,11 @@ $tasks = get_tasks($_args);
 								</div>
 								<?php user_info($task->rec_u_id,'surname'); ?>
 							</td>
-							<td class="hidden-portrait"><a href="<?php site_url('task', $task->id); ?>"><?php echo $task->title; ?></td>
+							<td class="hidden-xs-portrait visible-xs-landscape"><a href="<?php site_url('task', $task->id); ?>"><?php echo $task->title; ?></td>
 							<td class="hidden-xs"><?php echo til_get_date($task->date_start,'datetime'); ?></td>
-							<td class="hidden-xs"><?php echo til_get_date($task->date_end,'datetime'); ?></td>
+							<td class="visible-xs-landscape"><?php echo til_get_date($task->date_end,'datetime'); ?></td>
 							<td class="hidden-xs">
 								<?php if($task->choice_count): ?>
-									<?php
-										$part 			= (100 / $task->choice_count);
-										$part_completed = round($part * $task->choice_closed);
-
-										# progress-bar style
-										$progressbar_style = '';
-										if($part_completed < 30) {
-											$progressbar_style = 'progress-bar-danger';
-										} elseif($part_completed < 70) {
-											$progressbar_style = 'progress-bar-warning';
-										} else {
-											$progressbar_style = 'progress-bar-success';
-										}
-									?>
-
 									<div class="progress m-0 br-2">
 										<div class="progress-bar progress-bar-stripedd <?php echo $progressbar_style; ?> text-muted" role="progressbar" aria-valuenow="<?php echo $part_completed; ?>" aria-valuemin="30" aria-valuemax="100" style="width: <?php echo ($part_completed == '0' ? '25' : $part_completed); ?>%;">
 											<span class="sr-only"><?php echo $part_completed; ?>% tamamlandı</span>

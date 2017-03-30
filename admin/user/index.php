@@ -13,7 +13,7 @@ add_page_info( 'nav', array('name'=>'Kullanıcı') );
     	<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
     		<div class="box-menu">
     			<a href="<?php site_url('admin/user/list.php'); ?>">
-    				<span class="count"><i class="fa fa-users"></i></span>
+    				<span class="icon-box"><i class="fa fa-users"></i></span>
     				<h3>Personeller</h3>
     			</a>
     		</div> <!-- /.box-menu -->
@@ -21,7 +21,7 @@ add_page_info( 'nav', array('name'=>'Kullanıcı') );
     	<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
     		<div class="box-menu">
     			<a href="<?php site_url('admin/user/task/'); ?>">
-    				<span class="count"><i class="fa fa-tasks"></i></span>
+    				<span class="icon-box"><i class="fa fa-tasks"></i></span>
     				<h3>Görev Yöneticisi</h3>
     			</a>
     		</div> <!-- /.box-menu -->
@@ -29,7 +29,7 @@ add_page_info( 'nav', array('name'=>'Kullanıcı') );
     	<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
     		<div class="box-menu">
     			<a href="<?php site_url('admin/user/message/'); ?>">
-    				<span class="count"><i class="fa fa-envelope-o"></i></span>
+    				<span class="icon-box"><i class="fa fa-envelope-o"></i></span>
     				<h3>Mesajlar</h3>
     			</a>
     		</div> <!-- /.box-menu -->

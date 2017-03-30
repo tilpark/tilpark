@@ -93,7 +93,7 @@ $messages = get_messages($args);
 						<tr>
 							<th width="10"></th>
 							<th width="180"><?php echo $box == 'inbox' ? 'Gönderen' : 'Alıcı'; ?></th>
-							<th class="hidden-portrait">Konu</th>
+							<th class="hidden-xs-portrait">Konu</th>
 							<th width="100">Tarih</th>
 						</tr>
 					</thead>
@@ -132,7 +132,7 @@ $messages = get_messages($args);
 									<?php if($sub_message_count): ?>(<?php echo $sub_message_count; ?>)<?php endif; ?>
 								<?php endif; ?>
 
-								<div class="visible-portrait hidden-md hidden-landscape small"><?php echo get_time_late($list->date_update); ?></div>
+								<div class="visible-xs-portrait hidden-md hidden-xs-landscape small"><?php echo get_time_late($list->date_update); ?></div>
 							</td>
 
 							<td >
@@ -152,7 +152,7 @@ $messages = get_messages($args);
 								</a>
 							</td>
 
-							<td width="100" class="text-right hidden-portrait"><?php echo get_time_late($list->date_update); ?> önce</td>
+							<td width="100" class="text-right hidden-xs-portrait"><?php echo get_time_late($list->date_update); ?> önce</td>
 						</tr>
 					<?php endforeach; ?>
 					</tbody>

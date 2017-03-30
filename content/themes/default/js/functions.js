@@ -16,9 +16,7 @@
 | * get_notification_count()
 | * get_notification_count_query()
 | * get_notification()
-| * play_sound()
 | * imageHandler()
-| * on_off()
 |
 | ---------------------------------------------------------------------- HELPER
 | * hasClass()
@@ -28,9 +26,8 @@
 | * getJSON()
 | * getOffset()
 | * getCookie()
-| * setClipboardText()
 | * getXHR()
-| * name_to_url()
+| * play_sound()
 | * addHours()
 | * replaceAll()
 |
@@ -102,6 +99,7 @@ function editor(param = {selector: "", plugins:"", toolbar:"", height: "500", me
 
       input.onchange = function () {
         imageHandler(this.files[0], function(src){
+          if ( src == false) { src = ""; }
            win.document.getElementById(field_name).value = src;
         });
       }
@@ -197,23 +195,6 @@ function get_notification(elem, box) {
 
 
 
-
-/**
- * @func playSound()
- * @desc content/themes/default/sound içerisindeki çağrılan sesi 1 keres sayfada çalar
- * @param string
- * @return sound
- */
-function playSound(filename){
-  var body = document.querySelector('body');
-  var audio = document.createElement("audio");
-  audio.setAttribute("autoplay", "autoplay");
-  audio.innerHTML = '<source src="' + get_site_url('content/themes/default/sound/'+filename) + '.mp3" type="audio/mpeg" /><source src="' + get_site_url('content/themes/default/sound'+filename) + '.ogg" type="audio/ogg" /><embed hidden="true" autostart="true" loop="false" src="' + get_site_url('content/themes/default/sound'+filename) +'.mp3" />';
-  body.appendChild(audio);
-}
-
-
-
 /**
  * @func chat_list()
  * @desc message/detail.php sayfasındaki chat'i dinamic olarak günceller
@@ -223,43 +204,57 @@ function playSound(filename){
 function chat_list(type) {
   if ( !type || (type != "task" && type != "message") ) { window.message_type = "message"; } else { window.message_type = type; }
 
-  get_new_message('get', window.message_type);
+  var matches;
   var chat_list = document.querySelector(".chat-list");
-  if ( chat_list ) {
-    list_scroll_bottom(chat_list);
 
-    chat_list.onscroll = function() {
-      if ( chat_list.scrollTop < 10 ) {
-        parent(chat_list, '.chat-container').classList.add("loader");
-        if ( type == "message" ) { old_type = "mess-reply" } else { old_type = "task-reply"; }
+  window.get_new_message_control = true;
+  window.get_message_control     = true;
+  window.get_last_message_id    = chat_list.lastElementChild.getAttribute('id');
+  window.get_first_message_id   = chat_list.firstElementChild.getAttribute('id');
 
-        if ( chat_list.children[0] ) {
-          getXHR({ 'method': 'get', 'url': get_site_url('admin/user/getMessage.php?type='+ old_type +'&query_message='+ chat_list.getAttribute("id") +'&get_message=old&list_old_message='+ chat_list.children[0].getAttribute("id") +'&session_id='+window.session_id)}, function(data) {
-            if ( data != "empty" && data != false ) {
-              var matches = data.match(/<div class="message-elem *?([\s\S]*?)<\/div><!--\/ \.message-elem \/-->/gmi);
+  get_new_message('get', window.message_type);
 
-              for (var i = 0; i < matches.length; i++) {
-                setTimeout(function() { parent(chat_list, '.chat-container').classList.remove("loader"); }, 500);
+  chat_list.scrollTop = chat_list.scrollHeight;
+  window.get_message_control = true;
 
-                var div = document.createElement("DIV");
-                div.innerHTML = matches[i];
-                var is_elem = document.querySelector(".message-"+div.children[0].getAttribute('id'));
+  chat_list.onscroll = function() {
+    if ( chat_list.scrollTop < 10 ) {
+      parent(chat_list, '.chat-container').classList.add("loader");
+      if ( type == "message" ) { old_type = "mess-reply" } else { old_type = "task-reply"; }
 
-                if ( !is_elem ) {
-                  chat_list.insertBefore(div.children[0], chat_list.firstChild);
+      if ( window.get_message_control == true ) {
+        window.get_message_control = false;
+      } else { return false; }
+
+      getXHR({ 'method': 'get', 'url': get_site_url('admin/user/getMessage.php?type='+ old_type +'&query_message='+ chat_list.getAttribute("id") +'&get_message=old&list_old_message='+ window.get_first_message_id +'&session_id='+window.session_id)}, function(data) {
+        if ( data != "empty" && data != false ) {
+          if ( matches = data.match(/<div class="message-elem *?([\s\S]*?)<\/div><!--\/ \.message-elem \/-->/gmi) ) {
+            for ( var i = matches.length - 1; i >= 0; i-- ) {
+              setTimeout(function() { parent(chat_list, '.chat-container').classList.remove("loader"); }, 500);
+
+              var div = document.createElement("DIV");
+              div.innerHTML = matches[i];
+              div = div.children[0];
+
+              if ( !document.querySelector(".message-"+div.getAttribute('id')) ) {
+                if ( i == 0 ) { window.get_first_message_id = div.getAttribute('id'); }
+
+                if ( chat_list.insertBefore(div, chat_list.firstChild) ) {
+                  console.log(i);
                   chat_list.scrollTop = 20;
-                }
-              } // end for
-            } else { parent(chat_list, '.chat-container').classList.remove("loader"); }
-          });
-        } else { return false; }
-      } // is scrollTop < 20
-    } // onscroll
+                  window.get_message_control = true;
+                } else { window.get_message_control = true; }
+              } else {  window.get_message_control = true;}
+            } // end for
+          } else { window.get_message_control = true; }
+        } else { parent(chat_list, '.chat-container').classList.remove("loader"); window.get_message_control = true; }
+      });
+    } // is scrollTop < 20
+  } // onscroll
 
-    // NEW Message
-    window.getMessage = setInterval("get_new_message('get', '"+ window.message_type +"')", 1000);
-    // NEW Message
-  } else { return false; }
+  // NEW Message
+  window.getMessage = setInterval("get_new_message('get', '"+ window.message_type +"')", 1000);
+  // NEW Message
 } //.chat_list()
 
 
@@ -274,55 +269,49 @@ function chat_list(type) {
  */
 function get_new_message(class_name="", type="message") {
   var chat_list = document.querySelector(".chat-list");
+  if ( window.get_new_message_control == true ) {
+    window.get_new_message_control = false;
+  } else { return false; }
+
+  var matches;
+
   if ( type == "message" ) { get_type = "mess-reply" } else { get_type = "task-reply"; }
-  getXHR({ 'method': 'get', 'url': get_site_url('admin/user/getMessage.php?type='+ get_type +'&query_message='+ chat_list.getAttribute('id') +'&last_view_message='+ chat_list.lastElementChild.getAttribute('id') +'&get_message=new&session_id='+window.session_id)}, function(data) {
+
+  getXHR({ 'method': 'get', 'url': get_site_url('admin/user/getMessage.php?type='+ get_type +'&query_message='+ chat_list.getAttribute('id') +'&last_view_message='+ window.get_last_message_id +'&get_message=new&session_id='+window.session_id), timeout: true}, function(data) {
+    clearInterval(window.getMessage);
+
     if ( data != "empty" && data != false ) {
-      var matches = data.match(/<div class="message-elem *?([\s\S]*?)<\/div><!--\/ \.message-elem \/-->/gmi);
+      if ( matches = data.match(/<div class="message-elem *?([\s\S]*?)<\/div><!--\/ \.message-elem \/-->/gmi) ) {
+        for ( var i = matches.length - 1; i >= 0; i-- ) {
+          var div = document.createElement("DIV");
+          div.innerHTML = matches[i];
+          div = div.children[0];
 
-      for (var i = 0; i < matches.length; i++) {
-        var div = document.createElement("div");
-        div.innerHTML = data;
-        div = div.children[0];
+          if ( !document.querySelector(".message-"+div.getAttribute('id')) ) {
+            var chat_list = document.querySelector(".chat-list");
 
-        if ( div.children[0].getAttribute('id') != chat_list.lastElementChild.getAttribute('id') ) {
-          chat_list.appendChild(div);
-          document.querySelector("body").scrollTop = getOffset(chat_list).top;
-          list_scroll_bottom(chat_list);
-          setTimeout(function() { for (var i = chat_list.children.length - 1; i >= 0; i--) { chat_list.children[i].classList.remove(class_name); } }, 2500);
-          if ( class_name == 'get' ) { document.title = "(1) " + chat_list.lastElementChild.getAttribute("title") + " - " + chat_list.lastElementChild.getAttribute("username"); }
+            if ( chat_list.appendChild(div) ) {
+              document.querySelector("body").scrollTop = getOffset(chat_list).top;
+              chat_list.scrollTop = chat_list.scrollHeight;
+              setTimeout(function() { if ( chat_list.scrollTop != chat_list.scrollHeight ) { chat_list.scrollTop = chat_list.scrollHeight; } }, 500);
 
-          clearInterval(window.getMessage);
-          window.getMessage = setInterval("get_new_message('get', '"+ window.message_type +"')", 1000);
+              if ( class_name == 'get' ) { document.title = "(1) " + chat_list.lastElementChild.getAttribute("title") + " - " + chat_list.lastElementChild.getAttribute("username"); }
 
-          if ( document.querySelectorAll(".message-"+div.children[0].getAttribute('id')).length > 1 ) { document.querySelector(".message-"+div.children[0].getAttribute('id')).remove(); }
-        } else { return false; }
-      } // end for
-    } else { return false; }
+              window.get_last_message_id = div.getAttribute('id');
+              window.get_new_message_control = true;
+
+              window.getMessage = setInterval("get_new_message('get', '"+ window.message_type +"')", 1000);
+            } else { window.get_new_message_control = true; }
+          } else { window.get_new_message_control = true; return false; }
+        } // end for
+      }
+    } else {
+       window.get_new_message_control = true;
+       window.getMessage = setInterval("get_new_message('get', '"+ window.message_type +"')", 1000);
+       return false;
+     }
   });
 } //.get_new_message()
-
-
-
-
-
-
-
-/**
- * @func list_scroll_bottom()
- * @desc bir listenin liste elemanlarına göre scroll bottom'unu hesaplar
- * @param elem
- * @return elem.scrolTop
- */
-function list_scroll_bottom(chat_list) {
-  // scrollBottom
-  var height = 0;
-  for (var i = chat_list.children.length - 1; i >= 0; i--) {
-    height = height + chat_list.children[i].offsetHeight;
-  }
-  chat_list.scrollTop = height;
-  // scrollBottom
-} //.list_scroll_bottom()
-
 
 
 
@@ -339,17 +328,6 @@ function list_scroll_bottom(chat_list) {
 function send_message($this, type="message") {
   var message   = $this.querySelector('textarea');
   if ( !message ) { var message = $this.querySelector('input[type="text"]'); }
-
-  // fast send kontrol
-  var date = new Date();
-  var cookie_date = new Date(getCookie('last_send_date'));
-  if ( cookie_date > date.addSecond(-1) ) {
-    tinyMCE.get(message.getAttribute('id')).setContent('');
-    return false;
-  }
-  document.cookie = "last_send_date="+Date()+";";
-  // fast send kontrol
-
 
   if ( message ) {
     var top_id  = $this.querySelector('#top_id');
@@ -384,6 +362,8 @@ function send_message($this, type="message") {
 
 
 
+
+
 /**
  * @func imageHandler()
  * @desc FILE ile image verisi gelir ise callback ile resim url'leri geri verilir
@@ -414,28 +394,58 @@ function imageHandler(image, callback) {
 
 
 
+function clear_writing(obj) {
+  getXHR({ 'method' : 'get', 'url': get_site_url('admin/user/message-writing.php?top_id=' + window.set_writing.top_id + '&receiver=' + window.set_writing.receiver + '&clear_writing=true&session_id=' + window.session_id  ) }, function(data) {
+    if ( data != 'empty' && data != false ) {
+      if ( data == 'true' ) {
+        return true;
+      } else { console.log(data); }
+    } else { return false; }
+  });
+}
 
 
 
 
+function set_writing(obj) {
+  clearInterval(window.get_writing_interval);
 
-/**
- * @func on_off()
- * @desc class var ise siler yok ise ekler
- * @param string
- * @return
- */
-function on_off($this, elem, $this_class="active", elem_class="open") {
-  if ( hasClass($this, $this_class) ) {
-    elem.classList.remove(elem_class);
-    $this.classList.remove($this_class);
-  } else {
-    $this.classList.add($this_class);
-    elem.classList.add(elem_class);
-  }
-} //.delete_option
+  if ( obj ) {
+    getXHR({ 'method' : 'get', 'url': get_site_url('admin/user/message-writing.php?top_id=' + window.set_writing.top_id + '&receiver=' + window.set_writing.receiver + '&set_value=' + obj.set_value + '&session_id=' + window.session_id  ) }, function(data) {
+      if ( data != 'empty' && data != false ) {
+        if ( data == 'true' ) {
+
+          return true;
+        } else { console.log(data); }
+      } else { return false; }
+    });
+  } else { return false; }
+} //.set_writing
 
 
+
+function get_writing(selector) {
+  setInterval(function() {
+    getXHR({ 'method' : 'get', 'url': get_site_url('admin/user/message-writing.php?top_id=' + window.set_writing.top_id + '&receiver=' + window.set_writing.receiver + '&get=true&session_id=' + window.session_id  ) }, function(data) {
+      if ( data != 'empty' ) {
+        var elem = document.querySelector(selector);
+
+        if ( data == 1 ) {
+          elem.classList.add('writing');
+          elem.classList.remove('deleting');
+        } else if ( data == 2 ) {
+          elem.classList.remove('writing');
+          elem.classList.add('deleting');
+        } else {
+          elem.classList.remove('writing');
+          elem.classList.remove('deleting');
+        }
+      } else { return false; }
+    });
+  }, 1000);
+
+  window.get_writing_interval = setInterval(function() { clear_writing({'set_value':'0'}); }, 5000);
+} //
 
 
 
@@ -624,62 +634,6 @@ function parent(el, selector) {
 
 
 /**
- * @func setClipboardText()
- * @desc verilen text'i kopyalar
- * @param text
- * @return
- */
-function setClipboardText(text){
-    var id = "mycustom-clipboard-textarea-hidden-id";
-    var existsTextarea = document.getElementById(id);
-
-    if(!existsTextarea){
-        var textarea = document.createElement("textarea");
-        textarea.id = id;
-        // Place in top-left corner of screen regardless of scroll position.
-        textarea.style.position = 'fixed';
-        textarea.style.top = 0;
-        textarea.style.left = 0;
-
-        // Ensure it has a small width and height. Setting to 1px / 1em
-        // doesn't work as this gives a negative w/h on some browsers.
-        textarea.style.width = '1px';
-        textarea.style.height = '1px';
-
-        // We don't need padding, reducing the size if it does flash render.
-        textarea.style.padding = 0;
-
-        // Clean up any borders.
-        textarea.style.border = 'none';
-        textarea.style.outline = 'none';
-        textarea.style.boxShadow = 'none';
-
-        // Avoid flash of white box if rendered for any reason.
-        textarea.style.background = 'transparent';
-        document.querySelector("body").appendChild(textarea);
-        existsTextarea = document.getElementById(id);
-    }else{
-
-    }
-
-    existsTextarea.value = text;
-    existsTextarea.select();
-
-    try {
-        var status = document.execCommand('copy');
-        if(!status){
-        }else{
-        }
-    } catch (err) {
-    }
-} //.setClipboardText()
-
-
-
-
-
-
-/**
  * @func getXHR()
  * @desc XMLHttpRequest işlemini gerçekleştirir
  * @param object, callback
@@ -700,90 +654,69 @@ function getXHR(set="", callback) {
   }
 
   var xhr = new XMLHttpRequest();
-  xhr.open(set.method, set.url, true);
   xhr.onload = function(e) {
     if (xhr.status == 200) {
       if ( xhr.responseText == "" ) {
         callback('empty');
-      } else { callback(xhr.responseText); }
+      } else {
+        callback(xhr.responseText);
+       }
     } else { callback(false) }
   };
+  xhr.open(set.method, set.url, true);
   xhr.send(set.send);
 } //.getXHR()
 
 
 
 
+/**
+ * @func playSound()
+ * @desc content/themes/default/sound içerisindeki çağrılan sesi 1 keres sayfada çalar
+ * @param string
+ * @return sound
+ */
+function playSound(filename){
+  var body = document.querySelector('body');
+  var audio = document.createElement("audio");
+  audio.setAttribute("autoplay", "autoplay");
+  audio.innerHTML = '<source src="' + get_site_url('content/themes/default/sound/'+filename) + '.mp3" type="audio/mpeg" /><source src="' + get_site_url('content/themes/default/sound'+filename) + '.ogg" type="audio/ogg" /><embed hidden="true" autostart="true" loop="false" src="' + get_site_url('content/themes/default/sound'+filename) +'.mp3" />';
+  body.appendChild(audio);
+}
+
+
 
 /**
- * @func name_to_url()
- * @desc self string verir
+ * @func addHours()
+ * @desc verilen zamana saat ekler
  * @param string
  * @return string
  */
-function name_to_url(name) {
-  name = name.toLowerCase(); // lowercase
-
-  var try_char = ['ı', 'ö', 'ç', 'ü', 'ğ', 'ş', 'ı'];
-  var eng_char = ['i', 'o', 'c', 'u', 'g', 's', 'i'];
-  for (var i = try_char.length - 1; i >= 0; i--) {
-    name = name.replaceAll(try_char[i], eng_char[i]);
-  }
-
-  name = name.replace(/^\s+|\s+$/g, ''); // remove leading and trailing whitespaces
-  name = name.replace(/\s+/g, '-'); // convert (continuous) whitespaces to one -
-  name = name.replace(/[^a-z-]/g, ''); // remove everything that is not [a-z] or -
-  return name;
-} //.name_to_url()
+Date.prototype.addHours = function(h) {
+  this.setTime(this.getTime() + (h*60*60*1000));
+  return this;
+} //.addHours()
 
 
+/**
+ * @func addSecond()
+ * @desc verilen zamana saniye ekler
+ * @param string
+ * @return string
+ */
+Date.prototype.addSecond = function(h) {
+  this.setTime(this.getTime() + (h*1000));
+  return this;
+} //.addSecond()
 
 
-  /**
-   * @func addHours()
-   * @desc verilen zamana saat ekler
-   * @param string
-   * @return string
-   */
-  Date.prototype.addHours = function(h) {
-    this.setTime(this.getTime() + (h*60*60*1000));
-    return this;
-  } //.addHours()
-
-
-  /**
-   * @func addSecond()
-   * @desc verilen zamana saniye ekler
-   * @param string
-   * @return string
-   */
-  Date.prototype.addSecond = function(h) {
-    this.setTime(this.getTime() + (h*1000));
-    return this;
-  } //.addSecond()
-
-
-  /**
-   * @func replaceAll()
-   * @desc replace all
-   * @param string
-   * @return string
-   */
-  String.prototype.replaceAll = function(search, replacement) {
-      var target = this;
-      return target.replace(new RegExp(search, 'g'), replacement);
-  };//.replaceAll
-
-
-
-function HTMLParser(aHTMLString){
-  var html = document.implementation.createDocument("http://www.w3.org/1999/xhtml", "html", null),
-    body = document.createElementNS("http://www.w3.org/1999/xhtml", "body");
-  html.documentElement.appendChild(body);
-
-  body.appendChild(Components.classes["@mozilla.org/feed-unescapehtml;1"]
-    .getService(Components.interfaces.nsIScriptableUnescapeHTML)
-    .parseFragment(aHTMLString, false, null, body));
-
-  return body;
-}
+/**
+ * @func replaceAll()
+ * @desc replace all
+ * @param string
+ * @return string
+ */
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};//.replaceAll

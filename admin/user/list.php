@@ -13,10 +13,10 @@ add_page_info( 'nav', array('name'=>'Tüm Kullanıcılar') );
 	<thead>
 		<tr>
 			<th width="30"></th>
-			<th>E-Posta</th>
+			<th class="hidden-xs-portrait">E-Posta</th>
 			<th>Ad Soyad</th>
 			<th>Cep Telefonu</th>
-			<th>Yetki</th>
+			<th class="hidden-xs-portrait">Yetki</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -27,10 +27,10 @@ add_page_info( 'nav', array('name'=>'Tüm Kullanıcılar') );
 						<img src="<?php echo get_user_info($list->id, 'avatar'); ?>" class="img-responsive" width="32">
 					</a>
 				</td>
-				<td><a href="<?php site_url('admin/user/user.php'); ?>?id=<?php echo $list->id; ?>"><?php echo $list->username; ?></a></td>
+				<td class="hidden-xs-portrait"><a href="<?php site_url('admin/user/user.php'); ?>?id=<?php echo $list->id; ?>"><?php echo $list->username; ?></a></td>
 				<td><?php echo $list->name; ?> <?php echo $list->surname; ?></td>
 				<td><?php echo $list->gsm; ?></td>
-				<td><?php echo get_user_role_text($list->role); ?></td>
+				<td class="hidden-xs-portrait"><?php echo get_user_role_text($list->role); ?></td>
 			</tr>
 		<?php endforeach; ?>
 	</tbody>
