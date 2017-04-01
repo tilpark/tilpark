@@ -69,7 +69,7 @@ ol,ul{
 
 .message-elem img{
   max-width: 100%;
-
+  height: auto;
 }
 
 .message-area iframe{
@@ -86,7 +86,7 @@ ol,ul{
   border: 1px solid #ddd;
   z-index: 999;
   outline: none;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   top: auto;
   z-index: 99999;
@@ -123,9 +123,9 @@ ol,ul{
   bottom: 0;
   left: 0;
   width: 100%;
-  background: #fff;
-  height: 80px;
-  padding: 5px 15px;
+  background: none;
+  height: 70px;
+  padding: 0px 15px;
 }
 
 .mce-stack-layout-item.mce-statusbar{
@@ -144,16 +144,20 @@ ol,ul{
 
 .chat-container .chat-list{
   height: calc(100vh - 390px);
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .user-input-control{
-  display: none;
-  animation: unwriting 500ms ease forwards;
+  height: 20px;
 }
 
-.user-input-control.writing{
+.user-input-control .user-input-control-animate-container{
+  display: none;
+}
+
+.user-input-control.writing .user-input-control-animate-container{
   display: block;
-  animation: writing 500ms ease forwards;
 }
 
 
@@ -163,12 +167,12 @@ ol,ul{
 }
 
 .user-input-control-animate-container .circle {
-  width: 10px;
-  height: 10px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background-color: gray;
-  margin-top: 5px;
-  margin-right: 5px;
+  margin-top: 3px;
+  margin-right:3px;
   float: left;
   animation: animate-writing 1000ms ease-in-out infinite;
 }
@@ -183,22 +187,11 @@ ol,ul{
 
 @keyframes animate-writing {
   0% { transform: translateY(0px); }
-  30% { transform: translateY(-10px); }
+  30% { transform: translateY(-8px); }
   60% { transform: translateY(5px); }
   80% { transform: translateY(0px); }
   90% { transform: translateY(0px); }
   100% { transform: translateY(0px); }
-}
-
-
-@keyframes writing{
-  0%{ position: absolute; bottom: -150px; }
-  100%{ position: relative; bottom: -0px; }
-}
-
-@keyframes unwriting{
-  100%{ position: absolute; bottom: -150px; }
-  0%{ position: relative; bottom: -0px; }
 }
 
 
@@ -210,7 +203,7 @@ ol,ul{
   }
 
   .chat-container .chat-list{
-    height: calc(100vh - 50px);
+    height: calc(100vh - 180px);
   }
 
   #form_message{
@@ -225,6 +218,10 @@ ol,ul{
   .message-elem .well{
     padding: 5px 10px;
     margin-bottom: 0;
+  }
+
+  .message-elem:last-child .well{
+    margin-bottom: 10px;
   }
 
   .message-elem .text-muted span{

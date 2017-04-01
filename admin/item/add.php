@@ -9,10 +9,6 @@ add_page_info( 'nav', array('name'=>'Ürün Ekle') );
 
 
 
-
-
-
-
 <?php
 if(isset($_POST['add'])) {
 
@@ -77,20 +73,20 @@ if(empty(@$_POST['code'])) {
 			<div class="col-xs-6 col-md-2">
 				<div class="form-group">
 					<label for="vat">KDV <sup class="text-muted">(%)</sup></label>
-					<input type="tel" name="vat" id="vat" value="<?php echo @$_POST['vat']; ?>" class="form-control digits" maxlength="2" onkeyup="calc_vat();">
+					<input type="tel" name="vat" id="vat" value="<?php echo @$_POST['vat']; ?>" class="form-control digits" maxlength="2" onkeyup="calc_vat();" onfocusout="calc_vat();">
 				</div> <!-- /.form-group -->
 			</div> <!-- /.col -->
 			<div class="clearfix visible-xs"></div>
 			<div class="col-xs-6 col-md-5">
 				<div class="form-group">
 					<label for="p_purc">Maliyet Fiyatı</label>
-					<input type="tel" name="p_purc" id="p_purc" value="<?php echo @$_POST['p_purc']; ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();">
+					<input type="tel" name="p_purc" id="p_purc" value="<?php echo @$_POST['p_purc']; ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();" onfocusout="calc_vat();">
 				</div> <!-- /.form-group -->
 			</div> <!-- /.col -->
 			<div class="col-xs-6 col-md-5">
 				<div class="form-group">
 					<label for="p_sale">Satış Fiyatı</label>
-					<input type="tel" name="p_sale" id="p_sale" value="<?php echo @$_POST['p_sale']; ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();">
+					<input type="tel" name="p_sale" id="p_sale" value="<?php echo @$_POST['p_sale']; ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();" onfocusout="calc_vat();" >
 				</div> <!-- /.form-group -->
 			</div> <!-- /.col -->
 		</div> <!-- /.row -->
@@ -132,8 +128,8 @@ if(empty(@$_POST['code'])) {
  * Ürün ekleme ve ürün detay görünmünde maliyet ve satış fiyatlarının KDV'siz tutarlarını hesaplar
  */
 function calc_vat() {
-	var p_purc 	= $('#p_purc').val();
-	var p_sale 	= $('#p_sale').val();
+	var p_purc 	= get_set_decimal($('#p_purc').val());
+	var p_sale 	= get_set_decimal($('#p_sale').val());
 	var p_vat 	= math_vat_rate($('#vat').val());
 
 	// degeler numeric mi? degil mi?
@@ -145,7 +141,6 @@ function calc_vat() {
 	var p_sale_out_vat = p_sale / p_vat;
 	$('#p_purc_out_vat').val( p_purc_out_vat );
 	$('#p_sale_out_vat').val( p_sale_out_vat );
-
 }
 </script>
 

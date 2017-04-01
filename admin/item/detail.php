@@ -125,20 +125,20 @@ add_page_info( 'nav', array('name'=>$item->name ) );
 						<div class="col-xs-6 col-md-2">
 							<div class="form-group">
 								<label for="vat">KDV <sup class="text-muted">(%)</sup></label>
-								<input type="text" name="vat" id="vat" value="<?php echo $item->vat; ?>" class="form-control digits" maxlength="2" onkeyup="calc_vat();">
+								<input type="tel" name="vat" id="vat" value="<?php echo $item->vat; ?>" class="form-control digits" maxlength="2" onkeyup="calc_vat();" onfocusout="calc_vat();">
 							</div> <!-- /.form-group -->
 						</div> <!-- /.col -->
 						<div class="clearfix visible-xs"></div>
 						<div class="col-xs-6 col-md-5">
 							<div class="form-group">
 								<label for="p_purc">Maliyet Fiyatı</label>
-								<input type="text" name="p_purc" id="p_purc" value="<?php echo get_set_money($item->p_purc); ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();">
+								<input type="tel" name="p_purc" id="p_purc" value="<?php echo get_set_money($item->p_purc); ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();" onfocusout="calc_vat();">
 							</div> <!-- /.form-group -->
 						</div> <!-- /.col -->
 						<div class="col-xs-6 col-md-5">
 							<div class="form-group">
 								<label for="p_sale">Satış Fiyatı</label>
-								<input type="text" name="p_sale" id="p_sale" value="<?php echo get_set_money($item->p_sale); ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();">
+								<input type="tel" name="p_sale" id="p_sale" value="<?php echo get_set_money($item->p_sale); ?>" class="form-control money" maxlength="15" onkeyup="calc_vat();" onfocusout="calc_vat();">
 							</div> <!-- /.form-group -->
 						</div> <!-- /.col -->
 					</div> <!-- /.row -->
@@ -254,24 +254,12 @@ add_page_info( 'nav', array('name'=>$item->name ) );
 
 <script>
 /**
- * math_vat_rate()
- * KDV tutarindaki degeleri alip basina "1." veya "1.0" gibi degerler ekler.
- */
-function math_vat_rate(vat) {
-	var math_tax_rate = '';
-	if(vat.length == 2){ math_tax_rate =  parseFloat('1.'+vat); }
-	else { math_tax_rate = parseFloat('1.'+'0'+vat); }
-	return math_tax_rate;
-}
-
-
-/**
  * cal_vat()
  * Ürün ekleme ve ürün detay görünmünde maliyet ve satış fiyatlarının KDV'siz tutarlarını hesaplar
  */
 function calc_vat() {
-	var p_purc 	= $('#p_purc').val();
-	var p_sale 	= $('#p_sale').val();
+	var p_purc 	= get_set_decimal($('#p_purc').val());
+	var p_sale 	= get_set_decimal($('#p_sale').val());
 	var p_vat 	= math_vat_rate($('#vat').val());
 
 	// degeler numeric mi? degil mi?

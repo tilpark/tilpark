@@ -12,7 +12,7 @@ error_reporting(E_ALL);
 
 /* --------------------------------------------------- ROOT */
 
-/** 
+/**
  * title: root_path()
  * desc: root_path() fonksiyonu, lazim olan dosyalari ice aktarirken kok dizini bulmamızı kolaylastirir.
  */
@@ -40,7 +40,7 @@ function til_include($val) {
 
 /* --------------------------------------------------- THEME */
 
-/** 
+/**
  * title: get_header()
  * desc: header.php dosyasını include eder.
  */
@@ -49,7 +49,7 @@ function get_header()
 	include get_root_path('content/themes/default/header.php');
 }
 
-/** 
+/**
  * title: get_footer()
  * desc: footer.php dosyasını include eder.
  */
@@ -58,7 +58,7 @@ function get_footer()
 	include get_root_path('content/themes/default/footer.php');
 }
 
-/** 
+/**
  * title: get_sidebar()
  * desc: sidebar.php dosyasını include eder.
  */
@@ -70,7 +70,7 @@ function get_sidebar()
 
 
 /* --------------------------------------------------- URL */
-/** 
+/**
  * title: get_site_url()
  * desc: site adresini dondurur
  */
@@ -91,12 +91,12 @@ function get_site_url($val='', $val_2=false)
 	} else {
 		return _site_url.'/'.$val;
 	}
-	
+
 }
 /**
  * title: site_url()
  * desc: site adresini gosterir
- * func: get_site_url() 
+ * func: get_site_url()
  */
 function site_url($val='', $val_2=false)
 {
@@ -127,7 +127,7 @@ function _helper_site_url($val) {
 
 
 
-/** 
+/**
  * title: get_template_url()
  * desc: secili temanın klasör adresini url olarak döndürür
  */
@@ -135,7 +135,7 @@ function get_template_url($val='')
 {
 	return get_site_url().'/content/themes/default/'.$val;
 }
-/** 
+/**
  * title: template_url()
  * func: get_template_url()
  */
@@ -179,6 +179,7 @@ til_include('chartjs');
 til_include('message');
 til_include('upload');
 til_include('task');
+til_include('notification');
 
 
 

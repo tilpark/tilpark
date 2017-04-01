@@ -9,7 +9,7 @@
  */
 function input_check($arr) {
 	return $arr;
-	
+
 }
 
 
@@ -50,12 +50,12 @@ function sql_insert_string($arr=array(), $opt=array())
 
 		$return['table_name'] = str_replace('t_i_l_p_a_r_k_this_value_replace', '', $return['table_name']);
 		$return['table_value'] = str_replace('t_i_l_p_a_r_k_this_value_replace', '', $return['table_value']);
-		
+
 		if($opt['return'] == 'string') {
 			return '('.$return['table_name'].') VALUES ('.$return['table_value'].')';
 		} else { return $return; }
 	} else { return false; }
-	
+
 } //.sql_insert_string()
 
 
@@ -73,7 +73,7 @@ function sql_update_string($arr=array(), $opt=array())
 	if(!isset($opt['delete'])) 	{ unset($arr['delete']); }
 	if(!isset($opt['again'])) 	{ unset($arr['again']); }
 	if(!isset($opt['id'])) 		{ unset($arr['id']); }
-	
+
 	$return = 't_i_l_p_a_r_k_this_value_replace'; // bu deger silinecek
 	foreach($arr as $name=>$value)
 	{
@@ -103,13 +103,13 @@ function sql_where_string($arr) {
 
   		$order_by 	= false;
   		$limit 		= false;
-    
+
     	foreach($arr as $key=>$val) {
       		if(is_numeric($key) and is_array($val)) {
         		foreach($val as $key1=>$val1) {
         			if(til_get_strtoupper($key1) == 'ORDER_BY') { $order_by = $val1; }
         			elseif(til_get_strtoupper($key1) == 'LIMIT') { $limit = $val1; }
-        			else { $r .= _where_string($key1, $val1, $arr); }	
+        			else { $r .= _where_string($key1, $val1, $arr); }
         		}
       		} else {
       			if(til_get_strtoupper($key) == 'ORDER_BY') { $order_by = $val; }
@@ -146,10 +146,10 @@ function _where_string($name, $val='', $arr=array()) {
   # OR
   if(til_get_strtoupper($name) == 'OR') { // eger OR degeri var ise
     $r = ' OR ';
-  } 
+  }
   # IN
   elseif(til_get_strtoupper($name) == 'IN') {
-    
+
     foreach($val as $name=>$val) { // sadece bir tane deger ise
       if(!is_array($val)) {
         $r .= ' AND '.$name." IN ('".$val."')";
@@ -157,10 +157,10 @@ function _where_string($name, $val='', $arr=array()) {
         $r .= ' AND '.$name." IN ('".implode("','", $val)."')";
       }
     }
-  } 
+  }
   # NOT IN
-  elseif(til_get_strtoupper($name) == 'NOT_IN') { 
-    
+  elseif(til_get_strtoupper($name) == 'NOT_IN') {
+
     foreach($val as $name=>$val) { // sadece bir tane deger ise
       if(!is_array($val)) {
         $r .= ' AND '.$name." NOT IN ('".$val."')";
@@ -170,16 +170,16 @@ function _where_string($name, $val='', $arr=array()) {
     }
   }
   # LIKE
-  elseif(til_get_strtoupper($name) == 'LIKE') { 
-    
+  elseif(til_get_strtoupper($name) == 'LIKE') {
+
     foreach($val as $name=>$val) { // sadece bir tane deger ise
       if(strstr($val, "%")) { $val = ''.$val.''; } else { $val = '%'.$val.'%'; }
       $r .= ' AND '.$name." LIKE '".$val."'";
     }
   }
   # NOT LIKE
-  elseif(til_get_strtoupper($name) == 'NOT_LIKE') { 
-    
+  elseif(til_get_strtoupper($name) == 'NOT_LIKE') {
+
     foreach($val as $name=>$val) { // sadece bir tane deger ise
 
       if(strstr($val, "%")) { $val = ''.$val.''; } else { $val = '%'.$val.'%'; }
@@ -187,7 +187,7 @@ function _where_string($name, $val='', $arr=array()) {
     }
   }
   # ORDER BY
-  elseif(til_get_strtoupper($name) == 'ORDER_BY') { 
+  elseif(til_get_strtoupper($name) == 'ORDER_BY') {
     $r .= ' ORDER BY ';
     foreach($val as $name=>$val) { // sadece bir tane deger ise
       $r .= ''.$name." ".$val.", ";
@@ -196,7 +196,7 @@ function _where_string($name, $val='', $arr=array()) {
     if(substr($r, -2) == ', ') { $r = substr($r, 0, -2); }
   }
   # LIMIT
-  elseif(til_get_strtoupper($name) == 'LIMIT') { 
+  elseif(til_get_strtoupper($name) == 'LIMIT') {
     $r .= ' LIMIT '.$val;
     // fazlaliklari silelim
     if(substr($r, -2) == ', ') { $r = substr($r, 0, -2); }
@@ -210,10 +210,10 @@ function _where_string($name, $val='', $arr=array()) {
         $r = ' AND '.$name."='".$val."'";
       }
     }
-       
+
   }
 
- 
+
   return $r;
 } //._where_string()
 
@@ -311,7 +311,7 @@ function db_query_error($arr=array()) {
 function db_query_list_return($query, $arr=array()) {
 
 	if(is_array($arr)) {
- 
+
 	} else {
 		if(!empty($arr)) {
 			$arr = array('prefix'=>$arr);
@@ -325,7 +325,7 @@ function db_query_list_return($query, $arr=array()) {
 		} else {
 			$return[] = $list;
 		}
-		
+
 	}
 	return $return;
 } //.db_query_list_return()
@@ -346,7 +346,7 @@ function db_query_list_return($query, $arr=array()) {
 function db_query_list_return_user($query, $arr=array()) {
 
 	if(is_array($arr)) {
- 
+
 	} else {
 		if(!empty($arr)) {
 			$arr = array('prefix'=>$arr);
@@ -363,7 +363,7 @@ function db_query_list_return_user($query, $arr=array()) {
 		} else {
 			$return[] = $list;
 		}
-		
+
 	}
 	return $return;
 } //.db_query_list_return_user()
@@ -382,16 +382,16 @@ function get_ARR_helper_limit_AND_orderby($arr) {
 
 	if(@$arr['_GET'] == true) { // eger GET ile gelecek parametreler aktif ise GET parametlerine gore sorgu yapılabilir
 		if(isset($_GET['page']) ) { $arr['page'] = input_check($_GET['page']); }
-		if(isset($_GET['limit'])) { if($_GET['limit'] == 'false') { $arr['limit'] = false; } } 
+		if(isset($_GET['limit'])) { if($_GET['limit'] == 'false') { $arr['limit'] = false; } }
 	}
 
 
-	if(!isset($arr['limit'])) 	{ $arr['limit'] = til()->pg->list_limit; } 
+	if(!isset($arr['limit'])) 	{ $arr['limit'] = til()->pg->list_limit; }
 		else { $arr['limit'] = input_check($arr['limit']); }
-	if(!isset($arr['page'])) 	{ $arr['page'] = 0; } 
+	if(!isset($arr['page'])) 	{ $arr['page'] = 0; }
 		else { $arr['page'] = input_check($arr['page']); }
 		if($arr['page'] > 0) { $arr['page'] = ( $arr['page'] * $arr['limit'] ) - $arr['limit']; }
-	
+
 
 	// eger order by var ise yapalim
 	if(!isset($arr['orderby_name']) and !isset($arr['orderby_type'])) {
@@ -404,7 +404,7 @@ function get_ARR_helper_limit_AND_orderby($arr) {
 	if(@$arr['_GET'] == true) { // eger GET ile gelecek parametreler aktif ise GET parametlerine gore sorgu yapılabilir
 		if(isset($_GET['s'])) { $arr['s'] = input_check($_GET['s']); }
 		if(isset($_GET['db-s-where'])) { $arr['db-s-where'] = input_check($_GET['db-s-where']); } else { $arr['db-s-where'] = 'all'; }
-		
+
 		// status id
 		if(isset($_GET['status_id'])) { $arr['status_id'] = $_GET['status_id']; }
 	}

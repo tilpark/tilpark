@@ -48,12 +48,12 @@ if(@empty($_POST['code'])) {
 
 		<div class="form-group">
 			<label for="name">Hesap Adı <sup class="text-muted">şahıs adı soyadı, firma adı, şirket adı vb.</sup></label>
-			<input type="text" name="name" id="name" value="<?php echo @$_POST['name']; ?>" class="form-control required" minlength="3" maxlength="50" autocomplate="off">
+			<input type="text" name="name" id="name" value="<?php echo @$_POST['name']; ?>" class="form-control required" minlength="3" maxlength="32" autocomplate="off">
 		</div> <!-- /.form-group -->
 
 		<div class="form-group">
 			<label for="email">E-Posta</label>
-			<input type="email" name="email" id="email" value="<?php echo @$_POST['email']; ?>" class="form-control" minlength="3" maxlength="50">
+			<input type="email" name="email" id="email" value="<?php echo @$_POST['email']; ?>" class="form-control" minlength="3" maxlength="100">
 		</div> <!-- /.form-group -->
 
 		<div class="row">
@@ -76,20 +76,20 @@ if(@empty($_POST['code'])) {
 
 		<div class="form-group">
 			<label for="address">Adres</label>
-			<input type="text" name="address" id="address" value="<?php echo @$_POST['address']; ?>" class="form-control" maxlength="250">
+			<input type="text" name="address" id="address" value="<?php echo @$_POST['address']; ?>" class="form-control" minlength="3" maxlength="255">
 		</div> <!-- /.form-group -->
 
 		<div class="row">
 			<div class="col-xs-6 col-md-4">
 				<div class="form-group">
 					<label for="district">İlçe-Bölge</label>
-					<input type="text" name="district" id="district" value="<?php echo @$_POST['district']; ?>" class="form-control" maxlength="20">
+					<input type="text" name="district" id="district" value="<?php echo @$_POST['district']; ?>" class="form-control" minlength="3" maxlength="20">
 				</div> <!-- /.form-group -->
 			</div> <!-- /.col -->
 			<div class="col-xs-6 col-md-4">
 				<div class="form-group">
 					<label for="city">Şehir-İl</label>
-					<input type="text" name="city" id="city" value="<?php echo @$_POST['city']; ?>" class="form-control" maxlength="20">
+					<input type="text" name="city" id="city" value="<?php echo @$_POST['city']; ?>" class="form-control" minlength="3" maxlength="20">
 				</div> <!-- /.form-group -->
 			</div> <!-- /.col -->
 			<div class="col-xs-6 col-md-4">
@@ -104,13 +104,13 @@ if(@empty($_POST['code'])) {
 			<div class="col-xs-6 col-md-4">
 				<div class="form-group">
 					<label for="tax_home">Vergi Dairesi</label>
-					<input type="text" name="tax_home" id="tax_home" value="<?php echo @$_POST['tax_home']; ?>" class="form-control" maxlength="20">
+					<input type="text" name="tax_home" id="tax_home" value="<?php echo @$_POST['tax_home']; ?>" class="form-control" minlength="3" maxlength="20">
 				</div> <!-- /.form-group -->
 			</div> <!-- /.col-md-4 -->
 			<div class="col-xs-6 col-md-4">
 				<div class="form-group">
 					<label for="tax_no">Vergi No/T.C. No</label>
-					<input type="tel" name="tax_no" id="tax_no" value="<?php echo @$_POST['tax_no']; ?>" class="form-control digits" maxlength="20">
+					<input type="tel" name="tax_no" id="tax_no" value="<?php echo @$_POST['tax_no']; ?>" class="form-control digits" minlength="10" maxlength="11">
 				</div> <!-- /.form-group -->
 			</div> <!-- /.col-md-4 -->
 		</div> <!-- /.row -->
@@ -125,10 +125,11 @@ if(@empty($_POST['code'])) {
 </div> <!-- /.form-group -->
 <div class="clearfix"></div>
 
+
 <div class="text-right">
 	<input type="hidden" name="add">
 	<input type="hidden" name="uniquetime" value="<?php uniquetime(); ?>">
-	<button class="btn btn-default btn-insert"><i class="fa fa-floppy-o"></i> Kaydet</button>
+	<button class="btn btn-default btn-insert btn-xs-block"><i class="fa fa-floppy-o"></i> Kaydet</button>
 </div>
 
 </form>

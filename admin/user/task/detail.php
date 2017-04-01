@@ -170,6 +170,8 @@ add_page_info( 'nav', array('name'=>$rec_user->name.' '.$rec_user->surname) );
 
 ## tum mesajlari cevaplari ile birlikte cekelim
 if(isset($_GET['id'])) {
+
+
 	$messages = array_reverse(get_message_detail($_GET['id'], array('limit' => 10)));
 }
 
@@ -181,6 +183,8 @@ if($task->sen_trash_u_id == get_active_user_id('id') or $task->rec_trash_u_id ==
 
 # secili olan mesaj icin $type_status degiskenine deger atayalim
 if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1'; }
+
+
 ?>
 
 
@@ -317,7 +321,7 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 		</div> <!-- /.row /-->
 
 		<div class="panel">
-			<div class="panel-body">
+			<div class="panel-body" style="paddig-bottom: 0;">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="chat-container">
@@ -335,7 +339,7 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 												<div class="message-elem-content">
 													<div class="well padding-10 br-3">
 														<div class="text-muted fs-11 italic">
-															<span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date-tooltip" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
+															<span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date-tooltip" <?php if ( til_is_mobile() ) { echo 'data-wenk-pos="left"'; } ?> data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
 														</div><!--/ .text-muted /-->
 
 														<?php echo $message->message; ?>
@@ -356,10 +360,10 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 						</div><!--/ .chat-container /-->
 
 						<!--/ TASK REPLY /-->
-						<form name="form_message" id="form_message" onsubmit="return send_message(this, 'task')" action="" autocomplete="off" method="POST">
+						<form name="form_message" id="form_message" onsubmit="return send_message(this, 'task')" js-onload="window.set_writing.top_id = '<?php echo $_GET['id'] ; ?>';" action="" autocomplete="off" method="POST">
 							<div class="row space-5">
 								<div class="col-md-1 hidden-xs">
-									<label>&nbsp;</label>
+									<label>&nbsp;&nbsp;</label>
 									<div class="clearfix"></div>
 									<?php if(get_active_user('avatar')): ?>
 										<img src="<?php echo get_active_user('avatar'); ?>" class="img-responsive br-3 pull-right" width="64">
@@ -368,20 +372,38 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 									<?php endif; ?>
 								</div> <!-- /.col-md-1 -->
 
-								<div class="col-md-11">
-									<div class="form-group message-area">
+								<div class="col-md-11 col-xs-12">
+									<?php if ( til_is_mobile() ) : ?>
+										<div class="form-group message-area chat-input">
+											<div class="user-input-control" js-onload="get_writing('.user-input-control')">
+												<div class="user-input-control-animate-container">
+													<div class="circle"></div>
+													<div class="circle"></div>
+													<div class="circle"></div>
+												</div>
+											</div><!--/ .user-input-control /-->
 
-										<?php if ( til_is_mobile() ) : ?>
-											<input autofocus type="text" name="message" id="message" required class="form-control send-message-input" value="" placeholder="Birşeyler yazın...">
+											<input autofocus type="text" onkeypress="if ( this.value.length > 0 ) { set_writing({'set_value': '1'}); } if ( event.keyCode == 13 ) { set_writing({'set_value': '0'}); } if ( event.keyCode == 8 ) { set_writing({'set_value': '2'}); } if ( this.value.length == 0 ) { set_writing({'set_value': '0'}); }" onfocusout="set_writing({'set_value': '0'})" onfocus="set_writing({'set_value': '1'})" name="message" id="message" required class="form-control send-message-input" value="" placeholder="Birşeyler yazın...">
 											<button type="button" class="send-message-image" onclick="document.getElementById('send-message-file').click()"><i class="fa fa-image"></i></button>
-											<button type="submit" class="send-message-submit"><i class="fa fa-send"></i></button>
+											<button type="submit" class="send-message-submit" onclick="document.getElementById('message').focus(); set_writing({'set_value': '1'});"><i class="fa fa-send"></i></button>
 											<input type="file" name="" id="send-message-file" onchange="var chat_list = document.querySelector('.chat-container'); chat_list.classList.add('loader'); imageHandler(this.files[0], function(data) { if ( data == false ) { chat_list.classList.remove('loader'); } else { if ( document.getElementById('message').value = '<img src='+ data +' class=img-responsive>' ) { chat_list.classList.remove('loader'); document.querySelector('.send-message-submit').click(); } } });" value="" class="hidden">
-										<?php else: ?>
-										<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
-										<textarea autofocus onkeydown="parent(this, 'form').dispatchEvent(new Event('submit', { 'bubbles' : true, 'cancelable' : true}));" name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:20px;"></textarea>
-										<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '100' });</script>
-										<?php endif; ?>
-									</div> <!-- /.form-group -->
+										</div><!--/ .form-group.message-area.chat-input /-->
+									<?php else: ?>
+										<div class="form-group message-area">
+											<div class="user-input-control" js-onload="get_writing('.user-input-control')">
+												<div class="user-input-control-animate-container">
+													<div class="circle"></div>
+													<div class="circle"></div>
+													<div class="circle"></div>
+												</div><!--/ .user-input-control-animate-container /-->
+											</div><!--/ .user-input-control /-->
+
+											<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
+											<textarea autofocus onkeypress="set_writing({'set_value': '1'});" onfocusout="set_writing({'set_value': '0'})" onfocus="set_writing({'set_value': '1'})" onkeydown="set_writing({'set_value': '0'}); parent(this, 'form').dispatchEvent(new Event('submit', { 'bubbles' : true, 'cancelable' : true}));" name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:20px;"></textarea>
+											<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '100', onfocus: true, onfocusout: true, onkeypress: true });</script>
+											<script type="text/javascript"></script>
+										</div><!--/ .form-group.message-area /-->
+									<?php endif; ?>
 
 									<div class="pull-right">
 									<button type="submit" class="btn btn-default pull-right hidden-xs"><i class="fa fa-send-o"></i> Gönder</button>

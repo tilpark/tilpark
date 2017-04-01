@@ -91,11 +91,144 @@ sure_baslat();
   </head>
 
 
+<style>
+.icon-menu {
+  border:1px solid transparent;
+  position: relative;
+  display: block;
+  height: 50px;
+  display: inline-block;
+  float: left;
+  margin-right: 10px;
+}
+.icon-menu ul {
+  margin: 0px;
+  list-style-type:none;
+  clear: both;
+}
+.icon-menu ul li {
+  display: inline-block;
+  border:0px solid transparent;
+}
+.icon-menu ul li a {
+  display: block;
+  position: relative;
+  background: transparent;
+  height: 50px;
+  width: 40px;
+  text-align: center;
+      display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.icon-menu ul li a i.fa {
+  color:#777;
+  font-size: 20px;
+}
+.icon-menu ul li a .badge {
+  position: absolute;
+  top: 8px;
+  right: 3px;
+  font-size: 10px;
+  text-align: center;
+  width: 16px;
+  height: 16px;
+  padding: 0px;
+  padding-top: 4px;
+  background-color: #dcdcdc;
+  color: #000;
+  border-radius: 2px;
+}
+.icon-menu ul li a .badge.active {
+  background-color: #fec430;
+  color: #000;
+}
+
+
+.mobile-menu-icon {
+  float: left;
+  margin-left: 15px;
+  margin-top: 8px;
+  font-size: 20px;
+  border:1px solid #ccc;
+  padding: 5px 7px;
+}
+
+header a.profile-avatar {
+  margin: 0px;
+  padding: 0px;
+  background-color: transparent;
+  height: 50px;
+  width: 46px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left:1px solid rgba(204, 204, 204, 0.4);
+  padding-left: 14px;
+}
+header a.profile-avatar:hover, header a.profile-avatar:focus, header a.profile-avatar:active {
+  text-decoration: none;
+}
+header a.profile-avatar .avatar-div {
+  border:0px solid #ccc;
+  padding: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1px;
+}
+header a.profile-avatar img {
+  width: 36px;
+  float: left;
+  margin-right: 3px;
+}
+header a.profile-avatar .avatar-div i.fa  {
+  font-size: 17px;
+  font-size: 14px;
+  color: #737373;
+}
+
+</style>
+
 <body class="body">
 
-
 <header>
-  <nav class="navbar navbar-masthead navbar-default">
+  <?php if(til_is_mobile()): ?>
+    <nav class="navbar navbar-masthead navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header pull-left">
+        <a href="<?php site_url(); ?>" class="mobile-menu-icon"><i class="fa fa-bars"></i></a>
+        <a class="navbar-brand" href="<?php site_url(); ?>"><img src="<?php template_url('img/cheetah.png'); ?>" class="img-responsive"></a>
+      </div>
+
+      <div class="pull-right"> 
+      <div class="clearfix"></div>
+          <div class="icon-menu">
+
+            <ul>
+              <li><a href="#"><i class="fa fa-globe"></i><span class="badge" id="task_badge">0</span></a></li>
+              <li><a href="#"><i class="fa fa-tasks"></i><span class="badge active" id="task_badge">23</span></a></li>
+              <li><a href="#"><i class="fa fa-envelope-o"></i><span class="badge" id="task_badge">0</span></a></li>
+            </ul>
+          </div>
+
+          <a href="#" class="profile-avatar">
+            <div class="avatar-div">
+              <img src="<?php active_user('avatar'); ?>">
+              <i class="fa fa-caret-right"></i>
+            </div>
+          </a>
+      </div>
+    </div><!-- /.container-fluid -->
+  </nav>
+  <div class="h-50"></div>
+  <div class="clearfix"></div>
+
+
+  <?php else: ?>
+    <nav class="navbar navbar-masthead navbar-default">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
@@ -113,7 +246,12 @@ sure_baslat();
 
         <ul class="nav navbar-nav navbar-right">
 
-
+          <!-- globe -->
+          <li class="icon-badge dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-globe"></i> <span class="badge" id="task_badge" js-onload="get_notification_count({elem: '#notification_badge', box: 'notification'})"><?php echo $task_unread = get_calc_task(); ?></span>
+            </a>
+          </li>
           <!-- task -->
           <li class="icon-badge dropdown">
             <a href="#" class="dropdown-toggle" onclick="get_notification(getNextSiblings(this)[0], 'task')" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -209,11 +347,14 @@ sure_baslat();
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
+
+  <?php endif; ?>
+  
 </header>
 
 <main>
 
-<div class="breadcrumb-header">
+<div class="breadcrumb-header" style="margin-left:-10px; margin-right:-10px; padding-right: 10px; padding-left: 10px;">
   
   <?php if(til_is_mobile()): ?>
     <?php if(!is_home()): ?>

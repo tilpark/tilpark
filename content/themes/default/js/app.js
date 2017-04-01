@@ -35,17 +35,26 @@ $(document).ready( function() {
 	  	}
 	});
 
+
 	/** money format */
-	$('.money').number( true, 2, '.', ',', true);
+	$('input[type=text].money').number( true, 2, '.', ',', true);
 		// cep telefonlari icin money hack
 		$("input[type=tel]").each(function() {
 			$(this).attr('type', 'text');
-			$('.money').number( true, 2, '.', ',', true);
+			$('input[type=text].money').number( true, 2, '.', ',', true);
 			$(this).attr('type', 'tel');
 		});
 		
 
-		$(".money").keypress(function () {
+		$("input[type=tel].money").keydown(function () {
+			if($(this).attr('type') == 'tel') {
+				$(this).attr('data-type', 'tel');
+				if($(this).is(':focus')) {
+					$(this).attr('type', 'text');
+				} 
+			}
+		});
+		$("input[type=tel].money").focusin(function () {
 			if($(this).attr('type') == 'tel') {
 				$(this).attr('data-type', 'tel');
 				if($(this).is(':focus')) {
@@ -263,6 +272,14 @@ function math_vat_rate(vat) {
 	if(vat.length == 2){ math_tax_rate =  parseFloat('1.'+vat); }
 	else { math_tax_rate = parseFloat('1.'+'0'+vat); }
 	return math_tax_rate;
+}
+
+/**
+* get_set_decimal()
+* parasal degerlerdeki virgulleri siler
+*/
+function get_set_decimal(val) {
+	return val.replace(',', '');
 }
 
 

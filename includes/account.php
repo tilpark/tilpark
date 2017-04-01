@@ -14,15 +14,15 @@ function add_account($args) {
 		$insert = $args['insert'];
 
 		@form_validation($insert['code'], 'code', 'Barkod Kodu', 'min_length[3]|max_length[32]', __FUNCTION__);
-		@form_validation($insert['name'], 'name', 'Hesap Adı', 'required|min_length[3]|max_length[50]', __FUNCTION__);
-		@form_validation($insert['email'], 'email', 'E-posta', 'email', __FUNCTION__);
+		@form_validation($insert['name'], 'name', 'Hesap Adı', 'required|min_length[3]|max_length[32]', __FUNCTION__);
+		@form_validation($insert['email'], 'email', 'E-posta', 'email|max_length[100]', __FUNCTION__);
 		@form_validation($insert['gsm'], 'gsm', 'Cep Telefonu', 'required|gsm', __FUNCTION__);
 		@form_validation($insert['phone'], 'phone', 'Sabit Telefon', 'number|min_length[10]|max_length[11]', __FUNCTION__);
-		@form_validation($insert['address'], 'address', 'Adres', 'max_length[250]', __FUNCTION__);
-		@form_validation($insert['district'], 'district', 'İlçe', 'max_length[20]', __FUNCTION__);
-		@form_validation($insert['city'], 'city', 'Şehir', 'max_length[20]', __FUNCTION__);
-		@form_validation($insert['tax_home'], 'tax_home', 'Vergi Dairesi', 'max_length[50]', __FUNCTION__);
-		@form_validation($insert['tax_no'], 'tax_no', 'Vergi No', 'number|max_length[20]', __FUNCTION__);
+		@form_validation($insert['address'], 'address', 'Adres', 'min_length[3]|max_length[255]', __FUNCTION__);
+		@form_validation($insert['district'], 'district', 'İlçe', 'min_length[3]|max_length[20]', __FUNCTION__);
+		@form_validation($insert['city'], 'city', 'Şehir', 'min_length[3]|max_length[20]', __FUNCTION__);
+		@form_validation($insert['tax_home'], 'tax_home', 'Vergi Dairesi', 'min_length[3]|max_length[20]', __FUNCTION__);
+		@form_validation($insert['tax_no'], 'tax_no', 'Vergi No', 'number|min_length[10]|max_length[11]', __FUNCTION__);
 
 		// genel degerler
 		if(!isset($insert['type'])) { $insert['type'] = 'account'; } else { $insert['type'] = input_check($insert['type']); }

@@ -172,7 +172,7 @@ if($form->id) {
 							<div class="col-xs-6 col-md-3">
 								<div class="form-group">
 									<label for="date"><i class="fa fa-calendar"></i> Tarih </label>
-									<input type="text" name="date" id="date" value="<?php echo @substr($form->date,0,16); ?>" class="form-control input-sm datetime" >
+									<input type="text" name="date" id="date" value="<?php echo @substr($form->date,0,16); ?>" class="form-control input-sm datetime">
 								</div> <!-- /.form-group -->
 							</div> <!-- /.col- -->
 							<div class="col-xs-6 col-md-5">
@@ -190,7 +190,7 @@ if($form->id) {
 							<div class="col-xs-6 col-md-2">
 								<div class="form-group">
 									<label for="account_tax_no">Vergi/T.C. No</label>
-									<input type="text" name="account_tax_no" id="account_tax_no" value="<?php echo @$form->account_tax_no; ?>" class="form-control input-sm" minlength="3" maxlength="32">
+									<input type="tel" name="account_tax_no" id="account_tax_no" value="<?php echo @$form->account_tax_no; ?>" class="form-control input-sm" minlength="3" maxlength="32">
 								</div> <!-- /.form-group -->
 							</div> <!-- /.col-md-2 -->
 						</div> <!-- /.row -->
@@ -200,35 +200,31 @@ if($form->id) {
 								<div class="form-group">
 									<label for="account_code"><i class="fa fa-barcode"></i> Hesap Kodu </label>
 									<input type="text" name="account_code" id="account_code" value="<?php echo @$form->account_code; ?>" class="form-control input-sm" minlength="3" maxlength="32">
-									
 								</div> <!-- /.form-group -->
 							</div> <!-- /.col-md-3 -->
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="account_name">Hesap Adı <?php if(@$form->account_id):?><a href="../account/detail.php?id=<?php echo $form->account_id; ?>" target="_blank"><i class="fa fa-external-link"></i></a><?php endif; ?> </label>
-									
 										<label id="new_account" class="pull-right" data-toggle="tooltip" data-placement="top" title="" data-original-title="Yeni bir hesap kartı oluşturulsun mu?"><input type="checkbox" name="new_account" id="new_account" value="true" data-toggle="switch" switch-size="xs" on-text="Evet" off-text="Hayır"></label>
-
 									<input type="text" name="account_name" id="account_name" value="<?php echo @$form->account_name; ?>" class="form-control input-sm" minlength="3" maxlength="32">
-									
 								</div> <!-- /.form-group -->
 							</div> <!-- /.col-md-3 -->
 							<div class="col-xs-6 col-md-2">
 								<div class="form-group">
 									<label for="account_gsm">Cep Telefonu </label>
-									<input type="text" name="account_gsm" id="account_gsm" value="<?php echo @$form->account_gsm; ?>" class="form-control input-sm" minlength="3" maxlength="32">
+									<input type="tel" name="account_gsm" id="account_gsm" value="<?php echo @$form->account_gsm; ?>" class="form-control input-sm" minlength="3" maxlength="32">
 								</div> <!-- /.form-group -->
 							</div> <!-- /.col-md-2 -->
 							<div class="col-xs-6 col-md-2">
 								<div class="form-group">
 									<label for="account_phone">Sabit Telefonu </label>
-									<input type="text" name="account_phone" id="account_phone" value="<?php echo @$form->account_phone; ?>" class="form-control input-sm" minlength="3" maxlength="32">
+									<input type="tel" name="account_phone" id="account_phone" value="<?php echo @$form->account_phone; ?>" class="form-control input-sm" minlength="3" maxlength="32">
 								</div> <!-- /.form-group -->
 							</div> <!-- /.col-md-3 -->
 							<div class="col-xs-12 col-md-2">
 								<div class="form-group">
 									<label for="account_email">E-Posta </label>
-									<input type="text" name="account_email" id="account_email" value="<?php echo @$form->account_email; ?>" class="form-control input-sm email">
+									<input type="email" name="account_email" id="account_email" value="<?php echo @$form->account_email; ?>" class="form-control input-sm email">
 								</div> <!-- /.form-group -->
 							</div> <!-- /.col-md-3 -->
 
@@ -412,37 +408,37 @@ if($form->id) {
 										<td>
 											<div class="form-group">
 												<label for="quantity">Adet</label>
-												<input type="text" name="quantity" id="quantity" class="form-control calc_item" value="1">
+												<input type="tel" name="quantity" id="quantity" class="form-control calc_item" value="1" maxlength="10">
 											</div> <!-- /.form-group -->
 										</td>
 										<td>
 											<div class="form-group">
 												<label for="price">B.Fiyatı</label>
-												<input type="text" name="price" id="price" class="form-control money calc_item">
+												<input type="tel" name="price" id="price" class="form-control money calc_item" value="1000" maxlength="15">
 											</div> <!-- /.form-group -->
 										</td>
 										<td class="hidden-xs">
 											<div class="form-group">
 												<label for="total">Tutar</label>
-												<input type="text" name="total" id="total" class="form-control money calc_item">
+												<input type="tel" name="total" id="total" class="form-control money calc_item" maxlength="15">
 											</div> <!-- /.form-group -->
 										</td>
 										<td width="5%" class="hidden-xs">
 											<div class="form-group">
 												<label for="item_vat">KDV</label>
-												<input type="text" name="vat" id="vat" class="form-control calc_item">
+												<input type="tel" name="vat" id="vat" class="form-control calc_item">
 											</div> <!-- /.form-group -->
 										</td>
 										<td width="10%" class="hidden-xs">
 											<div class="form-group">
 												<label for="vat_total"><span class="hidden-xs">KDV Tutarı</span><span class="visible-xs fs-11">KDV Tutarı</span></label>
-												<input type="text" name="vat_total" id="vat_total" class="form-control money calc_item">
+												<input type="tel" name="vat_total" id="vat_total" class="form-control money calc_item">
 											</div> <!-- /.form-group -->
 										</td>
 										<td>
 											<div class="form-group">
 												<label for="col_total"><span class="hidden-xs">Toplamı</span><span class="visible-xs">Toplam</span></label>
-												<input type="text" name="col_total" id="col_total" class="form-control money">
+												<input type="tel" name="col_total" id="col_total" class="form-control money">
 											</div> <!-- /.form-group -->
 										</td>
 									</tr>

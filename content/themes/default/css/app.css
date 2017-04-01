@@ -441,7 +441,7 @@ table thead tr th a.orderby.text-muted {
   font-size: 75%;
 }
 
-
+/* ======== */
 /* 2.2 */
 /* buttons */
 .btn {
@@ -514,6 +514,70 @@ table thead tr th a.orderby.text-muted {
 }
 .btn.btn-lg.btn-icon i.fa {
   padding-top: 14px;
+}
+@media (max-width: 767px) {
+  .btn-xs-block {
+      display: block;
+      width: 100%;
+  }
+  input[type="submit"].btn-xs-block,
+  input[type="reset"].btn-xs-block,
+  input[type="button"].btn-xs-block {
+      width: 100%;
+  }
+  .btn-block + .btn-xs-block,
+  .btn-xs-block + .btn-block,
+  .btn-xs-block + .btn-xs-block {
+      margin-top: 0.5rem;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .btn-sm-block {
+      display: block;
+      width: 100%;
+  }
+  input[type="submit"].btn-sm-block,
+  input[type="reset"].btn-sm-block,
+  input[type="button"].btn-sm-block {
+      width: 100%;
+  }
+  .btn-block + .btn-sm-block,
+  .btn-sm-block + .btn-block,
+  .btn-sm-block + .btn-sm-block {
+      margin-top: 0.5rem;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .btn-md-block {
+      display: block;
+      width: 100%;
+  }
+  input[type="submit"].btn-md-block,
+  input[type="reset"].btn-md-block,
+  input[type="button"].btn-md-block {
+      width: 100%;
+  }
+  .btn-block + .btn-md-block,
+  .btn-md-block + .btn-block,
+  .btn-md-block + .btn-md-block {
+      margin-top: 0.5rem;
+  }
+}
+@media (min-width: 1200px) {
+  .btn-lg-block {
+      display: block;
+      width: 100%;
+  }
+  input[type="submit"].btn-lg-block,
+  input[type="reset"].btn-lg-block,
+  input[type="button"].btn-lg-block {
+      width: 100%;
+  }
+  .btn-block + .btn-lg-block,
+  .btn-lg-block + .btn-block,
+  .btn-lg-block + .btn-lg-block {
+      margin-top: 0.5rem;
+  }
 }
 
 
@@ -904,6 +968,20 @@ header .dropdown-message-list li a {
     margin-right: 13px;
     border-radius: 0px;
   }
+  header .navbar-default {
+    background-color: #ffffff;
+    border-color: #e6e6e6;
+    margin-bottom: 0;
+        box-shadow: -3px -7px 8px #000000;
+  }
+  header .navbar-brand {
+    width: 48px;
+    padding: 5px 5px;
+    margin-left: 10px;
+  }
+  header .navbar-brand img {
+    width: 170px;
+  }
 }
 
 
@@ -923,6 +1001,10 @@ header .dropdown-message-list li a {
   float: right;
 }
 @media (max-width: 768px) {
+  .breadcrumb-header ol.breadcrumb {
+    font-size: 12px;
+    padding: 9px 0px !important;
+  }
   .breadcrumb-header {
     margin-top: -15px;
     text-align:right;
