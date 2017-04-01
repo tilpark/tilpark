@@ -106,7 +106,6 @@ function editor(param = {selector: "", plugins:"", toolbar:"", height: "500", me
     },
     init_instance_callback: function (editor) {
       editor.on('keyDown', function (e) {
-
         if ( e.keyCode == 13 && !e.shiftKey ) {
           var event = new Event('keydown', {
             keyCode: e.keyCode,
@@ -115,6 +114,38 @@ function editor(param = {selector: "", plugins:"", toolbar:"", height: "500", me
           document.querySelector(param.selector).dispatchEvent(event);
         }
       });
+
+      // focus
+      if ( param.onfocus ) {
+        editor.on('focus', function (e) {
+          var event = new Event('focus');
+          document.querySelector(param.selector).dispatchEvent(event);
+        });
+      }
+
+      // focusout
+      if ( param.onfocusout ) {
+        editor.on('focusout', function (e) {
+          var event = new Event('focusout');
+          document.querySelector(param.selector).dispatchEvent(event);
+        });
+      }
+
+      // keyup
+      if ( param.onkeyup ) {
+        editor.on('keyup', function (e) {
+          var event = new Event('keyup');
+          document.querySelector(param.selector).dispatchEvent(event);
+        });
+      }
+
+      // keypress
+      if ( param.onkeypress ) {
+        editor.on('keypress', function (e) {
+          var event = new Event('keypress');
+          document.querySelector(param.selector).dispatchEvent(event);
+        });
+      }
     }
   });
 } //. editor()
@@ -240,7 +271,6 @@ function chat_list(type) {
                 if ( i == 0 ) { window.get_first_message_id = div.getAttribute('id'); }
 
                 if ( chat_list.insertBefore(div, chat_list.firstChild) ) {
-                  console.log(i);
                   chat_list.scrollTop = 20;
                   window.get_message_control = true;
                 } else { window.get_message_control = true; }
@@ -291,8 +321,12 @@ function get_new_message(class_name="", type="message") {
             var chat_list = document.querySelector(".chat-list");
 
             if ( chat_list.appendChild(div) ) {
-              document.querySelector("body").scrollTop = getOffset(chat_list).top;
               chat_list.scrollTop = chat_list.scrollHeight;
+              if ( window.innerWidth < 767 ) {
+                document.querySelector("body").scrollTop = document.querySelector("body").scrollHeight;
+              } else {
+                document.querySelector("body").scrollTop = getOffset(chat_list).top;
+              }
               setTimeout(function() { if ( chat_list.scrollTop != chat_list.scrollHeight ) { chat_list.scrollTop = chat_list.scrollHeight; } }, 500);
 
               if ( class_name == 'get' ) { document.title = "(1) " + chat_list.lastElementChild.getAttribute("title") + " - " + chat_list.lastElementChild.getAttribute("username"); }
@@ -395,11 +429,11 @@ function imageHandler(image, callback) {
 
 
 function clear_writing(obj) {
-  getXHR({ 'method' : 'get', 'url': get_site_url('admin/user/message-writing.php?top_id=' + window.set_writing.top_id + '&receiver=' + window.set_writing.receiver + '&clear_writing=true&session_id=' + window.session_id  ) }, function(data) {
+  getXHR({ 'method' : 'get', 'url': get_site_url('admin/user/message-writing.php?top_id=' + window.set_writing.top_id + '&clear_writing=true&session_id=' + window.session_id  ) }, function(data) {
     if ( data != 'empty' && data != false ) {
       if ( data == 'true' ) {
         return true;
-      } else { console.log(data); }
+      }
     } else { return false; }
   });
 }
@@ -408,15 +442,13 @@ function clear_writing(obj) {
 
 
 function set_writing(obj) {
-  clearInterval(window.get_writing_interval);
-
   if ( obj ) {
-    getXHR({ 'method' : 'get', 'url': get_site_url('admin/user/message-writing.php?top_id=' + window.set_writing.top_id + '&receiver=' + window.set_writing.receiver + '&set_value=' + obj.set_value + '&session_id=' + window.session_id  ) }, function(data) {
+    getXHR({ 'method' : 'get', 'url': get_site_url('admin/user/message-writing.php?top_id=' + window.set_writing.top_id + '&set_value=' + obj.set_value + '&session_id=' + window.session_id  ) }, function(data) {
       if ( data != 'empty' && data != false ) {
         if ( data == 'true' ) {
 
           return true;
-        } else { console.log(data); }
+        }
       } else { return false; }
     });
   } else { return false; }
@@ -426,7 +458,7 @@ function set_writing(obj) {
 
 function get_writing(selector) {
   setInterval(function() {
-    getXHR({ 'method' : 'get', 'url': get_site_url('admin/user/message-writing.php?top_id=' + window.set_writing.top_id + '&receiver=' + window.set_writing.receiver + '&get=true&session_id=' + window.session_id  ) }, function(data) {
+    getXHR({ 'method' : 'get', 'url': get_site_url('admin/user/message-writing.php?top_id=' + window.set_writing.top_id + '&&get=true&session_id=' + window.session_id  ) }, function(data) {
       if ( data != 'empty' ) {
         var elem = document.querySelector(selector);
 
@@ -444,7 +476,7 @@ function get_writing(selector) {
     });
   }, 1000);
 
-  window.get_writing_interval = setInterval(function() { clear_writing({'set_value':'0'}); }, 5000);
+  setInterval(function() { clear_writing({'set_value':'0'}); }, 5000);
 } //
 
 

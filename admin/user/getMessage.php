@@ -19,7 +19,7 @@ if ( $_GET['get_message'] == "old" AND isset($_GET['list_old_message']) ) {
           <div class="message-elem-content">
             <div class="well padding-10 br-3">
               <div class="text-muted fs-11 italic">
-                <span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date-tooltip" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
+                <span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date-tooltip" <?php if ( til_is_mobile() ) { echo 'data-wenk-pos="left"'; } ?> data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
               </div><!--/ .text-muted /-->
               <?php echo $message->message; ?>
             </div><!--/ .well /-->
@@ -53,8 +53,7 @@ if ( $_GET['get_message'] == "old" AND isset($_GET['list_old_message']) ) {
           <div class="message-elem-content">
             <div class="well padding-10 br-3">
               <div class="text-muted fs-11 italic">
-                <span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date-tooltip" data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
-                <span class="pull-right">#<?php echo $message->id; ?></span>
+                <span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date-tooltip" <?php if ( til_is_mobile() ) { echo 'data-wenk-pos="left"'; } ?> data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
               </div><!--/ .text-muted /-->
               <?php echo $message->message; ?>
             </div><!--/ .well /-->

@@ -1,25 +1,37 @@
 <?php if ( isset($_GET['session_id']) AND isset($_GET['box']) AND isset($_GET['query_type']) ) { session_id($_GET['session_id']); } else { exit; } ?>
 <?php include ('../../tilpark.php'); ?>
 <?php if ( !is_login() AND empty($_GET['box']) AND empty($_GET['query_type']) ) { exit; } ?>
-<?php  
+<?php
 	if ( $_GET['query_type'] == 'count' ) {
 		if ( $_GET['box'] == 'task' ) {
       echo get_calc_task();
-    } else { echo get_calc_message(); }
-
+    } elseif ( $_GET['box'] == 'message' ) {
+			 echo get_calc_message();
+		} elseif ( $_GET['box'] == 'notification' ) {
+			echo get_calc_notification();
+		}
 	} else if ( $_GET['query_type'] == 'list' ) {
 		if ( $_GET['box'] == 'message' ) {
-		 $get_query = _get_query_message('inbox').' LIMIT 5'; 
-		 $calc = get_calc_message();
-     $alert = "Mesaj kutusu boş";
+		 $get_query 	= _get_query_message('inbox').' LIMIT 5';
+		 $calc 				= get_calc_message();
+     $alert 			= "Mesaj kutusu boş";
 		}
 
 		if ( $_GET['box'] == 'task' ) {
-			$get_query = _get_query_task('inbox').' LIMIT 5';
-			$calc = get_calc_task();
-      $alert = "Görev Kutusu Boş";
+			$get_query 	= _get_query_task('inbox').' LIMIT 5';
+			$calc 			= get_calc_task();
+      $alert 			= "Görev Kutusu Boş";
 		}
+
+
+		if ( $_GET['box'] == 'notification' ) {
+			$get_query 	= get_notifications().' LIMIT 5';
+			$calc 			= get_calc_task();
+      $alert 			= "Bildirim Kutusu Boş";
+		}
+
 		?>
+		<?php if ( $_GET['box'] != 'notification' ): ?>
 		<li class="message-header"><?php echo $calc; ?> okunmamış mesaj</li>
     <?php if($messages = get_messages(array('query'=>$get_query))): ?>
       <?php foreach($messages as $message): ?>
@@ -48,6 +60,10 @@
     <?php endif; ?>
 
     <li class="message-footer"><a href="<?php site_url('admin/user/'. $_GET['box'] .'/list.php'); ?>">Tüm mesajlar</a></li>
+
+		<?php else: ?>
+			
+		<?php endif; ?>
     <?php
 	} else { exit; }
 ?>
