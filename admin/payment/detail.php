@@ -83,6 +83,7 @@ if(isset($_GET['status'])) {
 
 // odeme formunu tekrar cagiralim
 $payment = get_payment($payment->id);
+$payment_meta = get_form_meta($payment->id);
 ?>
 
 
@@ -234,19 +235,19 @@ $payment = get_payment($payment->id);
 				<div class="col-xs-12 col-md-6">
 					<div class="form-group">
 						<label for="account_address">Adres </label>
-						<input type="text" name="account_address" id="account_address" value="<?php echo @$payment->account_address; ?>" class="form-control input-sm">
+						<input type="text" name="account_address" id="account_address" value="<?php echo @$payment_meta->address; ?>" class="form-control input-sm">
 					</div> <!-- /.form-group -->
 				</div> <!-- /.col-md-6 -->
 				<div class="col-xs-6 col-md-2">
 					<div class="form-group">
 						<label for="account_district">İlçe </label>
-						<input type="text" name="account_district" id="account_district" value="<?php echo @$payment->account_district; ?>" class="form-control input-sm">
+						<input type="text" name="account_district" id="account_district" value="<?php echo @$payment_meta->district; ?>" class="form-control input-sm">
 					</div> <!-- /.form-group -->
 				</div> <!-- /.col-md-2 -->
 				<div class="col-xs-6 col-md-2">
 					<div class="form-group">
 						<label for="account_city">Şehir </label>
-						<input type="text" name="account_city" id="account_city" value="<?php echo @$payment->account_city; ?>" class="form-control input-sm">
+						<input type="text" name="account_city" id="account_city" value="<?php echo @$payment_meta->city; ?>" class="form-control input-sm">
 					</div> <!-- /.form-group -->
 				</div> <!-- /.col-md-2 -->
 				<div class="col-md-2 hidden-xs">

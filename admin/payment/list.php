@@ -20,8 +20,19 @@ $forms = get_payments(array('_GET'=>true));
 
 
 
+<?php
+	if(til_is_mobile()) :
+		// panel arama
+		$arr_s = array();
+		$arr_s['s_name'] = 'forms';
+		$arr_s['db-s-where'][] = array('name'=>'Ürün Adı', 'val'=>'name');
+		$arr_s['db-s-where'][] = array('name'=>'Ürün Kodu', 'val'=>'code');
+		search_form_for_panel($arr_s); 
+	endif;
+?>
+
 <div class="panel panel-default panel-table">
-	<div class="panel-heading">
+	<div class="panel-heading hidden-xs">
 		<div class="row">
 			<div class="col-md-6">
 				<h3 class="panel-title">Formlar</h3>
@@ -30,12 +41,14 @@ $forms = get_payments(array('_GET'=>true));
 				<div class="pull-right">
 					
 					<?php
-						// panel arama
-						$arr_s = array();
-						$arr_s['s_name'] = 'forms';
-						$arr_s['db-s-where'][] = array('name'=>'Ürün Adı', 'val'=>'name');
-						$arr_s['db-s-where'][] = array('name'=>'Ürün Kodu', 'val'=>'code');
-						search_form_for_panel($arr_s); 
+						if(!til_is_mobile()) :
+							// panel arama
+							$arr_s = array();
+							$arr_s['s_name'] = 'forms';
+							$arr_s['db-s-where'][] = array('name'=>'Ürün Adı', 'val'=>'name');
+							$arr_s['db-s-where'][] = array('name'=>'Ürün Kodu', 'val'=>'code');
+							search_form_for_panel($arr_s); 
+						endif;
 					?>
 				
 
@@ -90,8 +103,8 @@ $forms = get_payments(array('_GET'=>true));
 					<th width="100">Giriş/Çıkış</th>
 					<th width="100">Tarih <?php echo get_table_order_by('date', 'ASC'); ?></th>
 					<th>Hesap Kartı <?php echo get_table_order_by('account_name', 'ASC'); ?></th>
-					<th width="100">Telefon <?php echo get_table_order_by('account_gsm', 'ASC'); ?></th>
-					<th width="100">Şehir  <?php echo get_table_order_by('account_city', 'ASC'); ?></th>
+					<th width="100" class="hidden-xs">Telefon <?php echo get_table_order_by('account_gsm', 'ASC'); ?></th>
+					<th width="100" class="hidden-xs">Şehir  <?php echo get_table_order_by('account_city', 'ASC'); ?></th>
 					<th width="100">Ödeme <?php echo get_table_order_by('total', 'ASC'); ?></th>
 				</tr>
 			</thead>
@@ -102,8 +115,8 @@ $forms = get_payments(array('_GET'=>true));
 					<td><?php echo get_in_out_label($form->in_out); ?></td>
 					<td><small class="text-muted"><?php echo substr($form->date,0,16); ?></small></td>
 					<td><?php if($form->account_id): ?><a href="../account/detail.php?id=<?php echo $form->account_id; ?>" target="_blank"><i class="fa fa-external-link" aria-hidden="true"></i> <?php echo $form->account_name; ?></a> <?php else: ?><?php echo $form->account_name; ?><?php endif; ?></td>
-					<td><?php echo $form->account_gsm; ?></td>
-					<td><?php echo $form->account_city; ?></td>
+					<td class="hidden-xs"><?php echo $form->account_gsm; ?></td>
+					<td class="hidden-xs"><?php echo $form->account_city; ?></td>
 					<td class="text-right"><?php echo get_set_money($form->total, true); ?></td>
 				</tr>
 			<?php endforeach; ?>

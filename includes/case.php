@@ -48,6 +48,20 @@ function set_payment($id, $args=array()) {
 
 
 
+
+		$_form_meta['account_country'] 	= @til_get_strtoupper(@$insert['account_country']);
+		$_form_meta['account_district'] = @til_get_strtoupper($insert['account_district']);
+		$_form_meta['account_address'] 	= @til_get_strtoupper($insert['account_address']);
+		$_form_meta['note']	 			= @til_get_strtoupper($insert['note']);
+
+
+		// form meta guncele
+		update_form_meta($id, 'district', $_form_meta['account_district']);
+		update_form_meta($id, 'address', $_form_meta['account_address']);
+		update_form_meta($id, 'country', $_form_meta['account_country']);
+		update_form_meta($id, 'note', $_form_meta['note']);
+
+
 		
 		//$_insert['payment_type'] 	= $insert['payment_type'];
 		$_insert['total'] 			= get_set_decimal_db($insert['payment']);
