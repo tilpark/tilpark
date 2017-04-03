@@ -107,23 +107,36 @@ sure_baslat();
         <a class="navbar-brand" href="<?php site_url(); ?>"><img src="<?php template_url('img/cheetah.png'); ?>" class="img-responsive"></a>
       </div>
 
-      <div class="pull-right"> 
+      <div class="pull-right">
       <div class="clearfix"></div>
-          <div class="icon-menu">
+        <div class="icon-menu">
+          <ul>
+            <li>
+              <a href="#" onclick="var elem = document.querySelector('#notification-tab'); til_dynamic_tab(this, elem); get_notification(elem, 'notification')" dynamic-tab-btn><i class="fa fa-globe"></i>
+                <span class="badge <?php if ( get_calc_notification() > 0 ) { echo 'active'; }  ?>" id="notification_badge" js-onload="get_notification_count({elem: '#notification_badge', box: 'notification'})"><?php echo get_calc_notification(); ?></span>
+              </a>
+            </li>
 
-            <ul>
-              <li><a href="#"><i class="fa fa-globe"></i><span class="badge" id="task_badge">0</span></a></li>
-              <li><a href="#"><i class="fa fa-tasks"></i><span class="badge active" id="task_badge">23</span></a></li>
-              <li><a href="#"><i class="fa fa-envelope-o"></i><span class="badge" id="task_badge">0</span></a></li>
-            </ul>
+            <li>
+              <a href="#" onclick="var elem = document.querySelector('#task-tab'); til_dynamic_tab(this, elem); get_notification(elem, 'task')" dynamic-tab-btn><i class="fa fa-tasks"></i><span class="badge" id="task_badge">23</span>
+                <span class="badge <?php if ( get_calc_task() > 0 ) { echo 'active'; }  ?>" id="task_badge" js-onload="get_notification_count({elem: '#task_badge', box: 'task'})"><?php echo get_calc_task(); ?></span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" onclick="var elem = document.querySelector('#message-tab'); til_dynamic_tab(this, elem); get_notification(elem, 'message')" dynamic-tab-btn><i class="fa fa-envelope-o"></i><span class="badge" id="message_badge">0</span>
+                <span class="badge <?php if ( get_calc_message() > 0 ) { echo 'active'; }  ?>" id="message_badge" js-onload="get_notification_count({elem: '#message_badge', box: 'message'})"><?php echo get_calc_message(); ?></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <a href="#" class="profile-avatar">
+          <div class="avatar-div">
+            <img src="<?php active_user('avatar'); ?>">
+            <i class="fa fa-caret-right"></i>
           </div>
-
-          <a href="#" class="profile-avatar">
-            <div class="avatar-div">
-              <img src="<?php active_user('avatar'); ?>">
-              <i class="fa fa-caret-right"></i>
-            </div>
-          </a>
+        </a>
       </div>
     </div><!-- /.container-fluid -->
   </nav>
@@ -253,7 +266,7 @@ sure_baslat();
   </nav>
 
   <?php endif; ?>
-  
+
 </header>
 
 <main>
@@ -264,7 +277,7 @@ sure_baslat();
 </div>
 
 <div class="breadcrumb-header">
-  
+
   <?php if(til_is_mobile()): ?>
     <?php if(!is_home()): ?>
       <ol class="breadcrumb til-breadcrumb visible-xs">
