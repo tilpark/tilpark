@@ -10,7 +10,7 @@ add_page_info( 'nav', array('name'=>'Personeller') );
 	$users = get_users();
 ?>
 
-<table class="table table-hover table-condensed dataTable">
+<table class="table table-hover table-striped table-condensed dataTable">
 	<thead>
 		<tr>
 			<th width="30"></th>
@@ -22,7 +22,7 @@ add_page_info( 'nav', array('name'=>'Personeller') );
 	</thead>
 	<tbody>
 		<?php foreach($users as $list): ?>
-			<tr>
+			<tr onclick="window.location = '<?php site_url('admin/user/user.php'); ?>?id=<?php echo $list->id; ?>'; " class="pointer">
 				<td>
 					<a href="<?php site_url('admin/user/user.php'); ?>?id=<?php echo $list->id; ?>">
 						<img src="<?php echo get_user_info($list->id, 'avatar'); ?>" class="img-responsive" width="32">
