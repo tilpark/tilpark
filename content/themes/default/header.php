@@ -113,19 +113,19 @@ sure_baslat();
           <ul>
             <li>
               <a href="#" onclick="var elem = document.querySelector('#notification-tab'); til_dynamic_tab(this, elem); get_notification(elem, 'notification')" dynamic-tab-btn><i class="fa fa-globe"></i>
-                <span class="badge <?php if ( get_calc_notification() > 0 ) { echo 'active'; }  ?>" id="notification_badge" js-onload="get_notification_count({elem: '#notification_badge', box: 'notification'})"><?php echo get_calc_notification(); ?></span>
+                <span class="badge <?php if ( get_calc_notification() ) { echo 'active'; }  ?>" id="notification_badge" js-onload="get_notification_count({elem: '#notification_badge', box: 'notification'})"><?php echo get_calc_notification(); ?></span>
               </a>
             </li>
 
             <li>
               <a href="#" onclick="var elem = document.querySelector('#task-tab'); til_dynamic_tab(this, elem); get_notification(elem, 'task')" dynamic-tab-btn><i class="fa fa-tasks"></i><span class="badge" id="task_badge">23</span>
-                <span class="badge <?php if ( get_calc_task() > 0 ) { echo 'active'; }  ?>" id="task_badge" js-onload="get_notification_count({elem: '#task_badge', box: 'task'})"><?php echo get_calc_task(); ?></span>
+                <span class="badge <?php if ( get_calc_task() ) { echo 'active'; }  ?>" id="task_badge" js-onload="get_notification_count({elem: '#task_badge', box: 'task'})"><?php echo get_calc_task(); ?></span>
               </a>
             </li>
 
             <li>
               <a href="#" onclick="var elem = document.querySelector('#message-tab'); til_dynamic_tab(this, elem); get_notification(elem, 'message')" dynamic-tab-btn><i class="fa fa-envelope-o"></i><span class="badge" id="message_badge">0</span>
-                <span class="badge <?php if ( get_calc_message() > 0 ) { echo 'active'; }  ?>" id="message_badge" js-onload="get_notification_count({elem: '#message_badge', box: 'message'})"><?php echo get_calc_message(); ?></span>
+                <span class="badge <?php if ( get_calc_message() ) { echo 'active'; }  ?>" id="message_badge" js-onload="get_notification_count({elem: '#message_badge', box: 'message'})"><?php echo get_calc_message(); ?></span>
               </a>
             </li>
           </ul>
@@ -165,14 +165,47 @@ sure_baslat();
 
           <!-- globe -->
           <li class="icon-badge dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-globe"></i> <span class="badge" id="task_badge" js-onload="get_notification_count({elem: '#notification_badge', box: 'notification'})"><?php echo $task_unread = get_calc_task(); ?></span>
+            <a href="#" class="dropdown-toggle" onclick="get_notification(getNextSiblings(this)[0], 'notification')" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-globe"></i> <span class="badge <?php if ( $notification_unread = get_calc_notification() ) { echo 'active'; } ?>" id="notification_badge" js-onload="get_notification_count({elem: '#notification_badge', box: 'notification'})"><?php echo $notification_unread; ?></span>
             </a>
+
+            <ul class="dropdown-menu dropdown-message-list effect-1" onclick="event.stopPropagation();">
+              <li class="message-header"><?php echo $notification_unread; ?> okunmamış mesaj</li>
+
+        	    <?php if($messages = get_notifications()): ?>
+        	      <?php foreach($messages as $message): ?>
+        	      <li class="message-list <?php if(!$message->read_it and $message->inbox_u_id == get_active_user('id')): ?>bold<?php endif; ?>">
+        	        <a href="<?php echo $message->message; ?>">
+        	          <div class="row no-space">
+        	            <div class="col-md-2">
+        	              <div class="message-avatar">
+        	                <i class="fa fa-globe" style="font-size: 25px;"></i>
+        	              </div> <!-- /.message-avatar -->
+        	            </div> <!-- /.col-md-2 -->
+        	            <div class="col-md-10">
+        	              <span class="message-name"><?php echo get_user_info($message->outbox_u_id, 'name'); ?> <?php echo get_user_info($message->outbox_u_id, 'surname'); ?></span>
+        	              <span class="message-time"><i class="fa fa-clock-o"></i> <?php echo get_time_late($message->date_update); ?> önce</span>
+        	              <?php if($q_select = db()->query("SELECT * FROM ".dbname('messages')." WHERE top_id='".$message->id."' ORDER BY date_update DESC LIMIT 1")) { if($q_select->num_rows) { $message->title = '-'.$q_select->fetch_object()->message; }}?>
+        	              <span class="message-title text-muted"><?php echo mb_substr(strip_tags(stripslashes($message->title)),0,40,'utf-8'); ?><?php if(strlen(strip_tags(stripslashes($message->title))) > 40) { echo '...'; } ?></span>
+        	            </div> <!-- /.col-md-10 -->
+        	          </div> <!-- /.row -->
+        	          </a>
+        	        </li>
+        	      <?php endforeach; ?>
+        	    <?php else: ?>
+        	      <div class="p-5">
+        	        <?php echo get_alert('Bildirim Kutusu Boş', 'warning', false); ?>
+        	      </div>
+        	    <?php endif; ?>
+
+        			<li class="message-footer"><a href="<?php site_url('admin/user/'. $_GET['box'] .'/list.php'); ?>">Tümünü Göster</a></li>
+            </ul>
           </li>
+
           <!-- task -->
           <li class="icon-badge dropdown">
             <a href="#" class="dropdown-toggle" onclick="get_notification(getNextSiblings(this)[0], 'task')" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-tasks"></i> <span class="badge" id="task_badge" js-onload="get_notification_count({elem: '#task_badge', box: 'task'})"><?php echo $task_unread = get_calc_task(); ?></span>
+              <i class="fa fa-tasks"></i> <span class="badge <?php if ( $task_unread = get_calc_task() ) { echo 'active'; } ?>" id="task_badge" js-onload="get_notification_count({elem: '#task_badge', box: 'task'})"><?php echo $task_unread; ?></span>
             </a>
             <ul class="dropdown-menu dropdown-message-list effect-1">
               <li class="message-header"><?php echo $task_unread; ?> okunmamış görev</li>
@@ -210,7 +243,7 @@ sure_baslat();
           <!-- message -->
           <li class="icon-badge dropdown">
             <a href="#" class="dropdown-toggle" onclick="get_notification(getNextSiblings(this)[0], 'message')" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-envelope-o"></i> <span class="badge" id="message_badge" js-onload="get_notification_count({elem: '#message_badge', box: 'message'})"><?php echo $message_unread = get_calc_message(); ?></span>
+              <i class="fa fa-envelope-o"></i> <span class="badge <?php if ( $message_unread = get_calc_message() ) { echo 'active'; } ?>" id="message_badge" js-onload="get_notification_count({elem: '#message_badge', box: 'message'})"><?php echo $message_unread; ?></span>
             </a>
 
             <ul class="dropdown-menu dropdown-message-list effect-1">
