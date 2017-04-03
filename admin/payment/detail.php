@@ -82,8 +82,10 @@ if(isset($_GET['status'])) {
 
 
 // odeme formunu tekrar cagiralim
-$payment = get_payment($payment->id);
-$payment_meta = get_form_meta($payment->id);
+if( $payment->id ) { 
+	$payment = get_payment($payment->id);
+	$payment_meta = get_form_meta($payment->id);
+}
 ?>
 
 
@@ -112,7 +114,7 @@ $payment_meta = get_form_meta($payment->id);
 
 
 
-<?php if($payment->status == '0'): ?>
+<?php if($payment->id AND @$payment->status == '0'): ?>
 	<?php echo get_alert('<i class="fa fa-trash-o"></i> <b>Dikkat!</b> Ödeme formu pasif durumda.', 'warning', false); ?>
 	<div class="h-20 visible-xs"></div>
 <?php else: ?>

@@ -992,9 +992,13 @@ header li.icon-badge a span.badge {
   height: 16px;
   padding: 0px;
   padding-top: 4px;
-  background-color: #fec430;
+  background-color: #dcdcdc;
   color: #000;
   border-radius: 2px;
+}
+header li.icon-badge a span.badge.active {
+  background-color: #fec430;
+  color: #000;
 }
 
 
