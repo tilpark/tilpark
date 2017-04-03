@@ -1,8 +1,9 @@
 <?php include('../../tilpark.php'); ?>
 <?php get_header(); ?>
 <?php
-add_page_info( 'title', 'Tüm Kullanıcılar' );
-add_page_info( 'nav', array('name'=>'Tüm Kullanıcılar') );
+add_page_info( 'title', 'Personeller' );
+add_page_info( 'nav', array('name'=>'Personel', 'url'=>get_site_url('admin/user/index.php')) );
+add_page_info( 'nav', array('name'=>'Personeller') );
 ?>
 
 <?php

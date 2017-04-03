@@ -2,7 +2,7 @@
 <?php get_header(); ?>
 <?php
 add_page_info( 'title', 'Personel Ekle' );
-add_page_info( 'nav', array('name'=>'Tüm Personeller', 'url'=>get_site_url('admin/user/list.php') ) );
+add_page_info( 'nav', array('name'=>'Personeller', 'url'=>get_site_url('admin/user/list.php') ) );
 add_page_info( 'nav', array('name'=>'Personel Ekle') );
 ?>
 
@@ -65,13 +65,13 @@ if(isset($_POST['add_user']) and user_access('admin')) {
 				<div class="col-md-6">
 					<div class="form-group">
 						<label for="username">E-posta</label>
-						<input type="text" name="username" id="username" class="form-control required email" value="<?php echo @$_user['username']; ?>">
+						<input type="email" name="username" id="username" class="form-control required email" value="<?php echo @$_user['username']; ?>">
 					</div> <!-- /.form-group -->
 				</div> <!-- /.col-md-6 -->
 				<div class="col-md-6">
 					<div class="form-group">
-						<label for="gsm">Cep Telefonu</label>
-						<input type="text" name="gsm" id="gsm" class="form-control required digits" minlength="10" maxlength="11" value="<?php echo @$_user['gsm']; ?>">
+						<label for="text">Cep Telefonu</label>
+						<input type="tel" name="gsm" id="gsm" class="form-control required digits" minlength="10" maxlength="11" value="<?php echo @$_user['gsm']; ?>">
 					</div> <!-- /.form-group -->
 				</div> <!-- /.col-md-6 -->
 			</div> <!-- /.row -->
@@ -89,14 +89,14 @@ if(isset($_POST['add_user']) and user_access('admin')) {
 				<div class="col-md-6">
 					<div class="form-group">
 						<label for="citizenship_no">T.C. Kimlik No</label>
-						<input type="text" name="citizenship_no" id="citizenship_no" class="form-control digits" minlength="11" maxlength="11" value="<?php echo @$_user['citizenship_no']; ?>">
+						<input type="tel" name="citizenship_no" id="citizenship_no" class="form-control digits" minlength="11" maxlength="11" value="<?php echo @$_user['citizenship_no']; ?>">
 					</div> <!-- /.form-group -->
 				</div> <!-- /.col-md-6 -->
 			</div> <!-- /.row -->
 
 			<div class="form-group">
 				<label for="til_login" id="label_til_login">
-					<input type="checkbox" name="til_login" id="til_login" class="" data-size="extramini" data-on-text="Evet" data-off-text="Hayır" value="1">
+					<input type="checkbox" name="til_login" id="til_login" data-toggle='switch' switch-size="sm" value="1">
 					Bu personel <b>Tilpark!</b> sistemine giriş yapabilir mi?
 				</label>
 			</div> <!-- /.form-group -->
@@ -152,14 +152,11 @@ if(isset($_POST['add_user']) and user_access('admin')) {
 			
 
 
-			<div class="pull-right">
+			<div class="text--right">
 				<input type="hidden" name="add_user">
 				<input type="hidden" name="uniquetime" value="<?php uniquetime(); ?>">
-				<button class="btn btn-default">Kaydet</button>
+				<button class="btn btn-success btn-xs-block btn-insert">Kaydet</button>
 			</div> <!-- /.pull-right -->
-
-		</div> <!-- /.col-md-6 -->
-		<div class="col-md-6">
 
 		</div> <!-- /.col-md-6 -->
 	</div> <!-- /.row -->

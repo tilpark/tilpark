@@ -136,7 +136,7 @@ if( $payment->id ) {
 				<li><a href="<?php site_url('admin/user/message/add.php?attachment&payment_id='.$payment->id); ?>" target="_blank"><i class="fa fa-envelope-o fa-fw"></i> Mesaj Ekine Ekle</a></li> 
 				<li role="separator" class="divider"></li>
 				<?php if($payment->status == '1'): ?>
-					<li><a href="#"  data-toggle="modal" data-target="#status_item"><i class="fa fa-trash-o fa-fw text-danger"></i> Sil</a></li>
+					<li><a href="#" data-toggle="modal" data-target="#status_item"><i class="fa fa-trash-o fa-fw text-danger"></i> Sil</a></li>
 				<?php else: ?>
 					<li><a href="?id=<?php echo $payment->id; ?>&status=1"><i class="fa fa-undo fa-fw text-success"></i> Aktifleştir</a></li>
 				<?php endif; ?>

@@ -401,7 +401,7 @@ table thead tr th a.orderby.text-muted {
 }
 .bootstrap-select {
   width: 100% !important;
-  border: 1px solid #aaaaaa;
+  border: 0px solid #aaaaaa;
 }
 .bootstrap-select .btn {
   border: 1px solid #aaaaaa;

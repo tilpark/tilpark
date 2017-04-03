@@ -139,12 +139,14 @@ function update_user($user_id, $args) {
  * get_user()
  * bir kulanici bilgisini dondurur
  */
-function get_user($args) {
+function get_user($args, $_til=true) {
 	if(!is_array($args)) { $args = array('where'=>array('id'=>$args)); }
 	$args = _args_helper(input_check($args), 'where');
 	$where = $args['where'];
 
-	if ( !isset(til()->user[$where['id']]) ) {
+	if ( isset(til()->user[$where['id']]) AND $_til ) {
+		return til()->user[$where['id']];
+	} else {
 		if($query = db()->query("SELECT * FROM ".dbname('users')." ".sql_where_string($where)." ")) {
 			if($query->num_rows) {
 				$return = _return_helper($args['return'], $query);
@@ -157,7 +159,7 @@ function get_user($args) {
 				return false;
 			}
 		} else { add_mysqli_error_log(__FUNCTION__); }
-	} else { return til()->user[$where['id']]; }
+	}
 }
 
 

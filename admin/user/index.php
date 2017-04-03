@@ -13,8 +13,8 @@ add_page_info( 'nav', array('name'=>'Kullanıcı') );
         <?php if(user_access('admin')) : ?>
         	<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
         		<div class="box-menu">
-        			<a href="<?php site_url('admin/user/list.php'); ?>">
-        				<span class="icon-box"><i class="fa fa-plus-square"></i></span>
+        			<a href="<?php site_url('admin/user/add.php'); ?>">
+        				<span class="icon-box"><i class="fa fa-plus-square-o"></i></span>
         				<h3>Ekle</h3>
         			</a>
         		</div> <!-- /.box-menu -->
