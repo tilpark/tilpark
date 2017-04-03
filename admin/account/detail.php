@@ -56,11 +56,12 @@ add_page_info( 'nav', array('name'=>$account->name) );
 
 
 
-<ul class="nav nav-tabs" role="tablist"> 
+<ul class="nav nav-tabs til-nav-page" role="tablist"> 
 	<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-id-card-o"></i><span class="hidden-xs"> Hesap Kartı</span></a></li> 
 	<li role="presentation" class=""><a href="#forms" role="tab" id="forms-tab" data-toggle="tab" aria-controls="forms" aria-expanded="false"><i class="fa fa-list"></i><span class="hidden-xs"> Formlar</span></a></li> 
 	<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i><span class="hidden-xs"> Geçmiş</span></a></li> 
-	<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-cogs"></i> <span class="hidden-xs">Seçenekler</span> <span class="caret"></span></a> 
+	
+	<li role="presentation" class="dropdown pull-right til-menu-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-cogs"></i><span class="hidden-xs"> Seçenekler</span><span class="caret"></span></a> 
 		<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
 			<li><a href="<?php site_url('admin/user/message/add.php?attachment&account_id='.$account->id); ?>" target="_blank"><i class="fa fa-tasks fa-fw"></i> Görev Ekine Ekle</a></li>
 			<li><a href="<?php site_url('admin/user/message/add.php?attachment&account_id='.$account->id); ?>" target="_blank"><i class="fa fa-envelope-o fa-fw"></i> Mesaj Ekine Ekle</a></li>
@@ -72,7 +73,7 @@ add_page_info( 'nav', array('name'=>$account->name) );
 			<?php endif; ?>
 		</ul> 
 	</li>
-	<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-print"></i> <span class="hidden-xs">Yazdır</span> <span class="caret"></span></a> 
+	<li role="presentation" class="dropdown pull-right til-menu-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-print"></i><span class="hidden-xs"> Yazdır</span><span class="caret"></span></a> 
 		<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
 			<li><a href="print-statement.php?id=<?php echo $account->id; ?>&print" target="_blank"><i class="fa fa-file-text-o fa-fw"></i> Ekstre Yazdır</a></li>
 			<li class="divider"></li>
@@ -176,7 +177,7 @@ add_page_info( 'nav', array('name'=>$account->name) );
 					<div class="text-right">
 						<input type="hidden" name="update">
 						<input type="hidden" name="uniquetime" value="<?php uniquetime(); ?>">
-						<button class="btn btn-default btn-insert btn-xs-block"><i class="fa fa-floppy-o"></i> Kaydet</button>
+						<button class="btn btn-success btn-insert btn-xs-block"><i class="fa fa-floppy-o"></i> Kaydet</button>
 					</div>
 
 				</form>

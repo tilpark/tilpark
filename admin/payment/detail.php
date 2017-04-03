@@ -63,13 +63,26 @@ add_page_info( 'nav', array('name'=>'Yeni Ödeme - '.get_in_out_label($payment->
 
 <?php
 if(isset($_POST['payment'])) {
-	if($payment_id = set_payment($_POST)) {
+	if($payment_id = set_payment($payment->id, $_POST)) {
 		// eger ilk defa form olusyor ise yonlendirme yapalim
 		if(empty($payment->id)) { header("Location:?id=".$payment_id); }
 	} 
 }
 
-print_alert('set_payment');
+
+/* form pasiflestirme veya silme */
+if(isset($_GET['status'])) {
+	if($_GET['status'] != $payment->status) {
+		if($_GET['status'] == '0' OR $_GET['status'] == '1') {
+			if( update_payment($payment->id, array('update'=> array('status'=>$_GET['status']), 'add_alert'=>false)) ) {
+			}	
+		}
+	}
+} //.isset($_GET['status'])
+
+
+// odeme formunu tekrar cagiralim
+$payment = get_payment($payment->id);
 ?>
 
 
@@ -98,22 +111,40 @@ print_alert('set_payment');
 
 
 
+<?php if($payment->status == '0'): ?>
+	<?php echo get_alert('<i class="fa fa-trash-o"></i> <b>Dikkat!</b> Ödeme formu pasif durumda.', 'warning', false); ?>
+	<div class="h-20 visible-xs"></div>
+<?php else: ?>
+	<?php create_modal(array('id'=>'status_item', 
+		'title'=>'Ödeme formu <u>pasifleştirme</u>', 
+		'content'=>_b($payment->id).' ID numaralı ödeme formunu pasifleştirmek istiyor musun? <br /> <small>ödeme formu veritabanından <u>silinmez</u>. Fakat arama ve listelemelerde bulunamaz.</small>', 
+		'btn'=>'<a href="?id='.$payment->id.'&status=0" class="btn btn-danger">Evet, onaylıyorum</a>')); ?>
+<?php endif; ?>
 
-<ul class="nav nav-tabs" role="tablist"> 
-	<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-file-text-o"></i> Form</a></li> 
+
+<ul class="nav nav-tabs til-nav-page" role="tablist"> 
+	<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-file-text-o"></i><span class="hidden-xs"> Form</span></a></li> 
 	<?php if($payment->id): ?>
-		<li role="presentation" class="disabled"><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false"><i class="fa fa-list"></i> Formlar</a></li> 
-		<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i> Geçmiş</a></li> 
-		<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-cogs"></i> Seçenekler <span class="caret"></span></a> 
+		<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i><span class="hidden-xs"> Geçmiş</span></a></li> 
+		
+		<li role="presentation" class="dropdown pull-right til-menu-right"><a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-cogs"></i><span class="hidden-xs">Seçenekler </span><span class="caret"></span></a> 
 			<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
-				<li><a href="#dropdown1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1"><i class="fa fa-tasks fa-fw"></i> Görev Ata</a></li> 
-				<li><a href="<?php site_url('admin/user/message/add.php?attachment&payment_id='.$payment->id); ?>"><i class="fa fa-envelope-o fa-fw"></i> Mesaj Ekine Ekle</a></li>
+				<li><a href="<?php site_url('admin/user/task/add.php?attachment&payment_id='.$payment->id); ?>" target="_blank"><i class="fa fa-tasks fa-fw"></i> Görev Ekine Ekle</a></li> 
+				<li><a href="<?php site_url('admin/user/message/add.php?attachment&payment_id='.$payment->id); ?>" target="_blank"><i class="fa fa-envelope-o fa-fw"></i> Mesaj Ekine Ekle</a></li> 
 				<li role="separator" class="divider"></li>
+				<?php if($payment->status == '1'): ?>
+					<li><a href="#"  data-toggle="modal" data-target="#status_item"><i class="fa fa-trash-o fa-fw text-danger"></i> Sil</a></li>
+				<?php else: ?>
+					<li><a href="?id=<?php echo $payment->id; ?>&status=1"><i class="fa fa-undo fa-fw text-success"></i> Aktifleştir</a></li>
+				<?php endif; ?>
+			</ul> 
+		</li>
+		<li class="dropdown pull-right til-menu-right"><a href="print.php?id=<?php echo $payment->id; ?>&print" target="_blank" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-print"></i><span class="hidden-xs"> Yazdır </span><span class="caret"></span></a>
+			<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
 				<li><a href="print.php?id=<?php echo $payment->id; ?>&print" target="_blank"><i class="fa fa-print fa-fw"></i> Yazdır</a></li>
 				<li><a href="print.php?id=<?php echo $payment->id; ?>" target="_blank"><i class="fa fa-file-o fa-fw"></i> Baskı Önizleme</a></li>
 			</ul> 
 		</li>
-		<?php if($payment->id): ?><li class="pull-right"><a href="print.php?id=<?php echo $payment->id; ?>&print" target="_blank"><i class="fa fa-print"></i> Yazdır</a></li><?php endif; ?>
 	<?php endif; ?>
 </ul>
 
@@ -123,7 +154,12 @@ print_alert('set_payment');
 
 
 <div class="tab-content"> 
+
+
+	<!-- tab:home -->
 	<div class="tab-pane fade active in" role="tabpanel" id="home" aria-labelledby="home-tab"> 
+
+		<?php print_alert('set_payment'); ?>
 		
 		<form name="form_payment" id="form_payment" action="" method="POST">
 
@@ -450,24 +486,27 @@ print_alert('set_payment');
 				<input type="hidden" name="account_id" id="account_id" value="<?php echo @$payment->account_id; ?>">
 				<input type="hidden" name="form">
 				<input type="hidden" name="uniquetime" value="<?php echo uniquetime(); ?>">
-				<button class="btn btn-default">Kaydet</button>
+				<button class="btn btn-success btn-xs-block btn-insert"><i class="fa fa-save"></i> Kaydet</button>
 			</div>
 
 		</form>
 	</div> <!-- /#home -->
-					
-	<div class="tab-pane fade" role="tabpanel" id="profile" aria-labelledby="profile-tab"> 
-		<p>Food <a href="#" onclick="getJSON_click();">truck</a> fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p> 
-	</div> 
+	<!-- /tab:home -->
+
+
+
+	
+
+
+
+	<!-- tab:logs -->				
 	<div class="tab-pane fade" role="tabpanel" id="logs" aria-labelledby="logs-tab"> 
 		<?php theme_get_logs(" table_id='forms:".$payment->id."' "); ?>
-	</div> 
-	<div class="tab-pane fade" role="tabpanel" id="dropdown1" aria-labelledby="dropdown1-tab"> 
-		<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p> 
-	</div> 
-	<div class="tab-pane fade" role="tabpanel" id="dropdown2" aria-labelledby="dropdown2-tab"> 
-		<p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.</p> 
-	</div> 
+	</div>
+	<!-- /tab:logs -->	
+
+
+	
 </div> <!-- /.tab-content -->
 
 

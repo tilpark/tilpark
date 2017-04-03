@@ -102,7 +102,7 @@ if(empty(@$_POST['code'])) {
 			<input type="hidden" name="add">
 			<input type="hidden" name="uniquetime" value="<?php uniquetime(); ?>">
 
-			<button class="btn btn-default btn-insert"><i class="fa fa-floppy-o"></i> Kaydet</button>
+			<button class="btn btn-success btn-xs-block btn-insert"><i class="fa fa-plus-square"></i> Kaydet</button>
 		</div>
 
 	</div> <!-- /.col-md-6 -->

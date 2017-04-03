@@ -5,7 +5,7 @@
  * set_payment()
  * bir odeme yontemi ekler
  */
-function set_payment($args=array()) {
+function set_payment($id, $args=array()) {
 
 	$args 	= _args_helper(input_check($args), 'insert');
 	$insert = $args['insert'];
@@ -21,6 +21,8 @@ function set_payment($args=array()) {
 	if(!is_alert(__FUNCTION__)) {
 
 		$insert['type'] = 'payment';
+
+
 
 		$_insert['type']			= @$insert['type'];
 		$_insert['template']		= @$insert['template'];
@@ -44,21 +46,37 @@ function set_payment($args=array()) {
 		$_insert['val_date']		= @$insert['val_date'];
 		$_insert['val_decimal']		= @$insert['val_decimal'];
 
+
+
 		
 		//$_insert['payment_type'] 	= $insert['payment_type'];
 		$_insert['total'] 			= get_set_decimal_db($insert['payment']);
 
-		if($q_insert = db()->query("INSERT INTO ".dbname('forms')." ".sql_insert_string($_insert)." ")) {
-			if($insert_id = db()->insert_id) {
 
-				// hesap kartinin bakiyesini guncelle
-				if(!empty($_insert['account_id'])) { if(calc_account($_insert['account_id'])); }
-				// kasa guncelle
-				calc_case($_insert['status_id']);
-				
-				return $insert_id;
-			} else { return false; }
-		} else { add_mysqli_error_log(__FUNCTION__); }
+		if($id) {
+			$_update = array();
+			$_update['update'] = $_insert;
+			if(update_payment($id, $_update)) {
+				if($args['add_alert']) { add_alert('Ödeme formu güncellendi.', 'success', __FUNCTION__); }
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			if($q_insert = db()->query("INSERT INTO ".dbname('forms')." ".sql_insert_string($_insert)." ")) {
+				if($insert_id = db()->insert_id) {
+
+					// hesap kartinin bakiyesini guncelle
+					if(!empty($_insert['account_id'])) { if(calc_account($_insert['account_id'])); }
+					// kasa guncelle
+					calc_case($_insert['status_id']);
+					
+					return $insert_id;
+				} else { return false; }
+			} else { add_mysqli_error_log(__FUNCTION__); }
+		}
+
+		
 
 	} else { return false; }
 } //.set_payment()
@@ -83,6 +101,38 @@ function get_payment($args) {
 			return $q_select->fetch_object();
 		} else { return false; }
 	} else { add_mysqli_error_log(__FUNCTION__); }
+}
+
+
+
+
+
+
+
+/**
+ * update_payment()
+ * form gunceller
+ */
+function update_payment($id, $args=array()) {
+
+	$id = input_check($id);
+	$args 	= _args_helper(input_check($args), 'update');
+	$update = $args['update'];
+
+	if(!isset($update['date_updated'])) { $update['date_updated'] = date("Y-m-d H:i:s"); }
+
+	if(!have_log()) { // eger daha onceden eklenmemis ise log kaydi bulunmayacaktir.
+		if($old_form = get_form($id)) {
+			if($q_update = db()->query("UPDATE ".dbname('forms')." SET ".sql_update_string($update)." WHERE id='".$id."'")) {
+				if(db()->affected_rows) {
+					$new_form = get_form($id, array('get_user_access'=>false) );
+					if($args['add_alert']) { add_alert('Ödeme formu güncellendi.', 'success', __FUNCTION__); }
+					if($args['add_log']) { add_log(array('uniquetime'=>@$args['uniquetime'], 'table_id'=>'forms:'.$id, 'log_key'=>__FUNCTION__, 'log_text'=>'Ödeme formu güncellendi.', 'meta'=>log_compare($old_form, $new_form))); }
+					return true;
+				} else { return false; }
+			} else { add_mysqli_error_log(__FUNCTION__); }
+		} else { return false; }
+	} else { return false; }
 }
 
 

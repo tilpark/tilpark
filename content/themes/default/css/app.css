@@ -201,6 +201,11 @@ label.error {
 
 
 
+/* modal */
+.modal-open .modal {
+  padding-top: 50px;
+}
+
 
 
 /* table */
@@ -339,6 +344,50 @@ table thead tr th a.orderby.text-muted {
 @media (max-width: 768px) {
   .nav-tabs>li>a {
     padding: 5px 10px;
+  }
+  .nav-tabs.til-nav-page {
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    margin-left: -10;
+    margin-right: -10px;
+    margin-top: -20;
+  }
+  .nav-tabs.til-nav-page>li {
+    margin-bottom: -3px;
+  }
+  .nav-tabs.til-nav-page>li>a {
+    font-size: 13px;
+    padding: 10px 15px;
+    border-radius: 0px;
+    border-bottom: 0px;
+  }
+  .nav-tabs.til-nav-page>li>a i {
+    font-size: 16px;
+  }
+  .nav-tabs.til-nav-page>li.active>a, .nav-tabs.til-nav-page>li.focus>a {
+    color: #555;
+    cursor: default;
+    background-color: rgb(247, 247, 247);
+    border: 1px solid transparent;
+    border-bottom: 2px solid rgba(253, 196, 48, 0);
+    font-weight: 600;
+    background-color: #f7f7f7;
+  }
+  .nav-tabs.til-nav-page>li.til-menu-right>a {
+    padding: 10px 10px 10px 10px;
+    border-left: 1px solid #f7f7f7;
+    margin-right: 0px;
+    line-height: 13px;
+    font-size: 15px;
+  }
+  .nav-tabs.til-nav-page>li.til-menu-right.open>a {
+    background-color: transparent;
+  }
+  .nav-tabs.til-nav-page>li.til-menu-right>a .caret {
+    margin-right: -6px;
+  }
+  .nav-tabs.til-nav-page>li.til-menu-right.open>a .caret {
+    color:#fcc330;
   }
 }
 
@@ -964,6 +1013,9 @@ header .dropdown-message-list li a {
 
 
 @media (max-width: 768px) {
+  .til-navbar {
+    z-index: 99999;
+  }
   .navbar-toggle {
     margin-right: 13px;
     border-radius: 0px;
@@ -981,6 +1033,107 @@ header .dropdown-message-list li a {
   }
   header .navbar-brand img {
     width: 170px;
+  }
+
+
+  header .icon-menu {
+    border:1px solid transparent;
+    position: relative;
+    display: block;
+    height: 50px;
+    display: inline-block;
+    float: left;
+    margin-right: 10px;
+  }
+  header .icon-menu ul {
+    margin: 0px;
+    list-style-type:none;
+    clear: both;
+  }
+  header .icon-menu ul li {
+    display: inline-block;
+    border:0px solid transparent;
+  }
+  header .icon-menu ul li a {
+    display: block;
+    position: relative;
+    background: transparent;
+    height: 50px;
+    width: 40px;
+    text-align: center;
+        display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  header .icon-menu ul li a:hover {
+    text-decoration: none;
+  }
+  header .icon-menu ul li a i.fa {
+    color:#777;
+    font-size: 20px;
+  }
+  header .icon-menu ul li a .badge {
+    position: absolute;
+    top: 8px;
+    right: 3px;
+    font-size: 10px;
+    text-align: center;
+    width: 16px;
+    height: 16px;
+    padding: 0px;
+    padding-top: 4px;
+    background-color: #dcdcdc;
+    color: #000;
+    border-radius: 2px;
+  }
+  header .icon-menu ul li a .badge.active {
+    background-color: #fec430;
+    color: #000;
+  }
+
+
+  header .mobile-menu-icon {
+    float: left;
+    margin-left: 15px;
+    margin-top: 8px;
+    font-size: 20px;
+    border:1px solid #ccc;
+    padding: 5px 7px;
+  }
+
+  header a.profile-avatar {
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+    height: 50px;
+    width: 46px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left:1px solid rgba(204, 204, 204, 0.4);
+    padding-left: 14px;
+  }
+  header a.profile-avatar:hover, header a.profile-avatar:focus, header a.profile-avatar:active {
+    text-decoration: none;
+  }
+  header a.profile-avatar .avatar-div {
+    border:0px solid #ccc;
+    padding: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1px;
+  }
+  header a.profile-avatar img {
+    width: 36px;
+    float: left;
+    margin-right: 3px;
+  }
+  header a.profile-avatar .avatar-div i.fa  {
+    font-size: 17px;
+    font-size: 14px;
+    color: #737373;
   }
 }
 
@@ -1003,11 +1156,13 @@ header .dropdown-message-list li a {
 @media (max-width: 768px) {
   .breadcrumb-header ol.breadcrumb {
     font-size: 12px;
-    padding: 9px 0px !important;
+    padding: 13px 0px !important;
   }
   .breadcrumb-header {
     margin-top: -15px;
     text-align:right;
+    margin-left:-10px; margin-right:-10px; 
+    padding: 5px 10px;
   }
   .breadcrumb-header h3.page-title {
     font-size: 16px;

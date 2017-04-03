@@ -72,7 +72,6 @@ add_page_info( 'nav', array('name'=>til()->page['title']) );
 
 /* form ekleme, guncelleme ve yeni form hareketi ekleme */
 if(isset($_POST['form'])) {
-
 	if($form_id = set_form($form->id, $_POST)) {
 		// eger $form degeri bos ise empty($form->id) demek ki bu form ilk defa oluşuyor,
 		// set_form ile olusan "$form_id" degiskenindeki ID parametresine yonlendirelim.
@@ -101,6 +100,19 @@ if(isset($_POST['form'])) {
 
 
 
+
+/* form pasiflestirme veya silme */
+if(isset($_GET['status'])) {
+	if($_GET['status'] != $form->status) {
+		if($_GET['status'] == '0' OR $_GET['status'] == '1') {
+			if( update_form($form->id, array('update'=> array('status'=>$_GET['status']), 'add_alert'=>false)) ) {}	
+		}
+	}
+} //.isset($_GET['status'])
+
+
+
+
 /* form hareketi silmek */
 if(isset($_GET['delete_form_item'])) {
 	delete_form_item($form->id, $_GET['delete_form_item']);
@@ -119,19 +131,36 @@ if($form->id) {
 
 	
 
-	<ul class="nav nav-tabs" role="tablist"> 
+	<?php if($form->status == '0'): ?>
+		<?php echo get_alert('<i class="fa fa-trash-o"></i> <b>Dikkat!</b> form pasif durumda.', 'warning', false); ?>
+		<div class="h-20 visible-xs"></div>
+	<?php else: ?>
+		<?php create_modal(array('id'=>'status_item', 
+			'title'=>'Form <u>pasifleştirme</u>', 
+			'content'=>_b($form->id).' ID numarali formu pasifleştirmek istiyor musun? <br /> <small>Form veritabanından <u>silinmez</u>. Fakat arama ve listelemelerde bulunamaz.</small>', 
+			'btn'=>'<a href="?id='.$form->id.'&status=0" class="btn btn-danger">Evet, onaylıyorum</a>')); ?>
+	<?php endif; ?>
+	
+
+	<ul class="nav nav-tabs til-nav-page" role="tablist"> 
 		<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-file-text-o"></i><span class="hidden-xs"> Form</span></a></li> 
 		<?php if($form->id): ?>
 			<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i><span class="hidden-xs"> Geçmiş</span></a></li> 
 			
-			<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-cogs"></i><span class="hidden-xs"> Seçenekler</span> <span class="caret"></span></a> 
+			<li role="presentation" class="dropdown pull-right til-menu-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-cogs"></i><span class="hidden-xs"> Seçenekler</span> <span class="caret"></span></a> 
 				<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
-					<li><a href="#dropdown1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1">Görev Ata</a></li> 
-					<li><a href="<?php site_url('admin/user/message/add.php?attachment&form_id='.$form->id); ?>" target="_blank">Mesaj Ekine Ekle</a></li> 
+					<li><a href="<?php site_url('admin/user/task/add.php?attachment&form_id='.$form->id); ?>" target="_blank"><i class="fa fa-tasks fa-fw"></i> Görev Ekine Ekle</a></li> 
+					<li><a href="<?php site_url('admin/user/message/add.php?attachment&form_id='.$form->id); ?>" target="_blank"><i class="fa fa-envelope-o fa-fw"></i> Mesaj Ekine Ekle</a></li> 
+					<li role="separator" class="divider"></li>
+					<?php if($form->status == '1'): ?>
+						<li><a href="#"  data-toggle="modal" data-target="#status_item"><i class="fa fa-trash-o fa-fw text-danger"></i> Sil</a></li>
+					<?php else: ?>
+						<li><a href="?id=<?php echo $form->id; ?>&status=1"><i class="fa fa-undo fa-fw text-success"></i> Aktifleştir</a></li>
+					<?php endif; ?>
 				</ul> 
 			</li>
 
-			<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-print"></i><span class="hidden-xs"> Yazdır</span> <span class="caret"></span></a> 
+			<li role="presentation" class="dropdown pull-right til-menu-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-print"></i><span class="hidden-xs"> Yazdır</span> <span class="caret"></span></a> 
 				<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
 					<li><a href="print.php?id=<?php echo $form->id; ?>&print" target="_blank"><i class="fa fa-fw fa-file-text-o"></i> Form Yazdır</a></li> 
 					<li><a href="print.php?id=<?php echo $form->id; ?>&print&showBarcode" target="_blank"><i class="fa fa-fw fa-file-text-o"></i> Barkodlu Form Yazdır</a></li> 
@@ -139,7 +168,7 @@ if($form->id) {
 				</ul> 
 			</li>
 			
-			<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-square" style="color:<?php echo $form_status->bg_color; ?>"></i> 
+			<li role="presentation" class="dropdown pull-right til-menu-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-square" style="color:<?php echo $form_status->bg_color; ?>"></i> 
 				<span class="hidden-xs"><?php echo $form_status->name; ?></span> 
 				<span class="visible-xs-inline hidden-xs-portrait"><?php echo $form_status->name; ?></span> 
 				<span class="visible-xs-inline hidden-xs-landscape"><?php echo til_get_abbreviation($form_status->name); ?></span> <span class="caret"></span></a> 
@@ -393,52 +422,52 @@ if($form->id) {
 											<input type="hidden" name="item_uniquetime" id="item_uniquetime" value="<?php echo microtime(true); ?>">
 											<button class="btn btn-default"><i class="fa fa-plus"></i></button>
 										</td>
-										<td width="20%">
+										<td width="20%" class="hidden-xs-portrait">
 											<div class="form-group">
 												<label for="item_code"><i class="fa fa-barcode hidden-xs"></i><span class="visible-xs">Kodu</span> <span class="hidden-xs">Ürün/Barkod Kodu</span></label>
-												<input type="text" name="item_code" id="item_code" class="form-control">
+												<input type="text" name="item_code" id="item_code" class="form-control input-sm">
 											</div> <!-- /.form-group -->
 										</td>
 										<td width="30%">
 											<div class="form-group">
 												<label for="item_name"><span class="visible-xs">Adı</span><span class="hidden-xs">Ürün/Hizmet Adı</span></label>
-												<input type="text" name="item_name" id="item_name" class="form-control">
+												<input type="text" name="item_name" id="item_name" class="form-control input-sm">
 											</div> <!-- /.form-group -->
 										</td>
 										<td>
 											<div class="form-group">
 												<label for="quantity">Adet</label>
-												<input type="tel" name="quantity" id="quantity" class="form-control calc_item" value="1" maxlength="10">
+												<input type="tel" name="quantity" id="quantity" class="form-control input-sm calc_item" value="1" maxlength="10">
 											</div> <!-- /.form-group -->
 										</td>
 										<td>
 											<div class="form-group">
 												<label for="price">B.Fiyatı</label>
-												<input type="tel" name="price" id="price" class="form-control money calc_item" value="1000" maxlength="15">
+												<input type="tel" name="price" id="price" class="form-control input-sm money calc_item" value="0" maxlength="15">
 											</div> <!-- /.form-group -->
 										</td>
 										<td class="hidden-xs">
 											<div class="form-group">
 												<label for="total">Tutar</label>
-												<input type="tel" name="total" id="total" class="form-control money calc_item" maxlength="15">
+												<input type="tel" name="total" id="total" class="form-control input-sm money calc_item" maxlength="15">
 											</div> <!-- /.form-group -->
 										</td>
 										<td width="5%" class="hidden-xs">
 											<div class="form-group">
 												<label for="item_vat">KDV</label>
-												<input type="tel" name="vat" id="vat" class="form-control calc_item">
+												<input type="tel" name="vat" id="vat" class="form-control input-sm calc_item">
 											</div> <!-- /.form-group -->
 										</td>
 										<td width="10%" class="hidden-xs">
 											<div class="form-group">
 												<label for="vat_total"><span class="hidden-xs">KDV Tutarı</span><span class="visible-xs fs-11">KDV Tutarı</span></label>
-												<input type="tel" name="vat_total" id="vat_total" class="form-control money calc_item">
+												<input type="tel" name="vat_total" id="vat_total" class="form-control input-sm money calc_item">
 											</div> <!-- /.form-group -->
 										</td>
 										<td>
 											<div class="form-group">
 												<label for="col_total"><span class="hidden-xs">Toplamı</span><span class="visible-xs">Toplam</span></label>
-												<input type="tel" name="col_total" id="col_total" class="form-control money">
+												<input type="tel" name="col_total" id="col_total" class="form-control input-sm money">
 											</div> <!-- /.form-group -->
 										</td>
 									</tr>
@@ -451,7 +480,7 @@ if($form->id) {
 										<?php foreach($form_items->list as $item): ?>
 											<tr>
 												<td class="text-center"><a href="?id=<?php echo $form->id; ?>&delete_form_item=<?php echo $item->id; ?>#form_items" title="Sil"><i class="fa fa-trash"></i></a></td>
-												<td><?php echo $item->item_code; ?></td>
+												<td class="hidden-xs-portrait"><?php echo $item->item_code; ?></td>
 												<td><?php echo $item->item_name; ?></td>
 												<td class="text-center"><?php echo $item->quantity; ?></td>
 												<td class="text-right"><?php echo get_set_money($item->price, true); ?></td>
@@ -466,12 +495,12 @@ if($form->id) {
 								</tbody>
 								<tfoot>
 									<?php if(til_is_mobile()): ?>
-										<tr>
+										<tr class="fs-12">
 											<th class="text-center text-muted"><?php echo @$form->item_count; ?></th>
 											<th colspan="2"></th>
 											<th class="text-center"><?php echo @$form->item_quantity; ?></th>
 											<th class="text-right text-muted hidden-xs"><?php echo get_set_money(@$total_vat, true); ?></th>
-											<th colspan="2" class="text-right"><?php echo get_set_money(@$form->total, true); ?></th>
+											<th colspan="2" class="text-right fs-12"><?php echo get_set_money(@$form->total, true); ?></th>
 										</tr>
 									<?php else: ?>
 										<tr>
@@ -486,6 +515,12 @@ if($form->id) {
 								</tfoot>
 							</table>
 						</div> <!-- /.panel -->
+
+
+						<div class="text-right">
+							<div class="h-20 visible-xs"></div>
+							<button class="btn btn-success btn-xs-block btn-insert btn-save"><i class="fa fa-floppy-o"></i> Kaydet</button>
+						</div><!-- /.text-right -->
 
 
 
