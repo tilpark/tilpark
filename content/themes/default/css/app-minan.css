@@ -128,6 +128,28 @@ ol,ul{
   padding: 0px 15px;
 }
 
+
+.message-list {
+  transition: all 250ms ease;
+}
+
+.message-list.delete{
+  position: relative;
+  overflow: hidden;
+  animation: notification_hide 250ms ease forwards;
+}
+
+@keyframes notification_hide {
+  0%{
+    margin-right: 0%; opacity: 1;
+    max-height: 100px;
+  }
+  100%{
+     margin-right: -100%; opacity: 0;
+     max-height: 0px;
+   }
+}
+
 .mce-stack-layout-item.mce-statusbar{
   border: 0 !important;
 }
@@ -274,5 +296,83 @@ ol,ul{
   .table-task tr[mobile-progress-style="progress-bar-danger"]:before { border-color: #d9534f; width: 15%; }
   .table-task tr[mobile-progress-style="progress-bar-warning"]:before { border-color: #f0ad4e; width: 70%; }
   .table-task tr[mobile-progress-style="progress-bar-success"]:before { border-color: #5cb85c; width: 100%; }
+}
 
+
+
+
+
+
+
+
+/* dynamic tab */
+.til-dynamic-tab{
+  position: fixed;
+  width: 100%;
+  height: calc(100% - 50px);
+  top: -100%;
+  left: 0;
+  background: #fff;
+  z-index: 998;
+  transition: all 200ms ease;
+  border-top: 1px solid #ddd;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 0;
+}
+
+.til-dynamic-tab.til-dynamic-tab-position-top{ top: -100%; left: auto; right: auto; }
+.til-dynamic-tab.til-dynamic-tab-position-bottom{ bottom: -100%; top: auto; left: auto; right: auto; }
+.til-dynamic-tab.til-dynamic-tab-position-left{ top: calc(0px + 50px); right: auto; left: -100%; }
+.til-dynamic-tab.til-dynamic-tab-position-right{ top: calc(0px + 50px); left: auto; right: -100%; }
+
+.til-dynamic-tab.til-dynamic-tab-position-top.open{
+  top: calc(0px + 50px);
+  left: 0;
+}
+
+.til-dynamic-tab.til-dynamic-tab-position-bottom.open{
+  bottom: 0;
+  left: 0;
+}
+
+.til-dynamic-tab.til-dynamic-tab-position-right.open{
+  left: auto;
+  right: 0;
+}
+
+.til-dynamic-tab.til-dynamic-tab-position-left.open{
+  right: auto;
+  left: 0;
+}
+
+.til-dynamic-tab.open{
+  z-index: 9999;
+}
+
+
+
+/* dynamic tab notification */
+.til-dynamic-tab>li{
+  list-style: none;
+}
+
+.til-dynamic-tab .message-header{
+  padding: 0px 15px 10px 15px !important;
+}
+
+.til-dynamic-tab>li.message-list>a{
+  padding: 8px 15px;
+  display: block;
+  font-size: 16px;
+}
+
+.til-dynamic-tab .message-footer>a{
+  padding: 20px 15px;
+  display: block;
+}
+
+.til-dynamic-tab .message-avatar{
+  text-align: left !important;
 }

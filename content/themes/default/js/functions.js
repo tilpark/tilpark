@@ -192,6 +192,7 @@ function get_notification_count_query(param) {
       if ( count != elem.innerHTML ) {
         if ( count > parseInt(elem.innerHTML) ) { playSound('message'); }
         elem.innerHTML = count;
+        if ( count > 0 ) { elem.classList.add('active'); } else { elem.classList.remove('active'); }
       }
     }
   });
@@ -208,20 +209,129 @@ function get_notification_count_query(param) {
  * @param string ("selector", "task | message")
  * @return
  */
-function get_notification(elem, box) {
-  if ( hasClass(elem, 'dropdown-menu') ) {
-    if ( hasClass(parent(elem, '.dropdown'), 'open') ) {
-      return false;
+function get_notification(elem, box, open_control=true) {
+  if ( open_control ) {
+    if ( hasClass(elem, 'dropdown-menu') ) {
+      if ( hasClass(parent(elem, '.dropdown'), 'open') ) {
+        return false;
+      }
     }
   }
 
   getXHR({ 'method': 'get', 'url': get_site_url('admin/user/getNotification.php?query_type=list&session_id='+window.session_id+'&box='+box)}, function(data) {
-    if ( data != "empty" ) {
+    if ( data != "empty" && data != false ) {
       elem.innerHTML = data;
     }
   });
 } //.get_notificaion()
 
+
+
+
+
+
+
+/**
+ * @func set_notification()
+ * @desc bildirim durmunu değiştirir
+ * @param dom element, object
+ * @return event onchnage
+ */
+function set_notification($this, object) {
+  getXHR({'method': 'POST', 'url': get_site_url('admin/user/setNotification.php?session_id='+window.session_id+'&args='+JSON.stringify(object))}, function(data) {
+    if ( data != 'empty' && data != false ) {
+      var data = JSON.parse(data);
+      $this.setAttribute('status', data.status);
+      $this.setAttribute('read-it', data.read_it);
+
+      var event = new CustomEvent('change');
+      $this.dispatchEvent(event);
+    } else { return false; }
+  });
+} //.set_notification()
+
+
+
+
+/**
+ * @func notification_readit_button()
+ * @desc bildirim durmunu değiştiren button için gerekli js
+ * @param dom element
+ * @return js operation
+ */
+function notification_readit_button($this) {
+  if ( $this.getAttribute('read-it') == '1' ) {
+    parent($this, '.message-list').classList.remove('bold');
+
+    $this.setAttribute('data-wenk', 'okunmadı');
+
+    $this.querySelector('i').classList.add('fa-circle-o');
+    $this.querySelector('i').classList.remove('fa-circle');
+  } else {
+    parent($this, '.message-list').classList.add('bold');
+
+    $this.setAttribute('data-wenk', 'okundu');
+
+    $this.querySelector('i').classList.remove('fa-circle-o');
+    $this.querySelector('i').classList.add('fa-circle');
+  }
+} //.notification_readit_button()
+
+
+
+/**
+ * @func notification_delete_button()
+ * @desc bildirimi gizler
+ * @param dom element
+ * @return js operation
+ */
+function notification_delete_button($this) {
+  if ( $this.getAttribute('status') == '0' ) {
+    parent($this, '.message-list').classList.add('delete');
+    setTimeout(function() {
+      get_notification(parent($this, '.dropdown-message-list'), 'notification', false);
+      parent($this, '.message-list').remove();
+    }, 350);
+  }
+} //.notification_delete_button()
+
+
+
+
+
+/**
+ * @func notification_all_readit_button()
+ * @desc listedeki tüm elementlerin bildirim durmunu değiştirir
+ * @param dom element
+ * @return js operation
+ */
+function notification_all_readit_button($this, $list) {
+  var elem    = $list.querySelectorAll('.message-list');
+
+  for (var i = elem.length - 1; i >= 0; i--) {
+    set_notification($this, {'id': elem[i].className.match(/notification-(.*?) /gmi)[0].replace('notification-', '').trim(), 'status': '1', 'read_it': '1'})
+  } // endfor
+
+  get_notification(parent($this, '.dropdown-message-list'), 'notification', false);
+} //.notification_all_readit_button()
+
+
+
+/**
+ * @func notification_all_delete_button()
+ * @desc listedeki tüm bildirimleri gizler
+ * @param dom element
+ * @return js operation
+ */
+function notification_all_delete_button($this, $list) {
+  var elem    = $list.querySelectorAll('.message-list');
+
+  for (var i = elem.length - 1; i >= 0; i--) {
+    set_notification($this, {'id': elem[i].className.match(/notification-(.*?) /gmi)[0].replace('notification-', '').trim(), 'status': '0', 'read_it': '1'});
+  } // endfor
+
+  setTimeout(function() { get_notification(parent($this, '.dropdown-message-list'), 'notification', false); }, 300);
+} //.notification_all_delete_button()
 
 
 
@@ -395,6 +505,22 @@ function send_message($this, type="message") {
 
 
 
+
+function til_dynamic_tab($this, $elem) {
+  var all_tabs = document.querySelectorAll('.til-dynamic-tab');
+  for (var i = 0; i < all_tabs.length; i++) { if ( $elem != all_tabs[i] ) all_tabs[i].classList.remove('open'); }
+
+  var all_btn = document.querySelectorAll('[dynamic-tab-btn]');
+  for (var i = 0; i < all_btn.length; i++) { if ( $this != all_btn[i] ) all_btn[i].classList.remove('active'); }
+
+  if ( hasClass($this, 'active') ) {
+    $this.classList.remove('active');
+    $elem.classList.remove('open');
+  } else {
+    $this.classList.add('active');
+    $elem.classList.add('open');
+  }
+} //.til_dynamic_tab()
 
 
 
@@ -714,7 +840,29 @@ function playSound(filename){
   audio.setAttribute("autoplay", "autoplay");
   audio.innerHTML = '<source src="' + get_site_url('content/themes/default/sound/'+filename) + '.mp3" type="audio/mpeg" /><source src="' + get_site_url('content/themes/default/sound'+filename) + '.ogg" type="audio/ogg" /><embed hidden="true" autostart="true" loop="false" src="' + get_site_url('content/themes/default/sound'+filename) +'.mp3" />';
   body.appendChild(audio);
-}
+} //.playSound()
+
+
+
+
+/**
+ * @func add_or_remove_class()
+ * @desc add or remove class
+ * @param dom elem, dom elem, object, object
+ * @return add or remove class
+ */
+function add_or_remove_class($btn, $elem, btn_obj={'active': 'active'}, elem_obj={'active': 'open'}) {
+  if ( hasClass($btn, btn_obj.active) ) {
+    $btn.classList.remove(btn_obj.active);
+    $elem.classList.remove(elem_obj.active);
+  } else {
+    $btn.classList.add(btn_obj.active);
+    $elem.classList.add(elem_obj.active);
+  }
+} //.add_or_remove_class()
+
+
+
 
 
 

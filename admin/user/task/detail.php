@@ -162,9 +162,13 @@ if(isset($_GET['type_status'])) {
 }
 
 
+# secili olan mesaj icin $box degiskenine deger atayalim
+if($task->rec_u_id == get_active_user('id')) { $box = 'inbox'; }
+if($task->sen_u_id == get_active_user('id')) { $box = 'outbox'; }
+if($task->sen_trash_u_id == get_active_user_id('id') or $task->rec_trash_u_id == get_active_user_id('id')) { $box = 'trash'; }
 
 add_page_info( 'title', $task->title );
-add_page_info( 'nav', array('name'=>'Görev Kutusu', 'url'=>get_site_url('admin/user/task/list.php') ) );
+add_page_info( 'nav', array('name'=>'Görev Kutusu', 'url'=>get_site_url('admin/user/task/list.php?box='.$box) ) );
 add_page_info( 'nav', array('name'=>$rec_user->name.' '.$rec_user->surname) );
 
 
@@ -176,10 +180,7 @@ if(isset($_GET['id'])) {
 }
 
 
-# secili olan mesaj icin $box degiskenine deger atayalim
-if($task->rec_u_id == get_active_user('id')) { $box = 'inbox'; }
-if($task->sen_u_id == get_active_user('id')) { $box = 'outbox'; }
-if($task->sen_trash_u_id == get_active_user_id('id') or $task->rec_trash_u_id == get_active_user_id('id')) { $box = 'trash'; }
+
 
 # secili olan mesaj icin $type_status degiskenine deger atayalim
 if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1'; }

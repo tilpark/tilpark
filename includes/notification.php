@@ -36,7 +36,7 @@ function add_notification($args=array()) {
   $insert['status']       = '1';
   $insert['type']         = 'notification';
   $insert['top_id']       = '0';
-  $insert['sen_u_id']     = @$insert['send_u_id'];
+  $insert['sen_u_id']     = @$insert['sen_u_id'];
   $insert['rec_u_id']     = @$insert['rec_u_id'];
   $insert['title']        = strip_tags($insert['title']);
   $insert['message']      = strip_tags(@$insert['message']);
@@ -45,6 +45,7 @@ function add_notification($args=array()) {
   $insert['date_start']   = date('Y-m-d H:i:s');
   $insert['date_end']     = date('Y-m-d H:i:s');
   $insert['type_status']  = '';
+  $insert['writing']      = @$insert['writing'];
 
 
   // input ve db kontrolleri
@@ -58,7 +59,7 @@ function add_notification($args=array()) {
     return false;
   }
 
-  if ( !empty($insert['send_u_id']) ) {
+  if ( !empty($insert['sen_u_id']) ) {
     if ( !get_user($insert['send_u_id']) ) {
       add_alert('Kullanıcı bulunamadı', 'danger', __FUNCTION__);
       return false;
@@ -91,8 +92,8 @@ function add_notification($args=array()) {
  * @return true / false
  */
 function update_notification($notification_id="", $args=array()) {
-  $args   = _args_helper(input_check($args), 'update');
-  $update = $args['update'];
+  $args     = _args_helper(input_check($args), 'update');
+  $q_update = $args['update'];
 
 
   if ( $q_select = db()->query("SELECT * FROM ". dbname('messages') ." WHERE type='notification' AND id='". $notification_id ."' ") ) {
@@ -100,11 +101,12 @@ function update_notification($notification_id="", $args=array()) {
       $query = $q_select->fetch_object();
 
       $update['date']         = $query->date;
+      $update['status']       = @$q_update['status'];
       $update['type']         = 'notification';
-      $update['read_it']      = @$update['read_it'];
+      $update['read_it']      = @$q_update['read_it'];
       $update['top_id']       = '0';
-      $update['sen_u_id']     = @$update['send_u_id'];
-      $update['rec_u_id']     = @$update['rec_u_id'];
+      $update['sen_u_id']     = $query->sen_u_id;
+      $update['rec_u_id']     = $query->rec_u_id;
       $update['title']        = $query->title;
       $update['message']      = $query->message;
       $update['date_start']   = date('Y-m-d H:i:s');
@@ -118,6 +120,7 @@ function update_notification($notification_id="", $args=array()) {
       }
 
       if ( !in_array($update['read_it'], array('1', '0')) ) {
+
         add_alert('Geçersiz değer!', 'danger', __FUNCTION__);
         return false;
       }
@@ -215,7 +218,6 @@ function get_notifications($args=array()) {
   $where = $args['where'];
 
   $where['rec_u_id']   = get_active_user('id');
-
   $permissions = array('rec_u_id', 'date', 'sen_u_id', 'date_start', 'date_end');
 
   foreach ($where as $key => $value) {
@@ -225,8 +227,13 @@ function get_notifications($args=array()) {
     }
   }
 
+  $where['type']       = 'notification';
+  $where['status']     = '1';
+  $args['limit']      = '9';
+  if ( til_is_mobile() ) { $args['limit'] = '20'; }
+
   if ( !is_alert(__FUNCTION__) ) {
-    if ( $q_select = db_query_list_return(db()->query("SELECT * FROM ". dbname('messages') ." ". sql_where_string($where) ." ORDER BY read_it DESC, date DESC, id DESC LIMIT 5 ")) ) {
+    if ( $q_select = db_query_list_return(db()->query("SELECT * FROM ". dbname('messages') ." ". sql_where_string($where) ." ORDER BY read_it ASC, date DESC, id DESC LIMIT ". $args['limit'] ." ")) ) {
       if ( is_array($q_select) OR is_object($q_select) ) {
 
         return $q_select;

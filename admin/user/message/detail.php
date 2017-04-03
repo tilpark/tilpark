@@ -44,11 +44,6 @@ if(isset($_POST['reply_message'])) {
 
 
 
-add_page_info( 'title', $message->title );
-add_page_info( 'nav', array('name'=>'Mesaj Kutusu', 'url'=>get_site_url('admin/user/message_box.php') ) );
-add_page_info( 'nav', array('name'=>$rec_user->name.' '.$rec_user->surname) );
-
-
 // tum mesajlari cevaplari ile birlikte cekelim
 if(isset($_GET['id'])) {
 	if(!empty($_GET['id'])) {
@@ -57,10 +52,17 @@ if(isset($_GET['id'])) {
 }
 
 
+
 // secili olan mesaj kutusu icin kontrolleri yapalim
 if($message->inbox_u_id == get_active_user('id')) { $box = 'inbox'; }
 if($message->outbox_u_id == get_active_user('id')) { $box = 'outbox'; }
 if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u_id == get_active_user_id('id')) { $box = 'trash'; }
+
+add_page_info( 'title', $message->title );
+add_page_info( 'nav', array('name'=>'Mesaj Kutusu', 'url'=>get_site_url('admin/user/message/list.php?box='.$box) ) );
+add_page_info( 'nav', array('name'=>$rec_user->name.' '.$rec_user->surname) );
+
+// add_notification(array('rec_u_id' => '1', 'title' => 'icon', 'message' => 'http://tilpark.org', 'writing' => 'fa fa-facebook'));
 
 
 
