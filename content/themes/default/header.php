@@ -118,13 +118,13 @@ sure_baslat();
             </li>
 
             <li>
-              <a href="#" onclick="var elem = document.querySelector('#task-tab'); til_dynamic_tab(this, elem); get_notification(elem, 'task')" dynamic-tab-btn><i class="fa fa-tasks"></i><span class="badge" id="task_badge">23</span>
+              <a href="#" onclick="var elem = document.querySelector('#task-tab'); til_dynamic_tab(this, elem); get_notification(elem, 'task')" dynamic-tab-btn><i class="fa fa-tasks"></i>
                 <span class="badge <?php if ( get_calc_task() ) { echo 'active'; }  ?>" id="task_badge" js-onload="get_notification_count({elem: '#task_badge', box: 'task'})"><?php echo get_calc_task(); ?></span>
               </a>
             </li>
 
             <li>
-              <a href="#" onclick="var elem = document.querySelector('#message-tab'); til_dynamic_tab(this, elem); get_notification(elem, 'message')" dynamic-tab-btn><i class="fa fa-envelope-o"></i><span class="badge" id="message_badge">0</span>
+              <a href="#" onclick="var elem = document.querySelector('#message-tab'); til_dynamic_tab(this, elem); get_notification(elem, 'message')" dynamic-tab-btn><i class="fa fa-envelope-o"></i>
                 <span class="badge <?php if ( get_calc_message() ) { echo 'active'; }  ?>" id="message_badge" js-onload="get_notification_count({elem: '#message_badge', box: 'message'})"><?php echo get_calc_message(); ?></span>
               </a>
             </li>

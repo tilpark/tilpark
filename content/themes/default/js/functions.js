@@ -190,8 +190,8 @@ function get_notification_count_query(param) {
       var elem = document.querySelector(param.elem);
 
       if ( count != elem.innerHTML ) {
-        if ( count > parseInt(elem.innerHTML) ) { playSound('message'); }
         elem.innerHTML = count;
+        if ( count > parseInt(elem.innerHTML) ) { playSound('message'); }
         if ( count > 0 ) { elem.classList.add('active'); } else { elem.classList.remove('active'); }
       }
     }
