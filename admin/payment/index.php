@@ -44,6 +44,7 @@ add_page_info( 'nav', array('name'=>'Kasa/Banka') );
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 
 		<?php if($cases = get_case_all(array('is_bank'=>0))): ?>
+			<span class="fs-13 text-muted">Kasalar</span>
 			<div class="clearfix"></div>
 			<div class="list-group mobile-full list-menu">
 				<?php foreach($cases as $case): ?>
@@ -59,6 +60,7 @@ add_page_info( 'nav', array('name'=>'Kasa/Banka') );
 		<?php if($banks = get_case_all(array('is_bank'=>1))): ?>
 			<div class="h-20"></div>
 			<div class="h-20 visible-xs"></div>
+			<span class="fs-13 text-muted">Bankalar</span>
 			<div class="clearfix"></div>
 			<div class="list-group mobile-full list-menu">
 				<?php foreach($banks as $bank): ?>

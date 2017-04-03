@@ -1072,6 +1072,9 @@ header .dropdown-message-list li a {
   header .icon-menu ul li a:hover {
     text-decoration: none;
   }
+  header .icon-menu ul li a.active {
+     background-color: #f1f1f1;
+  }
   header .icon-menu ul li a i.fa {
     color:#777;
     font-size: 20px;
