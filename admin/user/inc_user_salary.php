@@ -59,14 +59,14 @@ $account = get_account($user->account_id);
 						<div class="col-md-4">
 							<div class="form-group">
 								<label for="net_salary">Net Maaş <small class="text-muted">(Aylık)</small></label>
-								<input type="text" name="net_salary" id="net_salary" class="form-control money" value="<?php echo @$user_meta['net_salary']; ?>">
+								<input type="tel" name="net_salary" id="net_salary" class="form-control money" value="<?php echo @$user_meta['net_salary']; ?>">
 							</div> <!-- /.form-group -->
 						</div> <!-- /.col-md-* -->
 					</div> <!-- /.row -->
 
 					<div class="text-right">
 						<input type="hidden" name="update_staff_salary">
-						<button class="btn btn-default"><i class="fa fa-save"></i> Kaydet</button>
+						<button class="btn btn-success btn-xs-block btn-insert"><i class="fa fa-save"></i> Kaydet</button>
 					</div> <!-- /.text-right -->
 				</form>
 
@@ -114,7 +114,7 @@ $account = get_account($user->account_id);
 						<h4>Toplam Bakiye : <span class="<?php echo $account->balance < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo get_set_money($account->balance,true); ?></span></h4>
 					</div> <!-- /.col-md-6 -->
 					<div class="col-md-6 text-right">
-						<a href="<?php site_url('admin/payment/detail.php?out'); ?>&template=salary&account_id=<?php echo $user->account_id; ?>&user_type=user" target="_blank" class="btn btn-default"><i class="fa fa-paypal"></i> Ödeme Yap</a>
+						<a href="<?php site_url('admin/payment/detail.php?out'); ?>&template=salary&account_id=<?php echo $user->account_id; ?>&user_type=user" target="_blank" class="btn btn-warning"><i class="fa fa-paypal"></i> Ödeme Yap</a>
 					</div> <!-- /.col-md-6 -->
 				</div> <!-- /.row -->
 
@@ -134,9 +134,9 @@ $account = get_account($user->account_id);
 					<table class="table table-bordered table-condensed table-hover dataTable">
 						<thead>
 							<tr>
-								<th width="50">ID</th>
+								<th width="20">ID</th>
 								<th>Tarih</th>
-								<th>Açıklama</th>
+								<th class="hidden-xs">Açıklama</th>
 								<th>Hakediş</th>
 								<th>Ödeme</th>
 							</tr>
@@ -146,7 +146,7 @@ $account = get_account($user->account_id);
 								<tr>
 									<td><a href="<?php site_url('payment', $monthly->id); ?>" target="_blank">#<?php echo $monthly->id; ?></a></td>
 									<td><?php echo til_get_date($monthly->date, 'datetime'); ?></td>
-									<td>
+									<td class="hidden-xs">
 										<?php if($monthly->type == 'payment'): ?>
 											Ödeme
 										<?php else: ?>
@@ -160,7 +160,7 @@ $account = get_account($user->account_id);
 								<tr>
 									<td><a href="salary.php?id=<?php echo $monthly->id; ?>" target="_blank">#<?php echo $monthly->id; ?></a></td>
 									<td><?php echo til_get_date($monthly->date, 'datetime'); ?></td>
-									<td>
+									<td class="hidden-xs">
 										<?php echo til_get_date($monthly->date, 'F Y'); ?> dönem hakediş, <?php echo get_set_money($monthly->val_decimal, 'icon'); ?> üzerinden
 									</td>
 									<td class="text-right"><?php if($monthly->type == 'salary'): ?><?php echo get_set_money($monthly->total, 'icon'); ?><?php endif; ?></td>

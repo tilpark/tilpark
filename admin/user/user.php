@@ -110,13 +110,13 @@ add_page_info( 'nav', array('name'=>$user->name.' '.$user->surname) );
 
 <ul class="nav nav-tabs til-nav-page" role="tablist"> 
 	<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-user-o"></i><span class="hidden-xs"> Profil</span></a></li> 
-	<?php if(user_access('admin')): ?><li role="presentation"><a href="#cv" id="cv-tab" role="tab" data-toggle="tab" aria-controls="cv" aria-expanded="true"><i class="fa fa-address-book-o"></i><span class="hidden-xs"> CV</span></a></li><?php endif; ?>
+	<?php if(user_access('admin')): ?><li role="presentation" class="hidden-xs"><a href="#cv" id="cv-tab" role="tab" data-toggle="tab" aria-controls="cv" aria-expanded="true"><i class="fa fa-address-book-o"></i><span class="hidden-xs"> CV</span></a></li><?php endif; ?>
 	<?php if(user_access('admin')): ?><li role="presentation"><a href="#salary" id="salary-tab" role="tab" data-toggle="tab" aria-controls="salary" aria-expanded="true"><i class="fa fa-money"></i><span class="hidden-xs"> Maaş</span></a></li><?php endif; ?>
 	<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i><span class="hidden-xs"> Geçmiş</span></a></li> 
 
 	<li role="presentation" class="dropdown pull-right til-menu-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-cogs"></i><span class="hidden-xs"> Seçenekler </span><span class="caret"></span></a> 
 		<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
-			<li><a href="#dropdown1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1">Görev Ata</a></li> 
+			<li><a href="<?php site_url('admin/user/task/add.php?rec_u_id='.$user->id); ?>">Görev Ata</a></li> 
 			<li><a href="<?php site_url('admin/user/message/add.php?rec_u_id='.$user->id); ?>">Mesaj Gönder</a></li>
 			<?php if(user_access('admin')): ?>
 				<li role="separator" class="divider"></li>

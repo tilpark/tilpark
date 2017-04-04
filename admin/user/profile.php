@@ -10,6 +10,8 @@ add_page_info( 'nav', array('name'=>'Profilim') );
 $active = get_active_user();
 
 
+
+
 if(isset($_GET['delete_avatar'])) {
 	if($active->avatar) {
 		if(delete_image($active->avatar)) {
@@ -51,9 +53,9 @@ $active = get_user(get_active_user('id'));
 
 
 
-<ul class="nav nav-tabs" role="tablist"> 
-	<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-id-card-o"></i> Profilim</a></li> 
-	<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i> Geçmişim</a></li> 
+<ul class="nav nav-tabs til-nav-page" role="tablist"> 
+	<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-id-card-o"></i><span class="hidden-xs"> Profilim</span></a></li> 
+	<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i><span class="hidden-xs"> Geçmişim</span></a></li> 
 </ul>
 
 

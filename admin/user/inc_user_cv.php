@@ -345,7 +345,7 @@ $user_meta = get_user_meta($user->id);
 											</div> <!-- /.col-md-3 -->
 											<div class="col-md-2">
 												<div class="form-gorup">
-													<label for="school_graduation_year">Mezuniyet Yılı</label>
+													<label for="school_graduation_year">Mezuniyet</label>
 													<input type="text" name="school_graduation_year[]" id="school_graduation_year" class="form-control input-sm digits" minlength="4" maxlength="4" value="<?php echo @$school->school_graduation_year; ?>">
 												</div> <!-- /.form-group -->
 											</div> <!-- /.col-md-2 -->

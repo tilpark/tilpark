@@ -502,7 +502,7 @@ function set_staff_salary($user_id) {
 
 
 	// eger hesap karti yok ise olusturalim
-	if($user->account_id == 0) {
+	if(!$account = get_account($user->account_id, false)) {
 		$_account['insert']['type'] = 'user';
 		$_account['insert']['code'] = 'TILUA-'.$user->id;
 		$_account['insert']['name'] = $user->display_name;
@@ -517,13 +517,11 @@ function set_staff_salary($user_id) {
 		if( $account_id = add_account($_account) ) {
 			if( update_user($user->id, array('account_id'=>$account_id)) ) {
 				$user->account_id = $user->id;
+				$account = get_account($user->account_id, false);
 			}
 		}
 	} //. hesap karti yok ise olustur
 
-
-	// hesap kartini cagiralim
-	if(!$account = get_account($user->account_id)) { add_console_log('Hesap kartı bulunamadı.', __FUNCTION__); return false; }
 
 	// ise baslama tarihini bulalim
 	if(!@$user_meta['date_start_work']) { add_console_log('işe başlama tarihi bulunamadı.', __FUNCTION__); return false; }

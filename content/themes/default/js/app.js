@@ -97,10 +97,11 @@ $(document).ready( function() {
 	        "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
 	        "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
 	        "sInfoPostFix":   "",
-	        "sSearch":        "<i class='fa fa-search'></i>",
+	        "sSearch":        "",
 	        "searchPlaceholder": "Tablo içinde ara...",
 	        "sUrl":           "",
 	        "sInfoThousands":  ",",
+	        "sDom": 'rt',
 	        "sLoadingRecords": "Cargando...",
 	        "oPaginate": {
 	            "sFirst":    "Primero",
@@ -146,7 +147,7 @@ $(document).ready( function() {
 	            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
 	        }
 	    }
-    } );
+    });
 
 
 

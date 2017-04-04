@@ -98,12 +98,11 @@ sure_baslat();
 <header>
   <?php if(til_is_mobile()): ?>
 
-
     <nav class="navbar navbar-masthead navbar-default navbar-fixed-top til-navbar">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header pull-left">
-        <a href="<?php site_url(); ?>" class="mobile-menu-icon"><i class="fa fa-bars"></i></a>
+        <a href="<?php site_url(); ?>" class="mobile-menu-icon hidden"><i class="fa fa-bars"></i></a>
         <a class="navbar-brand" href="<?php site_url(); ?>"><img src="<?php template_url('img/cheetah.png'); ?>" class="img-responsive"></a>
       </div>
 
@@ -131,7 +130,7 @@ sure_baslat();
           </ul>
         </div>
 
-        <a href="#" class="profile-avatar">
+        <a href="<?php site_url('admin/user/profile.php'); ?>" class="profile-avatar">
           <div class="avatar-div">
             <img src="<?php active_user('avatar'); ?>">
             <i class="fa fa-caret-right"></i>

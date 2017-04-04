@@ -350,7 +350,7 @@ table thead tr th a.orderby.text-muted {
     background-color: #fff;
     margin-left: -10;
     margin-right: -10px;
-    margin-top: -20;
+    margin-top: -10;
   }
   .nav-tabs.til-nav-page>li {
     margin-bottom: -3px;
@@ -852,17 +852,20 @@ table.dataTable thead.none {
   /* dataTable search input */
   div.dataTables_wrapper div.dataTables_length, div.dataTables_wrapper div.dataTables_filter, div.dataTables_wrapper div.dataTables_info, div.dataTables_wrapper div.dataTables_paginate {
     text-align: left;
+    margin:0px 5px;
   }
   div.dataTables_wrapper div.dataTables_filter label {
       font-weight: normal;
       white-space: nowrap;
       text-align: left;
-      width: 95%;
+      width: 100%;
+      margin:0px;
   }
   div.dataTables_wrapper div.dataTables_filter input {
       margin-left: 0.5em;
       display: inline-block;
       width: 100%;
+      margin:0px;
   }
 }
 
@@ -1161,15 +1164,16 @@ header .dropdown-message-list li a {
   float: right;
 }
 @media (max-width: 768px) {
-  .breadcrumb-header ol.breadcrumb {
-    font-size: 12px;
-    padding: 13px 0px !important;
-  }
   .breadcrumb-header {
     margin-top: -15px;
     text-align:right;
     margin-left:-10px; margin-right:-10px; 
     padding: 5px 10px;
+    margin-bottom: 10px;
+  }
+  .breadcrumb-header ol.breadcrumb {
+    font-size: 12px;
+    padding: 13px 0px !important;
   }
   .breadcrumb-header h3.page-title {
     font-size: 16px;
@@ -2155,13 +2159,14 @@ div.mce-edit-area,
  * 16.0 Footer
  */
 footer {
-  position: absolute;
+  position: fixed;
   display: block;
   left: 0;
   right:0;
   margin-left:auto;
   margin-right: auto;
   text-align: center;
+  bottom: 0;
 }
 
 

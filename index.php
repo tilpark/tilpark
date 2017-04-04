@@ -52,7 +52,7 @@ add_page_info( 'title', 'Yönetim Paneli' );
 			</div> <!-- /.col-* -->
 			<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
 				<div class="box-menu">
-					<a href="<?php site_url('admin/user/'); ?>">
+					<a href="<?php site_url('admin/system/'); ?>">
 						<span class="icon-box"><i class="fa fa-cogs"></i></span>
 						<h3>Sistem</h3>
 					</a>

@@ -264,6 +264,15 @@ function til_get_date_lang($val) {
     $arr1 = array('Jan', 'Fev', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
     $arr2 = array('Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara');
     $val = str_replace($arr1, $arr2, $val);
+
+    $arr1 = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+    $arr2 = array('Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar');
+    $val = str_replace($arr1, $arr2, $val);
+
+    $arr1 = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+    $arr2 = array('Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz');
+    $val = str_replace($arr1, $arr2, $val);
+
     return $val;
 }
 

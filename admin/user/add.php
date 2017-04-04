@@ -2,7 +2,7 @@
 <?php get_header(); ?>
 <?php
 add_page_info( 'title', 'Personel Ekle' );
-add_page_info( 'nav', array('name'=>'Personeller', 'url'=>get_site_url('admin/user/list.php') ) );
+add_page_info( 'nav', array('name'=>'Personel', 'url'=>get_site_url('admin/user/index.php') ) );
 add_page_info( 'nav', array('name'=>'Personel Ekle') );
 ?>
 
@@ -152,7 +152,7 @@ if(isset($_POST['add_user']) and user_access('admin')) {
 			
 
 
-			<div class="text--right">
+			<div class="text-right">
 				<input type="hidden" name="add_user">
 				<input type="hidden" name="uniquetime" value="<?php uniquetime(); ?>">
 				<button class="btn btn-success btn-xs-block btn-insert">Kaydet</button>

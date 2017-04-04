@@ -18,7 +18,7 @@ if(isset($_POST['rec_u_id'])) {
 
 
 add_page_info( 'title', $message->title );
-add_page_info( 'nav', array('name'=>'Mesaj Kutusu', 'url'=>get_site_url('admin/user/message_box.php') ) );
+add_page_info( 'nav', array('name'=>'Mesaj Kutusu', 'url'=>get_site_url('admin/user/message/list.php') ) );
 add_page_info( 'nav', array('name'=>@$rec_user->name.' '.@$rec_user->surname) );
 
 

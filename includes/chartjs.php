@@ -8,101 +8,75 @@
  */
 function chartjs($args) {
 
-	$default_dsets['fill'] = 'true'; // raporlarma cizgilerinin ici nasil gozuksun
-	$default_dsets['lineTension'] = '0.1'; // raporlarma cizgilerinin gerginlik orani
-	$default_dsets['backgroundColor'] = 'rgba(255, 255, 255, 0.6)'; // raporlama cizgilerinin arka plan rengi
-	$default_dsets['borderColor'] = 'rgba(253, 196, 49, 1)'; // raporlama cizgi rengi
-	$default_dsets['borderCapStyle'] = 'butt';
-	$default_dsets['pointBorderColor'] = 'rgba(75,192,192,1)'; // raporlamada nokta isareti cerceve rengi
-	$default_dsets['pointBackgroundColor'] = '#fff'; // raporlamada nokta isareti arka plan rengi
-	$default_dsets['pointBorderWidth'] = '1'; // raporlamada nokta isareti cerceve kalinligi
-	$default_dsets['pointHoverRadius'] = '3'; // raporlamada nokta isareti ustune gelince cerceve kalingili
-	$default_dsets['pointHoverBackgroundColor'] = 'rgba(75,192,192,1)'; // raporlamada nokta isareti ustune gelince arka plan rengi
-	$default_dsets['pointHoverBorderColor'] = 'rgba(220,220,220,1)'; // raporlamada nokta isareti ustune gelince cerceve rengi
-	$default_dsets['pointHoverBorderWidth'] = '2'; // raporlamada nokta isareti ustune gelince cerceve kalinligi
-	$default_dsets['pointRadius'] = '1'; // raporlamada nokta isareti cerceve kalinligi
-	$default_dsets['pointHitRadius'] = '1';
+	// chart type
+	if(!isset($args['type'])) { $args['type'] = 'bar'; }
+	if(!isset($args['id'])) { $args['id'] = 'tilChart-'.rand(11111111,99999999); }
+	if(!isset($args['borderColor'])) { $args['borderColor'] = true; }
 
-	// default chartjs gosterim tipi
-	if(!isset($args['type'])) { $args['type'] = 'line'; } 
+	// genislik ve uzunluk
+	if(!isset($args['width'])) 	{ $args['width'] = '100%'; }
+	if(!isset($args['height'])) { $args['height'] = '100%'; }
 
-	// nokta isaretlerinin ustune gelince tooltip
-	if(!isset($args['tooltips']['display'])) { $args['tooltips']['display'] = 'true'; }
+	// sirasi ile arka plan renkleri
+	$args['backgroundColor'][] = 'rgba(255, 99, 132, 0.2)';
+	$args['backgroundColor'][] = 'rgba(54, 162, 235, 0.2)';
+	$args['backgroundColor'][] = 'rgba(255, 206, 86, 0.2)';
+	$args['backgroundColor'][] = 'rgba(75, 192, 192, 0.2)';
+	$args['backgroundColor'][] = 'rgba(153, 102, 255, 0.2)';
+	$args['backgroundColor'][] = 'rgba(255, 159, 64, 0.2)';
 
-	// sol taraftaki bilgilendirmeler
-	if(!isset($args['yAxes']['display'])) { $args['yAxes']['display'] = 'true'; }
-
-	// alt taraftaki bilgilendirmeler
-	if(!isset($args['xAxes']['display'])) { $args['xAxes']['display'] = 'true'; }
-
-	// ust taraftaki bilgilendirmeler
-	if(!isset($args['legend']['display'])) { $args['legend']['display'] = 'true'; }
-
+	// sirasi ile arka plan cerceve renkleri
+	if($args['borderColor'] == true) {
+		$args['borderColor'] = array();
+		$args['borderColor'][] = 'rgba(255,99,132,1)';
+		$args['borderColor'][] = 'rgba(54, 162, 235, 1)';
+		$args['borderColor'][] = 'rgba(255, 206, 86, 1)';
+		$args['borderColor'][] = 'rgba(75, 192, 192, 1)';
+		$args['borderColor'][] = 'rgba(153, 102, 255, 1)';
+		$args['borderColor'][] = 'rgba(255, 159, 64, 1)';
+	}
 	
-
-
 
 	?>
 
-	<?php if(isset($args['canvas']['id'])): ?>
-		<?php $getElementById = $args['canvas']['id']; ?>
-	<?php else: ?>
-		<?php 
-			$getElementById = 'til_chartjs_'.rand(11111, 99999); 
-			if( !isset($args['canvas']['height']) ) { $args['canvas']['height'] = 'auto'; }
-			if( !isset($args['canvas']['width']) ) 	{ $args['canvas']['width'] = 'auto'; }
-			?>
-		<canvas id="<?php echo $getElementById; ?>" height="<?php echo $args['canvas']['height']; ?>"  width="<?php echo $args['canvas']['width']; ?>"></canvas>
-	<?php endif; ?>
-
+	<canvas id="<?php echo $args['id']; ?>" width="<?php echo $args['width']; ?>" height="<?php echo $args['height']; ?>"></canvas>
 	<script>
-		var ctx = document.getElementById("<?php echo $getElementById; ?>");
-		var myChart = new Chart(ctx, {
-			type: "<?php echo $args['type']; ?>",
-		    data: {
-		        labels: <?php echo json_encode($args['labels']); ?>,
-			    datasets: [
-			    	<?php foreach($args['chart']['datasets'] as $datasets) : ?>	
-						{
-				            label: "<?php echo $datasets['label']; ?>",
-				            <?php if(isset($datasets['type'])):?>type:"<?php echo $datasets['type']; ?>",<?php endif; ?>
-				           	
-				           	<?php foreach($default_dsets as $key=>$val): ?>
-				           		<?php if(isset($datasets[$key])): ?>
-				           			<?php echo $key; ?>: "<?php echo $datasets[$key]; ?>",
-				           		<?php else: ?>
-				           			<?php echo $key; ?>: "<?php echo $default_dsets[$key]; ?>",
-				           		<?php endif; ?>
-				           	<?php endforeach; ?>	
-				           
-				            borderDash: [],
-				            borderDashOffset: 0.0,
-				            borderJoinStyle: 'miter',
-				            data: <?php echo json_encode($datasets['data']); ?>,
-				            spanGaps: true,
-				        },
-				    <?php endforeach; ?>
-			    ]
-		    },
-		    options: {
+	var ctx = document.getElementById("<?php echo $args['id']; ?>");
+	var myChart = new Chart(ctx, {
+	    type: '<?php echo $args['type']; ?>',
+	    data: {
+	    	labels: <?php echo json_encode_utf8($args['labels']); ?>,
+	        datasets: [
+	        	<?php foreach($args['data'] as $key=>$val): ?> {
+	        		label: '<?php echo @$val['label']; ?>',
+	        		data: <?php echo json_encode_utf8($val['value']); ?>,
+	        		<?php if($args['type'] == 'pie'): ?>
+	        			backgroundColor: <?php echo json_encode_utf8($args['backgroundColor']); ?>,
+		            	<?php if($args['borderColor']): ?>borderColor: <?php echo json_encode_utf8($args['borderColor']); ?>,<?php endif; ?>
+	        		<?php else: ?>
+	        			backgroundColor: ['<?php echo $args['backgroundColor'][$key]; ?>'],
+		           		<?php if($args['borderColor']): ?>borderColor: ['<?php echo $args['borderColor'][$key]; ?>'],<?php endif; ?>
+		           	<?php endif; ?>
+	        	},<?php endforeach; ?>
+	        ]
+	    },
+	    options: {
+	    	<?php if(isset($args['display'])): ?>
 		    	tooltips: {
-		            enabled: <?php echo $args['tooltips']['display']; ?>,
-		            mode: 'nearest',
+		            enabled: true,
+		            mode: 'single',
 		            callbacks: {
-		            	<?php if(isset($args['tooltips']['money'])): ?>
 		                label: function(tooltipItem, data) {
 		                    var label = data.labels[tooltipItem.index];
 		                    var datasetLabel = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-		                	return ' '+cjartjs_addCommas(datasetLabel) +' TL' ;
+		                	return ' '+addCommas(datasetLabel) +' TL' ;
 		                }
-		                <?php endif; ?>
 		            }
 		        },
+		        scaleLabel: function(label){return  '$' + label.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");},
 		        scales: {
 		            yAxes: [{
-		            	display: <?php echo $args['yAxes']['display']; ?>,
 		                ticks: {
-		                	<?php if(isset($args['yAxes']['money'])): ?>
 		                    beginAtZero: true,
 				            callback: function(value, index, values) {
 				              if(parseInt(value) > 1000){
@@ -111,19 +85,31 @@ function chartjs($args) {
 				                return  value+' TL';
 				              }
 				            }
-				            <?php endif; ?>
 		                }
 		            }],
 		            xAxes: [{
-		                display: <?php echo $args['xAxes']['display']; ?>
+		                display: false
 		            }]
 		        },
 		        legend: {
-				    display: <?php echo $args['legend']['display']; ?>,
+				    display: true,
 				}
-		    }
-		});
+	    	<?php else: ?>
+		        scales: {
+		            yAxes: [{
+		                ticks: {
+		                    beginAtZero:true
+		                }
+		            }]
+		        },
+	
+    				maintainAspectRatio: false
+	        <?php endif; ?>
+	    }
+	});
 	</script>
+
+
 	<?php
 }
 

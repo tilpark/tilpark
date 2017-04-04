@@ -88,7 +88,7 @@ add_page_info( 'nav', array('name'=>$account->name) );
 	<!-- tab:home -->
 	<div class="tab-pane fade active in" role="tabpanel" id="home" aria-labelledby="home-tab"> 
 		<div class="row">
-			<div class="col-md-8">
+			<div class="col-md-12">
 				<?php print_alert('update_account'); ?>
 				
 				<form name="form_add_accout" id="form_add_account" action="" method="POST" class="validate">
@@ -184,8 +184,94 @@ add_page_info( 'nav', array('name'=>$account->name) );
 			</div> <!-- /.col-md-8 -->
 			<div class="col-md-4">
 
+
+				
+
+
 			</div> <!-- /.col-md-4 -->
 		</div> <!-- /.row -->
+
+
+
+
+		<div class="row">
+			<div class="col-md-8">
+				<?php 
+				$_start_date = date('Y-m-d', strtotime('-2 week', strtotime(date('Y-m-d'))) );
+				$_end_date = date('Y-m-d');
+
+
+				$data = array();
+				$data['data'][0]['label'] = 'Giriş';
+				$data['data'][1]['label'] = 'Çıkış';
+
+				while(strtotime($_start_date) < strtotime($_end_date) ) {
+					$data['labels'][] = $_start_date = date('Y-m-d', strtotime('+1 day', strtotime($_start_date)));
+
+					$total = 0;
+					$q_forms = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE status='1' AND in_out='0' AND account_id='".$account->id."' AND date >= '".$_start_date." 00:00:00' AND date <= '".$_start_date." 23:59:59' ORDER BY id DESC, date DESC");
+					if(($total = $q_forms->fetch_object()->total) > 0) {
+						$data['data'][0]['value'][] = $total;
+					} else {
+						$data['data'][0]['value'][] = '0.00';
+					}
+
+					$total = 0;
+					$q_forms = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE status='1' AND in_out='1' AND account_id='".$account->id."' AND date >= '".$_start_date." 00:00:00' AND date <= '".$_start_date." 23:59:59' ORDER BY id DESC, date DESC");
+					if(($total = $q_forms->fetch_object()->total) > 0) {
+						$data['data'][1]['value'][] = $total;
+					} else {
+						$data['data'][1]['value'][] = '0.00';
+					}
+				}
+
+				$data['height'] = '250';
+				$data['type'] 	= 'line';
+				?>
+
+				
+				<div class="panel panel-default panel-heading-0">
+					<div class="panel-heading"><h3 class="panel-title">Son 15 Günlük Grafik Özeti</h3></div>
+					<div class="panel-body">
+						<?php chartjs($data); ?>
+					</div>
+				</div>
+			</div> <!-- /.col-* -->
+			<div class="col-md-4">
+			<div class="panel panel-default panel-heading-0">
+					<div class="panel-heading"><h3 class="panel-title">Hesabın En Popüler Ürünleri</h3></div>
+					<div class="panel-body">
+						<?php 
+						$data = array();
+						$_data = array();
+						$q_form_items = db()->query("SELECT * FROM ".dbname('form_items')." WHERE status='1' AND type='item' AND account_id='".$account->id."'");
+						while($list = $q_form_items->fetch_object()) {
+							if(!isset($_data[$list->item_id])) {
+								$_data[$list->item_id] = array();
+							}
+
+							$_data[$list->item_id]['quantity'] = @$_data[$list->item_id]['quantity'] + $list->quantity;
+							$_data[$list->item_id]['total'] = @$_data[$list->item_id]['total'] + $list->total;
+						}
+						$i = 0;
+						foreach($_data as $key=>$val) {
+							if($i < 5) {
+								$data['labels'][] = get_item($key)->name;
+								$data['data'][0]['value'][] = $val['total'];
+								$i++;
+							}
+						}
+						$data['height'] = '250';
+						$data['borderColor'] = false;
+						$data['type'] = 'pie';
+						?>
+						<?php chartjs($data); ?>
+					</div>
+				</div>
+			</div> <!-- /.col-* -->
+		</div> <!-- /.row -->
+ 
+
 	</div> 
 	<!-- /tab:home -->
 

@@ -131,7 +131,7 @@ if($form->id) {
 
 	
 
-	<?php if($form->status == '0'): ?>
+	<?php if(@$form->status == '0' AND $form->id): ?>
 		<?php echo get_alert('<i class="fa fa-trash-o"></i> <b>Dikkat!</b> form pasif durumda.', 'warning', false); ?>
 		<div class="h-20 visible-xs"></div>
 	<?php else: ?>
@@ -375,7 +375,7 @@ if($form->id) {
 
 							account_id_change($('#account_id').val());
 
-							// $('#item_code').focus();
+							$('#item_code').focus();
 
 
 						}
@@ -572,7 +572,7 @@ if($form->id) {
 
 							calc_item();
 
-							// $('#price').focus();
+							$('#price').focus();
 						}
 
 						function calc_item() {

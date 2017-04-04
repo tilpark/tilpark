@@ -88,7 +88,7 @@ function have_log($uniquetime='') {
  * log kayıtlarını dondurur
  */
 function get_logs($query) {
-	$query_str = "SELECT * FROM ".dbname('logs')." WHERE ".$query." ORDER BY id DESC ";
+	$query_str = "SELECT * FROM ".dbname('logs')." WHERE ".$query." ORDER BY id DESC LIMIT 10000";
 	if($query = db()->query($query_str)) {
 		if($query->num_rows) {
 
