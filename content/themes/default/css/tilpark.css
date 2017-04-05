@@ -67,6 +67,10 @@
 .block { display: block!important; }
 .inline-block { display: inline-block!important; }
 .absolute { position: absolute !important; }
+.flex-center {
+  display:flex!important;
+  align-items:center!important;
+}
 .relative { position: relative !important; }
 .nowrap { word-wrap: nowrap!important; }
 .strong { font-weight: bold !important; }
