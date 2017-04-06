@@ -13,17 +13,17 @@ add_page_info( 'nav', array('name'=>'Form Yönetimi') );
 		<div class="row space-5">
 			<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
 				<div class="box-menu">
-					<a href="<?php site_url('admin/form/detail.php?in'); ?>">
-						<span class="icon-box"><i class="fa fa-cart-arrow-down"></i></span>
-						<h3>Yeni Giriş Formu</h3>
+					<a href="<?php site_url('admin/form/detail.php?out'); ?>">
+						<span class="icon-box"><i class="fa fa-cart-plus"></i></span>
+						<h3>Yeni Çıkış Formu</h3>
 					</a>
 				</div> <!-- /.box-menu -->
 			</div> <!-- /.col-* -->
 			<div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
 				<div class="box-menu">
-					<a href="<?php site_url('admin/form/detail.php?out'); ?>">
-						<span class="icon-box"><i class="fa fa-cart-plus"></i></span>
-						<h3>Yeni Çıkış Formu</h3>
+					<a href="<?php site_url('admin/form/detail.php?in'); ?>">
+						<span class="icon-box"><i class="fa fa-cart-arrow-down"></i></span>
+						<h3>Yeni Giriş Formu</h3>
 					</a>
 				</div> <!-- /.box-menu -->
 			</div> <!-- /.col-* -->
