@@ -1638,6 +1638,9 @@ h3.page-title {
 .panel.panel-table .not-found {
   margin: 20px !important;
 }
+.panel.panel-table table {
+  margin-bottom: 0px;
+}
 /* panel-search */
 form.panel-search {
   width: 300px;

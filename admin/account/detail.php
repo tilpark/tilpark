@@ -1,5 +1,17 @@
 <?php include('../../tilpark.php'); ?>
-<?php 
+<?php
+
+if(10 < 9) {
+$q_forms = db()->query("SELECT * FROM ".dbname('forms')." ");
+	while($list = $q_forms->fetch_assoc()) {
+		unset($list['id']);
+		db()->query("INSERT INTO ".dbname('forms')." ".sql_insert_string($list)." ");
+		echo db()->error;
+
+	}
+	exit;
+}
+
 if(!$account = get_account($_GET['id'])) {
 	add_page_info( 'title', 'Hesap Kartı');
 	add_page_info( 'nav', array('name'=>'Hesap Yönetimi', 'url'=>get_site_url('admin/account/') ) );
@@ -183,24 +195,32 @@ add_page_info( 'nav', array('name'=>$account->name) );
 				</form>
 			</div> <!-- /.col-md-8 -->
 			<div class="col-md-4">
+				<?php 
+				$accountTotal = array();
+				$q = db()->query("SELECT sum(total) as total FROM ".dbname("forms")." WHERE status='1' AND type='form' AND in_out='0' AND account_id='".$account->id."'");
+				$accountTotal['form_in'] = $q->fetch_object()->total;
+				$q = db()->query("SELECT sum(total) as total FROM ".dbname("forms")." WHERE status='1' AND type='form' AND in_out='1' AND account_id='".$account->id."'");
+				$accountTotal['form_out'] = $q->fetch_object()->total;
 
+				$q = db()->query("SELECT sum(total) as total FROM ".dbname("forms")." WHERE status='1' AND type='payment' AND in_out='0' AND account_id='".$account->id."'");
+				$accountTotal['payment_in'] = $q->fetch_object()->total;
+				$q = db()->query("SELECT sum(total) as total FROM ".dbname("forms")." WHERE status='1' AND type='payment' AND in_out='1' AND account_id='".$account->id."'");
+				$accountTotal['payment_out'] = $q->fetch_object()->total;
+
+				?>
 
 					<?php 
 					$chart = array();
 					$chart['type'] = 'line';
-					$chart['data']['datasets'][0]['label'] 	= 'Giriş';
+					$chart['data']['datasets'][0]['label'] 	= 'Hareketler';
 					$chart['data']['datasets'][0]['fill'] 	= false;
 					$chart['data']['datasets'][0]['lineTension'] 	= '0';
 					$chart['data']['datasets'][0]['borderWidth'] 	= 1;
 					$chart['data']['datasets'][0]['pointBorderWidth'] 	= 1;
 					$chart['data']['datasets'][0]['pointRadius'] 	= 1;
+					$chart['data']['datasets'][0]['backgroundColor'] 	= 'rgba(253, 196, 48, 0.2)';
+					$chart['data']['datasets'][0]['borderColor'] 		= 'rgba(253, 196, 48, 1)';
 
-					$chart['data']['datasets'][1]['label'] 	= 'Çıkış';
-					$chart['data']['datasets'][1]['fill'] 	= false;
-					$chart['data']['datasets'][1]['lineTension'] 	= '0';
-					$chart['data']['datasets'][1]['borderWidth'] 	= 1;
-					$chart['data']['datasets'][1]['pointBorderWidth'] 	= 1;
-					$chart['data']['datasets'][1]['pointRadius'] 	= 1;
 
 					$_start_date = date('Y-m-d', strtotime('-2 week', strtotime(date('Y-m-d'))) );
 					$_end_date = date('Y-m-d');
@@ -211,18 +231,18 @@ add_page_info( 'nav', array('name'=>$account->name) );
 						$chart_balance = $account->balance;
 						$q_forms = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE status='1' AND in_out='0' AND account_id='".$account->id."' AND date >= '".$_start_date." 00:00:00' ORDER BY id DESC, date DESC");
 						if(($total = $q_forms->fetch_object()->total) > 0) {
-							$chartt['data']['datasets'][0]['data'][] = $total;
+							// $chartt['data']['datasets'][0]['data'][] = $total;
 						} else {
-							$chartt['data']['datasets'][0]['data'][] = '0.00';
+							// $chartt['data']['datasets'][0]['data'][] = '0.00';
 						}
 						$chart_balance = $chart_balance + $total;
 
 						$total = 0;
 						$q_forms = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE status='1' AND in_out='1' AND account_id='".$account->id."' AND date >= '".$_start_date." 00:00:00' ORDER BY id DESC, date DESC");
 						if(($total = $q_forms->fetch_object()->total) > 0) {
-							$chartt['data']['datasets'][1]['data'][] = $total;
+							// $chartt['data']['datasets'][1]['data'][] = $total;
 						} else {
-							$chartt['data']['datasets'][1]['data'][] = '0.00';
+							// $chartt['data']['datasets'][1]['data'][] = '0.00';
 						}
 						$chart_balance = $chart_balance - $total;
 						$chart['data']['datasets'][0]['data'][] = $chart_balance;
@@ -234,22 +254,22 @@ add_page_info( 'nav', array('name'=>$account->name) );
 					$chart['options']['scales']['yAxes'][0]['display'] = false;
 					$chart['options']['scales']['xAxes'][0]['display'] = false;
 					$chart['options']['scales']['xAxes'][0]['ticks']['beginAtZero'] = true;
-					$chart['options']['maintainAspectRatio'] = true;
+					$chart['options']['maintainAspectRatio'] = false;
 					$chart['options']['tooltips']['enabled'] = true;
 					$chart['options']['tooltips']['yLabel'] = 'krall';
 					$chart['options']['tooltips']['mode'] = 'nearest';
 					$chart['options']['tooltips']['callbacks']['title'] = "=TIL= function(tooltipItems, data) {  return ''; } =TIL=";
-					$chart['options']['tooltips']['callbacks']['label'] = "=TIL= function(tooltipItems, data) {  return  tooltipItems.yLabel.toFixed(2) + ' TL'; } =TIL=";
+					$chart['options']['tooltips']['callbacks']['label'] = "=TIL= function(tooltipItems, data) {  return  tooltipItems.yLabel.formatMoney(2, '.', ',') + ' TL'; } =TIL=";
 					
 
-					$args['height'] 	= '20';
+					$args['height'] 	= '40';
 					$args['chart'] 		= $chart;
 					?>
-					<div class="row space-5">
+					<div class="row space-none">
 						<div class="col-md-4">
 
 							<div class="">
-								<span class="ff-2 fs-18 bold <?php echo $account->balance < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo get_set_money($account->balance); ?></span> <small class="text-muted">TL</small>
+								<span class="ff-2 fs-17 bold <?php echo $account->balance < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo get_set_money($account->balance); ?></span> <small class="text-muted">TL</small>
 								<br />
 								<small class="text-muted">bakiye</small>
 							</div>
@@ -284,14 +304,14 @@ add_page_info( 'nav', array('name'=>$account->name) );
 							<div class="">
 								<small class="text-muted">toplam ürün girişi</small>
 								<br />
-								<span class="ff-2 fs-15 bold"><?php echo get_set_money($account->balance); ?></span> <small class="text-muted">TL</small>
+								<span class="ff-2 fs-15 bold"><?php echo get_set_money($accountTotal['form_in']); ?></span> <small class="text-muted">TL</small>
 							</div>
 						</div> <!-- /.col-md-6 -->
 						<div class="col-md-6">
 							<div class="">
 								<small class="text-muted">toplam ürün çıkışı</small>
 								<br />
-								<span class="ff-2 fs-15 bold"><?php echo get_set_money($account->balance); ?></span> <small class="text-muted">TL</small>
+								<span class="ff-2 fs-15 bold"><?php echo get_set_money($accountTotal['form_out']); ?></span> <small class="text-muted">TL</small>
 							</div>
 						</div> <!-- /.col-md-6 -->
 					</div> <!-- /.row -->
@@ -303,14 +323,14 @@ add_page_info( 'nav', array('name'=>$account->name) );
 							<div class="">
 								<small class="text-muted">toplam ödeme girişi</small>
 								<br />
-								<span class="ff-2 fs-15 bold"><?php echo get_set_money($account->balance); ?></span> <small class="text-muted">TL</small>
+								<span class="ff-2 fs-15 bold"><?php echo get_set_money($accountTotal['payment_in']); ?></span> <small class="text-muted">TL</small>
 							</div>
 						</div> <!-- /.col-md-6 -->
 						<div class="col-md-6">
 							<div class="">
 								<small class="text-muted">toplam ödeme çıkışı</small>
 								<br />
-								<span class="ff-2 fs-15 bold"><?php echo get_set_money($account->balance); ?></span> <small class="text-muted">TL</small>
+								<span class="ff-2 fs-15 bold"><?php echo get_set_money($accountTotal['payment_out']); ?></span> <small class="text-muted">TL</small>
 							</div>
 						</div> <!-- /.col-md-6 -->
 					</div> <!-- /.row -->
@@ -361,7 +381,7 @@ add_page_info( 'nav', array('name'=>$account->name) );
 
 					$form_total = 0;
 					$total = 0;
-					$q_forms = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE status='1' AND in_out='0' AND account_id='".$account->id."' AND date >= '".$_start_date." 00:00:00' AND date <= '".$_start_date." 23:59:59' ORDER BY id DESC, date DESC");
+					$q_forms = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE status='1' AND type='form' AND in_out='0' AND account_id='".$account->id."' AND date >= '".$_start_date." 00:00:00' AND date <= '".$_start_date." 23:59:59' ORDER BY id DESC, date DESC");
 					if(($total = $q_forms->fetch_object()->total) > 0) {
 						// $chart['data']['datasets'][0]['data'][] = '-'.$total;
 					} else {
@@ -370,16 +390,13 @@ add_page_info( 'nav', array('name'=>$account->name) );
 					$form_total = $total;
 
 					$total = 0;
-					$q_forms = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE status='1' AND in_out='1' AND account_id='".$account->id."' AND date >= '".$_start_date." 00:00:00' AND date <= '".$_start_date." 23:59:59' ORDER BY id DESC, date DESC");
+					$q_forms = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE status='1' AND type='form' AND in_out='1' AND account_id='".$account->id."' AND date >= '".$_start_date." 00:00:00' AND date <= '".$_start_date." 23:59:59' ORDER BY id DESC, date DESC");
 					if(($total = $q_forms->fetch_object()->total) > 0) {
 						// $chart['data']['datasets'][1]['data'][] = $total;
 					} else {
 						// $chart['data']['datasets'][1]['data'][] = '0.00';
 					}
 					$chart['data']['datasets'][0]['data'][] = $form_total = $total - $form_total;
-
-
-
 
 
 
@@ -401,7 +418,7 @@ add_page_info( 'nav', array('name'=>$account->name) );
 					} else {
 						// $chart['data']['datasets'][3]['data'][] = '0.00';
 					}
-					$chart['data']['datasets'][1]['data'][] = $form_total = $total - $payment_total;
+					$chart['data']['datasets'][1]['data'][] =  $total - $payment_total;
 
 
 
@@ -413,21 +430,21 @@ add_page_info( 'nav', array('name'=>$account->name) );
 					} else {
 						$chart['data']['datasets'][2]['data'][] = '0.00';
 					}
-
-
 				}
+
+
 
 				$chart['options']['legend']['display'] = true;
 				$chart['options']['scales']['yAxes'][0]['display'] = true;
-				$chart['options']['scales']['yAxes'][0]['ticks']['beginAtZero'] = true;
-				$chart['options']['scales']['yAxes'][0]['ticks']['userCallback'] = "=TIL= function(value, index, values) { return value + ' TL'; } =TIL=";
+				$chart['options']['scales']['yAxes'][0]['ticks']['beginAtZero'] = false;
+				$chart['options']['scales']['yAxes'][0]['ticks']['userCallback'] = "=TIL= function(value, index, values) { if(value >= 1) { return value + ' TL'; } } =TIL=";
 				$chart['options']['scales']['xAxes'][0]['display'] = true;
 				$chart['options']['scales']['xAxes'][0]['ticks']['beginAtZero'] = true;
 				$chart['options']['maintainAspectRatio'] = false;
 				$chart['options']['tooltips']['enabled'] = true;
 				$chart['options']['tooltips']['yLabel'] = 'krall';
 				$chart['options']['tooltips']['mode'] = 'nearest';
-				$chart['options']['tooltips']['callbacks']['label'] = "=TIL= function(tooltipItems, data) {  return tooltipItems.yLabel.toFixed(2) + ' TL'; } =TIL=";
+				$chart['options']['tooltips']['callbacks']['label'] = "=TIL= function(tooltipItems, data) {  return tooltipItems.yLabel.formatMoney(2, '.', ',') + ' TL'; } =TIL=";
 
 				$args['height'] 	= '250';
 				$args['chart'] 		= $chart;
@@ -480,7 +497,7 @@ add_page_info( 'nav', array('name'=>$account->name) );
 						$chart['options']['scales']['xAxes'][0]['ticks']['beginAtZero'] = false;
 						$chart['options']['maintainAspectRatio'] = false;
 						$chart['options']['tooltips']['callbacks']['title'] = "=TIL= function(tooltipItems, data) { return data.labels[tooltipItems[0].index] + ''; } =TIL=";
-						$chart['options']['tooltips']['callbacks']['label'] =  "=TIL= function(tooltipItems, data) { return data.datasets[0].data[tooltipItems.index].toFixed(2) + ' TL'; } =TIL=";
+						$chart['options']['tooltips']['callbacks']['label'] =  "=TIL= function(tooltipItems, data) { return parseFloat(data.datasets[0].data[tooltipItems.index]).formatMoney(2, '.', ',') + ' TL'; } =TIL=";
 
 						// $args['height'] 	= '550';
 						$args['chart'] 		= $chart;

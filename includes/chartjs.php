@@ -56,9 +56,12 @@ function chartjs($args) {
 
 	// colors
 	if(count($args['chart']['data']['datasets']) == 1) {
-		$args['chart']['data']['datasets'][0]['backgroundColor'] = $args['backgroundColor'];
-		$args['chart']['data']['datasets'][0]['borderColor'] = $args['borderColor'];
-			
+		if( !isset($args['chart']['data']['datasets'][0]['backgroundColor']) ) {
+			$args['chart']['data']['datasets'][0]['backgroundColor'] = $args['backgroundColor'];
+		}
+		if( !isset($args['chart']['data']['datasets'][0]['borderColor']) ) {
+			$args['chart']['data']['datasets'][0]['borderColor'] = $args['borderColor'];
+		}
 	} else {
 		foreach($args['chart']['data']['datasets'] as $key=>$value) {
 			if( !isset($value['backgroundColor']) ) { $args['chart']['data']['datasets'][$key]['backgroundColor'] = $args['backgroundColor'][$key]; }
