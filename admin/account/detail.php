@@ -451,7 +451,7 @@ add_page_info( 'nav', array('name'=>$account->name) );
 				?>
 
 				
-				<div class="panel panel-default panel-heading-10">
+				<div class="panel panel-default panel-border-0">
 					<div class="panel-heading"><h3 class="panel-title">Son 30 Günlük Grafik Özeti</h3></div>
 					<div class="panel-body">
 						<?php chartjs($args); ?>
@@ -459,7 +459,7 @@ add_page_info( 'nav', array('name'=>$account->name) );
 				</div>
 			</div> <!-- /.col-* -->
 			<div class="col-md-4">
-			<div class="panel panel-default panel-heading-10">
+			<div class="panel panel-default panel-border-0">
 					<div class="panel-heading"><h3 class="panel-title">Hesabın En Popüler Ürünleri</h3></div>
 					<div class="panel-body">
 						<?php

@@ -152,10 +152,11 @@ add_page_info( 'nav', array('name'=>'Hesap Yönetimi') );
 <div class="row">
 	<div class="col-md-6">
 
-		<div class="panel panel-default panel-table panel-heading-0">
-			<div class="panel-heading"><h3 class="panel-title">Son Eklenen Hesap Kartları</h3></div>
-			<div class="panel-body">
-			<?php $query = db()->query("SELECT * FROM ".dbname('accounts')." WHERE status='1' AND type='account' ORDER BY id DESC LIMIT 12 "); ?>
+		<small class="text-muted module-title-small"><i class="fa fa-th-list"></i> SON EKLENEN HESAP KARTLARI</small>
+		<div class="h-10"></div>
+		<div class="panel panel-warning panel-table panel-heading-0 panel-border-right">
+			<div class="panel-body" style="height:280px; overflow: auto;">
+			<?php $query = db()->query("SELECT * FROM ".dbname('accounts')." WHERE status='1' AND type='account' ORDER BY id DESC LIMIT 50 "); ?>
 			<?php if($query->num_rows): ?>
 				<table class="table table-hover table-condensed table-stripe">
 					<tbody>
@@ -282,7 +283,7 @@ add_page_info( 'nav', array('name'=>'Hesap Yönetimi') );
 						$args['chart'] 		= $chart;
 						?>
 
-						<div class="panel panel-default panel-heading-0">
+						<div class="panel panel-default panel-border-0">
 							<div class="panel-heading"><h4 class="panel-title">Borç Dağılım Grafiği</h4></div>
 							<div class="panel-body">
 								<div class="relative"><?php chartjs($args); ?></div>
@@ -332,7 +333,7 @@ add_page_info( 'nav', array('name'=>'Hesap Yönetimi') );
 								$args['height'] 	= '130';
 								$args['chart'] 		= $chart;
 								?>
-								<div class="panel panel-default panel-heading-0">
+								<div class="panel panel-default panel-border-0">
 									<div class="panel-heading"><h4 class="panel-title fs-14">Kar Dağılım Pastası</h4></div>
 									<div class="panel-body">
 										<div class="relative"><?php chartjs($args); ?></div>
