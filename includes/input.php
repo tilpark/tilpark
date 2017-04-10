@@ -95,7 +95,6 @@ function get_set_show_phone($val) {
 function form_validation($val, $input_name='', $name='', $options=array(), $alert_name='form')
 {
 	global $til;
-	$val = trim(mysqli_real_escape_string(db(), $val));
 
 
 	if(!is_array($options))
