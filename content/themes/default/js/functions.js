@@ -15,8 +15,23 @@
 | -------------------------------------------------------------- SYSTEM GENERAL
 | * get_notification_count()
 | * get_notification_count_query()
+| * set_notification()
 | * get_notification()
+| * notification_readit_button()
+| * notification_delete_button()
+| * notification_all_reait_button()
+| * notification_all_delete_button()
+| * chat_list()
+| * send_message()
+| * get_new_message()
+| * chat_list_scroll()
+| * til_dynamic_tab()
 | * imageHandler()
+| * clear_writing()
+|
+|
+|
+|
 |
 | ---------------------------------------------------------------------- HELPER
 | * hasClass()
@@ -27,14 +42,21 @@
 | * getOffset()
 | * getCookie()
 | * getXHR()
+| * browser_notification()
+| * is_mobile()
 | * play_sound()
 | * addHours()
 | * replaceAll()
 |
 */
-
-
 document.addEventListener("DOMContentLoaded", function(event) {
+
+  if ( !is_mobile() ) {
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+  }
+
   // js-onload attr'si içerisindeki string'i function olarak comvert edip çalıştırıyoruz
   var js_onload = document.querySelectorAll("[js-onload]");
   for (var i = js_onload.length - 1; i >= 0; i--) {
@@ -77,8 +99,8 @@ function editor(param = {selector: "", plugins:"", toolbar:"", height: "500", me
 
   if ( param.selector == "" || param.selector == undefined ) { param.selector = '#content'; }
   if ( param.menubar == "" || param.menubar == undefined ) { param.menubar = false; }
-  if ( param.plugins == "" || param.plugins == undefined ) param.plugins = ['advlist autolink lists link image print preview', 'searchreplace wordcount code fullscreen pre_lines', 'insertdatetime nonbreaking save table contextmenu directionality', 'paste textcolor colorpicker textpattern imagetools codesample codemirror pre_html code_html'];
-  if ( param.toolbar == "" || param.toolbar == undefined ) param.toolbar = 'styleselect | bold italic underline forecolor backcolor | alignleft aligncenter alignright | bullist numlist | link image print preview media codesample pre_html code_html code';
+  if ( param.plugins == "" || param.plugins == undefined ) param.plugins = ['image', 'table', 'paste textcolor colorpicker textpattern imagetools'];
+  if ( param.toolbar == "" || param.toolbar == undefined ) param.toolbar = 'bold italic underline forecolor backcolor | alignleft aligncenter alignright | bullist numlist | link image';
 
   tinymce.init({
     selector: param.selector,
@@ -89,9 +111,7 @@ function editor(param = {selector: "", plugins:"", toolbar:"", height: "500", me
     height: param.height,
     nonbreaking_force_tab: true,
     language: 'tr_TR',
-    external_plugins: { codemirror: get_site_url('includes/lib/tinymce/plugins/codemirror/plugin.js') },
     content_css: [ get_site_url('content/themes/default/css/bootstrap.min.css'), get_site_url('content/themes/default/css/app.css'), get_site_url('content/themes/default/css/app-minan.css')],
-    codemirror: { indentOnInit: true, fullscreen: true, path: 'CodeMirror', config: { lineNumbers: true }, theme: "monokai"},
     table_default_attributes: { class: 'table-bordered'},
     // image upload
     file_browser_callback: function (field_name, url, type, win) {
@@ -111,7 +131,11 @@ function editor(param = {selector: "", plugins:"", toolbar:"", height: "500", me
             keyCode: e.keyCode,
           });
 
+          var content = editor.getContent().replace('<p>&nbsp;</p>', '');
+          editor.setContent(content);
+
           document.querySelector(param.selector).dispatchEvent(event);
+          return false;
         }
       });
 
@@ -189,14 +213,58 @@ function get_notification_count_query(param) {
       var count = data;
       var elem = document.querySelector(param.elem);
 
-      if ( count != elem.innerHTML ) {
+      
+        var last_count = elem.innerHTML;
+
         elem.innerHTML = count;
-        if ( count > parseInt(elem.innerHTML) ) { playSound('message'); }
+
+        if ( count != last_count ) {
+          if ( count > parseInt(last_count) ) {
+           playSound('message');
+
+           if ( !is_mobile() ) {
+              getXHR({'method': 'get', 'url': get_site_url('admin/user/lastNotificationInfo.php?session_id='+window.session_id)}, function(last_notification) {
+                if ( last_notification != false && last_notification != 'empty' ) {
+                  var object = JSON.parse(last_notification);
+
+                  browser_notification({title: 'TilPark', content: object.title, url: object.message, id: object.id});
+                }
+              });
+            }
+          }
+
         if ( count > 0 ) { elem.classList.add('active'); } else { elem.classList.remove('active'); }
       }
     }
   });
 } //.get_notification_count_query()
+
+
+
+
+
+
+
+/**
+ * @func set_notification()
+ * @desc bildirim durmunu değiştirir
+ * @param dom element, object
+ * @return event onchnage
+ */
+function set_notification($this, object) {
+  getXHR({'method': 'POST', 'url': get_site_url('admin/user/setNotification.php?session_id='+window.session_id+'&args='+JSON.stringify(object))}, function(data) {
+    if ( data != 'empty' && data != false ) {
+      var data = JSON.parse(data);
+      if ( $this != "" ) {
+        $this.setAttribute('status', data.status);
+        $this.setAttribute('read-it', data.read_it);
+
+        var event = new CustomEvent('change');
+        $this.dispatchEvent(event);
+      }
+    } else { return false; }
+  });
+} //.set_notification()
 
 
 
@@ -228,27 +296,6 @@ function get_notification(elem, box, open_control=true) {
 
 
 
-
-
-
-/**
- * @func set_notification()
- * @desc bildirim durmunu değiştirir
- * @param dom element, object
- * @return event onchnage
- */
-function set_notification($this, object) {
-  getXHR({'method': 'POST', 'url': get_site_url('admin/user/setNotification.php?session_id='+window.session_id+'&args='+JSON.stringify(object))}, function(data) {
-    if ( data != 'empty' && data != false ) {
-      var data = JSON.parse(data);
-      $this.setAttribute('status', data.status);
-      $this.setAttribute('read-it', data.read_it);
-
-      var event = new CustomEvent('change');
-      $this.dispatchEvent(event);
-    } else { return false; }
-  });
-} //.set_notification()
 
 
 
@@ -358,44 +405,60 @@ function chat_list(type) {
   chat_list.scrollTop = chat_list.scrollHeight;
   window.get_message_control = true;
 
-  chat_list.onscroll = function() {
-    if ( chat_list.scrollTop < 10 ) {
-      parent(chat_list, '.chat-container').classList.add("loader");
-      if ( type == "message" ) { old_type = "mess-reply" } else { old_type = "task-reply"; }
-
-      if ( window.get_message_control == true ) {
-        window.get_message_control = false;
-      } else { return false; }
-
-      getXHR({ 'method': 'get', 'url': get_site_url('admin/user/getMessage.php?type='+ old_type +'&query_message='+ chat_list.getAttribute("id") +'&get_message=old&list_old_message='+ window.get_first_message_id +'&session_id='+window.session_id)}, function(data) {
-        if ( data != "empty" && data != false ) {
-          if ( matches = data.match(/<div class="message-elem *?([\s\S]*?)<\/div><!--\/ \.message-elem \/-->/gmi) ) {
-            for ( var i = matches.length - 1; i >= 0; i-- ) {
-              setTimeout(function() { parent(chat_list, '.chat-container').classList.remove("loader"); }, 500);
-
-              var div = document.createElement("DIV");
-              div.innerHTML = matches[i];
-              div = div.children[0];
-
-              if ( !document.querySelector(".message-"+div.getAttribute('id')) ) {
-                if ( i == 0 ) { window.get_first_message_id = div.getAttribute('id'); }
-
-                if ( chat_list.insertBefore(div, chat_list.firstChild) ) {
-                  chat_list.scrollTop = 20;
-                  window.get_message_control = true;
-                } else { window.get_message_control = true; }
-              } else {  window.get_message_control = true;}
-            } // end for
-          } else { window.get_message_control = true; }
-        } else { parent(chat_list, '.chat-container').classList.remove("loader"); window.get_message_control = true; }
-      });
-    } // is scrollTop < 20
-  } // onscroll
+  chat_list_scroll(chat_list, type);
 
   // NEW Message
   window.getMessage = setInterval("get_new_message('get', '"+ window.message_type +"')", 1000);
   // NEW Message
 } //.chat_list()
+
+
+
+
+
+
+
+/**
+ * @func send_message()
+ * @desc message gönderir
+ * @param empty
+ * @return
+ */
+function send_message($this, type="message") {
+  var message   = $this.querySelector('textarea');
+  if ( !message ) { var message = $this.querySelector('input[type="text"]'); }
+
+  if ( message ) {
+    var top_id  = $this.querySelector('#top_id');
+
+    if ( message.tagName != 'INPUT' ) {
+      var content = tinyMCE.get(message.getAttribute('id')).getContent();
+      tinyMCE.get(message.getAttribute('id')).setContent('');
+      tinymce.execCommand('mceFocus', false, message.getAttribute('id'));
+    } else { var content = message.value; message.value = ""; }
+
+    if ( content.length >= 1 ) {
+      var form = new FormData();
+      form.append("message", content);
+      form.append("top_id", top_id.value);
+
+      if ( type == 'message' ) form.append("receiver", $this.querySelector('#receiver').value);
+      if ( type == 'task' ) form.append("task_id", $this.querySelector('#task_id').value);
+
+      clearInterval(window.getMessage);
+      getXHR({ 'method': 'POST', 'url' : get_site_url('admin/user/sendMessage.php?session_id='+window.session_id+'&type='+type), 'send': form  }, function(data) {
+        if ( data == 'true' ) {
+          if ( get_new_message('send', type) ) {
+            return true;
+          } else { return false; }
+        } else { return false; }
+      });
+    } else { alert('en az 3 kelime'); }
+  } else { return false; }
+  return false;
+} //.send_message()
+
+
 
 
 
@@ -431,6 +494,7 @@ function get_new_message(class_name="", type="message") {
             var chat_list = document.querySelector(".chat-list");
 
             if ( chat_list.appendChild(div) ) {
+
               chat_list.scrollTop = chat_list.scrollHeight;
               if ( window.innerWidth < 767 ) {
                 document.querySelector("body").scrollTop = document.querySelector("body").scrollHeight;
@@ -463,49 +527,62 @@ function get_new_message(class_name="", type="message") {
 
 
 
+
 /**
- * @func send_message()
- * @desc message gönderir
+ * @func chat_list_scroll()
+ * @desc chat list scroll olur ise çalıştır
+ * @param dom
+ * @return
+ */
+function chat_list_scroll(chat_list, type) {
+  chat_list.onscroll = function() {
+    if ( chat_list.scrollTop < 10 ) {
+      parent(chat_list, '.chat-container').classList.add("loader");
+      if ( type == "message" ) { old_type = "mess-reply" } else { old_type = "task-reply"; }
+
+      if ( window.get_message_control == true ) {
+        window.get_message_control = false;
+      } else { return false; }
+
+      getXHR({ 'method': 'get', 'url': get_site_url('admin/user/getMessage.php?type='+ old_type +'&query_message='+ chat_list.getAttribute("id") +'&get_message=old&list_old_message='+ window.get_first_message_id +'&session_id='+window.session_id)}, function(data) {
+        if ( data != "empty" && data != false ) {
+          if ( matches = data.match(/<div class="message-elem *?([\s\S]*?)<\/div><!--\/ \.message-elem \/-->/gmi) ) {
+            for ( var i = matches.length - 1; i >= 0; i-- ) {
+              setTimeout(function() { parent(chat_list, '.chat-container').classList.remove("loader"); }, 500);
+
+              var div = document.createElement("DIV");
+              div.innerHTML = matches[i];
+              div = div.children[0];
+              div.setAttribute('style', 'animation-delay: '+ (matches.length - i) +'00ms;');
+
+              if ( !document.querySelector(".message-"+div.getAttribute('id')) ) {
+                if ( i == 0 ) { window.get_first_message_id = div.getAttribute('id'); }
+
+                if ( chat_list.insertBefore(div, chat_list.firstChild) ) {
+                  chat_list.scrollTop = 20;
+                  window.get_message_control = true;
+                } else { window.get_message_control = true; }
+              } else {  window.get_message_control = true;}
+            } // end for
+          } else { window.get_message_control = true; }
+        } else { parent(chat_list, '.chat-container').classList.remove("loader"); window.get_message_control = true; }
+      });
+    } // is scrollTop < 20
+  } // onscroll
+} //.chat_list_scroll()
+
+
+
+
+
+
+
+/**
+ * @func til_dynamic_tab()
+ * @desc dynamic tab
  * @param empty
  * @return
  */
-function send_message($this, type="message") {
-  var message   = $this.querySelector('textarea');
-  if ( !message ) { var message = $this.querySelector('input[type="text"]'); }
-
-  if ( message ) {
-    var top_id  = $this.querySelector('#top_id');
-
-    if ( message.tagName != 'INPUT' ) {
-      var content = tinyMCE.get(message.getAttribute('id')).getContent();
-      tinyMCE.get(message.getAttribute('id')).setContent('');
-      tinymce.execCommand('mceFocus', false, message.getAttribute('id'));
-    } else { var content = message.value; message.value = ""; }
-
-    if ( content.length >= 3 ) {
-      var form = new FormData();
-      form.append("message", content);
-      form.append("top_id", top_id.value);
-
-      if ( type == 'message' ) form.append("receiver", $this.querySelector('#receiver').value);
-      if ( type == 'task' ) form.append("task_id", $this.querySelector('#task_id').value);
-
-      clearInterval(window.getMessage);
-      getXHR({ 'method': 'POST', 'url' : get_site_url('admin/user/sendMessage.php?session_id='+window.session_id+'&type='+type), 'send': form  }, function(data) {
-        if ( data == 'true' ) {
-          if ( get_new_message('send', type) ) {
-            return true;
-          } else { return false; }
-        } else { return false; }
-      });
-    } else { alert('en az 3 kelime'); }
-  } else { return false; }
-  return false;
-} //.send_message()
-
-
-
-
 function til_dynamic_tab($this, $elem) {
   var all_tabs = document.querySelectorAll('.til-dynamic-tab');
   for (var i = 0; i < all_tabs.length; i++) { if ( $elem != all_tabs[i] ) all_tabs[i].classList.remove('open'); }
@@ -521,6 +598,10 @@ function til_dynamic_tab($this, $elem) {
     $elem.classList.add('open');
   }
 } //.til_dynamic_tab()
+
+
+
+
 
 
 
@@ -554,6 +635,14 @@ function imageHandler(image, callback) {
 
 
 
+
+
+/**
+ * @func clear_writing()
+ * @desc yazıyor statuslerini siler
+ * @param object
+ * @return true / false
+ */
 function clear_writing(obj) {
   getXHR({ 'method' : 'get', 'url': get_site_url('admin/user/message-writing.php?top_id=' + window.set_writing.top_id + '&clear_writing=true&session_id=' + window.session_id  ) }, function(data) {
     if ( data != 'empty' && data != false ) {
@@ -562,11 +651,18 @@ function clear_writing(obj) {
       }
     } else { return false; }
   });
-}
+} //.claer_writing
 
 
 
 
+
+/**
+ * @func set_writing()
+ * @desc yazıyor status'ünü düzenler
+ * @param object
+ * @return true / false
+ */
 function set_writing(obj) {
   if ( obj ) {
     getXHR({ 'method' : 'get', 'url': get_site_url('admin/user/message-writing.php?top_id=' + window.set_writing.top_id + '&set_value=' + obj.set_value + '&session_id=' + window.session_id  ) }, function(data) {
@@ -582,6 +678,16 @@ function set_writing(obj) {
 
 
 
+
+
+
+
+/**
+ * @func get_writing()
+ * @desc yazıyor status'lerine göre class ekle
+ * @param object
+ * @return true / false
+ */
 function get_writing(selector) {
   setInterval(function() {
     getXHR({ 'method' : 'get', 'url': get_site_url('admin/user/message-writing.php?top_id=' + window.set_writing.top_id + '&&get=true&session_id=' + window.session_id  ) }, function(data) {
@@ -603,11 +709,44 @@ function get_writing(selector) {
   }, 1000);
 
   setInterval(function() { clear_writing({'set_value':'0'}); }, 5000);
-} //
+} //.get_writing()
+
+
+
 
 
 
 /* ------------------------------------------------------------------ HELPER */
+/**
+ * @func addClass()
+ * @desc verilen element'e class Ekler
+ * @param element, string
+ * @return true / false
+ */
+function addClass(element, thatClass) {
+  if ( element ) {
+    if ( element.classList.add(thatClass) ) {
+      return true;
+    } else { return false; }
+  } else { return false; }
+} //.addClass()
+
+
+/**
+ * @func removeClass()
+ * @desc verilen element'in classını siler
+ * @param element, string
+ * @return true / false
+ */
+function removeClass(element, thatClass) {
+  if ( element ) {
+    if ( element.classList.remove(thatClass) ) {
+      return true;
+    } else { return false; }
+  } else { return false; }
+} //.removeClass()
+
+
 /**
  * @func hasClass()
  * @desc elemen class'ı içerisinde aranan class var mı yok mu?
@@ -621,8 +760,6 @@ function hasClass(element, thatClass) {
     return false;
   }
 } //.hasClass()
-
-
 
 
 
@@ -728,7 +865,7 @@ function getOffset( element ) {
 
 /**
  * @func getCookie()
- * @desc JavaSript'in anlık cerezlerini veirir
+ * @desc JavaSript'in anlık çerezlerini veirir
  * @param string
  * @return string
  */
@@ -828,6 +965,75 @@ function getXHR(set="", callback) {
 
 
 
+
+
+/**
+ * @func browser_notification()
+ * @desc tarayıcı yoluyla masaüstü bildirimi gönderir
+ * @param object
+ * @return browser notification
+ */
+function browser_notification(obj) {
+  var notification = window.Notification || window.mozNotification || window.webkitNotification;
+
+  if (Notification.permission !== "granted")
+    Notification.requestPermission();
+  else {
+    if ('undefined' === typeof notification) {
+      // not supported browser
+      return false;
+    } else {
+       var notification = new Notification(obj.title, {
+        icon: get_site_url('content/themes/default/img/notification-icon.png'),
+        body: obj.content,
+        lang: 'TR'
+      });
+
+      notification.onclick = function () {
+        set_notification('', {id: obj.id, read_it: '1', status: '1'});
+
+        window.open(obj.url);      
+      };
+    }
+  }
+} //.browser_notification()
+
+
+
+
+
+
+
+/**
+ * @func is_mobile()
+ * @desc cihazın mobile mi desktop mu olduğunu kontrol eder
+ * @param object
+ * @return browser notification
+ */
+function is_mobile(device="") {
+  if ( device == "" ) {
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+
+      return true;
+    } else {
+
+      return false;
+    }
+  } else {
+    if ( device ) {
+      return ture;
+    } else {
+      return false;
+    }
+  }
+} //.is_mobile()
+
+
+
+
+
+
+
 /**
  * @func playSound()
  * @desc content/themes/default/sound içerisindeki çağrılan sesi 1 keres sayfada çalar
@@ -864,6 +1070,24 @@ function add_or_remove_class($btn, $elem, btn_obj={'active': 'active'}, elem_obj
 
 
 
+
+/**
+ * @func render_form_file()
+ * @desc render form file
+ * @param input(dom)
+ * @return add or remove class
+ */
+function render_form_file(input, callback) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      callback(e.target.result);
+    }
+
+    reader.readAsDataURL(input.files[0]);
+  }
+} //.render_form_file
 
 
 /**

@@ -401,7 +401,7 @@ if($task->type_status == '0') { $type_status = '0'; } else { $type_status = '1';
 
 											<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
 											<textarea autofocus onkeypress="set_writing({'set_value': '1'});" onfocusout="set_writing({'set_value': '0'})" onfocus="set_writing({'set_value': '1'})" onkeydown="set_writing({'set_value': '0'}); parent(this, 'form').dispatchEvent(new Event('submit', { 'bubbles' : true, 'cancelable' : true}));" name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:20px;"></textarea>
-											<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '100', onfocus: true, onfocusout: true, onkeypress: true });</script>
+											<script>editor({selector: "#message", plugins: 'autolink nonbreaking table textcolor colorpicker image textpattern link', toolbar: 'bold italic underline forecolor backcolor image table link', height: '100', onfocus: true, onfocusout: true, onkeypress: true });</script>
 											<script type="text/javascript"></script>
 										</div><!--/ .form-group.message-area /-->
 									<?php endif; ?>

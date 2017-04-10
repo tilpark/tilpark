@@ -15,7 +15,7 @@ if(isset($_POST['rec_u_id'])) {
 
 
 add_page_info( 'title', $message->title );
-add_page_info( 'nav', array('name'=>'Görev Kutusu', 'url'=>get_site_url('admin/user/task/list.php') ) );
+add_page_info( 'nav', array('name'=>'Mesaj Kutusu', 'url'=>get_site_url('admin/user/message_box.php') ) );
 add_page_info( 'nav', array('name'=>@$rec_user->name.' '.@$rec_user->surname) );
 
 
@@ -201,7 +201,7 @@ if(isset($_POST['add_task'])) {
 								<label for="editor_message">Görev Açıklaması</label>
 								<textarea name="message" id="message" class="form-control required hidden" minlength="5" placeholder="Birşeyler yazın..." style="height:100px;"><?php echo stripcslashes(@$_POST['message']); ?></textarea>
 
-								<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '160' });</script>
+								<script>editor({selector: "#message", plugins: 'autolink table textcolor colorpicker image textpattern link', toolbar: 'bold italic underline forecolor backcolor image table link', height: '160' });</script>
 							</div> <!-- /.form-group -->
 
 							<div class="row space-5">

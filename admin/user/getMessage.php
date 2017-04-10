@@ -4,7 +4,7 @@
 if ( $_GET['get_message'] == "old" AND isset($_GET['list_old_message']) ) {
   if ( $get_message = get_message($_GET['list_old_message'], array('type' => $_GET['type'])) ) :
   if ( $_GET['type'] == 'mess-reply' ) { $or_type = 'message'; } elseif ( $_GET['type'] == 'task-reply' ) { $or_type = 'task'; }
-  $get_query = " (type='". $_GET['type'] ."' OR type='". $or_type ."') AND (rec_u_id = '". get_active_user('id') ."' OR sen_u_id = '". get_active_user('id') ."' ) AND (top_id='". $_GET['query_message'] ."' OR id='". $_GET['query_message'] ."') AND (date <= '". $get_message->date ."' AND id < '". $_GET['list_old_message'] ."') ORDER BY date DESC, id DESC LIMIT 3";
+  $get_query = " (type='". $_GET['type'] ."' OR type='". $or_type ."') AND (rec_u_id = '". get_active_user('id') ."' OR sen_u_id = '". get_active_user('id') ."' ) AND (top_id='". $_GET['query_message'] ."' OR id='". $_GET['query_message'] ."') AND (date <= '". $get_message->date ."' AND id < '". $_GET['list_old_message'] ."') ORDER BY date DESC, id DESC LIMIT 4";
 
   if( $messages = array_reverse(get_messages(array('query'=>$get_query))) ): ?>
     <?php foreach( $messages as $message ): ?>
@@ -20,6 +20,7 @@ if ( $_GET['get_message'] == "old" AND isset($_GET['list_old_message']) ) {
             <div class="well padding-10 br-3">
               <div class="text-muted fs-11 italic">
                 <span class="bold username"><?php echo get_user_info($message->sen_u_id, 'name'); ?> <?php echo get_user_info($message->sen_u_id, 'surname'); ?></span> <span class="inform-text">tarafından</span> <span class="bold date-tooltip" <?php if ( til_is_mobile() ) { echo 'data-wenk-pos="left"'; } ?> data-wenk="<?php echo substr($message->date,0,16); ?>" title="<?php echo substr($message->date,0,16); ?>"><?php echo get_time_late($message->date); ?></span> <span class="inform-text">önce gönderildi.</span>
+                <span class="pull-right">#<?php echo $message->id; ?></span>
               </div><!--/ .text-muted /-->
               <?php echo $message->message; ?>
             </div><!--/ .well /-->

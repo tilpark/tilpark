@@ -24,7 +24,68 @@ function get_root_path($val) {
 function root_path($val) {
 	echo get_root_path($val);
 }
-include get_root_path('config.php');
+include get_root_path('til-config.php');
+
+if ( empty(_userName) AND empty(_dbName) ) {
+	Header('Location: installation.php');
+}
+
+// config
+define('_root_path', $_SERVER['DOCUMENT_ROOT'].'/');
+
+// Bağlatıyı Kuralım.
+$db = new mysqli(_serverName, _userName, _userPassword);
+if($db->connect_errno){
+  echo "Bağlantı Hatası:".$db->connect_errno;
+  exit;
+}
+
+// Veritabanımızı Seçelim.
+$db->select_db(_dbName);
+$db->query("SET NAMES 'utf8'");
+
+
+
+function db()
+{
+	global $db;
+	return $db;
+}
+
+
+// global ön ek
+$til = new stdclass;
+global $til;
+
+$til->fixed = '2';
+$til->company = new stdclass();
+$til->company->name = 'Tilpark!';
+$til->company->address = 'HOCA ÖMER MAH. GÖLEBATMAZ CAD. NO:1 KAT:4';
+$til->company->district = 'MERKEZ';
+$til->company->city = 'ADIYAMAN';
+$til->company->country = 'TURKEY';
+$til->company->email = 'info@tilpark.com';
+$til->company->phone = '2129091212';
+$til->company->gsm = '2129091212';
+
+function dbname($val)
+{ global $til;
+	return _prefix.$val;
+}
+
+
+function til($val='')
+{ global $til;
+	return $til;
+}
+
+
+
+
+
+$til->pg = new StdClass;
+$til->pg->list_limit = 20; // bir sayfada gosterilecek listeleme limiti, tablonun row limiti
+
 
 
 
@@ -180,6 +241,7 @@ til_include('message');
 til_include('upload');
 til_include('task');
 til_include('notification');
+til_include('mail');
 
 
 

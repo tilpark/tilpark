@@ -86,8 +86,6 @@
 			<li class="message-footer"><a href="<?php site_url('admin/user/'. $_GET['box'] .'/list.php'); ?>">Tümünü Göster</a></li>
 		<?php endif; // if ( $_GET['box'] == 'task' )
 
-
-
 		// get global notification list
 		if ( $_GET['box'] == 'notification' ) : ?>
 			<li class="message-header">
@@ -100,7 +98,7 @@
 		  <?php if($messages = get_notifications()): ?>
 		    <?php foreach($messages as $message): ?>
 		    <li class="message-list notification-<?php echo $message->id; ?> <?php if(!$message->read_it): ?>bold<?php endif; ?>">
-		      <a href="<?php echo $message->message; ?>">
+		      <a href="<?php echo $message->message; ?>" onclick="if (event.target.tagName != 'I') { set_notification(this, {'id': '<?php echo $message->id; ?>', 'read_it': '1', 'status': '1'}); } else { return false; } ">
 		        <div class="row no-space">
 		          <div class="col-md-2 col-xs-2">
 		            <div class="message-avatar">
@@ -116,7 +114,7 @@
 										read-it="<?php echo $message->read_it; ?>"
 										data-wenk="<?php if ( $message->read_it ) { echo 'okunmadı'; } else { echo 'okundu'; } ?>"
 										data-wenk-pos="left"
-										onclick="if ( this.getAttribute('read-it') == '1' ) { var read_it = 0; } else { var read_it = 1; } set_notification(this, {'id': '<?php echo $message->id; ?>', 'read_it': read_it, 'status': '1'}); return false;"
+										onclick="if ( this.getAttribute('read-it') == '1' ) { var read_it = '0'; } else { var read_it = '1'; } set_notification(this, {'id': '<?php echo $message->id; ?>', 'read_it': read_it, 'status': '1'}); return false;"
 										onchange="notification_readit_button(this)" >
 
 										<i class="text-muted fa fa-circle<?php if($message->read_it): ?>-o<?php endif; ?>"></i>

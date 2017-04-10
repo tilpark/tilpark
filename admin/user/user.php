@@ -3,7 +3,7 @@
 
 <?php
 // aktif olan kullanıcın tüm bilgilerini cekelim
-if( !$user = get_user($_GET['id'], true) ) { echo get_alert('Kullanıcı hesabı bulunamadı.', 'warning', false); get_footer(); return false; }
+if( !$user = get_user($_GET['id']) ) { echo get_alert('Kullanıcı hesabı bulunamadı.', 'warning', false); get_footer(); return false; }
 if($user->account_id) { $account = get_account($user->account_id); }
 
 
@@ -18,9 +18,11 @@ if(isset($_GET['status']) and user_access('admin')) {
 		$_args['update']['status'] = $_GET['status'];
 		if(update_user($user->id, $_args)) {
 			if($_GET['status'] == '0') { 
-				add_log(array('table_id'=>'users:'.$user->id, 'log_key'=>__FUNCTION__, 'log_text'=>_b($user->display_name).' kullanıcı hesabını <u>pasife</u> aldı.')); }
+				add_log(array('table_id'=>'users:'.$user->id, 'log_key'=>__FUNCTION__, 'log_text'=>_b($user->display_name).' kullanıcı hesabını <u>pasife</u> aldı.'));
+				add_alert('Kullanıcı hesabı pasif edildi.', 'warning', false); }
 			else { 
-				add_log(array('table_id'=>'users:'.$user->id, 'log_key'=>__FUNCTION__, 'log_text'=>_b($user->display_name).' kullanıcı hesabını <u>aktife</u> aldı.')); }
+				add_log(array('table_id'=>'users:'.$user->id, 'log_key'=>__FUNCTION__, 'log_text'=>_b($user->display_name).' kullanıcı hesabını <u>aktife</u> aldı.'));
+				add_alert('Kullanıcı hesabı aktif edildi.', 'success', false); }
 		}
 	}
 }
@@ -92,43 +94,25 @@ if(isset($_POST['update_profile']) and user_access('admin')) {
 $user = get_user($_GET['id'], false);
 
 add_page_info( 'title', $user->name.' '.$user->surname );
-add_page_info( 'nav', array('name'=>'Personeller', 'url'=>get_site_url('admin/user/list.php')) );
+add_page_info( 'nav', array('name'=>'Tüm Personeller', 'url'=>get_site_url('admin/user/list.php')) );
 add_page_info( 'nav', array('name'=>$user->name.' '.$user->surname) );
 ?>
 
 
-<?php if($user->id AND @$user->status == '0'): ?>
-	<?php echo get_alert('<i class="fa fa-trash-o"></i> <b>Dikkat!</b> Kullanıcı hesabı pasif durumda.', 'warning', false); ?>
-	<div class="h-20 visible-xs"></div>
-<?php else: ?>
-	<?php create_modal(array('id'=>'status', 
-		'title'=>'Personel hesabı <u>pasifleştirme</u>', 
-		'content'=>_b($user->display_name).' personel hesabını pasifleştirmek istiyor musun? <br /> <small>Personel hesabı veritabanından <u>silinmez</u>. Fakat arama ve listelemelerde bulunamaz.</small>', 
-		'btn'=>'<a href="?id='.$user->id.'&status=0" class="btn btn-danger">Evet, onaylıyorum</a>')); ?>
-<?php endif; ?>
 
+<ul class="nav nav-tabs" role="tablist"> 
+	<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-user-o"></i> Profil</a></li> 
+	<?php if(user_access('admin')): ?><li role="presentation"><a href="#cv" id="cv-tab" role="tab" data-toggle="tab" aria-controls="cv" aria-expanded="true"><i class="fa fa-address-book-o"></i> CV</a></li><?php endif; ?>
+	<?php if(user_access('admin')): ?><li role="presentation"><a href="#salary" id="salary-tab" role="tab" data-toggle="tab" aria-controls="salary" aria-expanded="true"><i class="fa fa-money"></i> Maaş</a></li><?php endif; ?>
+	<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i> Geçmiş</a></li> 
 
-<ul class="nav nav-tabs til-nav-page" role="tablist"> 
-	<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-user-o"></i><span class="hidden-xs"> Profil</span></a></li> 
-	<?php if(user_access('admin')): ?><li role="presentation" class="hidden-xs"><a href="#cv" id="cv-tab" role="tab" data-toggle="tab" aria-controls="cv" aria-expanded="true"><i class="fa fa-address-book-o"></i><span class="hidden-xs"> CV</span></a></li><?php endif; ?>
-	<?php if(user_access('admin')): ?><li role="presentation"><a href="#salary" id="salary-tab" role="tab" data-toggle="tab" aria-controls="salary" aria-expanded="true"><i class="fa fa-money"></i><span class="hidden-xs"> Maaş</span></a></li><?php endif; ?>
-	<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i><span class="hidden-xs"> Geçmiş</span></a></li> 
-
-	<li role="presentation" class="dropdown pull-right til-menu-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-cogs"></i><span class="hidden-xs"> Seçenekler </span><span class="caret"></span></a> 
+	<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-cogs"></i> Seçenekler <span class="caret"></span></a> 
 		<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
-			<li><a href="<?php site_url('admin/user/task/add.php?rec_u_id='.$user->id); ?>">Görev Ata</a></li> 
-			<li><a href="<?php site_url('admin/user/message/add.php?rec_u_id='.$user->id); ?>">Mesaj Gönder</a></li>
-			<?php if(user_access('admin')): ?>
-				<li role="separator" class="divider"></li>
-				<?php if($user->status == '1'): ?>
-					<li><a href="#" data-toggle="modal" data-target="#status"><i class="fa fa-trash-o fa-fw text-danger"></i> Sil</a></li>
-				<?php else: ?>
-					<li><a href="?id=<?php echo $user->id; ?>&status=1"><i class="fa fa-undo fa-fw text-success"></i> Aktifleştir</a></li>
-				<?php endif; ?> 
-			<?php endif; ?>
+			<li><a href="#dropdown1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1">Görev Ata</a></li> 
+			<li><a href="<?php site_url('admin/user/message/add.php?rec_u_id='.$user->id); ?>">Mesaj Gönder</a></li> 
 		</ul> 
 	</li>
-	<li role="presentation" class="dropdown pull-right til-menu-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-print"></i><span class="hidden-xs"> Yazdır </span><span class="caret"></span></a> 
+	<li role="presentation" class="dropdown pull-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-print"></i> Yazdır <span class="caret"></span></a> 
 		<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
 			<li><a href="print_cv.php?id=<?php echo $user->id; ?>" target="_blank">Özgeçmiş (CV) Yazdır</a></li> 
 			<li class="divider"></li>
@@ -153,13 +137,13 @@ add_page_info( 'nav', array('name'=>$user->name.' '.$user->surname) );
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="username">E-posta</label>
-							<input type="email" name="username" id="username" value="<?php echo $user->username; ?>" class="form-control email">
+							<input type="text" name="username" id="username" value="<?php echo $user->username; ?>" class="form-control email">
 						</div> <!-- /.form-group -->
 					</div> <!-- /.col-md-6 -->
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="gsm">Cep Telefonu</label>
-							<input type="tel" name="gsm" id="gsm" value="<?php echo $user->gsm; ?>" class="form-control digits" minlength="10" maxlength="11">
+							<input type="text" name="gsm" id="gsm" value="<?php echo $user->gsm; ?>" class="form-control digits" minlength="10" maxlength="11">
 						</div> <!-- /.form-group -->
 					</div> <!-- /.col-md-6 -->
 				</div> <!-- /.row -->
@@ -193,7 +177,7 @@ add_page_info( 'nav', array('name'=>$user->name.' '.$user->surname) );
 				<div class="col-md-6">
 					<div class="form-group">
 						<label for="citizenship_no">T.C. Kimlik No</label>
-						<input type="tel" name="citizenship_no" id="citizenship_no" class="form-control digits" minlength="11" maxlength="11" value="<?php echo $user->citizenship_no; ?>">
+						<input type="text" name="citizenship_no" id="citizenship_no" class="form-control digits" minlength="11" maxlength="11" value="<?php echo $user->citizenship_no; ?>">
 					</div> <!-- /.form-group -->
 				</div> <!-- /.col-md-6 -->
 			</div> <!-- /.row -->
@@ -202,7 +186,7 @@ add_page_info( 'nav', array('name'=>$user->name.' '.$user->surname) );
 				<?php if(user_access('admin')): ?>
 					<div class="form-group">
 						<label for="til_login" id="label_til_login">
-							<input type="checkbox" name="til_login" id="til_login" value="1" <?php echo $user->til_login ? 'checked' : ''; ?> data-toggle="switch">
+							<input type="checkbox" name="til_login" id="til_login" value="1" <?php echo $user->til_login ? 'checked' : ''; ?>>
 							Bu personel <b>Tilpark!</b> sistemine giriş yapabilir mi?
 						</label>
 					</div> <!-- /.form-group -->
@@ -265,23 +249,21 @@ add_page_info( 'nav', array('name'=>$user->name.' '.$user->surname) );
 					<?php endif; ?>
 				</div> <!-- /#is_til_login_div -->
 
-
-				<div class="text-right">
+				<div class="pull-right hidden-xs">
 					<input type="hidden" name="update_profile">
 					<input type="hidden" name="uniquetime" value="<?php uniquetime(); ?>">
-					<button class="btn btn-success btn-xs-block btn-save"><i class="fa fa-save"></i> Kaydet</button>
+					<button class="btn btn-default">Kaydet</button>
 				</div> <!-- /.pull-right -->
 
-				
-
 			</div> <!-- /.col-md-6 -->
-			<div class="col-md-2 hidden-xs">
 
-				<label>&nbsp;</label>
+			<div class="clearfix"></div>
+
+			<div class="col-md-2">
 				<br />
 
 				<div class="img-thumbnail">
-					<img src="<?php echo $user->avatar; ?>" class="img-responsive" style="width:180px; height:180px;">
+					<img src="<?php echo $user->avatar; ?>" class="img-responsive" id="avatar_view" onclick="document.getElementById('avatar').click()" style="width:180px; height:180px;">
 					<?php if(user_access('admin')): ?>
 						<div class="h-10"></div>
 						<a href="?id=<?php echo $user->id; ?>&delete_avatar" class="pull-right text-danger fs-12"><i class="fa fa-trash"></i> Bu fotoğrafı sil</a>
@@ -290,22 +272,57 @@ add_page_info( 'nav', array('name'=>$user->name.' '.$user->surname) );
 				
 				<?php if(user_access('admin')): ?>
 					<div class="h-20"></div>
-					<div class="form-group">
+					<div class="form-group hidden">
 						<label for="avatar">Yeni bir fotoğraf yükle.</label>
 						<input type="hidden" name="img_uniquetime" value="<?php usleep(1000); uniquetime(); ?>">
-						<input type="file" name="avatar" id="avatar">
+						<input type="file" name="avatar" id="avatar" onchange="render_form_file(this, function(img) { document.getElementById('avatar_view').src = img; });">
 					</div> <!-- /.form-group -->
 				<?php endif; ?>
 
+
+				<div class="form-group hidden-md hidden-lg hidden-sm">
+					<button class="btn btn-default pull-right">Kaydet</button>
+				</div> <!-- /.form-group -->
 			</div> <!-- /.col-md-2 -->
 		</div> <!-- /.row -->
-
-
-				
 
 		</form>
 
 
+
+
+
+		<?php if(user_access('admin')): ?>
+			<hr />
+			<?php if($user->status == 1): ?>
+				<span class="">Bu kullanıcı hesabını silmek istiyor musunuz?</span>
+				<a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#userDelete"><i class="fa fa-trash-o"></i> Evet, Sil</a>
+
+				<!-- Modal -->
+				<div class="modal fade" id="userDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title" id="myModalLabel">Kullanıcı Hesabı Silme</h4>
+				      </div>
+				      <div class="modal-body">
+				        <p><strong><?php echo $user->display_name; ?></strong> kullanıcı hesabını silmek istiyor musun?</p>
+
+				        <small class="text-muted">Kullanıcı hesabı veritabanından silinmez, sadece hesabın sisteme girişini engeller. Ayrıca "Tüm Kullanıcılar" gibi sayfalar bu kullanıcı hesabına erişemezsiniz. </small>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Hayır</button>
+				        <a href="?id=<?php echo $user->id; ?>&status=0" class="btn btn-danger">Evet, onaylıyorum</a>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			<?php else: ?>
+				<span class="">Bu kullanıcı hesabını tekrar aktifleştir.</span>
+				<a href="?id=<?php echo $user->id; ?>&status=1" class="btn btn-success btn-xs"><i class="fa fa-undo"></i> Evet, aktifleştir</a>
+			<?php endif; ?>
+		<?php endif; ?>
 
 
 	</div> <!-- /#home -->

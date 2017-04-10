@@ -1,6 +1,6 @@
 <div class="sidebar">
   <h3 class="sidebar-title ff-1">MENÜ</h3>
-  
+
   <ul class="sidebar-menu ff-1">
     <li><a href="<?php site_url(); ?>"><i class="fa fa-home"></i> Yönetim Paneli</a></li>
     <li class=""><a href="#"><i class="fa fa-users"></i> Hesap Kartları <span class="fa fa-caret-down caret-opt"></span></a>
@@ -47,6 +47,8 @@
       <ul class="submenu">
         <li><a href="<?php site_url('admin/system/form_status'); ?>">Form Durum Yönetimi</a></li>
         <li><a href="<?php site_url('admin/system/case'); ?>">Kasa & Banka Yönetimi</a></li>
+        <li><a href="<?php site_url('admin/system/options'); ?>">Genel Ayarlar</a></li>
+        <li><a href="<?php site_url('admin/system/info'); ?>">Hakkımızda</a></li>
       </ul>
     </li>
     <?php if(user_access('superadmin')): ?>
@@ -102,7 +104,7 @@ main {
 
 if($explode = explode('/admin/', $_SERVER['SCRIPT_NAME'])) {
   if($exp = explode('/', @$explode[1])) {
-    
+
     if(isset($exp[1])) {
       $exp[1] = str_replace('.php', '', @$exp[1]);
       ?>
@@ -118,4 +120,3 @@ if($explode = explode('/admin/', $_SERVER['SCRIPT_NAME'])) {
 }
 
 ?>
-

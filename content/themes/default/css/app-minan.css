@@ -165,7 +165,7 @@ ol,ul{
 }
 
 .chat-container .chat-list{
-  height: calc(100vh - 390px);
+  height: calc(100vh - 250px);
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }
@@ -375,4 +375,44 @@ ol,ul{
 
 .til-dynamic-tab .message-avatar{
   text-align: left !important;
+}
+
+
+
+
+
+
+/* options */
+
+.option-form-group{
+  position: relative;
+}
+
+.option-form-group .option-label{
+  width: calc(20% - 30px);
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.option-form-group .option-input{
+  width: 50%;
+  padding-left: calc(20% - 45px);;
+  display: inline-block;
+}
+
+
+@media(max-width: 767px) {
+  .option-form-group .option-label{
+    width: 100%;
+    position: inherit;
+    display: block;
+  }
+
+  .option-form-group .option-input{
+    width: 100%;
+    padding-left: 0;
+    display: block;
+  }
 }

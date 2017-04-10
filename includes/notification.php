@@ -178,7 +178,6 @@ function get_notification($args=array()) {
 
 
 
-
 /**
  * @func get_calc_notification()
  * @desc mesajlarin toplamını hesaplar

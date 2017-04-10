@@ -10,8 +10,6 @@ add_page_info( 'nav', array('name'=>'Profilim') );
 $active = get_active_user();
 
 
-
-
 if(isset($_GET['delete_avatar'])) {
 	if($active->avatar) {
 		if(delete_image($active->avatar)) {
@@ -22,10 +20,10 @@ if(isset($_GET['delete_avatar'])) {
 
 if(isset($_POST['update_profile'])) {
 	
-	$_profile['username'] 	= $_POST['username'];
+	$_profile['username'] = $_POST['username'];
 	$_profile['name'] 		= $_POST['name'];
 	$_profile['surname'] 	= $_POST['surname'];
-	$_profile['gsm']		= get_set_gsm($_POST['gsm']);
+	$_profile['gsm']			= get_set_gsm($_POST['gsm']);
 
 	// resim yukleme
 	if($_FILES['avatar']['size'] > 0) {
@@ -46,16 +44,16 @@ if(isset($_POST['update_profile'])) {
 }
 
 // eger yukarıdai guncelle yapilmis ise bilgileri tekrar alalim
-$active = get_user(get_active_user('id'));
+$active = get_user(get_active_user('id'), false);
 
 
 ?>
 
 
 
-<ul class="nav nav-tabs til-nav-page" role="tablist"> 
-	<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-id-card-o"></i><span class="hidden-xs"> Profilim</span></a></li> 
-	<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i><span class="hidden-xs"> Geçmişim</span></a></li> 
+<ul class="nav nav-tabs" role="tablist"> 
+	<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-id-card-o"></i> Profilim</a></li> 
+	<li role="presentation" class=""><a href="#logs" role="tab" id="logs-tab" data-toggle="tab" aria-controls="logs" aria-expanded="false"><i class="fa fa-database"></i> Geçmişim</a></li> 
 </ul>
 
 
@@ -116,38 +114,36 @@ $active = get_user(get_active_user('id'));
 				</div> <!-- /.row -->
 
 
-				<div class="pull-right">
+				<div class="pull-right hidden-xs">
 					<input type="hidden" name="update_profile">
 					<input type="hidden" name="uniquetime" value="<?php uniquetime(); ?>">
 					<button class="btn btn-default">Kaydet</button>
 				</div> <!-- /.pull-right -->
-
-
-
-
 			</div> <!-- /.col-md-6 -->
-			<div class="col-md-2">
 
-				<label>&nbsp;</label>
+			<div class="clearfix"></div>
+
+			<div class="col-md-2">
 				<br />
 
 				<div class="img-thumbnail">
-					<img src="<?php echo $active->avatar; ?>" class="img-responsive" style="width:180px; height:180px;">
+					<img src="<?php echo $active->avatar; ?>" id="avatar_view" onclick="document.getElementById('avatar').click()" class="img-responsive" style="width:180px; height:180px;">
 
 					<div class="h-10"></div>
 					<a href="?id=<?php echo $active->id; ?>&delete_avatar" class="pull-right text-danger fs-12"><i class="fa fa-trash"></i> Bu fotoğrafı sil</a>
 				</div> <!-- /img-thumbnail -->
 				
-
 				<div class="h-20"></div>
-				<div class="form-group">
+				<div class="form-group hidden">
 					<label for="avatar">Yeni bir fotoğraf yükle.</label>
 					<input type="hidden" name="img_uniquetime" value="<?php usleep(1000); uniquetime(); ?>">
-					<input type="file" name="avatar" id="avatar">
+					<input type="file" name="avatar" id="avatar" onchange="render_form_file(this, function(img) { document.getElementById('avatar_view').src = img; });">
 				</div> <!-- /.form-group -->
 
 
-
+				<div class="form-group hidden-md hidden-lg hidden-sm">
+					<button class="btn btn-default pull-right">Kaydet</button>
+				</div> <!-- /.form-group -->
 			</div> <!-- /.col-md-2 -->
 		</div> <!-- /.row -->
 		</form>

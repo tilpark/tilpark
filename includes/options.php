@@ -2,50 +2,36 @@
 
 /* --------------------------------------------------- OPTIONS */
 
-
 /**
- * add_option()
- * options tablosuna oge ekler
+ * @func add_option()
+ * @desc option tablosuna veri ekler
+ * @param string, array
+ * @return string / false
  */
-function add_option($name, $args=array(), $opt=array()) {
+function add_option($option_name, $args=array()) {
+	if ( !is_array($args) ) { $args = array('option_value' => $args); }
 
-	if(!have_log()) { // eger daha onceden eklenmemis ise log kaydi bulunmayacaktir.
-		if(!is_array($args)) { $args = array('val'=>$args); }
+  $args    = _args_helper(input_check($args), 'insert');
+  $insert  = $args['insert'];
 
-		@form_validation($name, '', 'Seçenek Adı', 'required|min_length[3]|max_length[64]', __FUNCTION__);
+  if ( !empty($option_name) ) {
+  	if ( $q_select = db()->query("SELECT * FROM ". dbname('options') ." WHERE option_name='". $option_name ."'") ) {
+	    if ( $q_select->num_rows ) {
+	      if ( update_option($_option) ) {
+	          return true;
+	      } else { return false; }
+	    } else {
+	    	$insert['option_name'] = $option_name;
+	    	
+	      if ( db()->query("INSERT INTO ". dbname('options') ." ". sql_insert_string($insert) ." ") ) {
+	        if ( $insert_id = db()->insert_id ) {
 
-		if(!is_alert(__FUNCTION__)) {
-			// input_check
-			$args['name'] = $name;
-			$args = input_check($args);
-
-			// anahtar daha onceden eklenmis mi?
-			if($q_is_name = db()->query("SELECT * FROM ".dbname('options')." WHERE name='".$name."' ")) {
-				if($q_is_name->num_rows) {
-					add_alert('"<b>'.$name.'"</b> anahtarı daha önceden eklenmiş.', 'warning', __FUNCTION__);
-					return false;
-				} else {
-					
-					$table = sql_insert_string($args);
-					if($q_insert = db()->query("INSERT INTO ".dbname('options')." (".$table['table_name'].") VALUES (".$table['table_value'].") ")) {
-						if(db()->affected_rows) {
-							$insert_id = db()->insert_id;
-							add_alert('Seçenek eklendi', 'success', __FUNCTION__);
-							add_log(array('uniquetime'=>@$args['uniquetime'], 'table_id'=>'options:'.$insert_id, 'log_key'=>__FUNCTION__, 'log_text'=>$name.' seçeneği eklendi.'));
-							return $insert_id;
-						} else { return false; }
-					} else { add_mysqli_error_log(__FUNCTION__); }
-				}
-
-			} else { add_mysqli_error_log(__FUNCTION__); }
-
-		} else { return false; }
-		
-	} else {
-		add_alert('Bu işlem daha önceden gerçekleşmiş.', 'warning', __FUNCTION__);
-		return false;
-	}
-
+	            return $insert_id;
+	        } else { return false; }
+	      } else { add_mysqli_error_log(__FUNCTION__); }
+	    }
+	  } else { add_mysqli_error_log(__FUNCTION__); }
+  } else { add_alert('Option name Bulunamadı!'); }
 } //.add_option()
 
 
@@ -53,37 +39,39 @@ function add_option($name, $args=array(), $opt=array()) {
 
 
 
-/** 
- * get_option()
- * options tablosundan bir satir dondurur
+/**
+ * @func update_option()
+ * @desc options tablosundaki satırı günceller
+ * @param string, array
+ * @return true / false
  */
-function get_option($name_or_id, $opt=array() ) {
+function update_option($option_name, $args) {
+	if ( !is_array($args) ) { $args = array('option_value' => $args); }
 
-	if(!is_array($opt)) { $opt = array('return'=>$opt); }
-	if(!isset($opt['return'])) { $opt['return'] = 'string'; }
+  $args    = _args_helper(input_check($args), 'update');
+  $update  = $args['update'];
 
+  if ( $q_select = db()->query("SELECT * FROM ". dbname('options') ." WHERE option_name='". $option_name ."' ") ) {
+    if ( $q_select->num_rows ) {
+      if ( $q_select->fetch_object()->option_value != $update['option_value'] ) {
+        if ( db()->query("UPDATE ". dbname('options') ." SET ". sql_update_string($update) ." WHERE option_name='". $option_name ."' ") ) {
+          if ( db()->affected_rows ) {
 
-	$return = false;
-	if($q_select = db()->query("SELECT * FROM ".dbname('options')." WHERE name='".$name_or_id."'")) {
-		if($q_select->num_rows) {
-			$return = $q_select->fetch_object();
-		} elseif($q_select = db()->query("SELECT * FROM ".dbname('options')." WHERE id='".$name_or_id."'")) {
-			if($q_select->num_rows) {
-				$return = $q_select->fetch_object();
-			}
-		} else { add_mysqli_error_log(__FUNCTION__); }
-	} else { add_mysqli_error_log(__FUNCTION__); }
+             return true;
+          } else { return false; }
+        } else { add_mysqli_error_log(__FUNCTION__); }
+      } else {
+         return false;
+      }
+    } else {
+      if ( add_option($option_name, stripcslashes($update['option_value'])) ) {
 
-	if($return) {
-		if($opt['return'] == 'string') {
-			 return $return->val;
-		} elseif($opt['return'] == 'object') {
-			return $return;
-		}
-		return false;
-	} else { return false; }
+          return true;
+      } else { return false; }
+    }
+  } else { add_mysqli_error_log(__FUNCTION__); }
+} //.update_option()
 
-} //.get_option()
 
 
 
@@ -91,47 +79,34 @@ function get_option($name_or_id, $opt=array() ) {
 
 
 /**
- * update_option()
- * options tablosuna güncelleme yapar
+ * @func get_option()
+ * @desc options tablosundaki seçilen satırın verilerini veriir
+ * @param array
+ * @return object / false
  */
-function update_option($name, $args=array()) {
+ function get_option($option_name="") {
+  if ( !empty($option_name) ) {
+    if ( $q_select = db()->query("SELECT * FROM ". dbname('options') ." WHERE option_name='". $option_name ."' ") ) {
+      if ( $q_select->num_rows ) {
+      	$return = stripcslashes($q_select->fetch_object()->option_value);
 
-	if(!have_log()) { // eger daha onceden eklenmemis ise log kaydi bulunmayacaktir.
-		if(!is_array($args)) { $args = array('val'=>$args); }
+      	if ( is_json($return) ) {
+      		return json_decode($return);
+      	} else {
+      		return $return;
+      	}
+      } else { return false; }
+    } else { add_mysqli_error_log(__FUNCTION__); }
+  } else { return false; }
+} //.get_option()
 
-		@form_validation($name, '', 'Seçenek Adı', 'required|min_length[3]|max_length[64]', __FUNCTION__);
 
-		if(!is_alert(__FUNCTION__)) {
-			// input_check
-			$args['name'] = $name;
-			$args = input_check($args);
 
-			// anahtar daha onceden eklenmis mi?
-			if($q_is_name = db()->query("SELECT * FROM ".dbname('options')." WHERE name='".$name."' ")) {
-				if($q_is_name->num_rows) {
-					$table_update = convert_mysql_update_string($args);
-					$updated_id = $q_is_name->fetch_object()->id;
-					if($q_update = db()->query("UPDATE ".dbname('options')." SET ".$table_update." WHERE id='".$updated_id."' ")) {
-						if(db()->affected_rows) {
-							add_alert('Seçenek güncellendi', 'success', __FUNCTION__);
-							add_log(array('uniquetime'=>@$args['uniquetime'], 'table_id'=>'options:'.$updated_id, 'log_key'=>__FUNCTION__, 'log_text'=>$name.' seçeneği güncellendi.'));
-							return $updated_id;
-						} else { return false;}
-					} else { add_mysqli_error_log(__FUNCTION__); }
-				} else {
-					add_option($name, $args);
-				}
 
-			} else { add_mysqli_error_log(__FUNCTION__); }
 
-		} else { return false; }
-		
-	} else {
-		add_alert('Bu işlem daha önceden gerçekleşmiş.', 'warning', __FUNCTION__);
-		return false;
-	}
 
-} //.update_option()
+
+
 
 
 
@@ -151,7 +126,7 @@ function update_option($name, $args=array()) {
  * extra tablosuna veri ekler
  */
 function add_extra($args=array()) {
-	
+
 	$args = _args_helper(input_check($args), 'insert');
 	$insert = $args['insert'];
 
@@ -170,7 +145,6 @@ function add_extra($args=array()) {
 					return false;
 				}
 			} else { add_mysqli_error_log(__FUNCTION__); }
-
 		} else { return false; }
 	} else { repetitive_operation(__FUNCTION__); }
 } //.add_extra()

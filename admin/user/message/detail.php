@@ -52,7 +52,6 @@ if(isset($_GET['id'])) {
 }
 
 
-
 // secili olan mesaj kutusu icin kontrolleri yapalim
 if($message->inbox_u_id == get_active_user('id')) { $box = 'inbox'; }
 if($message->outbox_u_id == get_active_user('id')) { $box = 'outbox'; }
@@ -61,9 +60,6 @@ if($message->sen_trash_u_id == get_active_user_id('id') or $message->rec_trash_u
 add_page_info( 'title', $message->title );
 add_page_info( 'nav', array('name'=>'Mesaj Kutusu', 'url'=>get_site_url('admin/user/message/list.php?box='.$box) ) );
 add_page_info( 'nav', array('name'=>$rec_user->name.' '.$rec_user->surname) );
-
-// add_notification(array('rec_u_id' => '1', 'title' => 'icon', 'message' => 'http://tilpark.org', 'writing' => 'fa fa-facebook'));
-
 
 
 
@@ -164,7 +160,7 @@ add_page_info( 'nav', array('name'=>$rec_user->name.' '.$rec_user->surname) );
 
 											<label for="message" class="text-muted"><?php echo _b($rec_user->name.' '.$rec_user->surname); ?> gönderilmek üzere bir mesaj yazın...</label>
 											<textarea autofocus onkeypress="set_writing({'set_value': '1'});" onfocusout="set_writing({'set_value': '0'})" onfocus="set_writing({'set_value': '1'})" onkeydown="set_writing({'set_value': '0'}); parent(this, 'form').dispatchEvent(new Event('submit', { 'bubbles' : true, 'cancelable' : true}));" name="message" id="message" class="form-control required" minlength="5" placeholder="Birşeyler yazın..." style="height:20px;"></textarea>
-											<script>editor({selector: "#message", plugins: 'pre_html autolink nonbreaking save table textcolor colorpicker image textpattern', toolbar: 'bold italic underline forecolor backcolor image table', height: '100', onfocus: true, onfocusout: true, onkeypress: true });</script>
+											<script>editor({selector: "#message", plugins: 'autolink table textcolor colorpicker image textpattern link', toolbar: 'bold italic underline forecolor backcolor image table link', height: '100', onfocus: true, onfocusout: true, onkeypress: true });</script>
 											<script type="text/javascript"></script>
 										</div><!--/ .form-group.message-area /-->
 									<?php endif; ?>
