@@ -2,7 +2,7 @@
 ob_start();
 session_start();
 ?>
-<?php include('config.php'); ?>
+<?php include('til-config.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -130,23 +130,42 @@ label.error {
 <?php
 
 $login_form_error = false;
-if(isset($_POST['username']))
-{
+if(isset($_POST['username'])) {
+
+  // Bağlatıyı Kuralım.
+  $db = new mysqli(_serverName, _userName, _userPassword);
+  if($db->connect_errno) {
+    echo "Bağlantı Hatası:".$db->connect_errno;
+    exit;
+  }
+
+  // Veritabanımızı Seçelim.
+  $db->select_db(_dbName);
+  $db->query("SET NAMES 'utf8'");
+
+  function db() {
+    global $db;
+    return $db;
+  }
+
+
+  function dbname($val) { 
+    global $til;
+    return _prefix.$val;
+  }
+
+
   $username = trim(addslashes($_POST['username']));
   $password = trim(addslashes($_POST['password']));
 
-  $q_login = db()->query("SELECT * FROM ".dbname('users')." WHERE username='$username' AND password='$password'");
-
-  if($q_login->num_rows > 0)
-  {
-    $login = $q_login->fetch_assoc();
-    $_SESSION['login_id'] = $login['id'];
-    header("Location:"._site_url);
-
-  }
-  else
-  {
-    $login_form_error = true;
+  if ( $q_login = db()->query("SELECT * FROM ".dbname('users')." WHERE username='$username' AND password='$password'") ) {
+    if($q_login->num_rows > 0) {
+      $login = $q_login->fetch_assoc();
+      $_SESSION['login_id'] = $login['id'];
+      header("Location:"._site_url);
+    } else {
+      $login_form_error = true;
+    }
   }
 } else {
   $username = "mustafa@tilpark.com";
@@ -171,30 +190,23 @@ if(isset($_POST['username']))
 
         <?php if($login_form_error): ?>
           <div class="alert alert-danger alert-loginError" role="alert"> <strong><i class="fa fa-exclamation-triangle"></i> Giriş başarısız!</strong> Kullanıcı adı veya şifre hatalı. </div>
-          <script>
-          setTimeout(ChangeBorder1, 100);
-          setTimeout(ChangeBorder2, 200);
-          setTimeout(ChangeBorder1, 300);
-          setTimeout(ChangeBorder2, 400);
-          setTimeout(ChangeBorder1, 500);
-          setTimeout(ChangeBorder2, 600);
-          setTimeout(ChangeBorder1, 700);
-          setTimeout(ChangeBorder2, 800);
-          setTimeout(ChangeBorder1, 900);
-          setTimeout(ChangeBorder2, 1000);
-          setTimeout(ChangeBorder1, 1100);
-          setTimeout(ChangeBorder2, 1200);
+          <style type="text/css">
+            .alert-loginError{
+              animation: alertloginError 200ms infinite;
+              animation-iteration-count: 5;
+            }
 
-
-          function ChangeBorder1() {$(".alert-loginError").css({"border-color":"a94442"});}
-          function ChangeBorder2() {$(".alert-loginError").css({"border-color":"ebccd1"});}
-          </script>
+            @keyframes alertloginError{
+              0%{ border-color: #a94442; }
+              100%{ border-color: #ebccd1; }
+            }
+          </style>
 
         <?php endif; ?>
 
         <form name="form_login" id="form_login" action="" method="POST" class="validation">
           <div class="form-group">
-            <input type="email" name="username" id="username" class="form-control input-lg required email" value="<?php echo @$username; ?>" placeholder="E-posta">
+            <input type="text" name="username" id="username" class="form-control input-lg required email" value="<?php echo @$username; ?>" placeholder="E-posta">
           </div> <!-- /.form-group -->
           <div class="form-group">
             <input type="password" name="password" id="password" class="form-control input-lg required" value="<?php echo @$password; ?>" placeholder="Şifre">
