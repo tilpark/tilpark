@@ -156,10 +156,10 @@ add_page_info( 'nav', array('name'=>'Ürün Yönetimi') );
 				<?php $query = db()->query("SELECT * FROM ".dbname('items')." WHERE status='1' AND profit > 0 ORDER BY profit DESC LIMIT 50"); ?>
 				<?php if($query->num_rows): ?>
 					
-					<table class="table table-hover table-condensed ">
+					<table class="table table-hover table-condensed">
 						<tbody>
 							<?php while($list = $query->fetch_object()): ?>
-								<tr>
+								<tr onclick="location.href='<?php site_url('admin/item/detail.php?id='.$list->id); ?>';" class="pointer">
 									<td><a href="<?php site_url('admin/item/detail.php?id='.$list->id); ?>"><?php echo til_get_substr($list->name, 0, 26); ?></a></td>
 									<td class="text-right"><?php echo get_set_money($list->profit); ?> <small class="text-muted">TL</small></td>
 								</tr>
@@ -186,7 +186,7 @@ add_page_info( 'nav', array('name'=>'Ürün Yönetimi') );
 							<tbody>
 								<?php while($list = $query->fetch_object()): ?>
 									<?php $item = get_item($list->item_id); ?>
-									<tr>
+									<tr onclick="location.href='<?php site_url('form', $list->form_id); ?>';" class="pointer">
 										<td width="80"><a href="<?php site_url('form', $list->form_id); ?>" class="text-muted">#<?php echo $list->form_id; ?></a></td>
 										<td><a href="<?php site_url('admin/item/detail.php?id='.$item->id); ?>" title="<?php echo $item->name; ?>"><?php echo til_get_substr($item->name, 0, 40); ?></a></td>
 										<?php if($list->in_out == '1'): ?>

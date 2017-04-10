@@ -52,16 +52,16 @@ add_page_info( 'nav', array('name'=>'Hesap Yönetimi') );
 		$chart = array();
 		$chart['type'] = 'line';
 		$chart['data']['datasets'][0]['label'] 	= 'Hareketler';
-		$chart['data']['datasets'][0]['fill'] 	= false;
+		$chart['data']['datasets'][0]['fill'] 	= true;
 		$chart['data']['datasets'][0]['lineTension'] 	= '0';
-		$chart['data']['datasets'][0]['borderWidth'] 	= 1;
-		$chart['data']['datasets'][0]['pointBorderWidth'] 	= 1;
+		$chart['data']['datasets'][0]['borderWidth'] 	= 0.1;
+		$chart['data']['datasets'][0]['pointBorderWidth'] 	= 0.5;
 		$chart['data']['datasets'][0]['pointRadius'] 	= 1;
 		$chart['data']['datasets'][0]['backgroundColor'] 	= 'rgba(253, 196, 48, 0.2)';
 		$chart['data']['datasets'][0]['borderColor'] 		= 'rgba(253, 196, 48, 1)';
 
 
-		$_start_date = date('Y-m-d', strtotime('-2 week', strtotime(date('Y-m-d'))) );
+		$_start_date = date('Y-m-d', strtotime('-4 week', strtotime(date('Y-m-d'))) );
 		$_end_date = date('Y-m-d');
 		while(strtotime($_start_date) <= strtotime($_end_date) ) {
 			$chart['data']['labels'][] = $_start_date = date('Y-m-d', strtotime('+1 day', strtotime($_start_date)));
@@ -97,11 +97,11 @@ add_page_info( 'nav', array('name'=>'Hesap Yönetimi') );
 		$chart['options']['tooltips']['callbacks']['label'] = "=TIL= function(tooltipItems, data) {  return  tooltipItems.yLabel.formatMoney(2, '.', ',') + ' TL'; } =TIL=";
 		
 
-		$args['height'] 	= '40';
+		$args['height'] 	= '60';
 		$args['chart'] 		= $chart;
 		?>
 		<div class="row space-none">
-			<div class="col-md-4">
+			<div class="col-md-3">
 
 				<div class="">
 					<span class="ff-2 fs-18 bold <?php echo $total['status'] < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo get_set_money($total['status']); ?></span> <small class="text-muted">TL</small>
@@ -110,7 +110,7 @@ add_page_info( 'nav', array('name'=>'Hesap Yönetimi') );
 				</div>
 				
 			</div> <!-- /.col-* -->
-			<div class="col-md-8">
+			<div class="col-md-9">
 
 				<?php chartjs($args); ?>
 
@@ -120,7 +120,7 @@ add_page_info( 'nav', array('name'=>'Hesap Yönetimi') );
 		<hr />
 
 		<div class="row space-none">
-			<div class="col-md-6">
+			<div class="col-md-3">
 
 				<div class="">
 					<span class="ff-2 fs-16 bold"><?php echo get_set_money($total['in_balance']); ?></span> <small class="text-muted">TL</small>
@@ -129,7 +129,7 @@ add_page_info( 'nav', array('name'=>'Hesap Yönetimi') );
 				</div>
 				
 			</div> <!-- /.col-* -->
-			<div class="col-md-6">
+			<div class="col-md-3">
 
 				<div class="">
 					<span class="ff-2 fs-16 bold"><?php echo get_set_money($total['out_balance']); ?></span> <small class="text-muted">TL</small>
@@ -138,64 +138,24 @@ add_page_info( 'nav', array('name'=>'Hesap Yönetimi') );
 				</div>
 
 			</div> <!-- /.col-* -->
-		</div> <!-- /.row -->
-
-
-		
-		
-	</div> <!-- /.col-* -->
-</div> <!-- /.row -->
-
-<div class="h-20"></div>
-
-
-<div class="row">
-	<div class="col-md-6">
-
-		<small class="text-muted module-title-small"><i class="fa fa-th-list"></i> SON EKLENEN HESAP KARTLARI</small>
-		<div class="h-10"></div>
-		<div class="panel panel-warning panel-table panel-heading-0 panel-border-right">
-			<div class="panel-body" style="height:280px; overflow: auto;">
-			<?php $query = db()->query("SELECT * FROM ".dbname('accounts')." WHERE status='1' AND type='account' ORDER BY id DESC LIMIT 50 "); ?>
-			<?php if($query->num_rows): ?>
-				<table class="table table-hover table-condensed table-stripe">
-					<tbody>
-						<?php while($list = $query->fetch_object()): ?>
-							<tr>
-								<td><a href="<?php site_url('account', $list->id); ?>"><?php echo $list->name; ?></a></td>
-								<td class="text-right"><?php echo get_set_money($list->balance, true); ?></td>
-							</tr>
-						<?php endwhile; ?>
-					</tbody>
-				</table>
-			<?php endif; ?>
-			</div>
-		</div> <!-- /.panel -->
-
-	</div> <!-- /.col-* -->
-	<div class="col-md-6">
-
-
-
-				<div class="row">
-					<div class="col-md-12">
-					
-						<?php 
+			<div class="col-md-6">
+				<?php 
 						$chart = array();
 						$chart['type'] = 'bar';
 						$chart['data']['datasets'][0]['label'] 	= 'Alacak';
+						$chart['data']['datasets'][0]['type'] 	= 'bar';
 						$chart['data']['datasets'][0]['fill'] 	= true;
-						$chart['data']['datasets'][0]['lineTension'] 	= 0.3;
+						$chart['data']['datasets'][0]['lineTension'] 	= 0.5;
 						$chart['data']['datasets'][0]['borderWidth'] 	= 1;
-						$chart['data']['datasets'][0]['pointBorderWidth'] 	= 1;
+						$chart['data']['datasets'][0]['pointBorderWidth'] 	= 3;
 						$chart['data']['datasets'][0]['pointRadius'] 	= 1;
 
 						$chart['data']['datasets'][1]['label'] 	= 'Kar/Zarar';
 						$chart['data']['datasets'][1]['type'] 	= 'line';
 						$chart['data']['datasets'][1]['fill'] 	= true;
-						$chart['data']['datasets'][1]['lineTension'] 	= 0.3;
+						$chart['data']['datasets'][1]['lineTension'] 	= 0.5;
 						$chart['data']['datasets'][1]['borderWidth'] 	= 1;
-						$chart['data']['datasets'][1]['pointBorderWidth'] 	= 1;
+						$chart['data']['datasets'][1]['pointBorderWidth'] 	= 3;
 						$chart['data']['datasets'][1]['pointRadius'] 	= 1;
 
 						$other[0] = 0;
@@ -221,7 +181,7 @@ add_page_info( 'nav', array('name'=>'Hesap Yönetimi') );
 						$chart['data']['datasets'][1]['data'][] = $other[0];
 
 						$chart['options']['legend']['display'] = false;
-						$chart['options']['scales']['yAxes'][0]['display'] = true;
+						$chart['options']['scales']['yAxes'][0]['display'] = false;
 						$chart['options']['scales']['yAxes'][0]['ticks']['userCallback'] = "=TIL= function(value, index, values) { return value.formatMoney(2, '.', ',') + ' TL';  } =TIL=";
 						$chart['options']['scales']['xAxes'][0]['display'] = false;
 						$chart['options']['scales']['xAxes'][0]['ticks']['beginAtZero'] = false;
@@ -230,14 +190,57 @@ add_page_info( 'nav', array('name'=>'Hesap Yönetimi') );
 						$chart['options']['tooltips']['callbacks']['label'] = "=TIL= function(tooltipItems, data) { return data.datasets[tooltipItems.datasetIndex].label +' : '+ tooltipItems.yLabel.formatMoney(2, '.', ',') + ' TL'; } =TIL=";
 
 						$args = array();
-						$args['height'] 	= '150';
+						$args['height'] 	= '100';
 						$args['chart'] 		= $chart;
 						?>
 						
-						<h4 class="content-title content-title-line text-muted fs-14">Alacak ve Kar/Zarar Çizelgesi</h4>
-						<div class="relative"><?php chartjs($args); ?></div>
+						<div class="relativee"><?php chartjs($args); ?></div>
 
-						<div class="h-20"></div>
+		
+			</div>
+		</div> <!-- /.row -->
+
+
+		
+		
+	</div> <!-- /.col-* -->
+</div> <!-- /.row -->
+
+<div class="h-20"></div>
+
+
+<div class="row">
+	<div class="col-md-6">
+
+		<small class="text-muted module-title-small"><i class="fa fa-th-list"></i> SON EKLENEN HESAP KARTLARI</small>
+		<div class="h-10"></div>
+		<div class="panel panel-warning panel-table panel-heading-0 panel-border-right">
+			<div class="panel-body" style="height:280px; overflow: auto;">
+			<?php $query = db()->query("SELECT * FROM ".dbname('accounts')." WHERE status='1' AND type='account' ORDER BY id DESC LIMIT 50 "); ?>
+			<?php if($query->num_rows): ?>
+				<table class="table table-hover table-condensed table-stripe">
+					<tbody>
+						<?php while($list = $query->fetch_object()): ?>
+							<tr onclick="location.href='<?php site_url('account', $list->id); ?>';" class="pointer">
+								<td><a href="<?php site_url('account', $list->id); ?>"><?php echo $list->name; ?></a></td>
+								<td class="text-right"><?php echo get_set_money($list->balance, true); ?></td>
+							</tr>
+						<?php endwhile; ?>
+					</tbody>
+				</table>
+			<?php endif; ?>
+			</div>
+		</div> <!-- /.panel -->
+
+	</div> <!-- /.col-* -->
+	<div class="col-md-6">
+
+
+
+				<div class="row">
+					<div class="col-md-12">
+					
+						
 
 					</div> <!-- /.col-* -->
 					<div class="col-md-6">
@@ -282,6 +285,7 @@ add_page_info( 'nav', array('name'=>'Hesap Yönetimi') );
 						$args['height'] 	= '130';
 						$args['chart'] 		= $chart;
 						?>
+
 
 						<div class="panel panel-default panel-border-0">
 							<div class="panel-heading"><h4 class="panel-title">Borç Dağılım Grafiği</h4></div>
