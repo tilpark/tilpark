@@ -130,7 +130,7 @@ add_page_info( 'nav', array('name'=>'Hakkımızda') );
 
               <div class="info-area">
                 <strong>Muhammet İnan</strong>
-                <p><i>Lider Geliştirici</i></p>
+                <p><i>Kurucu & Lider Geliştirici</i></p>
 
                 <ul class="nav navbar-nav sociail-nav">
                   <li><a href="#" class="facebook" data-wenk="facebook"><i class="fa fa-facebook"></i></a></li>
@@ -156,7 +156,7 @@ add_page_info( 'nav', array('name'=>'Hakkımızda') );
 
               <div class="info-area">
                 <strong>Orhan Gürbüz</strong>
-                <p><i>Editor</i></p>
+                <p><i>Editorhan</i></p>
 
                 <ul class="nav navbar-nav sociail-nav">
                   <li><a href="#" class="facebook" data-wenk="facebook"><i class="fa fa-facebook"></i></a></li>

@@ -63,20 +63,30 @@ function export_excel($filename='') {
 function get_set_money($val, $arr=array()) {
     $val = str_replace(',', '', $val);
 
-    if(!is_array($arr)) {
+    if( !is_array($arr) ) {
         if($arr == 'str') { $arr = array('str'=>true); }
         elseif($arr == 'icon') { $arr = array('icon'=>true); }
+        elseif($arr == 'small_icon') { $arr = array('icon'=>true, 'small'=>true); }
+        elseif($arr == 'small_str') { $arr = array('str'=>true, 'small'=>true); }
+
         $arr['decimal_separator']   = '.';
         $arr['digit_separator']     = ',';
     }
 
-    if(!isset($arr['decimal_separator']))   { $arr['decimal_separator']   = '.'; }
-    if(!isset($arr['digit_separator']))     { $arr['digit_separator']   = ','; }
+    if( !isset($arr['decimal_separator']) )   { $arr['decimal_separator']   = '.'; }
+    if( !isset($arr['digit_separator']) )     { $arr['digit_separator']   = ','; }
+
+    if( isset($arr) ) {
+
+    }
 
 
     $icon = '';
     if( isset($arr['icon']) ) { $icon = ' <i class="fa fa-try icon-money"></i>'; }
     if( isset($arr['str']) ) { $icon = ' TL'; }
+
+    if( isset($arr['small']) ) { $icon = '<small>'.$icon.'</small>'; }
+
 
 
     if(is_numeric($val)) {

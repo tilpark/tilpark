@@ -271,8 +271,14 @@ function update_form($id, $args=array()) {
  * get_form()
  * form kartini dondurur
  */
-function get_form($id_or_query, $args=array() ) {
+function get_form($id_or_query, $_til=true ) {
 	if(is_array($id_or_query)) { $where = $id_or_query; } else { $where['id'] = $id_or_query; }
+
+	if( isset($where['id']) and $_til ) {
+		if( isset(til()->forms[$where['id']]) ) {
+			return til()->forms[$where['id']];
+		}
+	}
 
 	if($query = db()->query("SELECT * FROM ".dbname('forms')." ".sql_where_string($where)." ")) {
 		if($query->num_rows) {

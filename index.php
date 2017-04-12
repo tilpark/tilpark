@@ -60,9 +60,8 @@ add_page_info( 'title', 'Yönetim Paneli' );
 			</div> <!-- /.col-* -->
 		</div> <!-- /.row -->
 
-		
-
 	</div> <!-- /.col-md-6 -->
+
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 
 
@@ -124,7 +123,7 @@ add_page_info( 'title', 'Yönetim Paneli' );
 			}
 		}
 		?>
-
+		<hr class="visible-xs" />
 		<div class="row space-none">
 			<div class="col-xs-6 col-md-3">
 
@@ -154,7 +153,7 @@ add_page_info( 'title', 'Yönetim Paneli' );
 
 			</div> <!-- /.col-* -->
 			<div class="col-xs-6 col-md-3">
-
+				<div class="h-20 visible-xs"></div>
 				<div class="">
 					<small class="text-muted">son 7 gün</small>
 					<br />
@@ -174,7 +173,7 @@ add_page_info( 'title', 'Yönetim Paneli' );
 
 			</div> <!-- /.col-* -->
 			<div class="col-xs-6 col-md-3">
-
+				<div class="h-20 visible-xs"></div>
 				<div class="">
 					<small class="text-muted">bu ay</small>
 					<br />
@@ -194,7 +193,7 @@ add_page_info( 'title', 'Yönetim Paneli' );
 
 			</div> <!-- /.col-* -->
 		</div> <!-- /.row -->
-		
+		<div class="h-20 visible-xs"></div>
 		<div class="h-20"></div>
 		<?php 
 		$chart = array();
@@ -294,7 +293,7 @@ add_page_info( 'title', 'Yönetim Paneli' );
 
 		
 
-	</div>
+	</div> <!-- /.col -->
 </div> <!-- /.row -->
 
 
@@ -306,7 +305,7 @@ add_page_info( 'title', 'Yönetim Paneli' );
 
 
 
-<div class="row">
+<div class="row hidden-xs">
 	<div class="col-md-6">
 
 		<div class="row space-5">

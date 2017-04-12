@@ -3,7 +3,7 @@
 <?php if( !$item = get_item($_GET['id']) ) {
 	get_header();
 	add_page_info( 'title', 'Ürün Kartı Bulunamadı' );
-	add_page_info( 'nav', array('name'=>'Ürün Yönetimi', 'url'=>get_site_url('admin/item/') ) );
+	add_page_info( 'nav', array('name'=>'Ürün', 'url'=>get_site_url('admin/item/') ) );
 	add_page_info( 'nav', array('name'=>'Liste', 'url'=>get_site_url('admin/item/list.php') ) );
 	add_page_info( 'nav', array('name'=>'Ürün Kartı Bulunamadı') );
 		print_alert(); 
@@ -34,8 +34,8 @@ if(isset($_GET['status'])) {
 
 <?php
 add_page_info( 'title', $item->name );
-add_page_info( 'nav', array('name'=>'Ürün Yönetimi', 'url'=>get_site_url('admin/item/') ) );
-add_page_info( 'nav', array('name'=>'Ürün Listesi', 'url'=>get_site_url('admin/item/list.php') ) );
+add_page_info( 'nav', array('name'=>'Ürün', 'url'=>get_site_url('admin/item/') ) );
+add_page_info( 'nav', array('name'=>'Liste', 'url'=>get_site_url('admin/item/list.php') ) );
 add_page_info( 'nav', array('name'=>$item->name ) );
 ?>
 
@@ -74,9 +74,10 @@ add_page_info( 'nav', array('name'=>$item->name ) );
 
 	<li role="presentation" class="dropdown pull-right til-menu-right"> <a href="#" class="dropdown-toggle" id="myTabDrop1" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><i class="fa fa-print"></i><span class="hidden-xs"> Yazdır </span><span class="caret"></span></a> 
 		<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
-			<li><a href="print-barcode.php?id=<?php echo $item->id; ?>&print" target="_blank"><i class="fa fa-fw fa-barcode"></i> Barkod Yazdır</a></li>
+			<li><a href="print-statement.php?id=<?php echo $item->id; ?>&print" target="_blank"><i class="fa fa-fw fa-file-text-o"></i> Ekstre Yazdır</a></li>
 			<li class="divider"></li>
-			<li><a href="print-statement.php?id=<?php echo $item->id; ?>&print" target="_blank"><i class="fa fa-fw fa-file-text-o"></i> Ekstre Yazdır</a></li> 
+			<li><a href="print-barcode.php?id=<?php echo $item->id; ?>&print" target="_blank"><i class="fa fa-fw fa-barcode"></i> Barkod Yazdır</a></li>
+			<li><a href="print-barcode_price.php?id=<?php echo $item->id; ?>&print" target="_blank"><i class="fa fa-fw fa-barcode"></i> Fiyatlı Barkod Yazdır</a></li>
 		</ul> 
 	</li>
 </ul>
@@ -152,8 +153,252 @@ add_page_info( 'nav', array('name'=>$item->name ) );
 						<button class="btn btn-success btn-xs-block btn-insert"><i class="fa fa-floppy-o"></i> Kaydet</button>
 					</div>
 				</form>
-			</div> <!-- /.col -->
+			</div> <!-- /.col-* -->
+			<div class="col-md-6">
+
+				<small class="text-muted"><i class="fa fa-calendar-o"></i> GÜNCEL STOK DURUMU</small>
+				<div class="h-10"></div>
+
+				<div class="row space-none">
+					<div class="col-md-4">
+
+						<div class="well text-center">
+							<small class="text-muted block">stok miktarı:</small>
+							<span class="ff-2 fs-18 bold <?php echo $item->quantity > 0 ? 'text-success' : 'text-danger'; ?>"><?php echo $item->quantity; ?></span>
+							
+							
+						</div>
+						
+					</div> <!-- /.col- -->
+					<div class="col-xs-6 col-md-4">
+						<div class="">
+							<span class="ff-2 fs-17 bold"><?php echo get_set_money($item->quantity * $item->p_purc); ?></span> <small class="text-muted">TL</small>
+							<br>
+							<small class="text-muted">maliyet fiyatı</small>
+						</div>
+					</div> <!-- /.col-* -->
+					<div class="col-xs-6 col-md-4">
+						<div class="">
+							<span class="ff-2 fs-15 bold"><?php echo get_set_money($item->quantity * $item->p_sale); ?></span> <small class="text-muted">TL</small>
+							<br>
+							<small class="text-muted">satış fiyatı</small>
+						</div>
+					</div> <!-- /.col-* -->
+				</div> <!-- /.row -->	
+			
+				<div class="h-10 visible-xs"></div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<?php 
+							$chart = array();
+							$chart['type'] = 'bar';
+							$chart['data']['datasets'][0]['label'] 	= 'Hareketler';
+							$chart['data']['datasets'][0]['fill'] 	= true;
+							$chart['data']['datasets'][0]['lineTension'] 	= 0.1;
+							$chart['data']['datasets'][0]['borderWidth'] 	= 1;
+							$chart['data']['datasets'][0]['pointBorderWidth'] 	= 3;
+							$chart['data']['datasets'][0]['pointRadius'] 	= 1;
+							$chart['data']['datasets'][0]['backgroundColor'] 	= 'rgba(253, 196, 48, 0.2)';
+							$chart['data']['datasets'][0]['borderColor'] 		= 'rgba(253, 196, 48, 1)';
+
+
+							$_start_date = date('Y-m-d', strtotime('-4 week', strtotime(date('Y-m-d'))) );
+							$_end_date = date('Y-m-d');
+							while(strtotime($_start_date) <= strtotime($_end_date) ) {
+								$chart['data']['labels'][] = $_start_date = date('Y-m-d', strtotime('+1 day', strtotime($_start_date)));
+
+								$quantity = 0;
+								$item_quantity = $item->quantity;
+								$q_forms = db()->query("SELECT sum(quantity) as quantity FROM ".dbname('form_items')." WHERE status='1' AND in_out='0' AND item_id='".$item->id."' AND date >= '".$_start_date." 00:00:00' ORDER BY date DESC");
+								if(($quantity = $q_forms->fetch_object()->quantity) > 0) {
+									// $chartt['data']['datasets'][0]['data'][] = $total;
+								} else {
+									// $chartt['data']['datasets'][0]['data'][] = '0.00';
+								}
+								$item_quantity = $item_quantity - $quantity;
+
+								$quantity = 0;
+								$q_forms = db()->query("SELECT sum(quantity) as quantity FROM ".dbname('form_items')." WHERE status='1' AND in_out='1' AND item_id='".$item->id."' AND date >= '".$_start_date." 00:00:00' ORDER BY date DESC");
+								if(($quantity = $q_forms->fetch_object()->quantity) > 0) {
+									// $chartt['data']['datasets'][1]['data'][] = $total;
+								} else {
+									// $chartt['data']['datasets'][1]['data'][] = '0.00';
+								}
+								$item_quantity = $item_quantity + $quantity;
+								$chart['data']['datasets'][0]['data'][] = $item_quantity;
+
+				
+							}
+
+							$chart['options']['legend']['display'] = false;
+							$chart['options']['scales']['yAxes'][0]['display'] = false;
+							$chart['options']['scales']['xAxes'][0]['display'] = false;
+							$chart['options']['scales']['xAxes'][0]['ticks']['beginAtZero'] = true;
+							$chart['options']['maintainAspectRatio'] = false;
+							$chart['options']['tooltips']['enabled'] = true;
+							$chart['options']['tooltips']['titleFontSize'] = 9;
+							$chart['options']['tooltips']['callbacks']['title'] = "=TIL= function(tooltipItems, data) { return ''; } =TIL=";
+							$chart['options']['tooltips']['callbacks']['label'] = "=TIL= function(tooltipItems, data) {  return  data.labels[tooltipItems.index]+':      '+ tooltipItems.yLabel; } =TIL=";
+							
+
+							$args['height'] 	= '50';
+							$args['chart'] 		= $chart;
+							?>
+
+							<?php chartjs($args); ?>
+					</div> <!-- /.col-md-12 -->
+				</div> <!-- /.row -->
+
+				<div class="h-20"></div>
+
+				<small class="text-muted"><i class="fa fa-calendar-o"></i> ŞİMDİYE KADAR</small>
+				<div class="h-10"></div>
+
+				<div class="row">
+					<div class="col-xs-4 col-md-4">
+						<div class="">
+							<span class="ff-2 fs-15 bold"><?php echo get_set_money($item->total_purc); ?></span> <small class="text-muted">TL</small>
+							<br>
+							<small class="text-muted">toplam ürün alındı</small>
+						</div>
+					</div> <!-- /.col-* -->
+					<div class="col-xs-4 col-md-4">
+						<div class="">
+							<span class="ff-2 fs-15 bold"><?php echo get_set_money($item->total_sale); ?></span> <small class="text-muted">TL</small>
+							<br>
+							<small class="text-muted">toplam ürün satıldı</small>
+						</div>
+					</div> <!-- /.col-* -->
+					<div class="col-xs-4 col-md-4">
+						<div class="">
+							<span class="ff-2 fs-15 bold <?php echo $item->profit > 0 ? 'text-success' : 'text-danger'; ?>"><?php echo get_set_money($item->profit); ?></span> <small class="text-muted">TL</small>
+							<br>
+							<small class="text-muted">toplam para kazanıldı</small>
+						</div>
+					</div> <!-- /.col-* -->
+				</div> <!-- /.row -->
+
+			</div> <!-- /.col-* -->
 		</div> <!-- /.row -->
+
+		<div class="h-20"></div>
+
+		<div class="row">
+			<div class="col-md-4">
+
+				<?php 
+				$whichAccount = array();
+				$query = db()->query("SELECT * FROM ".dbname('form_items')." WHERE status='1' AND in_out='1' AND item_id='".$item->id."' ");
+				if($query->num_rows) {
+					while($list = $query->fetch_object()) {
+
+						if( !isset($whichAccount[$list->account_id]) ) {
+							$whichAccount[$list->account_id] = array('quantity'=>0, 'profit'=>0, 'total'=>0);
+						}
+
+						$whichAccount[$list->account_id]['quantity'] = $whichAccount[$list->account_id]['quantity'] + $list->quantity;
+						$whichAccount[$list->account_id]['profit'] = $whichAccount[$list->account_id]['profit'] + $list->profit;
+						$whichAccount[$list->account_id]['total'] = $whichAccount[$list->account_id]['total'] + $list->total;
+					}
+				}
+				?>
+
+				<div class="h-20 visible-xs"></div>
+				<small class="text-muted module-title-small"><i class="fa fa-users"></i> EN ÇOK TERCİH EDEN MÜŞTERİLER</small>
+				<div class="h-10"></div>
+
+				<div class="panel panel-info panel-heading-0 panel-border-right panel-table panel-dashboard-list">
+					<div class="panel-body">
+						<div class="panel-list">
+							<?php if(count($whichAccount)): ?>
+							
+								<table class="table table-hover table-condensed">
+									<thead>
+										<tr>
+											<th>Hesap Kartı</th>
+											<th class="text-center">Adet</th>
+											<th class="text-right">Toplam</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach($whichAccount as $key=>$value): ?>
+											<?php $account = get_account($key); ?>
+											<tr onclick="location.href='<?php site_url('account', $account->id); ?>';" class="pointer">
+												<td>
+													<?php if($key): ?>
+														<a href="<?php site_url('account', $account->id); ?>" title="<?php echo $account->name; ?>"><?php echo til_get_substr($account->name, 0, 20); ?> <i class="fa fa-external-link"></i></a> 
+													<?php else: ?>
+														DİĞER
+													<?php endif; ?>
+												</td>
+												<td class="text-center"><?php echo $value['quantity']; ?></td>
+												<td class="text-right" width="100" data-toggle="tooltip" title="Kar/Zarar: <?php echo get_set_money($value['profit'], true); ?>"><?php echo get_set_money($value['total']); ?> <i class="fa fa-try text-muted"></i></td>
+											</tr>
+										<?php endforeach; ?>
+									</tbody>
+								</table>
+
+							<?php endif; ?>
+						</div> <!-- /.panel-list -->
+					</div> <!-- /.panel-body -->
+				</div> <!-- /.panel -->
+
+			</div> <!-- /.col-* -->
+			<div class="col-md-8">
+
+				<div class="h-20 visible-xs"></div>
+				<small class="text-muted module-title-small"><i class="fa fa-th-list"></i> BU ÜRÜN KARTINA AİT SON HAREKETLER</small>
+				<div class="h-10"></div>
+
+				<div class="panel panel-warning panel-heading-0 panel-border-right panel-table panel-dashboard-list">
+					<div class="panel-body">
+						<?php $query = db()->query("SELECT * FROM ".dbname('form_items')." WHERE status='1' AND type='item' AND item_id ='".$item->id."' ORDER BY date DESC LIMIT 50"); ?>
+							<?php if($query->num_rows): ?>
+							
+								<table class="table table-hover table-condensed table-stripedd">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>Hesap Kartı</th>
+											<th>G/Ç</th>
+											<th class="text-center">Adet</th>
+											<th class="text-right">B.Fiyatı</th>
+											<th class="text-right">Toplam</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php while($list = $query->fetch_object()): ?>
+											<?php $item = get_item($list->item_id); ?>
+											<tr onclick="location.href='<?php site_url('form', $list->form_id); ?>';" class="pointer">
+												<td width="80"><a href="<?php site_url('form', $list->form_id); ?>" class="text-muted">#<?php echo $list->form_id; ?></a></td>
+												<td>
+													<?php if($list->account_id): ?>
+														<a href="<?php site_url('account', $list->account_id); ?>" title="<?php echo get_form($list->form_id)->account_name; ?>"><?php echo til_get_substr(get_form($list->form_id)->account_name, 0, 40); ?> <i class="fa fa-external-link"></i></a> 
+													<?php else: ?>
+														<?php echo til_get_substr(get_form($list->form_id)->account_name, 0, 40); ?>
+													<?php endif; ?>
+												</td>
+												<?php if($list->in_out == '1'): ?>
+													<td class="text-muted">ÇIKIŞ</td>
+												<?php else: ?> 
+													<td class="text-muted">GİRİŞ</td>
+												<?php endif; ?>
+												<td class="text-center"><?php echo $list->quantity; ?></td>
+												<td class="text-right" width="100"><?php echo get_set_money($list->price); ?> <i class="fa fa-try text-muted"></i></td>
+												<td class="text-right" width="100"><?php echo get_set_money($list->total); ?> <i class="fa fa-try text-muted"></i></td>
+											</tr>
+										<?php endwhile; ?>
+									</tbody>
+								</table>
+
+						<?php endif; ?>
+					</div> <!-- /.panel-body -->
+				</div> <!-- /.panel -->
+
+			</div> <!-- /.col-* -->
+		</div> <!-- /.row -->
+
 
 	</div>
 	<!-- /tab:home -->
@@ -168,6 +413,7 @@ add_page_info( 'nav', array('name'=>$item->name ) );
 
 	<!-- tab:forms -->
 	<div class="tab-pane fade" role="tabpanel" id="forms" aria-labelledby="forms-tab"> 
+
 		<?php $q_form_items = db()->query("SELECT * FROM ".dbname('form_items')." WHERE status='1' AND item_id='".$item->id."' ORDER BY date DESC"); ?>
 		<?php if($q_form_items->num_rows): ?>
 			<table class="table table-striped table-hover table-condensed table-bordered dataTable">
@@ -184,14 +430,14 @@ add_page_info( 'nav', array('name'=>$item->name ) );
 						</tr>
 					<?php else: ?>
 						<tr>
-							<th width="80">Tarih</th>
-							<th width="60">Form ID</th>
-							<th width="30">G/Ç</th>
+							<th width="100">Tarih</th>
+							<th width="100">Form</th>
+							<th width="50">G/Ç</th>
 							<th>Hesap Kartı</th>
 							<th width="60" class="text-center">Adet</th>
-							<th width="80" class="text-center">B. Fiyatı</th>
-							<th width="80" class="text-center">Giriş</th>
-							<th width="80" class="text-center">Çıkış</th>
+							<th width="60" class="text-center">B. Fiyatı</th>
+							<th width="60" class="text-center">Giriş</th>
+							<th width="60" class="text-center">Çıkış</th>
 						</tr>
 					<?php endif; ?>
 				</thead>
@@ -233,6 +479,7 @@ add_page_info( 'nav', array('name'=>$item->name ) );
 		<?php else: ?>
 			<?php echo get_alert(array('title'=>'Form Hareketi Yok', 'description'=>'Bu ürün kartı için henüz bir form hareketi eklenmemiş.'), 'warning', false); ?>
 		<?php endif; ?>
+
 	</div>
 	<!-- /tab:forms -->
 

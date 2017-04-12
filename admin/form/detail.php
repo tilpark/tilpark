@@ -478,7 +478,7 @@ if($form->id) {
 										$total_vat = 0;
 										?>
 										<?php foreach($form_items->list as $item): ?>
-											<tr>
+											<tr class="<?php echo @$_GET['flashItemID'] == $item->item_id ? 'flashItemID' : ''; ?>">
 												<td class="text-center"><a href="?id=<?php echo $form->id; ?>&delete_form_item=<?php echo $item->id; ?>#form_items" title="Sil"><i class="fa fa-trash"></i></a></td>
 												<td class="hidden-xs-portrait"><?php echo $item->item_code; ?></td>
 												<td><?php echo $item->item_name; ?></td>
@@ -515,6 +515,19 @@ if($form->id) {
 								</tfoot>
 							</table>
 						</div> <!-- /.panel -->
+							
+							<style>
+							.flashItemID td {
+								animation: alertloginError 300ms infinite;
+				             	 animation-iteration-count: 4;
+							}
+
+
+				            @keyframes alertloginError{
+				              0%{ background-color: transparent; }
+				              100%{ background-color: #ddd; }
+				            }
+							</style>
 
 
 						<div class="text-right">
