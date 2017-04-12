@@ -7,7 +7,10 @@
 		return $til;
 	}
 
-	@file_get_contents('http://api.tilpark.org/log.php?type=installation&step=0&url='. str_replace('installation.php', '', $_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']) .'&user_ip='.$_SERVER['SERVER_ADDR']);
+	if(empty($_POST)) {
+		@file_get_contents('http://api.tilpark.org/log.php?type=installation&step=0&url='. str_replace('installation.php', '', $_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME']) .'&user_ip='.$_SERVER['SERVER_ADDR']);
+	}
+	
 
 	include ('includes/input.php');
 

@@ -26,7 +26,7 @@ function root_path($val) {
 }
 include get_root_path('til-config.php');
 
-if (_userName != '' AND _dbName != '' ) {
+if (_userName == '' AND _dbName == '' ) {
 	Header('Location: installation.php');
 }
 
