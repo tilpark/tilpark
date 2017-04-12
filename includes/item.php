@@ -87,11 +87,16 @@ function add_item($args=array()) {
  * get_item()
  * bu fonksiyon tek bir hesap kartini dataları ile birlikte dondurur
  */
-function get_item($args) {
-	if(!is_array($args)) { $args = array('id'=>$args); }
-
+function get_item($args, $_til=true) {
+	if(!is_array($args)) { $args = array( 'where'=>array('id'=>$args) ); }
 	$args 	= _args_helper(input_check($args), 'where');
 	$where 	= $args['where'];
+
+	if( isset($where['id']) and $_til ) {
+		if( isset(til()->accounts[$where['id']]) ) {
+			return til()->accounts[$where['id']];
+		}
+	}
 
 	if($query = db()->query("SELECT * FROM ".dbname('items')." ".sql_where_string($where)." ")) {
 		if($query->num_rows) {

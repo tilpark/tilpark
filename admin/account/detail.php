@@ -14,8 +14,8 @@ $q_forms = db()->query("SELECT * FROM ".dbname('forms')." ");
 
 if(!$account = get_account($_GET['id'])) {
 	add_page_info( 'title', 'Hesap Kartı');
-	add_page_info( 'nav', array('name'=>'Hesap Yönetimi', 'url'=>get_site_url('admin/account/') ) );
-	add_page_info( 'nav', array('name'=>'Hesap Listesi', 'url'=>get_site_url('admin/account/list.php') ) );
+	add_page_info( 'nav', array('name'=>'Hesap', 'url'=>get_site_url('admin/account/') ) );
+	add_page_info( 'nav', array('name'=>'Liste', 'url'=>get_site_url('admin/account/list.php') ) );
 	add_page_info( 'nav', array('name'=>'Hesap Kartı') );
 	get_header();
 		print_alert();
@@ -51,8 +51,8 @@ $account = get_account($_GET['id'], false);
 
 # sayfa bilgilerini ekle
 add_page_info( 'title', $account->name );
-add_page_info( 'nav', array('name'=>'Hesap Yönetimi', 'url'=>get_site_url('admin/account/') ) );
-add_page_info( 'nav', array('name'=>'Hesap Listesi', 'url'=>get_site_url('admin/account/list.php') ) );
+add_page_info( 'nav', array('name'=>'Hesap', 'url'=>get_site_url('admin/account/') ) );
+add_page_info( 'nav', array('name'=>'Liste', 'url'=>get_site_url('admin/account/list.php') ) );
 add_page_info( 'nav', array('name'=>$account->name) );
 ?>
 
@@ -89,7 +89,9 @@ add_page_info( 'nav', array('name'=>$account->name) );
 		<ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
 			<li><a href="print-statement.php?id=<?php echo $account->id; ?>&print" target="_blank"><i class="fa fa-file-text-o fa-fw"></i> Ekstre Yazdır</a></li>
 			<li class="divider"></li>
+			<li><a href="print-barcode.php?id=<?php echo $account->id; ?>&print" target="_blank"><i class="fa fa-barcode fa-fw"></i> Barkod Yazdır</a></li>
 			<li><a href="print-address.php?id=<?php echo $account->id; ?>&print" target="_blank"><i class="fa fa-address-book-o fa-fw"></i> Adres Kartı Yazdır</a></li>
+			<li><a href="print-cargo.php?id=<?php echo $account->id; ?>&print" target="_blank"><i class="fa fa-address-book-o fa-fw"></i> Kargo Barkodu Yazdır</a></li>
 		</ul> 
 	</li>
 </ul>
@@ -195,145 +197,207 @@ add_page_info( 'nav', array('name'=>$account->name) );
 				</form>
 			</div> <!-- /.col-md-8 -->
 			<div class="col-md-4">
-				<?php 
-				$accountTotal = array();
-				$q = db()->query("SELECT sum(total) as total FROM ".dbname("forms")." WHERE status='1' AND type='form' AND in_out='0' AND account_id='".$account->id."'");
-				$accountTotal['form_in'] = $q->fetch_object()->total;
-				$q = db()->query("SELECT sum(total) as total FROM ".dbname("forms")." WHERE status='1' AND type='form' AND in_out='1' AND account_id='".$account->id."'");
-				$accountTotal['form_out'] = $q->fetch_object()->total;
+				
+				<div class="h-20 visible-xs"></div>
+				<div class="row space-none">
+					<div class="col-md-5">
 
-				$q = db()->query("SELECT sum(total) as total FROM ".dbname("forms")." WHERE status='1' AND type='payment' AND in_out='0' AND account_id='".$account->id."'");
-				$accountTotal['payment_in'] = $q->fetch_object()->total;
-				$q = db()->query("SELECT sum(total) as total FROM ".dbname("forms")." WHERE status='1' AND type='payment' AND in_out='1' AND account_id='".$account->id."'");
-				$accountTotal['payment_out'] = $q->fetch_object()->total;
+						<div class="">
+							<span class="ff-2 fs-17 bold <?php echo $account->balance < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo get_set_money($account->balance); ?></span> <small class="text-muted">TL</small>
+							<br />
+							<small class="text-muted">bakiye</small>
+						</div>
+						
+					</div> <!-- /.col-md-4 -->
+					<div class="col-md-7">
+						<?php 
+						$accountTotal = array();
+						$q = db()->query("SELECT sum(total) as total FROM ".dbname("forms")." WHERE status='1' AND type='form' AND in_out='0' AND account_id='".$account->id."'");
+						$accountTotal['form_in'] = $q->fetch_object()->total;
+						$q = db()->query("SELECT sum(total) as total FROM ".dbname("forms")." WHERE status='1' AND type='form' AND in_out='1' AND account_id='".$account->id."'");
+						$accountTotal['form_out'] = $q->fetch_object()->total;
 
-				?>
+						$q = db()->query("SELECT sum(total) as total FROM ".dbname("forms")." WHERE status='1' AND type='payment' AND in_out='0' AND account_id='".$account->id."'");
+						$accountTotal['payment_in'] = $q->fetch_object()->total;
+						$q = db()->query("SELECT sum(total) as total FROM ".dbname("forms")." WHERE status='1' AND type='payment' AND in_out='1' AND account_id='".$account->id."'");
+						$accountTotal['payment_out'] = $q->fetch_object()->total;
 
-					<?php 
-					$chart = array();
-					$chart['type'] = 'line';
-					$chart['data']['datasets'][0]['label'] 	= 'Hareketler';
-					$chart['data']['datasets'][0]['fill'] 	= false;
-					$chart['data']['datasets'][0]['lineTension'] 	= '0';
-					$chart['data']['datasets'][0]['borderWidth'] 	= 1;
-					$chart['data']['datasets'][0]['pointBorderWidth'] 	= 1;
-					$chart['data']['datasets'][0]['pointRadius'] 	= 1;
-					$chart['data']['datasets'][0]['backgroundColor'] 	= 'rgba(253, 196, 48, 0.2)';
-					$chart['data']['datasets'][0]['borderColor'] 		= 'rgba(253, 196, 48, 1)';
+						?>
+
+						<?php 
+						$chart = array();
+						$chart['type'] = 'line';
+						$chart['data']['datasets'][0]['label'] 	= 'Hareketler';
+						$chart['data']['datasets'][0]['fill'] 	= true;
+						$chart['data']['datasets'][0]['lineTension'] 	= '0';
+						$chart['data']['datasets'][0]['borderWidth'] 	= 1;
+						$chart['data']['datasets'][0]['pointBorderWidth'] 	= 1;
+						$chart['data']['datasets'][0]['pointRadius'] 	= 1;
+						$chart['data']['datasets'][0]['backgroundColor'] 	= 'rgba(253, 196, 48, 0.2)';
+						$chart['data']['datasets'][0]['borderColor'] 		= 'rgba(253, 196, 48, 1)';
 
 
-					$_start_date = date('Y-m-d', strtotime('-2 week', strtotime(date('Y-m-d'))) );
-					$_end_date = date('Y-m-d');
-					while(strtotime($_start_date) <= strtotime($_end_date) ) {
-						$chart['data']['labels'][] = $_start_date = date('Y-m-d', strtotime('+1 day', strtotime($_start_date)));
+						$_start_date = date('Y-m-d', strtotime('-2 week', strtotime(date('Y-m-d'))) );
+						$_end_date = date('Y-m-d');
+						while(strtotime($_start_date) <= strtotime($_end_date) ) {
+							$chart['data']['labels'][] = $_start_date = date('Y-m-d', strtotime('+1 day', strtotime($_start_date)));
 
-						$total = 0;
-						$chart_balance = $account->balance;
-						$q_forms = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE status='1' AND in_out='0' AND account_id='".$account->id."' AND date >= '".$_start_date." 00:00:00' ORDER BY id DESC, date DESC");
-						if(($total = $q_forms->fetch_object()->total) > 0) {
-							// $chartt['data']['datasets'][0]['data'][] = $total;
-						} else {
-							// $chartt['data']['datasets'][0]['data'][] = '0.00';
+							$total = 0;
+							$chart_balance = $account->balance;
+							$q_forms = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE status='1' AND in_out='0' AND account_id='".$account->id."' AND date >= '".$_start_date." 00:00:00' ORDER BY id DESC, date DESC");
+							if(($total = $q_forms->fetch_object()->total) > 0) {
+								// $chartt['data']['datasets'][0]['data'][] = $total;
+							} else {
+								// $chartt['data']['datasets'][0]['data'][] = '0.00';
+							}
+							$chart_balance = $chart_balance + $total;
+
+							$total = 0;
+							$q_forms = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE status='1' AND in_out='1' AND account_id='".$account->id."' AND date >= '".$_start_date." 00:00:00' ORDER BY id DESC, date DESC");
+							if(($total = $q_forms->fetch_object()->total) > 0) {
+								// $chartt['data']['datasets'][1]['data'][] = $total;
+							} else {
+								// $chartt['data']['datasets'][1]['data'][] = '0.00';
+							}
+							$chart_balance = $chart_balance - $total;
+							$chart['data']['datasets'][0]['data'][] = $chart_balance;
+
+			
 						}
-						$chart_balance = $chart_balance + $total;
 
-						$total = 0;
-						$q_forms = db()->query("SELECT sum(total) as total FROM ".dbname('forms')." WHERE status='1' AND in_out='1' AND account_id='".$account->id."' AND date >= '".$_start_date." 00:00:00' ORDER BY id DESC, date DESC");
-						if(($total = $q_forms->fetch_object()->total) > 0) {
-							// $chartt['data']['datasets'][1]['data'][] = $total;
-						} else {
-							// $chartt['data']['datasets'][1]['data'][] = '0.00';
+						$chart['options']['legend']['display'] = false;
+						$chart['options']['scales']['yAxes'][0]['display'] = false;
+						$chart['options']['scales']['xAxes'][0]['display'] = false;
+						$chart['options']['scales']['xAxes'][0]['ticks']['beginAtZero'] = true;
+						$chart['options']['maintainAspectRatio'] = false;
+						$chart['options']['tooltips']['enabled'] = true;
+						$chart['options']['tooltips']['callbacks']['title'] = "=TIL= function(tooltipItems, data) {  return ''; } =TIL=";
+						$chart['options']['tooltips']['callbacks']['label'] = "=TIL= function(tooltipItems, data) {  return  tooltipItems.yLabel.formatMoney(2, '.', ',') + ' TL'; } =TIL=";
+						
+
+						$args['height'] 	= '40';
+						$args['chart'] 		= $chart;
+						?>
+
+						<?php chartjs($args); ?>
+					</div> <!-- /.col-md-8 -->
+				</div> <!-- /.row -->
+
+				<div class="h-20"></div>
+
+				<div class="h-20 visible-xs"></div>
+				<div class="row space-none">
+					<div class="col-md-4">
+
+						<div class="">
+							<span class="ff-2 fs-15 bold <?php echo $account->profit < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo get_set_money($account->profit); ?></span> <small class="text-muted">TL</small>
+							<br />
+							<small class="text-muted">kar/zarar</small>
+						</div>
+						
+					</div> <!-- /.col-md-4 -->
+					<div class="col-md-8">
+						<?php 
+						$chart = array();
+						$chart['type'] = 'line';
+						$chart['data']['datasets'][0]['label'] 	= 'Hareketler';
+						$chart['data']['datasets'][0]['fill'] 	= true;
+						$chart['data']['datasets'][0]['lineTension'] 	= '0';
+						$chart['data']['datasets'][0]['borderWidth'] 	= 1;
+						$chart['data']['datasets'][0]['pointBorderWidth'] 	= 1;
+						$chart['data']['datasets'][0]['pointRadius'] 	= 1;
+						$chart['data']['datasets'][0]['backgroundColor'] 	= 'rgba(75, 192, 192, 0.2)';
+						$chart['data']['datasets'][0]['borderColor'] 		= 'rgba(75, 192, 192, 1)';
+
+
+						$_start_date = date('Y-m-d', strtotime('-2 week', strtotime(date('Y-m-d'))) );
+						$_end_date = date('Y-m-d');
+						while(strtotime($_start_date) <= strtotime($_end_date) ) {
+							$chart['data']['labels'][] = $_start_date = date('Y-m-d', strtotime('+1 day', strtotime($_start_date)));
+
+							$total = 0;
+							$chart_balance = $account->profit;
+							$q_forms = db()->query("SELECT sum(profit) as total FROM ".dbname('forms')." WHERE status='1' AND in_out='0' AND account_id='".$account->id."' AND date >= '".$_start_date." 00:00:00' ORDER BY id DESC, date DESC");
+							if(($total = $q_forms->fetch_object()->total) > 0) {
+								// $chartt['data']['datasets'][0]['data'][] = $total;
+							} else {
+								// $chartt['data']['datasets'][0]['data'][] = '0.00';
+							}
+							$chart_balance = $chart_balance + $total;
+
+							$total = 0;
+							$q_forms = db()->query("SELECT sum(profit) as total FROM ".dbname('forms')." WHERE status='1' AND in_out='1' AND account_id='".$account->id."' AND date >= '".$_start_date." 00:00:00' ORDER BY id DESC, date DESC");
+							if(($total = $q_forms->fetch_object()->total) > 0) {
+								// $chartt['data']['datasets'][1]['data'][] = $total;
+							} else {
+								// $chartt['data']['datasets'][1]['data'][] = '0.00';
+							}
+							$chart_balance = $chart_balance - $total;
+							$chart['data']['datasets'][0]['data'][] = $chart_balance;
+
+			
 						}
-						$chart_balance = $chart_balance - $total;
-						$chart['data']['datasets'][0]['data'][] = $chart_balance;
 
-		
-					}
+						$chart['options']['legend']['display'] = false;
+						$chart['options']['scales']['yAxes'][0]['display'] = false;
+						$chart['options']['scales']['xAxes'][0]['display'] = false;
+						$chart['options']['scales']['xAxes'][0]['ticks']['beginAtZero'] = true;
+						$chart['options']['maintainAspectRatio'] = false;
+						$chart['options']['tooltips']['enabled'] = true;
+						$chart['options']['tooltips']['yLabel'] = 'krall';
+						$chart['options']['tooltips']['mode'] = 'nearest';
+						$chart['options']['tooltips']['callbacks']['title'] = "=TIL= function(tooltipItems, data) {  return ''; } =TIL=";
+						$chart['options']['tooltips']['callbacks']['label'] = "=TIL= function(tooltipItems, data) {  return  tooltipItems.yLabel.formatMoney(2, '.', ',') + ' TL'; } =TIL=";
+						
 
-					$chart['options']['legend']['display'] = false;
-					$chart['options']['scales']['yAxes'][0]['display'] = false;
-					$chart['options']['scales']['xAxes'][0]['display'] = false;
-					$chart['options']['scales']['xAxes'][0]['ticks']['beginAtZero'] = true;
-					$chart['options']['maintainAspectRatio'] = false;
-					$chart['options']['tooltips']['enabled'] = true;
-					$chart['options']['tooltips']['yLabel'] = 'krall';
-					$chart['options']['tooltips']['mode'] = 'nearest';
-					$chart['options']['tooltips']['callbacks']['title'] = "=TIL= function(tooltipItems, data) {  return ''; } =TIL=";
-					$chart['options']['tooltips']['callbacks']['label'] = "=TIL= function(tooltipItems, data) {  return  tooltipItems.yLabel.formatMoney(2, '.', ',') + ' TL'; } =TIL=";
-					
+						$args['height'] 	= '40';
+						$args['chart'] 		= $chart;
+						?>
 
-					$args['height'] 	= '40';
-					$args['chart'] 		= $chart;
-					?>
-					<div class="row space-none">
-						<div class="col-md-4">
+						<?php chartjs($args); ?>
+					</div> <!-- /.col-md-8 -->
+				</div> <!-- /.row -->
 
-							<div class="">
-								<span class="ff-2 fs-17 bold <?php echo $account->balance < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo get_set_money($account->balance); ?></span> <small class="text-muted">TL</small>
-								<br />
-								<small class="text-muted">bakiye</small>
-							</div>
-							
-						</div> <!-- /.col-md-4 -->
-						<div class="col-md-8">
-							<?php chartjs($args); ?>
-						</div> <!-- /.col-md-8 -->
-					</div> <!-- /.row -->
+				<div class="h-20"></div>
+				<hr />
+				<small class="text-muted"><i class="fa fa-calendar-o"></i> ŞİMDİYE KADAR</small>
+				<div class="h-10"></div>
 
-					<div class="h-20"></div>
+				<div class="row">
+					<div class="col-xs-6 col-md-6">
+						<div class="">
+							<small class="text-muted">toplam ürün girişi</small>
+							<br />
+							<span class="ff-2 fs-15 bold"><?php echo get_set_money($accountTotal['form_in']); ?></span> <small class="text-muted">TL</small>
+						</div>
+					</div> <!-- /.col -->
+					<div class="col-xs-6 col-md-6">
+						<div class="">
+							<small class="text-muted">toplam ürün çıkışı</small>
+							<br />
+							<span class="ff-2 fs-15 bold"><?php echo get_set_money($accountTotal['form_out']); ?></span> <small class="text-muted">TL</small>
+						</div>
+					</div> <!-- /.col -->
+				</div> <!-- /.row -->
 
-					<div class="row space-5">
-						<div class="col-md-4">
+				<div class="h-20"></div>
 
-							<div class="">
-								<span class="ff-2 fs-15 bold <?php echo $account->profit < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo get_set_money($account->profit); ?></span> <small class="text-muted">TL</small>
-								<br />
-								<small class="text-muted">kar/zarar</small>
-							</div>
-							
-						</div> <!-- /.col-md-4 -->
-						<div class="col-md-8">
-							<?php chartjs($args); ?>
-						</div> <!-- /.col-md-8 -->
-					</div> <!-- /.row -->
-
-					<hr />
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="">
-								<small class="text-muted">toplam ürün girişi</small>
-								<br />
-								<span class="ff-2 fs-15 bold"><?php echo get_set_money($accountTotal['form_in']); ?></span> <small class="text-muted">TL</small>
-							</div>
-						</div> <!-- /.col-md-6 -->
-						<div class="col-md-6">
-							<div class="">
-								<small class="text-muted">toplam ürün çıkışı</small>
-								<br />
-								<span class="ff-2 fs-15 bold"><?php echo get_set_money($accountTotal['form_out']); ?></span> <small class="text-muted">TL</small>
-							</div>
-						</div> <!-- /.col-md-6 -->
-					</div> <!-- /.row -->
-
-					<div class="h-20"></div>
-
-					<div class="row">
-						<div class="col-md-6">
-							<div class="">
-								<small class="text-muted">toplam ödeme girişi</small>
-								<br />
-								<span class="ff-2 fs-15 bold"><?php echo get_set_money($accountTotal['payment_in']); ?></span> <small class="text-muted">TL</small>
-							</div>
-						</div> <!-- /.col-md-6 -->
-						<div class="col-md-6">
-							<div class="">
-								<small class="text-muted">toplam ödeme çıkışı</small>
-								<br />
-								<span class="ff-2 fs-15 bold"><?php echo get_set_money($accountTotal['payment_out']); ?></span> <small class="text-muted">TL</small>
-							</div>
-						</div> <!-- /.col-md-6 -->
-					</div> <!-- /.row -->
+				<div class="row">
+					<div class="col-xs-6 col-md-6">
+						<div class="">
+							<small class="text-muted">toplam ödeme girişi</small>
+							<br />
+							<span class="ff-2 fs-15 bold"><?php echo get_set_money($accountTotal['payment_in']); ?></span> <small class="text-muted">TL</small>
+						</div>
+					</div> <!-- /.col -->
+					<div class="col-xs-6 col-md-6">
+						<div class="">
+							<small class="text-muted">toplam ödeme çıkışı</small>
+							<br />
+							<span class="ff-2 fs-15 bold"><?php echo get_set_money($accountTotal['payment_out']); ?></span> <small class="text-muted">TL</small>
+						</div>
+					</div> <!-- /.col -->
+				</div> <!-- /.row -->
 					
 	
 			</div> <!-- /.col-md-4 -->
@@ -451,60 +515,70 @@ add_page_info( 'nav', array('name'=>$account->name) );
 				?>
 
 				
+				<div class="h-20 visible-xs"></div>
 				<div class="panel panel-default panel-border-0">
 					<div class="panel-heading"><h3 class="panel-title">Son 30 Günlük Grafik Özeti</h3></div>
 					<div class="panel-body">
 						<?php chartjs($args); ?>
 					</div>
-				</div>
+				</div> <!-- /.panel -->
+
 			</div> <!-- /.col-* -->
 			<div class="col-md-4">
-			<div class="panel panel-default panel-border-0">
-					<div class="panel-heading"><h3 class="panel-title">Hesabın En Popüler Ürünleri</h3></div>
-					<div class="panel-body">
-						<?php
-						$chart = array();
-						$chart['type'] = 'pie';
-						// $chart['data']['datasets'][0]['label'] 	= 'Giriş';
-						$chart['data']['datasets'][0]['fill'] 	= true;
-						$chart['data']['datasets'][0]['lineTension'] 	= 0.3;
-						$chart['data']['datasets'][0]['borderWidth'] 	= 1;
-						$chart['data']['datasets'][0]['pointBorderWidth'] 	= 1;
-						$chart['data']['datasets'][0]['pointRadius'] 	= 1;
+			
+				<?php
+				$chart = array();
+				$chart['type'] = 'doughnut';
+				// $chart['data']['datasets'][0]['label'] 	= 'Giriş';
+				$chart['data']['datasets'][0]['fill'] 	= true;
+				$chart['data']['datasets'][0]['lineTension'] 	= 0.3;
+				$chart['data']['datasets'][0]['borderWidth'] 	= 1;
+				$chart['data']['datasets'][0]['pointBorderWidth'] 	= 1;
+				$chart['data']['datasets'][0]['pointRadius'] 	= 1;
 
-						$_data = array();
-						$q_form_items = db()->query("SELECT * FROM ".dbname('form_items')." WHERE status='1' AND type='item' AND account_id='".$account->id."'");
-						while($list = $q_form_items->fetch_object()) {
-							if(!isset($_data[$list->item_id])) {
-								$_data[$list->item_id] = array();
-							}
+				$_data = array();
+				$q_form_items = db()->query("SELECT * FROM ".dbname('form_items')." WHERE status='1' AND type='item' AND account_id='".$account->id."'");
+				while($list = $q_form_items->fetch_object()) {
+					if(!isset($_data[$list->item_id])) {
+						$_data[$list->item_id] = array();
+					}
 
-							$_data[$list->item_id]['quantity'] 	= @$_data[$list->item_id]['quantity'] + $list->quantity;
-							$_data[$list->item_id]['total'] 	= @$_data[$list->item_id]['total'] + $list->total;
-						}
-						$i = 0;
-						foreach($_data as $key=>$val) {
-							if($i < 10) {
-								$chart['data']['labels'][] = get_item($key)->name;
-								$chart['data']['datasets'][0]['data'][] = $val['total'];
-								$i++;
-							}
-						}
+					$_data[$list->item_id]['quantity'] 	= @$_data[$list->item_id]['quantity'] + $list->quantity;
+					$_data[$list->item_id]['total'] 	= @$_data[$list->item_id]['total'] + $list->total;
+				}
+				$i = 0;
+				$_other = 0;
+				foreach($_data as $key=>$val) {
+					if($i < 7) {
+						$chart['data']['labels'][] = til_get_substr(get_item($key)->name,0,10);
+						$chart['data']['datasets'][0]['data'][] = $val['total'];
+						$i++;
+					} else {
+						$_other = $_other + $val['total'];
+					}
+				}
 
-						$chart['options']['legend']['display'] = false;
-						$chart['options']['scales']['yAxes'][0]['display'] = false;
-						$chart['options']['scales']['xAxes'][0]['display'] = false;
-						$chart['options']['scales']['xAxes'][0]['ticks']['beginAtZero'] = false;
-						$chart['options']['maintainAspectRatio'] = false;
-						$chart['options']['tooltips']['callbacks']['title'] = "=TIL= function(tooltipItems, data) { return data.labels[tooltipItems[0].index] + ''; } =TIL=";
-						$chart['options']['tooltips']['callbacks']['label'] =  "=TIL= function(tooltipItems, data) { return parseFloat(data.datasets[0].data[tooltipItems.index]).formatMoney(2, '.', ',') + ' TL'; } =TIL=";
+				$chart['data']['labels'][] = "DİĞER";
+				$chart['data']['datasets'][0]['data'][] = $_other;
 
-						// $args['height'] 	= '550';
-						$args['chart'] 		= $chart;
-						?>
-						<?php chartjs($args); ?>
-					</div>
-				</div>
+				$chart['options']['legend']['display'] = true;
+				$chart['options']['scales']['yAxes'][0]['display'] = false;
+				$chart['options']['scales']['xAxes'][0]['display'] = false;
+				$chart['options']['scales']['xAxes'][0]['ticks']['beginAtZero'] = false;
+				$chart['options']['maintainAspectRatio'] = false;
+				$chart['options']['tooltips']['callbacks']['title'] = "=TIL= function(tooltipItems, data) { return data.labels[tooltipItems[0].index] + ''; } =TIL=";
+				$chart['options']['tooltips']['callbacks']['label'] =  "=TIL= function(tooltipItems, data) { return parseFloat(data.datasets[0].data[tooltipItems.index]).formatMoney(2, '.', ',') + ' TL'; } =TIL=";
+
+				// $args['height'] 	= '550';
+				$args['chart'] 		= $chart;
+				?>
+					
+				<div class="h-20 visible-xs"></div>
+				<small class="text-muted module-title-small"><i class="fa fa-pie-chart"></i> EN ÇOK TERCİH ETTİĞİ ÜRÜNLER</small>
+				<div class="h-10"></div>
+				
+				<div class="relative"><?php chartjs($args); ?></div>
+
 			</div> <!-- /.col-* -->
 		</div> <!-- /.row -->
  

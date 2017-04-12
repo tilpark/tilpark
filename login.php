@@ -3,6 +3,7 @@ ob_start();
 session_start();
 ?>
 <?php include('til-config.php'); ?>
+<?php include('includes/til-version.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -29,8 +30,6 @@ session_start();
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-
 <style>
 
 </style>
@@ -154,15 +153,115 @@ if(isset($_POST['username'])) {
     return _prefix.$val;
   }
 
+  /**
+   * title: get_template_url()
+   * desc: secili temanın klasör adresini url olarak döndürür
+   */
+  function get_template_url($val='')
+  {
+    return get_site_url().'/content/themes/default/'.$val;
+  }
+  /**
+   * title: template_url()
+   * func: get_template_url()
+   */
+  function template_url($val='')
+  {
+    echo get_template_url($val);
+  }
+
+
+  /**
+   * title: get_site_url()
+   * desc: site adresini dondurur
+   */
+  function get_site_url($val='', $val_2=false)
+  {
+    if(_helper_site_url($val)) {
+      $val = _helper_site_url($val);
+
+      if(is_numeric($val_2)) {
+        $val = $val.'?id='.$val_2;
+      } else {
+        $val = $val.'?'.$val_2;
+      }
+    }
+
+    if(substr($val, 0,1) == '/') {
+      return _site_url.''.$val;
+    } else {
+      return _site_url.'/'.$val;
+    }
+  }
+
+
+  /**
+   * title: site_url()
+   * desc: site adresini gosterir
+   * func: get_site_url()
+   */
+  function site_url($val='', $val_2=false)
+  {
+    echo get_site_url($val, $val_2);
+  }
+
+
+  /*
+   * _helper_site_url()
+   *  get_site_url() fonksiyonu icin kisaltmalari olusturur
+   */
+  function _helper_site_url($val) {
+    if($val == 'form') {
+      return 'admin/form/detail.php';
+    } else if($val == 'account') {
+      return 'admin/account/detail.php';
+    } else if($val == 'payment') {
+      return 'admin/payment/detail.php';
+    } else if($val == 'item') {
+      return 'admin/item/detail.php';
+    } else if($val == 'message') {
+      return 'admin/user/message/detail.php';
+    } else if($val == 'task') {
+      return 'admin/user/task/detail.php';
+    } else {
+      return false;
+    }
+  }
+
+  include ('includes/input.php');
+  include ('includes/helper.php');
+  include ('includes/db.php');
+  include ('includes/user.php');
+  include ('includes/notification.php');
 
   $username = trim(addslashes($_POST['username']));
   $password = trim(addslashes($_POST['password']));
 
   if ( $q_login = db()->query("SELECT * FROM ".dbname('users')." WHERE username='$username' AND password='$password'") ) {
-    if($q_login->num_rows > 0) {
+    if( $q_login->num_rows > 0 ) {
       $login = $q_login->fetch_assoc();
       $_SESSION['login_id'] = $login['id'];
-      header("Location:"._site_url);
+
+      if ( $q_select = db()->query("SELECT * FROM ". dbname('users') ." WHERE (role='1' OR role='2') AND id='". $_SESSION['login_id'] ."' ") ) {
+        if ( $q_select->num_rows ) {
+          if ( $query = @file_get_contents('http://api.tilpark.org/version.php?version='.til()->version.'&user_ip='.$_SERVER['SERVER_ADDR']) ) {
+            if ( is_json($query) ) {
+              $query = json_decode($query);
+
+              if ( $query->version > til()->version ) {
+                if ( $q_select = db()->query("SELECT * FROM ". dbname('messages') ." WHERE choice='". $query->version ."' AND type='notification' AND rec_u_id='". $_SESSION['login_id'] ."' ") ) {
+                  if ( !$q_select->num_rows ) {
+                    if ( add_notification(array('rec_u_id' => $_SESSION['login_id'], 'title' => 'TilPark '. $query->version .' sürümü hazır.', 'message' => $query->url, 'writing' => 'fa fa-download', 'choice' => $query->version)) ) {
+                      
+                      header("Location:"._site_url);
+                    } else { header("Location:"._site_url); }
+                  } else { header("Location:"._site_url); }
+                } else { header("Location:"._site_url); }
+              } else { header("Location:"._site_url); }
+            } else { header("Location:"._site_url); }
+          } else { header("Location:"._site_url); }
+        } else { header("Location:"._site_url); }
+      } else { header("Location:"._site_url); }
     } else {
       $login_form_error = true;
     }

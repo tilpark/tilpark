@@ -5,7 +5,7 @@ if(!$account = get_account($_GET['id'])) {
 	exit;
 }
 
-if(!$print = get_option('account_print_address')) {
+if(!$print = get_option('account_print_cargo')) {
 	@$print->width = 90;
 	@$print->height = 90;
 }
@@ -13,7 +13,7 @@ if(!$print = get_option('account_print_address')) {
 
 <?php include_content_page('print', 'address', 'account', array('account'=>@$account)); ?>	
 
-<title>Adres Kartı Yazdır | <?php echo $account->name;?></title>
+<title>Kargo Barkodu Yazdır | <?php echo $account->name;?></title>
 <?php
 $args['logo'] = false;
 $args['footer'] = false;
@@ -25,11 +25,45 @@ $args['footer'] = false;
 		height: <?php echo $print->height; ?>mm !important;
 		width: <?php echo $print->width; ?>mm !important;
 	}
+	.rotate90 {
+		 -webkit-transform: rotate(-90deg);
+	    -moz-transform: rotate(-90deg);
+	    -o-transform: rotate(-90deg);
+	    -ms-transform: rotate(-90deg);
+	    transform: rotate(-90deg);
+	}
 	</style>
 
 
-	<div class="row">
-		<div class="col-xs-12">
+	<div class="row space-none">
+		<div class="col-xs-2 pr-1">
+			<div class="fs-18 text-muted rotate90" style="margin-top: 80px;">GÖNDEREN</div>
+		</div>
+		<div class="col-xs-10 pl-1">
+
+			<div class="p-10 br-3">
+				
+				<br />
+				<div class="fs-14 bold"><?php echo til()->company->name; ?></div>
+				<div class="fs-11"><?php echo til()->company->address; ?></div>
+				<div class="fs-11"><?php echo til()->company->district; ?><?php echo til()->company->city ? '/' : ''; ?><?php echo til()->company->city; ?><?php echo til()->company->country ? ' - ' : ''; ?><?php echo til()->company->country; ?></div>
+				<div class="fs-11"><?php echo get_set_show_phone(til()->company->phone); ?></div>
+				<div class="fs-11"><?php echo til()->company->email; ?></div>
+			</div>
+			
+		</div> <!-- /.col -->
+	</div> <!-- /.row -->
+
+	<hr / style="margin-top:10px; margin-bottom: 10px;">
+
+	<div class="row space-none">
+		
+		<div class="col-xs-2 pr-1">
+			<div class="fs-18 text-muted rotate90" style="margin-top: 90px;">ALICI</div>
+		</div>
+		<div class="col-xs-10 pl-1">
+
+
 			<div class="p-10 br-3">
 
 				<img src="<?php barcode_url( $account->code, array('position'=>'left') ); ?>" />

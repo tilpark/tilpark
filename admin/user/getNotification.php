@@ -107,7 +107,7 @@
 		          </div> <!-- /.col-md-2 -->
 		          <div class="col-md-10 col-xs-10">
 		            <span class="message-time">
-									<i class="fa fa-clock-o"></i> <?php echo get_time_late($message->date_update); ?> önce
+									<i class="fa fa-clock-o"></i> <?php echo get_time_late($message->date_update); ?>
 
 									<button
 										style="border: 0; background: none !important; outline: none;"

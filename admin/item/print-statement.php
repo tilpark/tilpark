@@ -10,7 +10,7 @@ if(!$item = get_item($_GET['id'])) {
 <title>Ürün Ekstre | <?php echo $item->name; ?></title>
 
 <?php 
-	$print['title'] = 'Cari Ekstre';
+	$print['title'] = 'ÜRÜN EKSTRE';
 	$print['sub-title'] = $item->name;
 	$print['date']	= til_get_date(date('Y-m-d H:i'), 'd F Y H:i');
 	$print['barcode'] = $item->code;

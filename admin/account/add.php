@@ -4,8 +4,8 @@
 <?php get_header(); ?>
 <?php
 add_page_info( 'title', 'Hesap Ekle' );
-add_page_info( 'nav', array('name'=>'Hesap Yönetimi', 'url'=>get_site_url('admin/account/') ) );
-add_page_info( 'nav', array('name'=>'Hesap Ekle') );
+add_page_info( 'nav', array('name'=>'Hesap', 'url'=>get_site_url('admin/account/') ) );
+add_page_info( 'nav', array('name'=>'Ekle') );
 ?>
 
 

@@ -1648,6 +1648,28 @@ h3.page-title {
 .panel.panel-table .panel-body table {
   border:0px;
 }
+
+
+.panel.panel-dashboard-list {
+  position: relative;
+}
+.panel.panel-dashboard-list>.panel-body{
+  height:280px; 
+  overflow: hidden;
+}
+.panel.panel-dashboard-list>.panel-body>.panel-list{
+  height:280px; 
+  overflow-x: hidden;
+  overflow-y: scroll;
+  margin-right: 0px;
+}
+@media (max-width: 768px) {
+  .panel.panel-dashboard-list>.panel-body>.panel-list{
+    margin-right: 0px;
+  }
+}
+
+
 /* panel-search */
 form.panel-search {
   width: 300px;

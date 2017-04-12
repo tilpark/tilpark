@@ -2,9 +2,9 @@
 <?php include_content_page('list', '', 'account'); ?>
 <?php get_header(); ?>
 <?php
-add_page_info( 'title', 'Hesap Kartları Listesi' );
-add_page_info( 'nav', array('name'=>'Hesap Yönetimi', 'url'=>get_site_url('admin/account/') ) );
-add_page_info( 'nav', array('name'=>'Hesap Kartları Listesi') );
+add_page_info( 'title', 'Liste' );
+add_page_info( 'nav', array('name'=>'Hesap', 'url'=>get_site_url('admin/account/') ) );
+add_page_info( 'nav', array('name'=>'Liste') );
 
 // iste acilisinde sıralama yapilmasi icin
 if(!isset($_GET['orderby_name'])) {

@@ -1032,8 +1032,6 @@ function is_mobile(device="") {
 
 
 
-
-
 /**
  * @func playSound()
  * @desc content/themes/default/sound içerisindeki çağrılan sesi 1 keres sayfada çalar
@@ -1087,7 +1085,108 @@ function render_form_file(input, callback) {
 
     reader.readAsDataURL(input.files[0]);
   }
-} //.render_form_file
+} //.render_form_file()
+
+
+
+
+
+
+
+/**
+ * @func crate_dom()
+ * @desc girilen string'i html elementi olarak dönüştürür
+ * @param string
+ * @return dom
+ */
+function create_dom(html) {
+  var div = document.createElement('DIV');
+  div.innerHTML = html;
+  div.setAttribute('class', 'create_dom()');
+
+  return div;
+} //.create_dom()
+
+
+
+
+
+/**
+ * @func til_modal()
+ * @desc custom modal
+ * @param append dom
+ * @return modal
+ */
+function til_modal(elements) {
+  var til_modal = document.querySelector('.til-modal');
+  if ( til_modal ) {
+    til_modal.remove();
+  }
+
+  var modal = document.createElement('DIV');
+  var body  = document.querySelector('main');
+
+
+  modal.setAttribute('class', 'til-modal active');
+  modal.setAttribute('tabindex', '-1');
+  modal.setAttribute('rola', 'dialogs');
+
+
+  modal.innerHTML = 
+  '<div class="til-modal-header">'+
+    '<span class="til-modal-header-title">Header</span><span class="til-modal-close pull-right" onclick="parent(this, `.til-modal`).remove()"><i class="fa fa-times"></i></span>'+
+  '</div><!--/ .til-modal-header /-->'+
+
+  '<div class="til-modal-body">'+
+  '</div><!--/ .til-modal-body /-->';
+
+  modal.querySelector('.til-modal-body').append(elements);
+  body.append(modal);
+} //.modal_form()
+
+
+
+
+
+
+
+/**
+ * @func calendar()
+ * @desc görev listesi veren takvim
+ * @param string(selector)
+ * @return 
+ */
+function calendar(selector, events) {
+  if ( events == "" ) events = '[{ "title": "Geçilmez Gurbetin Sokaklarından İçilmez Suları Pınarlarından", "start": "1999-05-17" }]';
+
+
+  if ( is_mobile() ) { var center = ""; } else { var center = "title"; }
+
+  $this = $(selector);
+  events = JSON.parse(events);
+
+  $this.fullCalendar({
+    eventLimit: true,
+    locale: 'tr',
+    views: {
+      listDay: { buttonText: 'Günlük' },
+      listWeek: { buttonText: 'Haftalık' }
+    },
+    header: {
+      left: 'prev,next',
+      center: center,
+      right: 'month,listWeek,listDay'
+    },
+    events: events 
+  });
+
+} //.calendar()
+
+
+
+
+
+
 
 
 /**

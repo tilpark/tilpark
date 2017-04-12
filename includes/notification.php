@@ -44,6 +44,7 @@ function add_notification($args=array()) {
   $insert['date_update']  = date('Y-m-d H:i:s');
   $insert['date_start']   = date('Y-m-d H:i:s');
   $insert['date_end']     = date('Y-m-d H:i:s');
+  $insert['choice']       = @$insert['choice'];
   $insert['type_status']  = '';
   $insert['writing']      = @$insert['writing'];
 
@@ -71,7 +72,7 @@ function add_notification($args=array()) {
   if ( !is_alert(__FUNCTION__) ) {
     if ( db()->query("INSERT INTO ". dbname('messages') ." ". sql_insert_string($insert)) ) {
       if ( $insert_id = db()->insert_id ) {
-        add_alert('eklendi', 'success', __FUNCTION__);
+
         return $insert_id;
       } else { return false; }
     } else { add_mysqli_error_log(__FUNCTION__); }

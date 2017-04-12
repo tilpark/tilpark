@@ -46,8 +46,7 @@ $db->query("SET NAMES 'utf8'");
 
 
 
-function db()
-{
+function db() {
 	global $db;
 	return $db;
 }
@@ -56,17 +55,6 @@ function db()
 // global ön ek
 $til = new stdclass;
 global $til;
-
-$til->fixed = '2';
-$til->company = new stdclass();
-$til->company->name = 'Tilpark!';
-$til->company->address = 'HOCA ÖMER MAH. GÖLEBATMAZ CAD. NO:1 KAT:4';
-$til->company->district = 'MERKEZ';
-$til->company->city = 'ADIYAMAN';
-$til->company->country = 'TURKEY';
-$til->company->email = 'info@tilpark.com';
-$til->company->phone = '2129091212';
-$til->company->gsm = '2129091212';
 
 function dbname($val)
 { global $til;
@@ -242,6 +230,7 @@ til_include('upload');
 til_include('task');
 til_include('notification');
 til_include('mail');
+til_include('til-version');
 
 
 
@@ -272,6 +261,34 @@ if(!get_magic_quotes_gpc()) {
 
 /* --------------------------------------------------- DEFAULT FUNCTIONS */
 is_login();
+
+
+
+
+
+
+
+// company info
+til()->fixed 						= '2';
+til()->company 					= new stdclass();
+til()->company->name 		= 'Tilpark!';
+til()->company->address 	= 'HOCA ÖMER MAH. GÖLEBATMAZ CAD. NO:1 KAT:4';
+til()->company->district = 'MERKEZ';
+til()->company->city 		= 'ADIYAMAN';
+til()->company->country 	= 'TURKEY';
+til()->company->email 		= 'info@tilpark.com';
+til()->company->phone 		= '2129091212';
+til()->company->gsm 			= '2129091212';
+
+$get_option = get_option('company');
+if ( !empty($get_option) ) {
+	foreach ($get_option as $key => $value) {
+		if ( !empty($value) ) {
+			til()->company->$key = $value;
+		}
+	}
+}
+
 
 
 

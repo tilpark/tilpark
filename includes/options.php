@@ -216,7 +216,7 @@ function get_extra($args=array()) {
 	$args 	= _args_helper(input_check($args), 'where');
 	$where 	= $args['where'];
 
-	if($q_select = db()->query("SELECT * FROM ".dbname('extra')." ".sql_where_string($where)." ")) {
+	if($q_select = db()->query("SELECT * FROM ".dbname('extra')." ".sql_where_string($where))) {
 		if($q_select->num_rows) {
 			return _return_helper('single_object', $q_select);
 		} else { return false; }

@@ -68,6 +68,11 @@ sure_baslat();
     <!-- TinyMCE -->
     <script src="<?php echo get_site_url('includes/lib/tinymce/tinymce.min.js'); ?>"></script>
 
+    <!-- FullCalendar -->
+    <script src="<?php echo template_url('js/fullcalendar.min.js'); ?>"></script>
+    <script src="<?php echo template_url('js/fullcalendar-lang.js'); ?>"></script>
+    <link href="<?php echo template_url('css/fullcalendar.min.css'); ?>" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link href="<?php echo template_url('css/tilpark.css'); ?>" rel="stylesheet">
     <link href="<?php echo template_url('css/app.css'); ?>" rel="stylesheet">
@@ -286,7 +291,6 @@ sure_baslat();
 
             <ul class="dropdown-menu">
               <li><a href="<?php site_url('admin/user/profile.php'); ?>"><i class="fa fa-meh-o"></i> Profilim</a></li>
-              <li><a href="#"><i class="fa fa-cog"></i> Ayarlar</a></li>
               <li><a href="<?php site_url('admin/user/change_password.php'); ?>"><i class="fa fa-key"></i> Şifre Değiştir</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="<?php site_url('logout.php'); ?>"><i class="fa fa-power-off"></i> Çıkış</a></li>

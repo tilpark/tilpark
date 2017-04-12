@@ -6,6 +6,23 @@ add_page_info( 'nav', array('name'=>'Kasa/Banka') );
 ?>
 
 
+<?php
+$total['money'] = 0;
+
+if($cases = get_case_all(array('is_bank'=>0))) {
+	foreach($cases as $case) {
+		$total['money'] = $total['money'] + calc_case($case->id);
+	}
+}
+
+if($cases = get_case_all(array('is_bank'=>1))) {
+	foreach($cases as $case) {
+		$total['money'] = $total['money'] + calc_case($case->id);
+	}
+}
+				
+
+?>
 
 
 <div class="row">
@@ -43,36 +60,53 @@ add_page_info( 'nav', array('name'=>'Kasa/Banka') );
 	</div> <!-- /.col-md-6 -->
 	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 
-		<?php if($cases = get_case_all(array('is_bank'=>0))): ?>
-			<span class="fs-13 text-muted">Kasalar</span>
-			<div class="clearfix"></div>
-			<div class="list-group mobile-full list-menu">
-				<?php foreach($cases as $case): ?>
-					<a href="list.php?status_id=<?php echo $case->id; ?>" class="list-group-item">
-						<?php echo $case->name; ?>
-						<span class="badge"><?php echo get_set_money($case->total); ?></span>
-					</a>
-				<?php endforeach; ?>
+		<small class="text-muted"><i class="fa fa-line-chart"></i> TOPLAM</small>
+		<div class="h-10"></div>
+
+		<div class="row">
+			<div class="col-md-4">
+				<div class="well">
+					<span class="ff-2 fs-18 bold <?php echo $total['money'] < 0 ? 'text-danger' : 'text-success'; ?>"><?php echo get_set_money($total['money']); ?></span> <small class="text-muted">TL</small>
+					<br />
+					<small class="text-muted">son durum</small>
+				</div>
+			</div> <!-- /.col -->
+		</div> <!-- /.row -->
+
+		<div class="h-20"></div>
+		<div class="row space-5">
+			<div class="col-md-6">
+				<small class="text-muted"><i class="fa fa-paypal"></i> KASA</small>
+				<div class="h-10"></div>
+				<?php if($cases = get_case_all(array('is_bank'=>0))): ?>
+					<div class="list-group mobile-full list-group-dashboard">
+						<?php foreach($cases as $case): ?>
+							<a href="<?php site_url(); ?>/admin/payment/list.php?status_id=<?php echo $case->id; ?>" class="list-group-item">
+								<?php echo $case->name; ?>
+								<span class="pull-right"><?php echo get_set_money($case->total); ?></span>
+							</a>
+						<?php endforeach; ?>
+					</div>
+				<?php endif; ?>
 			</div>
-		<?php endif; ?>
+			<div class="col-md-6">
+				<div class="h-20 visible-xs"></div>
+				<small class="text-muted"><i class="fa fa-bank"></i> BANKA</small>
+				<div class="h-10"></div>
+				<?php if($banks = get_case_all(array('is_bank'=>1))): ?>
+					<div class="list-group mobile-full list-group-dashboard">
+						<?php foreach($banks as $bank): ?>
+							<a href="<?php site_url(); ?>/admin/payment/list.php?status_id=<?php echo $bank->id; ?>" class="list-group-item">
+								<?php echo $bank->name; ?>
+								<span class="pull-right"><?php echo get_set_money($bank->count); ?></span>
+							</a>
+						<?php endforeach; ?>
+					</div>
+				<?php endif; ?>
+			</div> <!-- /.col-* -->
+		</div> <!-- /.row -->
 
-
-		<?php if($banks = get_case_all(array('is_bank'=>1))): ?>
-			<div class="h-20"></div>
-			<div class="h-20 visible-xs"></div>
-			<span class="fs-13 text-muted">Bankalar</span>
-			<div class="clearfix"></div>
-			<div class="list-group mobile-full list-menu">
-				<?php foreach($banks as $bank): ?>
-					<a href="list.php?status_id=<?php echo $bank->id; ?>" class="list-group-item">
-						<?php echo $bank->name; ?>
-						<span class="badge"><?php echo get_set_money($bank->total); ?></span>
-					</a>
-				<?php endforeach; ?>
-			</div>
-		<?php endif; ?>
-
-	</div>
+	</div> <!-- /.col -->
 </div> <!-- /.row -->
 
 

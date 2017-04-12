@@ -46,8 +46,8 @@
 			'username' 	=> $_POST['user_username'],
 			'password' 	=> $_POST['user_password'],
 			'email'			=> $_POST['user_email'],
-			'name'			=> $_POST['user_name'],
-			'surname'		=> $_POST['user_surname'],
+			'name'			=> strtoupper($_POST['user_name']),
+			'surname'		=> strtoupper($_POST['user_surname']),
 			'gsm'				=> $_POST['user_gsm']
 		);
 
@@ -60,8 +60,7 @@
 		form_validation($_user['gsm'], 'user_gsm', 'GSM', 'required|gsm|min_length[10]|max_length[11]');
 
 
-
-
+		
 		if ( !is_alert() ) {
 			foreach ($_user as $key => $value) {
 				$_send_user[$key] = urlencode($value);

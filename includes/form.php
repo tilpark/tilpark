@@ -271,8 +271,14 @@ function update_form($id, $args=array()) {
  * get_form()
  * form kartini dondurur
  */
-function get_form($id_or_query, $args=array() ) {
+function get_form($id_or_query, $_til=true ) {
 	if(is_array($id_or_query)) { $where = $id_or_query; } else { $where['id'] = $id_or_query; }
+
+	if( isset($where['id']) and $_til ) {
+		if( isset(til()->forms[$where['id']]) ) {
+			return til()->forms[$where['id']];
+		}
+	}
 
 	if($query = db()->query("SELECT * FROM ".dbname('forms')." ".sql_where_string($where)." ")) {
 		if($query->num_rows) {
@@ -1194,7 +1200,7 @@ function _set_form_status_default($_taxonomy) {
 	if( !get_form_status($where) ) {
 		
 		$where['is_default'] = '';
-		$where['orderby'] 	= 'id ASC';
+		$where['order_by']['id'] 	= 'ASC';
 		$where['limit']		= 1;
 		$update = array('taxonomy'=>$_taxonomy, 'in_out'=>0, 'is_default'=>'default');
 		usleep(100);
@@ -1207,7 +1213,7 @@ function _set_form_status_default($_taxonomy) {
 		if( !get_form_status($where) ) {
 			
 			$where['is_default'] = '';
-			$where['orderby'] 	= 'id ASC';
+			$where['order_by']['id'] 	= 'ASC';
 			$where['limit']		= 1;
 			$update = array('taxonomy'=>$_taxonomy, 'in_out'=>1, 'is_default'=>'default');
 			usleep(100);

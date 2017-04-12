@@ -10,7 +10,7 @@ if(!$account = get_account($_GET['id'])) {
 <title>Cari Ekstre | <?php echo $account->name; ?></title>
 
 <?php 
-	$print['title'] = 'Cari Ekstre';
+	$print['title'] = 'CARI EKSTRE';
 	$print['date']	= til_get_date(date('Y-m-d H:i'), 'd F Y H:i');
 	$print['barcode'] = $account->code;
 ?>
@@ -89,6 +89,11 @@ if($forms = get_forms($args_form)): ?>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="7" class="text-right"><?php echo get_set_money($balance, true); ?></th>
+			</tr>
+		</tfoot>
 	</table>
 <?php endif; ?>
 
