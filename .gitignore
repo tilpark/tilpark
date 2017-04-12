@@ -34,4 +34,8 @@ Thumbs.db
 
 
 
+# Other Files #
+######################
 til-config.php
+*til-config.php
+/til-config.php
