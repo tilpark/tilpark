@@ -93,7 +93,6 @@ if (isset($_POST['step_2'])) {
                     $sqlquery = str_replace("{prefix}", $_database['prefix'], $sqlquery); // Tablo önekleri değiştiriliyor
 
                     if (!$db->query($sqlquery)) {
-                        echo $sqlquery;
                         unset($_POST['step_2']);
                     }
 
