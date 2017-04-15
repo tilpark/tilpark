@@ -359,7 +359,7 @@ function db_query_list_return_user($query, $arr=array()) {
 			if(!$list->avatar) { $list->avatar = get_template_url('img/no-avatar-'.$list->gender.'.jpg'); } else { $list->avatar = get_site_url($list->avatar); }
 			if(!isset($list->display_name)) { $list->display_name = $list->name.' '.$list->surname; }
 
-			$return[$list->$arr['prefix']] = $list;
+			$return[$arr['prefix']] = $list;
 		} else {
 			$return[] = $list;
 		}

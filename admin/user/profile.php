@@ -20,7 +20,7 @@ if(isset($_GET['delete_avatar'])) {
 
 if(isset($_POST['update_profile'])) {
 	
-	$_profile['username'] = $_POST['username'];
+	$_profile['email'] = $_POST['email'];
 	$_profile['name'] 		= $_POST['name'];
 	$_profile['surname'] 	= $_POST['surname'];
 	$_profile['gsm']			= get_set_gsm($_POST['gsm']);
@@ -71,8 +71,8 @@ $active = get_user(get_active_user('id'), false);
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label for="username">E-posta</label>
-							<input type="text" name="username" id="username" value="<?php echo $active->username; ?>" class="form-control email">
+							<label for="email">E-posta</label>
+							<input type="text" name="email" id="email" value="<?php echo $active->email; ?>" class="form-control email">
 						</div> <!-- /.form-group -->
 					</div> <!-- /.col-md-6 -->
 					<div class="col-md-6">
